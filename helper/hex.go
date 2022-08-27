@@ -26,11 +26,15 @@ func WriteUint8Hex(buf []byte, value uint8) {
 
 //WriteUint16Hex 编码
 func WriteUint16Hex(buf []byte, value uint16) {
-	h, l := value>>8, value&0xF
+	h, l := value>>8, value&0xFF
+	//buf[0] = hexNumbers[h>>4]
+	//buf[1] = hexNumbers[h&0x0F]
+	//buf[3] = hexNumbers[l>>4]
+	//buf[4] = hexNumbers[l&0x0F]
 	buf[0] = hexNumbers[h>>4]
 	buf[1] = hexNumbers[h&0x0F]
-	buf[3] = hexNumbers[l>>4]
-	buf[4] = hexNumbers[l&0x0F]
+	buf[2] = hexNumbers[l>>4]
+	buf[3] = hexNumbers[l&0x0F]
 
 }
 

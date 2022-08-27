@@ -3,6 +3,7 @@ package protocols
 import (
 	"fmt"
 	"iot-master/connect"
+	"iot-master/protocols/mitsubishi"
 	"iot-master/protocols/modbus"
 	"iot-master/protocols/omron"
 	"iot-master/protocols/protocol"
@@ -21,6 +22,7 @@ var protocols = []protocol.Desc{
 	siemens.DescS7_400,
 	siemens.DescS7_1200,
 	siemens.DescS7_1500,
+	mitsubishi.Fx_Program,
 }
 
 func Protocols() []protocol.Desc {
