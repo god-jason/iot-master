@@ -113,7 +113,7 @@ func roleRouter(app *gin.RouterGroup) {
 
 	app.GET("/list", curd.ApiList[model.Role]())
 
-	app.POST("/create", curd.ParseParamStringId, curd.ApiCreateHook[model.Role](nil, nil))
+	app.POST("/create", curd.ParseParamStringId, roleCreate(nil, nil))
 
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Role]())
 
@@ -127,3 +127,48 @@ func roleRouter(app *gin.RouterGroup) {
 	app.POST("/import", curd.ApiImport("role"))
 
 }
+func roleCreate(before, after func(m *model.Role) error) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var data model.Role
+		err := c.ShouldBindJSON(&data)
+		if err != nil {
+			curd.Error(c, err)
+			return
+		}
+
+		if before != nil {
+			if err := before(&data); err != nil {
+				curd.Error(c, err)
+				return
+			}
+		}
+
+		exist, err := db.Engine.Exist(&model.Role{
+			Name: data.Name,
+		})
+		if err != nil {
+			curd.Error(c, err)
+			return
+		}
+		if exist {
+			curd.Error(c, errors.New("角色名称已存在"))
+		} else {
+			_, err = db.Engine.InsertOne(&data)
+			if err != nil {
+				curd.Error(c, err)
+				return
+			}
+
+			if after != nil {
+				if err := after(&data); err != nil {
+					curd.Error(c, err)
+					return
+				}
+			}
+
+			curd.OK(c, &data)
+		}
+
+	}
+}
+
