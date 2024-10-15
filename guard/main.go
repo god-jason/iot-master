@@ -5,7 +5,6 @@ import (
 	"github.com/kardianos/service"
 	"log"
 	"os"
-	"os/exec"
 	"os/signal"
 	"syscall"
 	"time"
@@ -65,11 +64,13 @@ func (p *Program) run() {
 	quit := make(chan os.Signal, 2)
 	signal.Notify(quit, os.Interrupt, os.Kill)
 
-	cmd := exec.Command("iot-master")
-	//proc, err := os.StartProcess("iot-master", nil, nil)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
+	//cmd := exec.Command("iot-master")
+	proc, err := os.StartProcess("iot-master", nil, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	exit := false
 
 	go func() {
 		for {
@@ -77,7 +78,8 @@ func (p *Program) run() {
 			case <-hup:
 			case <-quit:
 				//_ = p.Shutdown() //全关闭两次
-				//_ = proc.Kill()
+				exit = true
+				_ = proc.Kill()
 				os.Exit(0)
 			}
 		}
@@ -85,18 +87,24 @@ func (p *Program) run() {
 
 	//循环等待
 	for {
-		//state, err := proc.Wait()
-		//if err != nil {
-		//	log.Println(err)
-		//} else {
-		//	log.Println(state.String())
-		//}
-		err := cmd.Run()
+		state, err := proc.Wait()
 		if err != nil {
 			log.Println(err)
+		} else {
+			log.Println(state.String())
+		}
+
+		if exit {
+			break
 		}
 
 		time.Sleep(time.Second * 5) //默认5s重启
+
+		//重来
+		proc, err = os.StartProcess("iot-master", nil, nil)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
 }
