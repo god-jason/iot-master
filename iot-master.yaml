@@ -1,0 +1,30 @@
+data: data
+database:
+    debug: false
+    sync: true
+    type: mysql
+    url: root:root@tcp(localhost:3306)/master?charset=utf8
+log:
+    caller: true
+    compress: true
+    filename: log.txt
+    level: trace
+    max_age: 30
+    max_backups: 3
+    max_size: 10
+    output: stdout
+    text: true
+timezone: Asia/Shanghai
+web:
+    cert: ""
+    cors: false
+    debug: false
+    email: ""
+    gzip: true
+    hosts: []
+    https: ""
+    id: xid
+    jwt_expire: 720
+    jwt_key: A1mU9IEw
+    key: ""
+    port: 8888
