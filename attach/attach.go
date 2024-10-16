@@ -3,7 +3,7 @@ package attach
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"github.com/zgwit/iot-master/web/curd"
+	"github.com/zgwit/iot-master/curd"
 	"io"
 	"mime"
 	"net/http"
