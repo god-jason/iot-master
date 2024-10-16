@@ -1,9 +1,9 @@
 package modbus
 
 import (
-	"github.com/god-jason/bucket/types"
 	"github.com/zgwit/iot-master/connect"
 	"github.com/zgwit/iot-master/driver"
+	"github.com/zgwit/iot-master/types"
 )
 
 //var code = []types.Code{

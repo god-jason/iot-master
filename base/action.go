@@ -3,8 +3,6 @@ package base
 import (
 	"context"
 	"github.com/PaesslerAG/gval"
-	"github.com/god-jason/bucket/pkg/calc"
-	"github.com/god-jason/bucket/types"
 	"strings"
 	"time"
 )

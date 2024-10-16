@@ -1,10 +1,5 @@
 package serial
 
-import (
-	"github.com/god-jason/bucket/boot"
-	"github.com/god-jason/bucket/log"
-)
-
 func init() {
 	boot.Register("serial", &boot.Task{
 		Startup:  Startup,

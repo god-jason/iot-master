@@ -1,10 +1,5 @@
 package client
 
-import (
-	"github.com/god-jason/bucket/boot"
-	"github.com/god-jason/bucket/log"
-)
-
 func init() {
 	boot.Register("client", &boot.Task{
 		Startup:  Startup,

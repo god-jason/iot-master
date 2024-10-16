@@ -3,7 +3,6 @@ package serial
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/god-jason/bucket/log"
 	"github.com/zgwit/iot-master/api"
 	"github.com/zgwit/iot-master/curd"
 	"github.com/zgwit/iot-master/db"

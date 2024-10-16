@@ -2,8 +2,8 @@ package modbus
 
 import (
 	"errors"
-	"github.com/god-jason/bucket/types"
 	"github.com/zgwit/iot-master/product"
+	"github.com/zgwit/iot-master/types"
 )
 
 type Adapter struct {

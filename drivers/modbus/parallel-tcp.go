@@ -3,8 +3,8 @@ package modbus
 import (
 	"errors"
 	"fmt"
-	"github.com/god-jason/bucket/pkg/bin"
 	"github.com/zgwit/iot-master/connect"
+	"github.com/zgwit/iot-master/pkg/bin"
 	"sync"
 	"time"
 )

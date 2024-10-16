@@ -1,8 +1,6 @@
 package client
 
 import (
-	"github.com/god-jason/bucket/lib"
-	"github.com/god-jason/bucket/log"
 	"github.com/zgwit/iot-master/db"
 	"xorm.io/xorm"
 )

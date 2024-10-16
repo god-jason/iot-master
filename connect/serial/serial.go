@@ -2,7 +2,6 @@ package serial
 
 import (
 	"errors"
-	"github.com/god-jason/bucket/log"
 	"github.com/zgwit/iot-master/connect/tunnel"
 	"github.com/zgwit/iot-master/db"
 	"go.bug.st/serial"

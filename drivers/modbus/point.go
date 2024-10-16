@@ -3,8 +3,8 @@ package modbus
 import (
 	"errors"
 	"fmt"
-	"github.com/god-jason/bucket/pkg/bin"
-	"github.com/god-jason/bucket/pkg/convert"
+	"github.com/spf13/cast"
+	"github.com/zgwit/iot-master/pkg/bin"
 )
 
 type Point interface {
@@ -18,7 +18,7 @@ type PointBit struct {
 }
 
 func (p *PointBit) Encode(data any) ([]byte, error) {
-	val := convert.ToBool(data)
+	val := cast.ToBool(data)
 	if val {
 		return []byte{0xFF, 00}, nil
 	} else {
@@ -61,18 +61,18 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 
 	//纠正
 	if p.Correct != 0 {
-		data = convert.ToFloat64(data) - p.Correct
+		data = cast.ToFloat64(data) - p.Correct
 	}
 
 	//倍率逆转换
 	if p.Rate != 0 && p.Rate != 1 {
-		data = convert.ToFloat64(data) / p.Rate
+		data = cast.ToFloat64(data) / p.Rate
 	}
 
 	switch p.Type {
 	case "short", "int16":
 		ret = make([]byte, 2)
-		val := convert.ToInt16(data)
+		val := cast.ToInt16(data)
 		if p.BigEndian {
 			bin.WriteUint16(ret, uint16(val))
 		} else {
@@ -80,7 +80,7 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 		}
 	case "word", "uint16":
 		ret = make([]byte, 2)
-		val := convert.ToUint16(data)
+		val := cast.ToUint16(data)
 		if p.BigEndian {
 			bin.WriteUint16(ret, val)
 		} else {
@@ -88,7 +88,7 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 		}
 	case "int32", "int":
 		ret = make([]byte, 4)
-		val := convert.ToInt32(data)
+		val := cast.ToInt32(data)
 		if p.BigEndian {
 			bin.WriteUint32(ret, uint32(val))
 		} else {
@@ -96,7 +96,7 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 		}
 	case "qword", "uint32", "uint":
 		ret = make([]byte, 4)
-		val := convert.ToUint32(data)
+		val := cast.ToUint32(data)
 		if p.BigEndian {
 			bin.WriteUint32(ret, val)
 		} else {
@@ -104,7 +104,7 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 		}
 	case "float", "float32":
 		ret = make([]byte, 4)
-		val := convert.ToFloat32(data)
+		val := cast.ToFloat32(data)
 		if p.BigEndian {
 			bin.WriteFloat32(ret, val)
 		} else {
@@ -112,7 +112,7 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 		}
 	case "double", "float64":
 		ret = make([]byte, 8)
-		val := convert.ToFloat64(data)
+		val := cast.ToFloat64(data)
 		if p.BigEndian {
 			bin.WriteFloat64(ret, val)
 		} else {
