@@ -1,33 +1,33 @@
-package protocol
+package driver
 
 import (
 	"fmt"
 	"github.com/zgwit/iot-master/connect"
 )
 
-var protocols = map[string]*Protocol{}
+var drivers = map[string]*Driver{}
 
-func Protocols() []*Protocol {
-	var ps []*Protocol
-	for _, p := range protocols {
+func Protocols() []*Driver {
+	var ps []*Driver
+	for _, p := range drivers {
 		ps = append(ps, p)
 	}
 	return ps
 }
 
-func Get(name string) (*Protocol, error) {
-	if p, ok := protocols[name]; ok {
+func Get(name string) (*Driver, error) {
+	if p, ok := drivers[name]; ok {
 		return p, nil
 	}
 	return nil, fmt.Errorf("协议 %s 找不到", name)
 }
 
-func Register(proto *Protocol) {
-	protocols[proto.Name] = proto
+func Register(proto *Driver) {
+	drivers[proto.Name] = proto
 }
 
 func Create(conn connect.Conn, name string, opts map[string]any) (Adapter, error) {
-	if p, ok := protocols[name]; ok {
+	if p, ok := drivers[name]; ok {
 		return p.Factory(conn, opts), nil
 	}
 	return nil, fmt.Errorf("协议 %s 找不到", name)

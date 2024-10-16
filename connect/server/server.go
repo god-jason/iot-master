@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/god-jason/bucket/log"
 	"github.com/zgwit/iot-master/connect"
+	"github.com/zgwit/iot-master/connect/tunnel"
 	"github.com/zgwit/iot-master/db"
-	"github.com/zgwit/iot-master/protocol"
-	"github.com/zgwit/iot-master/tunnel"
+	"github.com/zgwit/iot-master/driver"
 	"net"
 	"regexp"
 )
@@ -69,7 +69,7 @@ func (s *Server) handleIncoming(c *net.TCPConn) error {
 	l.Status = "正常"
 	l.Conn = &connect.NetConn{Conn: c}
 
-	s.Adapter, err = protocol.Create(l, s.ProtocolName, s.ProtocolOptions)
+	s.Adapter, err = driver.Create(l, s.ProtocolName, s.ProtocolOptions)
 	return err
 }
 

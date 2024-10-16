@@ -4,8 +4,8 @@ import (
 	"archive/zip"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/curd"
 	"github.com/zgwit/iot-master/db"
-	"github.com/zgwit/iot-master/web/curd"
 	"io"
 )
 

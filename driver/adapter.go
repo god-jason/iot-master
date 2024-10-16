@@ -1,7 +1,7 @@
-package protocol
+package driver
 
 import (
-	"github.com/god-jason/bucket/types"
+	"github.com/zgwit/iot-master/types"
 )
 
 // Adapter 设备驱动

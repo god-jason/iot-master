@@ -2,8 +2,8 @@ package gateway
 
 import (
 	"fmt"
-	"github.com/god-jason/bucket/lib"
-	"github.com/god-jason/bucket/log"
+	"github.com/zgwit/iot-master/lib"
+	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/mqtt"
 	"time"
 )

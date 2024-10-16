@@ -3,7 +3,7 @@ package modbus
 import (
 	"github.com/god-jason/bucket/types"
 	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/protocol"
+	"github.com/zgwit/iot-master/driver"
 )
 
 //var code = []types.Code{
@@ -67,10 +67,10 @@ var stationForm = []types.SmartField{
 	{Key: "slave", Label: "Modbus从站号", Type: "number", Min: 1, Max: 255, Step: 1, Default: 1},
 }
 
-var modbusRtu = &protocol.Protocol{
+var modbusRtu = &driver.Driver{
 	Name:  "modbus-rtu",
 	Label: "Modbus RTU",
-	Factory: func(conn connect.Conn, opts map[string]any) protocol.Adapter {
+	Factory: func(conn connect.Conn, opts map[string]any) driver.Adapter {
 		return &Adapter{
 			modbus:   NewRTU(conn, opts),
 			devices:  make(map[string]string),
@@ -85,10 +85,10 @@ var modbusRtu = &protocol.Protocol{
 	StationForm: stationForm,
 }
 
-var modbusTCP = &protocol.Protocol{
+var modbusTCP = &driver.Driver{
 	Name:  "modbus-tcp",
 	Label: "Modbus TCP",
-	Factory: func(conn connect.Conn, opts map[string]any) protocol.Adapter {
+	Factory: func(conn connect.Conn, opts map[string]any) driver.Adapter {
 		return &Adapter{
 			modbus:   NewTCP(conn, opts),
 			devices:  make(map[string]string),
@@ -109,6 +109,6 @@ type Modbus interface {
 }
 
 func init() {
-	protocol.Register(modbusRtu)
-	protocol.Register(modbusTCP)
+	driver.Register(modbusRtu)
+	driver.Register(modbusTCP)
 }

@@ -1,13 +1,13 @@
-package protocol
+package driver
 
 import (
-	"github.com/god-jason/bucket/types"
 	"github.com/zgwit/iot-master/connect"
+	"github.com/zgwit/iot-master/types"
 )
 
 type Factory func(conn connect.Conn, opts map[string]any) Adapter
 
-type Protocol struct {
+type Driver struct {
 	Name    string  `json:"name"`
 	Label   string  `json:"label"`
 	Factory Factory `json:"-"`

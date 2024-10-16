@@ -2,12 +2,12 @@ package tunnel
 
 import (
 	"errors"
-	"github.com/god-jason/bucket/log"
-	"github.com/god-jason/bucket/pool"
-	"github.com/god-jason/bucket/types"
 	"github.com/zgwit/iot-master/connect"
 	"github.com/zgwit/iot-master/device"
-	"github.com/zgwit/iot-master/protocol"
+	"github.com/zgwit/iot-master/driver"
+	"github.com/zgwit/iot-master/log"
+	"github.com/zgwit/iot-master/pool"
+	"github.com/zgwit/iot-master/types"
 	"go.bug.st/serial"
 	"io"
 	"net"
@@ -49,7 +49,7 @@ type Tunnel struct {
 
 	Conn connect.Conn `json:"-" xorm:"-"`
 
-	Adapter protocol.Adapter `json:"-" xorm:"-"`
+	Adapter driver.Adapter `json:"-" xorm:"-"`
 
 	//设备
 	devices []*device.Device `json:"-" xorm:"-"`
@@ -211,7 +211,7 @@ func (l *Tunnel) Pipe(pipe io.ReadWriteCloser) {
 
 func (l *Tunnel) Start() (err error) {
 	//加载协议
-	l.Adapter, err = protocol.Create(l.Conn, l.ProtocolName, l.ProtocolOptions)
+	l.Adapter, err = driver.Create(l.Conn, l.ProtocolName, l.ProtocolOptions)
 	if err != nil {
 		return err
 	}

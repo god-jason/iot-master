@@ -1,4 +1,4 @@
-package protocol
+package driver
 
 import (
 	"github.com/gin-gonic/gin"
@@ -8,44 +8,44 @@ import (
 
 func init() {
 
-	api.Register("GET", "/protocol/list", func(ctx *gin.Context) {
-		var ps []*Protocol
-		for _, p := range protocols {
+	api.Register("GET", "/driver/list", func(ctx *gin.Context) {
+		var ps []*Driver
+		for _, p := range drivers {
 			ps = append(ps, p)
 		}
 		curd.OK(ctx, ps)
 	})
 
-	api.Register("GET", "/protocol/:name/mapper", func(ctx *gin.Context) {
+	api.Register("GET", "/driver/:name/mapper", func(ctx *gin.Context) {
 		name := ctx.Param("name")
-		if p, ok := protocols[name]; ok {
+		if p, ok := drivers[name]; ok {
 			curd.OK(ctx, p.MapperForm)
 		} else {
 			curd.Fail(ctx, "协议找不到")
 		}
 	})
 
-	api.Register("GET", "/protocol/:name/poller", func(ctx *gin.Context) {
+	api.Register("GET", "/driver/:name/poller", func(ctx *gin.Context) {
 		name := ctx.Param("name")
-		if p, ok := protocols[name]; ok {
+		if p, ok := drivers[name]; ok {
 			curd.OK(ctx, p.PollersForm)
 		} else {
 			curd.Fail(ctx, "协议找不到")
 		}
 	})
 
-	api.Register("GET", "/protocol/:name/option", func(ctx *gin.Context) {
+	api.Register("GET", "/driver/:name/option", func(ctx *gin.Context) {
 		name := ctx.Param("name")
-		if p, ok := protocols[name]; ok {
+		if p, ok := drivers[name]; ok {
 			curd.OK(ctx, p.OptionForm)
 		} else {
 			curd.Fail(ctx, "协议找不到")
 		}
 	})
 
-	api.Register("GET", "/protocol/:name/station", func(ctx *gin.Context) {
+	api.Register("GET", "/driver/:name/station", func(ctx *gin.Context) {
 		name := ctx.Param("name")
-		if p, ok := protocols[name]; ok {
+		if p, ok := drivers[name]; ok {
 			curd.OK(ctx, p.StationForm)
 		} else {
 			curd.Fail(ctx, "协议找不到")
@@ -56,44 +56,44 @@ func init() {
 // @Summary 协议列表
 // @Schemes
 // @Description 协议列表
-// @Tags protocol
+// @Tags driver
 // @Produce json
-// @Success 200 {object} curd.ReplyData[Protocol] 返回协议列表
-// @Router /protocol/list [get]
+// @Success 200 {object} curd.ReplyData[Driver] 返回协议列表
+// @Router /driver/list [get]
 func noopProtocolList() {}
 
 // @Summary 协议参数
 // @Schemes
 // @Description 协议参数
-// @Tags protocol
+// @Tags driver
 // @Produce json
 // @Success 200 {object} curd.ReplyData[[]types.FormItem] 返回协议参数
-// @Router /protocol/option [get]
+// @Router /driver/option [get]
 func noopProtocolOptions() {}
 
 // @Summary 协议轮询器
 // @Schemes
 // @Description 协议轮询器
-// @Tags protocol
+// @Tags driver
 // @Produce json
 // @Success 200 {object} curd.ReplyData[[]types.FormItem] 返回协议轮询器
-// @Router /protocol/poller [get]
+// @Router /driver/poller [get]
 func noopProtocolPollers() {}
 
 // @Summary 协议映射
 // @Schemes
 // @Description 协议映射
-// @Tags protocol
+// @Tags driver
 // @Produce json
 // @Success 200 {object} curd.ReplyData[[]types.FormItem] 返回协议映射
-// @Router /protocol/mapper [get]
+// @Router /driver/mapper [get]
 func noopProtocolMappers() {}
 
 // @Summary 协议设备站号
 // @Schemes
 // @Description 协议设备站号
-// @Tags protocol
+// @Tags driver
 // @Produce json
 // @Success 200 {object} curd.ReplyData[[]types.FormItem] 返回协议映射
-// @Router /protocol/station [get]
+// @Router /driver/station [get]
 func noopProtocolStations() {}
