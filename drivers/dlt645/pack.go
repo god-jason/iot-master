@@ -8,11 +8,11 @@ import (
 )
 
 type Point struct {
-	Id        string //DI3 DI2 DI1 DI0
-	Label     string
-	Name      string
-	Precision int
-	Unit      string
+	Id        string `json:"id,omitempty"` //DI3 DI2 DI1 DI0
+	Label     string `json:"label,omitempty"`
+	Name      string `json:"name,omitempty"`
+	Precision int    `json:"precision,omitempty"`
+	Unit      string `json:"unit,omitempty"`
 }
 
 func ParseAddress(station string) ([]byte, error) {

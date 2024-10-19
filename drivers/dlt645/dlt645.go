@@ -1,5 +1,11 @@
 package dlt645
 
+import (
+	"github.com/zgwit/iot-master/connect"
+	"github.com/zgwit/iot-master/driver"
+	"github.com/zgwit/iot-master/types"
+)
+
 var stationForm = []types.SmartField{
 	{Key: "slave", Label: "从站号", Type: "string", Placeholder: "12位数字"},
 }
@@ -25,10 +31,10 @@ type Dlt645 interface {
 	Read(slave string, id string) (any, error)
 }
 
-var _dlt1997 = &protocol.Protocol{
+var _dlt1997 = &driver.Driver{
 	Name:  "dlt645-1997",
 	Label: "DL/T645-1997",
-	Factory: func(conn connect.Tunnel, opts map[string]any) (protocol.Adapter, error) {
+	Factory: func(conn connect.Conn, opts map[string]any) (protocol.Adapter, error) {
 		adapter := &Adapter{
 			tunnel:  conn,
 			dlt645:  NewDlt1997(conn, opts),

@@ -4,6 +4,9 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"github.com/zgwit/iot-master/connect"
+	"github.com/zgwit/iot-master/pkg/bin"
+	"github.com/zgwit/iot-master/types"
 	"time"
 )
 
@@ -147,11 +150,11 @@ type dlt1997 struct {
 	buf       []byte
 }
 
-func NewDlt1997(tunnel connect.Tunnel, opts types.Options) *dlt1997 {
+func NewDlt1997(tunnel connect.Conn, opts types.Options) *dlt1997 {
 	return &dlt1997{
 		messenger: connect.Messenger{
 			Timeout: time.Millisecond * time.Duration(opts.Int64("timeout", 1000)),
-			Tunnel:  tunnel,
+			Conn:    tunnel,
 		},
 		buf: make([]byte, opts.Int("buffer", 256)),
 	}

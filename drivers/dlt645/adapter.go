@@ -3,54 +3,45 @@ package dlt645
 import (
 	"errors"
 	"fmt"
-	"github.com/zgwit/iot-master/connect/tunnel"
-	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/mqtt"
 	"github.com/zgwit/iot-master/pool"
 	"github.com/zgwit/iot-master/product"
 	"github.com/zgwit/iot-master/types"
-	"slices"
 	"time"
 )
 
 type Adapter struct {
-	tunnel  tunnel.Tunnel
-	dlt645  Dlt645
-	devices []*Device
-	index   map[string]*Device
-	options types.Options
-	mapper  *Mapper
+	dlt645 Dlt645
+
+	devices  map[string]string
+	stations map[string]types.Options
+
+	mapper *Mapper
 }
 
-func (adapter *Adapter) Tunnel() tunnel.Tunnel {
-	return adapter.tunnel
-}
+func (adapter *Adapter) Mount(deviceId string, productId string, station types.Options) (err error) {
+	adapter.devices[deviceId] = productId
+	adapter.stations[deviceId] = station
 
-func (adapter *Adapter) start() error {
-	err := db.Engine.Where("tunnel_id=?", adapter.tunnel.ID()).
-		And("disabled!=1").Find(&adapter.devices)
+	//加载映射表
+	adapter.mappers[productId], err = product.LoadConfig[Mapper](productId, "mapper")
 	if err != nil {
 		return err
 	}
 
-	//if len(adapter.devices) == 0 {
-	//	return errors.New("无设备")
-	//}
-
-	for _, d := range adapter.devices {
-		//索引
-		adapter.index[d.Id] = d
-
-		d.mapper, err = product.LoadConfig[Mapper](d.ProductId, "mapper")
-		if err != nil || d.mapper == nil || len(d.mapper.Points) == 0 {
-			//使用默认的
-			d.mapper = adapter.mapper
-		}
+	//加载轮询表
+	adapter.pollers[productId], err = product.LoadConfig[[]*Poller](productId, "poller")
+	if err != nil {
+		return err
 	}
 
-	//开始轮询
-	go adapter.poll()
+	return nil
+}
+
+func (adapter *Adapter) Unmount(deviceId string) error {
+	delete(adapter.devices, deviceId)
+	delete(adapter.stations, deviceId)
 	return nil
 }
 
@@ -117,42 +108,6 @@ func (adapter *Adapter) poll() {
 	//}
 
 	//TODO d.SetAdapter(nil)
-}
-
-func (adapter *Adapter) Mount(device string) error {
-	var dev Device
-	has, err := db.Engine.ID(device).Get(&dev)
-	if err != nil {
-		return err
-	}
-	if !has {
-		return errors.New("找不到设备")
-	}
-
-	found := false
-	for i, d := range adapter.devices {
-		if d.Id == device {
-			adapter.devices[i] = &dev
-			adapter.index[device] = &dev
-			found = true
-		}
-	}
-	if !found {
-		adapter.devices = append(adapter.devices, &dev)
-		adapter.index[device] = &dev
-	}
-	return nil
-}
-
-func (adapter *Adapter) Unmount(device string) error {
-	delete(adapter.index, device)
-	for i, d := range adapter.devices {
-		if d.Id == device {
-			slices.Delete(adapter.devices, i, i+1)
-			return nil
-		}
-	}
-	return nil
 }
 
 func (adapter *Adapter) Get(id, name string) (any, error) {
