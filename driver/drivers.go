@@ -7,7 +7,7 @@ import (
 
 var drivers = map[string]*Driver{}
 
-func Protocols() []*Driver {
+func Drivers() []*Driver {
 	var ps []*Driver
 	for _, p := range drivers {
 		ps = append(ps, p)

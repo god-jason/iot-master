@@ -18,9 +18,12 @@ type Driver struct {
 	//设备参数
 	StationForm []types.SmartField `json:"-"`
 
-	//轮询器
-	PollersForm []types.SmartField `json:"-"`
+	//产品参数
+	ProductConfigures []ProductConfigure `json:"-"`
+}
 
-	//映射表
-	MapperForm []types.SmartField `json:"-"`
+type ProductConfigure struct {
+	Name  string             `json:"name"`
+	Label string             `json:"label"`
+	Form  []types.SmartField `json:"form"`
 }
