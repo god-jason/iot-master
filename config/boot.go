@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/zgwit/iot-master/boot"
+	"github.com/god-jason/iot-master/boot"
 )
 
 func init() {

@@ -1,8 +1,8 @@
 package mqtt
 
 import (
-	"github.com/zgwit/iot-master/setting"
-	"github.com/zgwit/iot-master/types"
+	"github.com/god-jason/iot-master/setting"
+	"github.com/god-jason/iot-master/types"
 )
 
 func init() {

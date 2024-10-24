@@ -3,9 +3,9 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"github.com/zgwit/iot-master/config"
-	"github.com/zgwit/iot-master/curd"
-	"github.com/zgwit/iot-master/setting"
+	"github.com/god-jason/iot-master/config"
+	"github.com/god-jason/iot-master/curd"
+	"github.com/god-jason/iot-master/setting"
 )
 
 // @Summary 查询配置

@@ -1,6 +1,6 @@
 package condition
 
-import "github.com/zgwit/iot-master/pkg/exception"
+import "github.com/god-jason/iot-master/pkg/exception"
 
 // Condition 条件，外OR，内And
 // 比如： （a>1 && b<2）||（c==2 && d<5）

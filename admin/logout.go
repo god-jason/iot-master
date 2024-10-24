@@ -3,7 +3,7 @@ package admin
 import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/curd"
+	"github.com/god-jason/iot-master/curd"
 )
 
 func logout(ctx *gin.Context) {

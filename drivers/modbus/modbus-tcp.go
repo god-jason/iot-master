@@ -3,9 +3,9 @@ package modbus
 import (
 	"errors"
 	"fmt"
-	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/pkg/bin"
-	"github.com/zgwit/iot-master/types"
+	"github.com/god-jason/iot-master/connect"
+	"github.com/god-jason/iot-master/pkg/bin"
+	"github.com/god-jason/iot-master/types"
 	"time"
 )
 

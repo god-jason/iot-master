@@ -2,7 +2,7 @@ package curd
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/db"
+	"github.com/god-jason/iot-master/db"
 )
 
 func ApiCreate[T any]() gin.HandlerFunc {

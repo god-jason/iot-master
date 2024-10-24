@@ -2,8 +2,8 @@ package admin
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/config"
-	"github.com/zgwit/iot-master/curd"
+	"github.com/god-jason/iot-master/config"
+	"github.com/god-jason/iot-master/curd"
 )
 
 type passwordObj struct {

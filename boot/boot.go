@@ -2,7 +2,7 @@ package boot
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/lib"
+	"github.com/god-jason/iot-master/lib"
 	"sync/atomic"
 	"time"
 )

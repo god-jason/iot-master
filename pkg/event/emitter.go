@@ -1,8 +1,8 @@
 package event
 
 import (
-	"github.com/zgwit/iot-master/log"
-	"github.com/zgwit/iot-master/pool"
+	"github.com/god-jason/iot-master/log"
+	"github.com/god-jason/iot-master/pool"
 )
 
 // Emitter 事件监听器

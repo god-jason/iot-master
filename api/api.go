@@ -3,9 +3,9 @@ package api
 import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/attach"
-	"github.com/zgwit/iot-master/curd"
-	"github.com/zgwit/iot-master/web"
+	"github.com/god-jason/iot-master/attach"
+	"github.com/god-jason/iot-master/curd"
+	"github.com/god-jason/iot-master/web"
 	"net/http"
 )
 

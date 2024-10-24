@@ -2,7 +2,7 @@ package driver
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/connect"
+	"github.com/god-jason/iot-master/connect"
 )
 
 var drivers = map[string]*Driver{}

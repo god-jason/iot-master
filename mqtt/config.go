@@ -1,8 +1,8 @@
 package mqtt
 
 import (
-	"github.com/zgwit/iot-master/config"
-	"github.com/zgwit/iot-master/lib"
+	"github.com/god-jason/iot-master/config"
+	"github.com/god-jason/iot-master/lib"
 )
 
 const MODULE = "mqtt"

@@ -1,8 +1,8 @@
 package driver
 
 import (
-	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/types"
+	"github.com/god-jason/iot-master/connect"
+	"github.com/god-jason/iot-master/types"
 )
 
 type Factory func(conn connect.Conn, opts map[string]any) Adapter

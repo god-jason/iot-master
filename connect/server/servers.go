@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/zgwit/iot-master/db"
+	"github.com/god-jason/iot-master/db"
 	"xorm.io/xorm"
 )
 

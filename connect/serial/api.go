@@ -3,9 +3,9 @@ package serial
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/api"
-	"github.com/zgwit/iot-master/curd"
-	"github.com/zgwit/iot-master/db"
+	"github.com/god-jason/iot-master/api"
+	"github.com/god-jason/iot-master/curd"
+	"github.com/god-jason/iot-master/db"
 	"go.bug.st/serial"
 )
 

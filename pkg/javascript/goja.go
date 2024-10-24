@@ -5,7 +5,7 @@ import (
 	"github.com/dop251/goja_nodejs/console"
 	"github.com/dop251/goja_nodejs/require"
 	"github.com/dop251/goja_nodejs/url"
-	"github.com/zgwit/iot-master/pkg/exception"
+	"github.com/god-jason/iot-master/pkg/exception"
 )
 
 var req require.Registry

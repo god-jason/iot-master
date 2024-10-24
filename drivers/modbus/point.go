@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/spf13/cast"
-	"github.com/zgwit/iot-master/pkg/bin"
+	"github.com/god-jason/iot-master/pkg/bin"
 )
 
 type Point interface {

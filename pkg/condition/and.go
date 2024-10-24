@@ -1,6 +1,6 @@
 package condition
 
-import "github.com/zgwit/iot-master/pkg/exception"
+import "github.com/god-jason/iot-master/pkg/exception"
 
 type And struct {
 	Compares []*Compare `json:"compares,omitempty"`

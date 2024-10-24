@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/zgwit/iot-master/api"
-	"github.com/zgwit/iot-master/boot"
-	"github.com/zgwit/iot-master/log"
-	"github.com/zgwit/iot-master/web"
+	"github.com/god-jason/iot-master/api"
+	"github.com/god-jason/iot-master/boot"
+	"github.com/god-jason/iot-master/log"
+	"github.com/god-jason/iot-master/web"
 )
 
 func main() {

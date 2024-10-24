@@ -2,9 +2,9 @@ package gateway
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/lib"
-	"github.com/zgwit/iot-master/log"
-	"github.com/zgwit/iot-master/mqtt"
+	"github.com/god-jason/iot-master/lib"
+	"github.com/god-jason/iot-master/log"
+	"github.com/god-jason/iot-master/mqtt"
 	"time"
 )
 

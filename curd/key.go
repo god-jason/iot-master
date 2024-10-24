@@ -5,8 +5,8 @@ import (
 	"github.com/lithammer/shortuuid"
 	"github.com/rs/xid"
 	"github.com/segmentio/ksuid"
-	"github.com/zgwit/iot-master/config"
-	"github.com/zgwit/iot-master/web"
+	"github.com/god-jason/iot-master/config"
+	"github.com/god-jason/iot-master/web"
 	"reflect"
 )
 

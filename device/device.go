@@ -2,13 +2,13 @@ package device
 
 import (
 	"errors"
-	"github.com/zgwit/iot-master/base"
-	"github.com/zgwit/iot-master/db"
-	"github.com/zgwit/iot-master/driver"
-	"github.com/zgwit/iot-master/mqtt"
-	"github.com/zgwit/iot-master/pkg/exception"
-	"github.com/zgwit/iot-master/product"
-	"github.com/zgwit/iot-master/types"
+	"github.com/god-jason/iot-master/base"
+	"github.com/god-jason/iot-master/db"
+	"github.com/god-jason/iot-master/driver"
+	"github.com/god-jason/iot-master/mqtt"
+	"github.com/god-jason/iot-master/pkg/exception"
+	"github.com/god-jason/iot-master/product"
+	"github.com/god-jason/iot-master/types"
 	"time"
 )
 

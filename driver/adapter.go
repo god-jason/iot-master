@@ -1,7 +1,7 @@
 package driver
 
 import (
-	"github.com/zgwit/iot-master/types"
+	"github.com/god-jason/iot-master/types"
 )
 
 // Adapter 驱动接口

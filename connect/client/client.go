@@ -3,9 +3,9 @@ package client
 import (
 	"errors"
 	"fmt"
-	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/connect/tunnel"
-	"github.com/zgwit/iot-master/db"
+	"github.com/god-jason/iot-master/connect"
+	"github.com/god-jason/iot-master/connect/tunnel"
+	"github.com/god-jason/iot-master/db"
 	"net"
 )
 

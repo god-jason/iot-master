@@ -2,7 +2,7 @@ package curd
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/db"
+	"github.com/god-jason/iot-master/db"
 )
 
 func ApiGet[T any](fields ...string) gin.HandlerFunc {

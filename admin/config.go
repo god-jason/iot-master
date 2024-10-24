@@ -1,6 +1,6 @@
 package admin
 
-import "github.com/zgwit/iot-master/config"
+import "github.com/god-jason/iot-master/config"
 
 const MODULE = "admin"
 

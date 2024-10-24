@@ -1,4 +1,4 @@
-module github.com/zgwit/iot-master
+module github.com/god-jason/iot-master
 
 go 1.23.0
 

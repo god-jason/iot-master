@@ -2,9 +2,9 @@ package pool
 
 import (
 	ants "github.com/panjf2000/ants/v2"
-	"github.com/zgwit/iot-master/config"
-	"github.com/zgwit/iot-master/log"
-	"github.com/zgwit/iot-master/pkg/exception"
+	"github.com/god-jason/iot-master/config"
+	"github.com/god-jason/iot-master/log"
+	"github.com/god-jason/iot-master/pkg/exception"
 )
 
 var Pool *ants.Pool

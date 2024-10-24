@@ -1,7 +1,7 @@
 package log
 
 import (
-	"github.com/zgwit/iot-master/config"
+	"github.com/god-jason/iot-master/config"
 )
 
 const MODULE = "log"

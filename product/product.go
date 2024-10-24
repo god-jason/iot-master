@@ -1,8 +1,8 @@
 package product
 
 import (
-	"github.com/zgwit/iot-master/base"
-	"github.com/zgwit/iot-master/db"
+	"github.com/god-jason/iot-master/base"
+	"github.com/god-jason/iot-master/db"
 	"time"
 )
 

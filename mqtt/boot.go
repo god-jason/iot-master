@@ -1,6 +1,6 @@
 package mqtt
 
-import "github.com/zgwit/iot-master/boot"
+import "github.com/god-jason/iot-master/boot"
 
 func init() {
 	boot.Register("mqtt", &boot.Task{

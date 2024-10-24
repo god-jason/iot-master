@@ -2,12 +2,12 @@ package tunnel
 
 import (
 	"errors"
-	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/device"
-	"github.com/zgwit/iot-master/driver"
-	"github.com/zgwit/iot-master/log"
-	"github.com/zgwit/iot-master/pool"
-	"github.com/zgwit/iot-master/types"
+	"github.com/god-jason/iot-master/connect"
+	"github.com/god-jason/iot-master/device"
+	"github.com/god-jason/iot-master/driver"
+	"github.com/god-jason/iot-master/log"
+	"github.com/god-jason/iot-master/pool"
+	"github.com/god-jason/iot-master/types"
 	"go.bug.st/serial"
 	"io"
 	"net"

@@ -2,7 +2,7 @@ package config
 
 import (
 	"github.com/spf13/viper"
-	"github.com/zgwit/iot-master/lib"
+	"github.com/god-jason/iot-master/lib"
 )
 
 func init() {

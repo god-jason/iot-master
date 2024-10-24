@@ -1,6 +1,6 @@
 package cjt188
 
-import "github.com/zgwit/iot-master/db"
+import "github.com/god-jason/iot-master/db"
 
 func init() {
 	db.Register(new(Device))

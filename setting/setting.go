@@ -1,8 +1,8 @@
 package setting
 
 import (
-	"github.com/zgwit/iot-master/lib"
-	"github.com/zgwit/iot-master/types"
+	"github.com/god-jason/iot-master/lib"
+	"github.com/god-jason/iot-master/types"
 )
 
 type Module struct {

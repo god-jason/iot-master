@@ -1,6 +1,6 @@
 package modbus
 
-import "github.com/zgwit/iot-master/log"
+import "github.com/god-jason/iot-master/log"
 
 type Filter struct {
 	Name       string `json:"name"`       //字段

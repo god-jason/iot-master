@@ -2,8 +2,8 @@ package server
 
 import (
 	"errors"
-	"github.com/zgwit/iot-master/connect/tunnel"
-	"github.com/zgwit/iot-master/db"
+	"github.com/god-jason/iot-master/connect/tunnel"
+	"github.com/god-jason/iot-master/db"
 )
 
 func init() {

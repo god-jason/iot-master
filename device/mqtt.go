@@ -2,8 +2,8 @@ package device
 
 import (
 	"encoding/json"
-	"github.com/zgwit/iot-master/log"
-	"github.com/zgwit/iot-master/mqtt"
+	"github.com/god-jason/iot-master/log"
+	"github.com/god-jason/iot-master/mqtt"
 	"strings"
 )
 

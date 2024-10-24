@@ -1,6 +1,6 @@
 package aggregator
 
-import "github.com/zgwit/iot-master/pkg/exception"
+import "github.com/god-jason/iot-master/pkg/exception"
 
 type Aggregator interface {
 	Push(any) error

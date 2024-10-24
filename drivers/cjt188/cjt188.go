@@ -1,9 +1,9 @@
 package cjt188
 
 import (
-	"github.com/zgwit/iot-master/connect/tunnel"
-	"github.com/zgwit/iot-master/driver"
-	"github.com/zgwit/iot-master/types"
+	"github.com/god-jason/iot-master/connect/tunnel"
+	"github.com/god-jason/iot-master/driver"
+	"github.com/god-jason/iot-master/types"
 )
 
 var stationForm = []types.SmartField{

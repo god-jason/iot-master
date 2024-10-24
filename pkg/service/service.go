@@ -2,7 +2,7 @@ package service
 
 import (
 	"github.com/kardianos/service"
-	"github.com/zgwit/iot-master/config"
+	"github.com/god-jason/iot-master/config"
 	"log"
 )
 
