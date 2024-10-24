@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/bucket/pkg/build"
 	"github.com/god-jason/iot-master/curd"
 	"github.com/god-jason/iot-master/db"
-	"github.com/god-jason/iot-master/pkg/build"
 	"time"
 )
 

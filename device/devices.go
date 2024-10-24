@@ -2,9 +2,9 @@ package device
 
 import (
 	"errors"
+	"github.com/god-jason/bucket/lib"
+	"github.com/god-jason/bucket/log"
 	"github.com/god-jason/iot-master/db"
-	"github.com/god-jason/iot-master/lib"
-	"github.com/god-jason/iot-master/log"
 )
 
 func LoadByTunnel2[T any](id string) (devices []T, err error) {

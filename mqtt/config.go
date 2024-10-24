@@ -1,8 +1,8 @@
 package mqtt
 
 import (
-	"github.com/god-jason/iot-master/config"
-	"github.com/god-jason/iot-master/lib"
+	"github.com/god-jason/bucket/config"
+	"github.com/god-jason/bucket/lib"
 )
 
 const MODULE = "mqtt"

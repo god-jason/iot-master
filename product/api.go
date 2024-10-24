@@ -3,9 +3,9 @@ package product
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 	"github.com/god-jason/iot-master/api"
 	"github.com/god-jason/iot-master/curd"
+	"github.com/spf13/viper"
 	"io"
 	"os"
 	"path/filepath"

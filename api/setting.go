@@ -2,10 +2,10 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
-	"github.com/god-jason/iot-master/config"
+	"github.com/god-jason/bucket/config"
+	"github.com/god-jason/bucket/setting"
 	"github.com/god-jason/iot-master/curd"
-	"github.com/god-jason/iot-master/setting"
+	"github.com/spf13/viper"
 )
 
 // @Summary 查询配置

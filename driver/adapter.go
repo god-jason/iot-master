@@ -1,7 +1,7 @@
 package driver
 
 import (
-	"github.com/god-jason/iot-master/types"
+	"github.com/god-jason/bucket/types"
 )
 
 // Adapter 驱动接口

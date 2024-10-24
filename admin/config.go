@@ -1,6 +1,6 @@
 package admin
 
-import "github.com/god-jason/iot-master/config"
+import "github.com/god-jason/bucket/config"
 
 const MODULE = "admin"
 

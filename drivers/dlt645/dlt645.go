@@ -1,9 +1,9 @@
 package dlt645
 
 import (
+	"github.com/god-jason/bucket/types"
 	"github.com/god-jason/iot-master/connect"
 	"github.com/god-jason/iot-master/driver"
-	"github.com/god-jason/iot-master/types"
 )
 
 var stationForm = []types.SmartField{

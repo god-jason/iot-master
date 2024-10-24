@@ -1,10 +1,10 @@
 package main
 
 import (
+	"github.com/god-jason/bucket/boot"
+	"github.com/god-jason/bucket/log"
+	"github.com/god-jason/bucket/web"
 	"github.com/god-jason/iot-master/api"
-	"github.com/god-jason/iot-master/boot"
-	"github.com/god-jason/iot-master/log"
-	"github.com/god-jason/iot-master/web"
 )
 
 func main() {

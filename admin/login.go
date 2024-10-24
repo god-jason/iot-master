@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/bucket/config"
 	"github.com/god-jason/iot-master/curd"
 )
 

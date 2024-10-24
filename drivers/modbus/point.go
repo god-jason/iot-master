@@ -3,8 +3,8 @@ package modbus
 import (
 	"errors"
 	"fmt"
+	"github.com/god-jason/bucket/pkg/bin"
 	"github.com/spf13/cast"
-	"github.com/god-jason/iot-master/pkg/bin"
 )
 
 type Point interface {

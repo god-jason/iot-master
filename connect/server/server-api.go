@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/bucket/log"
 	"github.com/god-jason/iot-master/api"
 	"github.com/god-jason/iot-master/curd"
 	"github.com/god-jason/iot-master/db"

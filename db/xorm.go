@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/god-jason/iot-master/config"
+	"github.com/god-jason/bucket/config"
 	"xorm.io/xorm"
 	"xorm.io/xorm/log"
 

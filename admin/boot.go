@@ -1,5 +1,10 @@
 package admin
 
+import (
+	"github.com/god-jason/bucket/boot"
+	"github.com/god-jason/bucket/web"
+)
+
 func init() {
 	boot.Register("admin", &boot.Task{
 		Startup:  Startup,

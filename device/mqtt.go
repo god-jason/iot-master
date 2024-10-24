@@ -2,7 +2,7 @@ package device
 
 import (
 	"encoding/json"
-	"github.com/god-jason/iot-master/log"
+	"github.com/god-jason/bucket/log"
 	"github.com/god-jason/iot-master/mqtt"
 	"strings"
 )

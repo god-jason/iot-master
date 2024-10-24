@@ -1,12 +1,12 @@
 package curd
 
 import (
+	"github.com/god-jason/bucket/config"
+	"github.com/god-jason/bucket/web"
 	"github.com/google/uuid"
 	"github.com/lithammer/shortuuid"
 	"github.com/rs/xid"
 	"github.com/segmentio/ksuid"
-	"github.com/god-jason/iot-master/config"
-	"github.com/god-jason/iot-master/web"
 	"reflect"
 )
 

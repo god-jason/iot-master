@@ -1,8 +1,8 @@
 package db
 
 import (
-	"github.com/god-jason/iot-master/setting"
-	"github.com/god-jason/iot-master/types"
+	"github.com/god-jason/bucket/setting"
+	"github.com/god-jason/bucket/types"
 )
 
 func init() {

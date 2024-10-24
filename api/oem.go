@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/god-jason/iot-master/config"
+	"github.com/god-jason/bucket/config"
 	"github.com/god-jason/iot-master/curd"
 )
 
