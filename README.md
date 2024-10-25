@@ -1,12 +1,5 @@
 # 物联大师
 
-[![Go](https://github.com/zgwit/iot-master/actions/workflows/go.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/go.yml)
-[![Go](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml)
-[![codecov](https://codecov.io/gh/zgwit/iot-master/branch/main/graph/badge.svg?token=AK5TD8KQ5C)](https://codecov.io/gh/zgwit/iot-master)
-[![Go Reference](https://pkg.go.dev/badge/github.com/zgwit/iot-master.svg)](https://pkg.go.dev/github.com/zgwit/iot-master)
-[![Go Report Card](https://goreportcard.com/badge/github.com/zgwit/iot-master)](https://goreportcard.com/report/github.com/zgwit/iot-master)
-
-
 物联大师是开源免费的物联网边缘计算网关系统，区别于传统的工业智能网关，物联大师采用Go语言进行编程实现，有以下诸多优点：
 - 单一程序文件，免安装
 - 最低内存只需要64MB
@@ -69,10 +62,19 @@
 - 邮箱：[jason@zgwit.com](mailto:jason@zgwit.com)
 - 手机：[15161515197](tel:15161515197)(微信同号)
 
+## 赞助商列表
+
+### [惠州市领控科技有限公司](http://www.hyk58.com/) ☎15220139091
+高性价比PLC供应商，全面兼容三菱PLC、西门子PLC
+
+### [临沂煜凤电子科技有限公司](http://www.yufengdianzi.cn) ☎15092909222
+变频器开发，PCB定制
+
+### [武汉汇江航运服务有限公司](http://www.hj-icloud.com/) ☎13907109189
+船舶电控系统，船运物联网方案
 
 ## 开源协议
 
-[GPL](https://github.com/zgwit/iot-master/blob/main/LICENSE)
+[GNU GPLv3](https://github.com/god-jason/iot-master/blob/main/LICENSE)
 
-补充：产品仅限个人免费使用，商业需求请联系我们
-
+`补充：产品仅限个人免费使用，商业需求请联系我们`
