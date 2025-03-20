@@ -19,7 +19,7 @@ import (
 )
 
 func Startup() error {
-	viper.SetConfigName("boat")
+	viper.SetConfigName("iot-master")
 
 	err := boot.Startup()
 	if err != nil {
@@ -50,7 +50,6 @@ func Shutdown() error {
 }
 
 func main() {
-	viper.SetConfigName("iot-master")
 
 	help := pflag.BoolP("help", "h", false, "show help")
 	install := pflag.BoolP("install", "i", false, "install as service")
