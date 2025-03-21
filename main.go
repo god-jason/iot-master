@@ -10,6 +10,7 @@ import (
 	_ "github.com/busy-cloud/connector"
 	_ "github.com/busy-cloud/iot"
 	_ "github.com/busy-cloud/modbus"
+	_ "github.com/busy-cloud/user"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"os"

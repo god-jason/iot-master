@@ -5,11 +5,12 @@ go 1.23.4
 toolchain go1.23.6
 
 require (
-	github.com/busy-cloud/boat v0.2.0
-	github.com/busy-cloud/boat-ui v0.2.0
-	github.com/busy-cloud/connector v0.2.0
-	github.com/busy-cloud/iot v0.2.0
+	github.com/busy-cloud/boat v0.2.1
+	github.com/busy-cloud/boat-ui v0.2.1
+	github.com/busy-cloud/connector v0.2.1
+	github.com/busy-cloud/iot v0.2.1
 	github.com/busy-cloud/modbus v0.2.0
+	github.com/busy-cloud/user v0.2.0
 	github.com/spf13/pflag v1.0.6
 	github.com/spf13/viper v1.19.0
 )
