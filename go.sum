@@ -8,8 +8,8 @@ github.com/busy-cloud/boat-ui v0.2.3 h1:PF6H824JQPuYaoz4ttrnkMztx0pjRPJ2KrS3lo4d
 github.com/busy-cloud/boat-ui v0.2.3/go.mod h1:eVxdB+W0L8+JRZDRQnqcfQlzS4ANC/mlMdqGyTM8t0g=
 github.com/busy-cloud/connector v0.2.6 h1:THs2FpDh4eJjmxkbsXA4BRkvbV/fDZJQ3ymBE85AOX0=
 github.com/busy-cloud/connector v0.2.6/go.mod h1:UdmvvxGXrof8vhWdYUM38qGQEkuVJC1OWJpUFWNDJVI=
-github.com/busy-cloud/iot v0.2.5 h1:XOir/vO3EdW6h9a+SiPbSb2ItmzIQjqbW1ppbnlxdDA=
-github.com/busy-cloud/iot v0.2.5/go.mod h1:c4Qhh44qhv8vJl4vbXjVmzSNQ8twrWuX16F/3SZ6J+k=
+github.com/busy-cloud/iot v0.2.6 h1:YMqoCVTcYzHCDT8vRDo82R3lPSHHR4NNDNESi4nyRrs=
+github.com/busy-cloud/iot v0.2.6/go.mod h1:4Lp4YkAuuxguGD+TCfmqdaQvmbaes3B4EH5d3dRSEaw=
 github.com/busy-cloud/modbus v0.2.6 h1:9bPCkz+V38ZF2RxTgfLWWMIEV6cue9mUvNSder0ml0Q=
 github.com/busy-cloud/modbus v0.2.6/go.mod h1:ORDUdPyh9TjH29vcPe6OBacqvBD0ZBky7h5H0mU9y8U=
 github.com/busy-cloud/user v0.2.1 h1:68CMQI0Uzxj671oUIJbqCD0eUvv3qie4QEuMo5tkOPo=
