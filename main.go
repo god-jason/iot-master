@@ -8,6 +8,7 @@ import (
 	"github.com/busy-cloud/boat/service"
 	"github.com/busy-cloud/boat/web"
 	_ "github.com/busy-cloud/connector"
+	_ "github.com/busy-cloud/influxdb"
 	_ "github.com/busy-cloud/iot"
 	_ "github.com/busy-cloud/modbus"
 	_ "github.com/busy-cloud/user"
