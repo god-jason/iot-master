@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*' #当推送的标签符合 vX.Y.Z 格式时触发
+
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.23'
+
+      - name: Build
+        run: go build -v ./...
+
+      - name: Version
+        id: version
+        run: |
+          tag=${GITHUB_REF/refs\/tags\//}
+          version=${tag#v}
+          major=${version%%.*}
+          echo "tag=${tag}" >> $GITHUB_OUTPUT
+          echo "version=${version}" >> $GITHUB_OUTPUT
+          echo "major=${major}" >> $GITHUB_OUTPUT
+
+      - name: Generate Release Note
+        id: generate_release_note
+        run: |
+          TAG_NAME=$(echo ${{ github.ref_name }} | sed 's/^v//')
+          PREVIOUS_TAG=$(git tag --sort=-v:refname | sed -n '2p')
+          COMMIT_RANGE="${PREVIOUS_TAG}..${{ github.ref }}"
+
+          echo "Generating release note for tag $TAG_NAME"
+          echo "Comparing commits between $COMMIT_RANGE"
+
+          RELEASE_NOTE=$(git log --pretty=format:"- %s (%h)" $COMMIT_RANGE)
+          echo "release_note<<EOF" >> $GITHUB_ENV
+          echo "$RELEASE_NOTE" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.ref }}
+          release_name: V${{ github.ref }}
+          body: ${{ env.release_note }}
+          draft: false
+          prerelease: false
