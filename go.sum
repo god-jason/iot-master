@@ -18,12 +18,10 @@ github.com/busy-cloud/connector v0.2.9 h1:GJo77d1WCGHwxgdSAc4N2VdHPPVujmQWAOaclF
 github.com/busy-cloud/connector v0.2.9/go.mod h1:yjp1TyREor7UeLq9JgllUAXogEhbghXIlAOC9yzPcFQ=
 github.com/busy-cloud/influxdb v0.2.3 h1:VW+5/q+/ClImAzrxwNT9zaXIbuHKch6rhKy9sJfOygg=
 github.com/busy-cloud/influxdb v0.2.3/go.mod h1:6mfMxknjGxBWcCOaLAkjig6YmssQSQbDPCeGeccCNPM=
-github.com/busy-cloud/iot v0.2.10 h1:Tx6oEmuLE5ub9cBUev7p9PAp8FE65gpbqMjzMFjWBug=
-github.com/busy-cloud/iot v0.2.10/go.mod h1:BUZ32v3Vev93tNEsWdBHo919N9+R0EII/BCtlmbntMo=
-github.com/busy-cloud/modbus v0.2.11 h1:/kXmWUsbvadTRlbDHQRUUOyCzimuUh//l3z/hkX/ao0=
-github.com/busy-cloud/modbus v0.2.11/go.mod h1:bfMQXTOn2c7rBJRATHa1/YSKWBxpsDIGWiBwbqI3oBY=
-github.com/busy-cloud/noob v0.0.3 h1:MZWNdNZMXGhLwjQ9H/wU+KJB6jMFd/kw0VVosK8p7ow=
-github.com/busy-cloud/noob v0.0.3/go.mod h1:7y2FjSdgiGbeRvwFWhnfVQqkfV5UmEg8tiT0UQgGsMQ=
+github.com/busy-cloud/modbus v0.2.12 h1:XPF/06cQt993itzGHSsZmRsVNv6qIzXxAd5n9Ui13po=
+github.com/busy-cloud/modbus v0.2.12/go.mod h1:voMqngF86wuY2p4BWf7wfI/5xsmDrRLuVBfjhYqijm8=
+github.com/busy-cloud/noob v0.0.4 h1:UpCEmzJPBt6Pah+uyf1WpOcKv9ZAxLr/8dGGftRXcBA=
+github.com/busy-cloud/noob v0.0.4/go.mod h1:VEkq60cqlHtlnm8y1KOi336NK/S/DMtbJDbd6pEvHqU=
 github.com/busy-cloud/user v0.2.3 h1:bv0nVoC2RE6G9qaJybRCzfzjNmh7QdRtwr0/wO0TFWY=
 github.com/busy-cloud/user v0.2.3/go.mod h1:VX5Z3Jb9vLuMxHT05Ud5vMkkt0BOeXqKGhPcanbGVgw=
 github.com/bytedance/sonic v1.13.2 h1:8/H1FempDZqC4VqjptGo14QQlJx8VdZJegxs6wwfqpQ=

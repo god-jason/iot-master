@@ -8,8 +8,8 @@ require (
 	github.com/busy-cloud/boat-ui v0.2.6
 	github.com/busy-cloud/connector v0.2.9
 	github.com/busy-cloud/influxdb v0.2.3
-	github.com/busy-cloud/modbus v0.2.11
-	github.com/busy-cloud/noob v0.0.3
+	github.com/busy-cloud/modbus v0.2.12
+	github.com/busy-cloud/noob v0.0.4
 	github.com/busy-cloud/user v0.2.3
 	github.com/gin-gonic/gin v1.10.0
 	github.com/spf13/cast v1.7.1
@@ -21,7 +21,6 @@ require (
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
-	github.com/busy-cloud/iot v0.2.10 // indirect
 	github.com/bytedance/sonic v1.13.2 // indirect
 	github.com/bytedance/sonic/loader v0.2.4 // indirect
 	github.com/cloudwego/base64x v0.1.5 // indirect
@@ -90,6 +89,7 @@ require (
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/arch v0.15.0 // indirect
 	golang.org/x/crypto v0.36.0 // indirect
+	golang.org/x/mod v0.24.0 // indirect
 	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sync v0.12.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
