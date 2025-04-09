@@ -1,0 +1,35 @@
+name: Releaser
+
+permissions:
+  contents: write
+  id-token: write
+  packages: write
+
+on:
+  push:
+    tags:
+      - 'v*.*.*' #当推送的标签符合 vX.Y.Z 格式时触发
+
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    env:
+      flags: ''
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.23
+          cache: true
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v5
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean ${{ env.flags }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
