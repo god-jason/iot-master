@@ -1,0 +1,30 @@
+{
+  "title": "项目设备",
+  "template": "table",
+  "operators": [
+    {
+      "icon": "check",
+      "label": "选择",
+      "action": {
+        "type": "script",
+        "script": "this.modelRef.close(data)"
+      }
+    }
+  ],
+  "columns": [
+    {
+      "key": "device_id",
+      "label": "设备ID"
+    },
+    {
+      "key": "name",
+      "label": "名称"
+    },
+    {
+      "key": "created",
+      "label": "日期",
+      "type": "date"
+    }
+  ],
+  "load_api": "iot/project/:project_id/device/list?limit=99999"
+}

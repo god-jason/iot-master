@@ -1,17 +1,20 @@
 package main
 
 import (
+	"embed"
 	_ "github.com/busy-cloud/boat"
 	_ "github.com/busy-cloud/boat-ui"
 	"github.com/busy-cloud/boat/boot"
 	"github.com/busy-cloud/boat/log"
+	"github.com/busy-cloud/boat/menu"
+	"github.com/busy-cloud/boat/page"
 	"github.com/busy-cloud/boat/service"
 	"github.com/busy-cloud/boat/web"
 	_ "github.com/busy-cloud/connector"
 	_ "github.com/busy-cloud/influxdb"
-	_ "github.com/busy-cloud/iot"
 	_ "github.com/busy-cloud/modbus"
 	_ "github.com/busy-cloud/user"
+	"github.com/god-jason/iot-master/protocol"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"os"
@@ -19,6 +22,26 @@ import (
 	"syscall"
 	"time"
 )
+
+//go:embed pages
+var pages embed.FS
+
+//go:embed menus
+var menus embed.FS
+
+//go:embed protocols
+var protocols embed.FS
+
+func init() {
+	//注册页面
+	page.EmbedFS(pages, "pages")
+
+	//注册菜单
+	menu.EmbedFS(menus, "menus")
+
+	//注册协议
+	protocol.EmbedFS(protocols, "protocols")
+}
 
 func Startup() error {
 	viper.SetConfigName("iot-master")

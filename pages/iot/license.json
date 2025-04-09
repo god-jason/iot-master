@@ -1,0 +1,58 @@
+{
+  "title": "授权协议",
+  "template": "table",
+  "toolbar": [
+    {
+      "icon": "upload",
+      "type": "upload",
+      "upload": "/api/iot/license/upload"
+    }
+  ],
+  "operators": [
+    {
+      "icon": "download",
+      "title": "下载",
+      "action": {
+        "type": "link",
+        "external": true,
+        "link": "/api/iot/license/:app_id/download"
+      }
+    }
+  ],
+  "columns": [
+    {
+      "key": "app_id",
+      "label": "应用"
+    },
+    {
+      "key": "owner",
+      "label": "拥有者"
+    },
+    {
+      "key": "issuer",
+      "label": "发行者"
+    },
+    {
+      "key": "issued",
+      "label": "发布日期"
+    },
+    {
+      "key": "expire",
+      "label": "失效日期"
+    },
+    {
+      "key": "cpuid",
+      "label": "CPUID"
+    },
+    {
+      "key": "mac",
+      "label": "网卡ID"
+    },
+    {
+      "key": "hosts",
+      "label": "域名",
+      "type": "tags"
+    }
+  ],
+  "load_api": "iot/license/list"
+}

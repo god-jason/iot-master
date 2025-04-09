@@ -1,0 +1,65 @@
+{
+  "title": "创建空间",
+  "template": "form",
+  "toolbar": [
+    {
+      "type": "button",
+      "label": "选择项目ID",
+      "action": {
+        "type": "dialog",
+        "app": "iot",
+        "page": "project-choose",
+        "after_close": "this.editor.patchValue({project_id: result.id})"
+      }
+    },
+    {
+      "type": "button",
+      "label": "选择父空间ID",
+      "action": {
+        "type": "dialog",
+        "app": "iot",
+        "page": "space-choose",
+        "after_close": "this.editor.patchValue({parent_id: result.id})"
+      }
+    }
+  ],
+  "fields": [
+    {
+      "key": "id",
+      "label": "ID",
+      "type": "text",
+      "placeholder": "默认随机ID"
+    },
+    {
+      "key": "name",
+      "label": "名称",
+      "type": "text"
+    },
+    {
+      "key": "description",
+      "label": "说明",
+      "type": "text"
+    },
+    {
+      "key": "project_id",
+      "label": "项目ID",
+      "type": "text"
+    },
+    {
+      "key": "parent_id",
+      "label": "父空间ID",
+      "type": "text"
+    },
+    {
+      "key": "disabled",
+      "label": "禁用",
+      "type": "switch"
+    }
+  ],
+  "load_api": "iot/space/:id",
+  "submit_api": "iot/space/:id",
+  "submit_success": "this.navigate('/page/iot/space-detail?id='+data.id)",
+  "mount": "",
+  "methods": {
+   }
+}

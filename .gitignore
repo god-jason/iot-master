@@ -1,3 +1,6 @@
+# If you prefer the allow list template instead of the deny list, see community template:
+# https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
+#
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -13,7 +16,15 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# Go workspace file
+go.work
+go.work.sum
+
+# env file
+.env
 /.idea
-/iot-master.db
-/iot-master.yaml
-/iot-master
+/tstorage
+/apps
+/licenses
+/plugins

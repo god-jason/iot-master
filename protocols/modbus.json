@@ -1,0 +1,302 @@
+{
+  "name": "modbus",
+  "description": "Modbus RTU",
+  "station": [
+    {
+      "key": "slave",
+      "label": "从站号",
+      "type": "number",
+      "default": 1,
+      "min": 1,
+      "max": 255,
+      "step": 1
+    }
+  ],
+  "options": [
+    {
+      "key": "tcp",
+      "type": "switch",
+      "label": "TCP模式"
+    },
+    {
+      "key": "timeout",
+      "label": "超时",
+      "type": "number",
+      "default": 1000,
+      "min": 200,
+      "max": 5000,
+      "step": 100
+    },
+    {
+      "key": "polling",
+      "type": "switch",
+      "label": "开启轮询"
+    },
+    {
+      "key": "polling_interval",
+      "type": "number",
+      "label": "轮询间隔",
+      "default": 60,
+      "min": 1,
+      "step": 1
+    }
+  ],
+  "model": [
+    {
+      "key": "crontab",
+      "label": "定时",
+      "type": "text"
+    },
+    {
+      "key": "interval",
+      "label": "定时间隔s",
+      "type": "number",
+      "default": 60,
+      "min": 1,
+      "max": 36000,
+      "step": 1
+    },
+    {
+      "key": "timeout",
+      "label": "超时 ms",
+      "type": "number",
+      "default": 1000,
+      "min": 200,
+      "max": 5000,
+      "step": 100
+    },
+    {
+      "key": "mapper",
+      "label": "映射表",
+      "type": "object",
+      "children": [
+        {
+          "key": "coils",
+          "label": "线圈 01",
+          "type": "table",
+          "children": [
+            {
+              "key": "name",
+              "label": "变量",
+              "type": "text"
+            },
+            {
+              "key": "address",
+              "label": "地址",
+              "type": "number",
+              "default": 0,
+              "min": 0,
+              "step": 1
+            }
+          ]
+        },
+        {
+          "key": "discrete_inputs",
+          "label": "离散输入 02",
+          "type": "table",
+          "children": [
+            {
+              "key": "name",
+              "label": "变量",
+              "type": "text"
+            },
+            {
+              "key": "address",
+              "label": "地址",
+              "type": "number",
+              "default": 0,
+              "min": 0,
+              "step": 1
+            }
+          ]
+        },
+        {
+          "key": "holding_registers",
+          "label": "保持寄存器 03",
+          "type": "table",
+          "children": [
+            {
+              "key": "name",
+              "label": "变量",
+              "type": "text"
+            },
+            {
+              "key": "type",
+              "label": "类型",
+              "type": "select",
+              "default": "uint16",
+              "options": [
+                {
+                  "label": "int16",
+                  "value": "int16"
+                },
+                {
+                  "label": "uint16",
+                  "value": "uint16"
+                },
+                {
+                  "label": "int32",
+                  "value": "int32"
+                },
+                {
+                  "label": "uint32",
+                  "value": "uint32"
+                },
+                {
+                  "label": "float32",
+                  "value": "float32"
+                },
+                {
+                  "label": "float64",
+                  "value": "float64"
+                }
+              ]
+            },
+            {
+              "key": "address",
+              "label": "地址",
+              "type": "number",
+              "default": 0,
+              "min": 0,
+              "step": 1
+            },
+            {
+              "key": "be",
+              "label": "大端模式",
+              "type": "switch",
+              "default": true
+            },
+            {
+              "key": "rate",
+              "label": "倍率",
+              "type": "number",
+              "default": 1
+            },
+            {
+              "key": "correct",
+              "label": "校准",
+              "type": "number",
+              "default": 1
+            }
+          ]
+        },
+        {
+          "key": "input_registers",
+          "label": "输入寄存器 04",
+          "type": "table",
+          "children": [
+            {
+              "key": "name",
+              "label": "变量",
+              "type": "text"
+            },
+            {
+              "key": "type",
+              "label": "类型",
+              "type": "select",
+              "default": "uint16",
+              "options": [
+                {
+                  "label": "int16",
+                  "value": "int16"
+                },
+                {
+                  "label": "uint16",
+                  "value": "uint16"
+                },
+                {
+                  "label": "int32",
+                  "value": "int32"
+                },
+                {
+                  "label": "uint32",
+                  "value": "uint32"
+                },
+                {
+                  "label": "float32",
+                  "value": "float32"
+                },
+                {
+                  "label": "float64",
+                  "value": "float64"
+                }
+              ]
+            },
+            {
+              "key": "address",
+              "label": "地址",
+              "type": "number",
+              "default": 0,
+              "min": 0,
+              "step": 1
+            },
+            {
+              "key": "be",
+              "label": "大端模式",
+              "type": "switch",
+              "default": true
+            },
+            {
+              "key": "rate",
+              "label": "倍率",
+              "type": "number",
+              "default": 1
+            },
+            {
+              "key": "correct",
+              "label": "校准",
+              "type": "number",
+              "default": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "pollers",
+      "type": "table",
+      "label": "轮询器",
+      "children": [
+        {
+          "key": "code",
+          "label": "类型 功能码",
+          "type": "select",
+          "options": [
+            {
+              "label": "线圈 1",
+              "value": 1
+            },
+            {
+              "label": "离散输入 2",
+              "value": 2
+            },
+            {
+              "label": "保持寄存器 3",
+              "value": 3
+            },
+            {
+              "label": "输入寄存器 4",
+              "value": 4
+            }
+          ]
+        },
+        {
+          "key": "address",
+          "label": "地址",
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "step": 1
+        },
+        {
+          "key": "length",
+          "label": "长度",
+          "type": "number",
+          "default": 1,
+          "min": 1,
+          "step": 1
+        }
+      ]
+    }
+  ]
+}

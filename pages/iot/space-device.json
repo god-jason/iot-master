@@ -1,0 +1,70 @@
+{
+  "title": "空间设备",
+  "template": "table",
+  "toolbar": [
+    {
+      "label": "绑定",
+      "icon": "plus",
+      "type": "button",
+      "action": {
+        "type": "dialog",
+        "app": "iot",
+        "page": "project-device-choose",
+        "params_func": "return {project_id: this.space.project_id}",
+        "after_close": "this.request.get('iot/space/'+this.params.space_id+'/device/'+result.device_id+'/bind').subscribe(res=>this.load())"
+      }
+    }
+  ],
+  "operators": [
+    {
+      "icon": "eye",
+      "action": {
+        "type": "page",
+        "app": "iot",
+        "page": "device-detail",
+        "params_func": "return {id: data.id}"
+      }
+    },
+    {
+      "icon": "edit",
+      "action": {
+        "type": "page",
+        "app": "iot",
+        "page": "device-edit",
+        "params_func": "return {id: data.id}"
+      }
+    },
+    {
+      "icon": "delete",
+      "title": "解绑",
+      "confirm": "确认解绑？",
+      "action": {
+        "type": "script",
+        "script": "this.request.get('iot/space/'+data.space_id+'/device/'+data.device_id+'/unbind').subscribe(res=>this.load())"
+      }
+    }
+  ],
+  "columns": [
+    {
+      "key": "device_id",
+      "label": "设备ID",
+      "action": {
+        "type": "page",
+        "app": "iot",
+        "page": "device-detail",
+        "params_func": "return {id: data.device_id}"
+      }
+    },
+    {
+      "key": "name",
+      "label": "名称"
+    },
+    {
+      "key": "created",
+      "label": "日期",
+      "type": "date"
+    }
+  ],
+  "load_api": "iot/space/:space_id/device/list?limit=99999",
+  "mount": "this.request.get('iot/space/'+this.params.space_id).subscribe(res=>{this.space=res.data})"
+}

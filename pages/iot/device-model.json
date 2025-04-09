@@ -1,0 +1,158 @@
+{
+  "title": "编辑设备物模型",
+  "template": "form",
+  "fields": [
+    {
+      "key": "validators",
+      "label": "属性检查",
+      "type": "list",
+      "children": [
+        {
+          "key": "type",
+          "label": "计算类型",
+          "type": "radio",
+          "default": "compare",
+          "options": [
+            {
+              "label": "表达式",
+              "value": "expression"
+            },{
+              "label": "比较器",
+              "value": "compare"
+            }
+          ]
+        },
+        {
+          "key": "compare",
+          "label": "比较器",
+          "type": "object",
+          "condition": {
+            "key": "type",
+            "type": "==",
+            "value": "compare"
+          },
+          "children": [
+            {
+              "key": "name",
+              "label": "属性（变量）",
+              "type": "text"
+            },
+            {
+              "key": "type",
+              "label": "对比",
+              "type": "select",
+              "default": "==",
+              "options": [
+                {
+                  "label": "等于",
+                  "value": "=="
+                },
+                {
+                  "label": "不等于",
+                  "value": "!="
+                },
+                {
+                  "label": "大于",
+                  "value": ">"
+                },
+                {
+                  "label": "小于",
+                  "value": "<"
+                },
+                {
+                  "label": "小于等于",
+                  "value": ">="
+                },
+                {
+                  "label": "小于等于",
+                  "value": "<="
+                }
+              ]
+            },
+            {
+              "key": "value",
+              "type": "number",
+              "label": "值"
+            }
+          ]
+        },
+        {
+          "key": "expression",
+          "label": "表达式",
+          "type": "text",
+          "condition": {
+            "key": "type",
+            "type": "==",
+            "value": "expression"
+          }
+        },
+        {
+          "key": "title",
+          "label": "报警标题",
+          "type": "text"
+        },
+        {
+          "key": "message",
+          "label": "报警内容",
+          "type": "text"
+        },
+        {
+          "key": "level",
+          "label": "报警等级",
+          "type": "select",
+          "default": 3,
+          "options": [
+            {
+              "label": "一级",
+              "value": 1
+            },
+            {
+              "label": "二级",
+              "value": 2
+            },
+            {
+              "label": "三级",
+              "value": 3
+            },
+            {
+              "label": "四级",
+              "value": 4
+            },
+            {
+              "label": "五级",
+              "value": 5
+            }
+          ]
+        },
+        {
+          "key": "delay",
+          "type": "number",
+          "label": "延迟报警s",
+          "default": 60
+        },
+        {
+          "key": "reset",
+          "type": "number",
+          "label": "报警重置s",
+          "default": 0
+        },
+        {
+          "key": "reset_times",
+          "type": "number",
+          "label": "报警重置次数",
+          "default": 0
+        },
+        {
+          "key": "disabled",
+          "label": "禁用",
+          "type": "switch"
+        }
+      ]
+    }
+  ],
+  "load_api": "iot/device/:id/model",
+  "submit_api": "iot/device/:id/model",
+  "submit_success": "this.navigate('/page/iot/device-detail?id='+data.id)",
+  "methods": {
+  }
+}

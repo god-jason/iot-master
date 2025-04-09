@@ -1,0 +1,72 @@
+{
+  "title": "历史曲线",
+  "template": "chart",
+  "type": "line",
+  "toolbar": [
+    {
+      "key": "start",
+      "type": "datetime",
+      "label": "开始时间"
+    },
+    {
+      "key": "end",
+      "type": "datetime",
+      "label": "结束时间"
+    },
+    {
+      "key": "window",
+      "type": "number",
+      "default": "5",
+      "label": "窗口"
+    },
+    {
+      "key": "unit",
+      "type": "select",
+      "default": "m",
+      "options": [{
+        "value": "s",
+        "label": "秒"
+      },{
+        "value": "m",
+        "label": "分钟"
+      },{
+        "value": "h",
+        "label": "小时"
+      },{
+        "value": "d",
+        "label": "天"
+      }]
+    },
+    {
+      "key": "method",
+      "type": "select",
+      "label": "算子",
+      "default": "last",
+      "options": [{
+        "value": "last",
+        "label": "最后值"
+      },{
+        "value": "mean",
+        "label": "均值"
+      }]
+    },
+    {
+      "type": "button",
+      "label": "查询",
+      "action": {
+        "type": "script",
+        "script": "this.load_history()"
+      }
+    }
+  ],
+  "time": true,
+  "options": {
+    "tooltip": {
+      "trigger": "axis"
+    }
+  },
+  "mount": "this.toolbarValue = {start:this.dayjs().subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss')}; setTimeout(()=>this.load_history(), 100)",
+  "methods": {
+    "load_history": "this.request.get('iot/device/'+this.params.id+'/history/'+this.params.point, {start:this.dayjs(this.toolbar.value.start).toISOString(), end:this.dayjs(this.toolbar.value.end).toISOString(), window:this.toolbar.value.window+this.toolbar.value.unit, method:this.toolbar.value.method}).subscribe(res=>{this.render(res.data.map(i=>{return [i.time, i.value]}))})"
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "title": "创建设备",
+  "template": "form",
+  "toolbar": [
+    {
+      "type": "button",
+      "label": "选择产品ID",
+      "action": {
+        "type": "dialog",
+        "app": "iot",
+        "page": "product-choose",
+        "after_close": "this.editor.patchValue({product_id: result.id})"
+      }
+    },
+    {
+      "type": "button",
+      "label": "选择连接器ID",
+      "action": {
+        "type": "dialog",
+        "app": "connector",
+        "page": "linker-choose",
+        "after_close": "this.editor.patchValue({linker_id: result.id})"
+      }
+    },
+    {
+      "type": "button",
+      "label": "选择TCP连接器ID",
+      "action": {
+        "type": "dialog",
+        "app": "connector",
+        "page": "tcp-incoming-choose",
+        "after_close": "this.editor.patchValue({incoming_id: result.id})"
+      }
+    }
+  ],
+  "fields": [
+    {
+      "key": "id",
+      "label": "ID",
+      "type": "text",
+      "placeholder": "默认随机ID"
+    },
+    {
+      "key": "name",
+      "label": "名称",
+      "type": "text"
+    },
+    {
+      "key": "description",
+      "label": "说明",
+      "type": "text"
+    },
+    {
+      "key": "product_id",
+      "label": "产品ID",
+      "type": "text",
+      "change_action": {
+        "type": "script",
+        "script": "setTimeout(()=>this.load_product(), 100)"
+      }
+    },
+    {
+      "key": "linker_id",
+      "label": "连接器ID",
+      "type": "text",
+      "placeholder": "使用连接器时需要选择"
+    },
+    {
+      "key": "incoming_id",
+      "label": "TCP连接器ID",
+      "type": "text",
+      "placeholder": "TCP服务器时需要选择"
+    },
+    {
+      "key": "station",
+      "label": "地址",
+      "type": "object",
+      "placeholder": "需要先选择产品ID",
+      "children": []
+    },
+    {
+      "key": "disabled",
+      "label": "禁用",
+      "type": "switch"
+    }
+  ],
+  "submit_api": "iot/device/create",
+  "submit_success": "this.navigate('/page/iot/device-detail?id='+data.id)",
+  "mount": "this.data.product_id=this.params.product_id; setTimeout(()=>this.load_product(), 100)",
+  "methods": {
+    "load_product": "this.editor.value.product_id && this.request.get('iot/product/'+this.editor.value.product_id).subscribe(res=>{if(!res.error) this.load_protocol_station(res.data.protocol)})",
+    "load_protocol_station": ["p", "this.request.get('iot/protocol/'+p).subscribe(res=>{this.content.fields[6].children=res.station; setTimeout(()=>this.editor.rebuild(), 200)})"]
+   }
+}

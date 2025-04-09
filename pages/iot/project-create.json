@@ -1,0 +1,32 @@
+{
+  "title": "创建项目",
+  "template": "form",
+  "fields": [
+    {
+      "key": "id",
+      "label": "ID",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "name",
+      "label": "名称",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "description",
+      "label": "说明",
+      "type": "text"
+    },
+    {
+      "key": "disabled",
+      "label": "禁用",
+      "type": "switch"
+    }
+  ],
+  "submit_api": "iot/project/create",
+  "submit_success": "this.navigate('/page/iot/project-detail?id='+data.id)",
+  "methods": {
+  }
+}

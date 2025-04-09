@@ -1,0 +1,50 @@
+oem:
+    name: 物联大师
+apis:
+    password: e10adc3949ba59abbe56e057f20f883e
+broker:
+    anonymous: false
+    enable: true
+    loglevel: ERROR
+    port: 1883
+    unixsock: C:\Users\Administrator\AppData\Local\Temp/boat.sock
+database:
+    debug: false
+    sync: true
+    type: mysql
+    url: root:Flzx3000c@tcp(git.zgwit.com:3306)/boat?charset=utf8
+log:
+    caller: true
+    compress: true
+    filename: log.txt
+    level: trace
+    max_age: 30
+    max_backups: 3
+    max_size: 10
+    output: stdout
+    text: true
+mqtt:
+    clientid: WQ8lWdV3NY8N
+    password: ""
+    url: mqtt://localhost:1883
+    username: ""
+pool:
+    size: 10000
+service:
+    arguments: []
+    description: Process Manager for General IoT Backend
+    display: Boat
+    name: boat
+web:
+    cors: false
+    debug: false
+    email: ""
+    gzip: true
+    hosts: []
+    jwt_expire: 720
+    jwt_key: boat
+    mode: http
+    port: 8035
+    tls_cert: ""
+    tls_key: ""
+    unix_socket: ""

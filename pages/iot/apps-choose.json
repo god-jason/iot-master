@@ -1,0 +1,47 @@
+{
+  "title": "应用选择",
+  "template": "table",
+  "operators": [
+    {
+      "icon": "check",
+      "label": "选择",
+      "action": {
+        "type": "script",
+        "script": "this.modelRef.close(data)"
+      }
+    }
+  ],
+  "columns": [
+    {
+      "key": "icon",
+      "label": "图标",
+      "type": "icon"
+    },
+    {
+      "key": "id",
+      "label": "ID"
+    },
+    {
+      "key": "name",
+      "label": "名称"
+    },
+    {
+      "key": "description",
+      "label": "说明"
+    },
+    {
+      "key": "version",
+      "label": "版本"
+    },
+    {
+      "key": "author",
+      "label": "作者"
+    },
+    {
+      "key": "copyright",
+      "label": "版权"
+    }
+  ],
+  "load_api": "iot/app/list",
+  "load_success": "data.forEach(d=>{ d.icon = '/api/iot/app/' + d.id + '/icon' })"
+}

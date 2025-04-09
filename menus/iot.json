@@ -1,0 +1,27 @@
+{
+  "name": "物联网",
+  "icon": "global",
+  "index": 200,
+  "items": [
+    {
+      "name": "设备",
+      "url": "page/iot/device"
+    },
+    {
+      "name": "项目空间",
+      "url": "page/iot/project"
+    },
+    {
+      "name": "报警日志",
+      "url": "page/iot/alarm"
+    },
+    {
+      "name": "产品库",
+      "url": "page/iot/product"
+    },
+    {
+      "name": "协议库",
+      "url": "page/iot/protocol"
+    }
+  ]
+}

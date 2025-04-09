@@ -1,0 +1,13 @@
+{
+  "title": "编辑协议配置",
+  "template": "form",
+  "fields": [
+  ],
+  "load_api": "iot/product/:product/config/:config",
+  "submit_api": "iot/product/:product/config/:config",
+  "submit_success": "this.navigate('/page/iot/product-detail?id='+data.id)",
+  "mount": "this.load_config_form()",
+  "methods": {
+    "load_config_form": "this.request.get('iot/protocol/'+this.params.config).subscribe(res=>{this.content.fields = res.model})"
+  }
+}

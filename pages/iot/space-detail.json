@@ -1,0 +1,79 @@
+{
+  "title": "空间详情",
+  "template": "info",
+  "toolbar": [
+    {
+      "icon": "edit",
+      "type": "button",
+      "label": "编辑",
+      "action": {
+        "type": "page",
+        "app": "iot",
+        "page": "space-edit",
+        "params_func": "return {id: data.id}"
+      }
+    },
+    {
+      "icon": "delete",
+      "type": "button",
+      "label": "删除",
+      "confirm": "确认删除？",
+      "action": {
+        "type": "script",
+        "script": "this.request.get('iot/space/'+data.id+'/delete').subscribe(res=>{this.navigate('/page/iot/project?id='+data.project_id)})"
+      }
+    }
+  ],
+  "items": [
+    {
+      "key": "id",
+      "label": "ID"
+    },
+    {
+      "key": "name",
+      "label": "名称"
+    },
+    {
+      "key": "description",
+      "label": "说明"
+    },
+    {
+      "key": "project_id",
+      "label": "项目ID",
+      "action": {
+        "type": "page",
+        "app": "iot",
+        "page": "project-detail",
+        "params_func": "return {id: data.project_id}"
+      }
+    },
+    {
+      "key": "parent_id",
+      "label": "父空间ID",
+      "action": {
+        "type": "page",
+        "app": "iot",
+        "page": "space-detail",
+        "params_func": "return {id: data.parent_id}"
+      }
+    },
+    {
+      "key": "disabled",
+      "label": "禁用",
+      "type": "boolean"
+    }
+  ],
+  "load_api": "iot/space/:id",
+  "children": [
+    {
+      "app": "iot",
+      "page": "space",
+      "params_func": "return {parent_id: params.id}"
+    },
+    {
+      "app": "iot",
+      "page": "space-device",
+      "params_func": "return {space_id: params.id}"
+    }
+  ]
+}

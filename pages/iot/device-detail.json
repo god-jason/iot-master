@@ -1,0 +1,106 @@
+{
+  "title": "设备详情",
+  "template": "info",
+  "toolbar": [
+    {
+      "icon": "edit",
+      "type": "button",
+      "label": "编辑",
+      "action": {
+        "type": "page",
+        "app": "iot",
+        "page": "device-edit",
+        "params_func": "return {id: data.id}"
+      }
+    },
+    {
+      "icon": "delete",
+      "type": "button",
+      "label": "删除",
+      "confirm": "确认删除？",
+      "action": {
+        "type": "script",
+        "script": "this.request.get('iot/device/'+data.id+'/delete').subscribe(res=>{this.navigate('/page/iot/device')})"
+      }
+    },
+    {
+      "icon": "build",
+      "type": "button",
+      "label": "设备物模型",
+      "action": {
+        "type": "page",
+        "app": "iot",
+        "page": "device-model",
+        "params_func": "return {id: data.id}"
+      }
+    }
+  ],
+  "items": [
+    {
+      "key": "id",
+      "label": "ID"
+    },
+    {
+      "key": "name",
+      "label": "名称"
+    },
+    {
+      "key": "description",
+      "label": "说明"
+    },
+    {
+      "key": "product_id",
+      "label": "产品ID",
+      "action": {
+        "type": "page",
+        "app": "iot",
+        "page": "product-detail",
+        "params_func": "return {id: data.product_id}"
+      }
+    },
+    {
+      "key": "linker_id",
+      "label": "连接器ID",
+      "type": "text",
+      "action": {
+        "type": "page",
+        "app": "connector",
+        "page": "linker-detail",
+        "params_func": "return {id: data.linker_id}"
+      }
+    },
+    {
+      "key": "incoming_id",
+      "label": "TCP连接器ID",
+      "type": "text",
+      "action": {
+        "type": "page",
+        "app": "connector",
+        "page": "tcp-incoming-detail",
+        "params_func": "return {id: data.incoming_id}"
+      }
+    },
+    {
+      "key": "station",
+      "label": "地址",
+      "type": "json"
+    },
+    {
+      "key": "disabled",
+      "label": "禁用"
+    }
+  ],
+  "load_api": "iot/device/:id",
+  "children": [
+    {
+      "app": "iot",
+      "page": "device-values",
+      "params_func": "return {id: params.id}"
+    },
+    {
+      "app": "iot",
+      "page": "alarm",
+      "params_func": "return {device_id: params.id}"
+    }
+  ]
+}
