@@ -1,5 +1,7 @@
 # 物联大师
 
+[![Go](https://github.com/god-jason/iot-master/actions/workflows/go.yml/badge.svg)](https://github.com/god-jason/iot-master/actions/workflows/go.yml)
+
 物联大师是开源免费的物联网边缘计算网关系统，区别于传统的工业智能网关，物联大师采用Go语言进行编程实现，有以下诸多优点：
 - 单一程序文件，免安装
 - 最低内存只需要12MB
