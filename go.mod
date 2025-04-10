@@ -6,7 +6,7 @@ require (
 	github.com/PaesslerAG/gval v1.2.4
 	github.com/busy-cloud/boat v0.2.16
 	github.com/busy-cloud/boat-ui v0.2.6
-	github.com/busy-cloud/connector v0.2.9
+	github.com/busy-cloud/connector v0.2.10
 	github.com/busy-cloud/influxdb v0.2.3
 	github.com/busy-cloud/modbus v0.2.12
 	github.com/busy-cloud/noob v0.0.4
@@ -21,10 +21,10 @@ require (
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
+	github.com/busy-cloud/serial v1.6.5 // indirect
 	github.com/bytedance/sonic v1.13.2 // indirect
 	github.com/bytedance/sonic/loader v0.2.4 // indirect
 	github.com/cloudwego/base64x v0.1.5 // indirect
-	github.com/creack/goselect v0.1.2 // indirect
 	github.com/ebitengine/purego v0.8.2 // indirect
 	github.com/eclipse/paho.mqtt.golang v1.5.0 // indirect
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
@@ -84,12 +84,11 @@ require (
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
-	go.bug.st/serial v1.6.2 // indirect
+	github.com/zgwit/goselect v0.1.3 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/arch v0.15.0 // indirect
 	golang.org/x/crypto v0.36.0 // indirect
-	golang.org/x/mod v0.24.0 // indirect
 	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sync v0.12.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
