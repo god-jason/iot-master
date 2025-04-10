@@ -32,14 +32,6 @@ builds:
         goarch: arm
       - goos: windows
         goarch: arm64
-      - goos: darwin
-        goarch: 386
-      - goos: linux
-        goarch: arm
-        goarm: 7
-      - goarm: mips64
-      - gomips: hardfloat
-      - goamd64: v4
 
 archives:
   - wrap_in_directory: true
