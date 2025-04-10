@@ -11,9 +11,9 @@ builds:
     ldflags:
       - -s -w -X main.build={{.Version}}
     goos:
-      #- darwin
-      - linux
       - windows
+      - linux
+      #- darwin
     goarch:
       - "386"
       - amd64
@@ -54,6 +54,7 @@ archives:
 checksum:
   name_template: 'checksums.txt'
 changelog:
+  use: github-native
   sort: asc
   filters:
     exclude:
