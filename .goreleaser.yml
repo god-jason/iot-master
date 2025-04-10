@@ -22,7 +22,7 @@ builds:
       - mipsle
       - mips64
       - mips64le
-      - loong64
+      #- loong64 编译失败
       - riscv64
     goarm:
       - 6
