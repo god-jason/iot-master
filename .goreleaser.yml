@@ -24,7 +24,7 @@ builds:
       #- mips64
       - mips64le
       - loong64 #龙芯
-      - riscv32
+      #- riscv32
       - riscv64
     goarm:
       - 6
