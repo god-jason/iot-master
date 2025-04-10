@@ -7,7 +7,6 @@ builds:
       - CGO_ENABLED=0
     id: "iot-master"
     binary: "iot-master"
-    tool: "go1.23.8"
     ldflags:
       - -s -w -X main.build={{.Version}}
     goos:
