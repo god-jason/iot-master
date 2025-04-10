@@ -7,6 +7,9 @@ builds:
       - CGO_ENABLED=0
     id: "iot-master"
     binary: "iot-master"
+    tool: "go1.23.8"
+    ldflags:
+      - -s -w -X main.build={{.Version}}
     goos:
       - darwin
       - linux
@@ -16,15 +19,35 @@ builds:
       - amd64
       - arm
       - arm64
+      - mips
+      - mipsle
+      - mips64
+      - mips64le
+      - loong64
+      - riscv64
+    goarm:
+      - 6
+      - 7
     ignore:
       - goos: windows
         goarch: arm
       - goos: windows
         goarch: arm64
+      - goos: darwin
+        goarch: 386
+      - goos: linux
+        goarch: arm
+        goarm: 7
+      - goarm: mips64
+      - gomips: hardfloat
+      - goamd64: v4
+
 archives:
-  - name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+  - #name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     wrap_in_directory: true
-    format: zip
+    format_overrides:
+      goos: windows
+      format: zip
     files:
       - README.md
       - LICENSE
