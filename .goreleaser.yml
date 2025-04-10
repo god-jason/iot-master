@@ -18,15 +18,21 @@ builds:
       - amd64
       - arm
       - arm64
-      - mips
+      #- mips
       - mipsle
-      - mips64
+      #- mips64
       - mips64le
       #- loong64 编译失败
       - riscv64
     goarm:
       - 6
       - 7
+    gomips:
+      - hardfloat
+      - softfloat
+    gomips64:
+      - hardfloat
+      #- softfloat
     ignore:
       - goos: windows
         goarch: arm
