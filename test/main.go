@@ -12,7 +12,6 @@ import (
 	_ "github.com/busy-cloud/modbus"
 	_ "github.com/busy-cloud/noob"
 	_ "github.com/busy-cloud/user"
-	_ "github.com/god-jason/iot-master/app"
 	_ "github.com/god-jason/iot-master/internal"
 	"github.com/god-jason/iot-master/protocol"
 	"github.com/spf13/viper"
