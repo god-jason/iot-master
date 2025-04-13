@@ -8,9 +8,9 @@
       "type": "button",
       "action": {
         "type": "dialog",
-        "app": "iot",
-        "page": "apps-choose",
-        "after_close": "this.request.get('iot/project/'+this.params.project_id+'/app/'+result.id+'/bind').subscribe(res=>this.load())"
+        "app": "plugin",
+        "page": "plugin-choose",
+        "after_close": "this.request.get('iot/project/'+this.params.project_id+'/plugin/'+result.id+'/bind').subscribe(res=>this.load())"
       }
     }
   ],
@@ -20,7 +20,7 @@
       "title": "打开",
       "action": {
         "type": "script",
-        "script": "window.open('/app/'+data.app_id+'?project='+this.params.project_id)"
+        "script": "window.open('/plugin/'+data.app_id+'?project='+this.params.project_id)"
       }
     },
     {
@@ -29,7 +29,7 @@
       "confirm": "确认解绑？",
       "action": {
         "type": "script",
-        "script": "this.request.get('iot/project/'+data.project_id+'/app/'+data.app_id+'/unbind').subscribe(res=>this.load())"
+        "script": "this.request.get('iot/project/'+data.project_id+'/plugin/'+data.app_id+'/unbind').subscribe(res=>this.load())"
       }
     }
   ],
@@ -54,6 +54,6 @@
       "type": "date"
     }
   ],
-  "load_api": "iot/project/:project_id/app/list?limit=99999",
-  "load_success": "data.forEach(d=>{ d.icon = '/api/iot/app/' + d.app_id + '/icon' })"
+  "load_api": "iot/project/:project_id/plugin/list?limit=99999",
+  "load_success": "data.forEach(d=>{ d.icon = '/api/plugin/' + d.app_id + '/icon' })"
 }
