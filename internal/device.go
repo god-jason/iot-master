@@ -9,6 +9,7 @@ import (
 	"github.com/god-jason/iot-master/product"
 	"github.com/god-jason/iot-master/project"
 	"github.com/god-jason/iot-master/space"
+	"sync"
 	"time"
 )
 
@@ -21,8 +22,9 @@ func GetDevice(id string) *Device {
 type Device struct {
 	device.Device `xorm:"extends"`
 
-	Values  map[string]any `json:"values"`
-	Updated time.Time      `json:"updated"`
+	valuesLock sync.RWMutex
+	Values     map[string]any `json:"values"`
+	Updated    time.Time      `json:"updated"`
 
 	projects []string
 	spaces   []string
@@ -111,6 +113,9 @@ func (d *Device) PutValues(values map[string]any) {
 	if len(topics) > 0 {
 		mqtt.PublishEx(topics, values)
 	}
+
+	d.valuesLock.Lock()
+	defer d.valuesLock.Unlock() //TODO 后续发消息和入库，锁的时间比较长
 
 	//更新数据
 	for k, v := range values {
