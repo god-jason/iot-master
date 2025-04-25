@@ -5,7 +5,7 @@ go 1.23.0
 require (
 	github.com/PaesslerAG/gval v1.2.4
 	github.com/busy-cloud/boat v0.3.1
-	github.com/busy-cloud/boat-ui v0.2.7
+	github.com/busy-cloud/boat-ui v0.2.8
 	github.com/busy-cloud/connector v0.2.10
 	github.com/busy-cloud/influxdb v0.2.3
 	github.com/busy-cloud/modbus v0.2.12

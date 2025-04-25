@@ -14,17 +14,6 @@
       }
     },
     {
-      "icon": "build",
-      "type": "button",
-      "label": "产品物模型",
-      "action": {
-        "type": "page",
-        "app": "iot",
-        "page": "product-model",
-        "params_func": "return {id: data.id}"
-      }
-    },
-    {
       "icon": "api",
       "type": "button",
       "label": "产品协议配置",
@@ -84,6 +73,12 @@
       "app": "iot",
       "page": "product-device",
       "params_func": "return {product_id: params.id}"
+    },
+    {
+      "title": "产品物模型",
+      "app": "iot",
+      "page": "product-model",
+      "params_func": "return {id: params.id}"
     }
   ]
 }
