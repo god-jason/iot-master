@@ -64,13 +64,9 @@
     }
   ],
   "load_api": "iot/space/:id",
-  "children": [
+  "tabs": [
     {
-      "app": "iot",
-      "page": "space",
-      "params_func": "return {parent_id: params.id}"
-    },
-    {
+      "title": "空间设备",
       "app": "iot",
       "page": "space-device",
       "params_func": "return {space_id: params.id}"

@@ -91,13 +91,15 @@
     }
   ],
   "load_api": "iot/device/:id",
-  "children": [
+  "tabs": [
     {
+      "title": "实时状态",
       "app": "iot",
       "page": "device-values",
       "params_func": "return {id: params.id}"
     },
     {
+      "title": "设备告警",
       "app": "iot",
       "page": "alarm",
       "params_func": "return {device_id: params.id}"

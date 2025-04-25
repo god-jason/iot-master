@@ -78,8 +78,9 @@
     }
   ],
   "load_api": "iot/product/:id",
-  "children": [
+  "tabs": [
     {
+      "title": "产品设备",
       "app": "iot",
       "page": "product-device",
       "params_func": "return {product_id: params.id}"
