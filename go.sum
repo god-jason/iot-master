@@ -10,8 +10,8 @@ github.com/RaveNoX/go-jsoncommentstrip v1.0.0/go.mod h1:78ihd09MekBnJnxpICcwzCMz
 github.com/apapsch/go-jsonmerge/v2 v2.0.0 h1:axGnT1gRIfimI7gJifB699GoE/oq+F2MU7Dml6nw9rQ=
 github.com/apapsch/go-jsonmerge/v2 v2.0.0/go.mod h1:lvDnEdqiQrp0O42VQGgmlKpxL1AP2+08jFMw88y4klk=
 github.com/bmatcuk/doublestar v1.1.1/go.mod h1:UD6OnuiIn0yFxxA2le/rnRU1G4RaI4UvFv1sNto9p6w=
-github.com/busy-cloud/boat v0.3.0 h1:EZuMypYKMOqTJgVhh0lnWeqsLUskk2IEjKzfu0vEbPI=
-github.com/busy-cloud/boat v0.3.0/go.mod h1:4gDVBfwLC5weGDU842KiFVN8uwb/HlO63pjeOiSHP60=
+github.com/busy-cloud/boat v0.3.1 h1:/A6f8e3x3sKEvnbj53Cc/bHARabISUMUhACh/mV8y9U=
+github.com/busy-cloud/boat v0.3.1/go.mod h1:4gDVBfwLC5weGDU842KiFVN8uwb/HlO63pjeOiSHP60=
 github.com/busy-cloud/boat-ui v0.2.6 h1:s92TEyUX7s0kPPkaiNP9+9QHN59PAPOaZLMBQnnyzuQ=
 github.com/busy-cloud/boat-ui v0.2.6/go.mod h1:eVxdB+W0L8+JRZDRQnqcfQlzS4ANC/mlMdqGyTM8t0g=
 github.com/busy-cloud/connector v0.2.10 h1:7xqLAJ7h7m5GbmT49t7Ae9mytZRpd+GEmPPGX7gpKdg=
@@ -20,8 +20,10 @@ github.com/busy-cloud/influxdb v0.2.3 h1:VW+5/q+/ClImAzrxwNT9zaXIbuHKch6rhKy9sJf
 github.com/busy-cloud/influxdb v0.2.3/go.mod h1:6mfMxknjGxBWcCOaLAkjig6YmssQSQbDPCeGeccCNPM=
 github.com/busy-cloud/modbus v0.2.12 h1:XPF/06cQt993itzGHSsZmRsVNv6qIzXxAd5n9Ui13po=
 github.com/busy-cloud/modbus v0.2.12/go.mod h1:voMqngF86wuY2p4BWf7wfI/5xsmDrRLuVBfjhYqijm8=
-github.com/busy-cloud/noob v0.0.4 h1:UpCEmzJPBt6Pah+uyf1WpOcKv9ZAxLr/8dGGftRXcBA=
-github.com/busy-cloud/noob v0.0.4/go.mod h1:VEkq60cqlHtlnm8y1KOi336NK/S/DMtbJDbd6pEvHqU=
+github.com/busy-cloud/noob v0.0.5 h1:B6aaCG+gHVOp25nlTLrhgayi+1n7LFsUGELGoGBPtGY=
+github.com/busy-cloud/noob v0.0.5/go.mod h1:VEkq60cqlHtlnm8y1KOi336NK/S/DMtbJDbd6pEvHqU=
+github.com/busy-cloud/plugin v0.0.2 h1:RwIwPkpDrP3CESH6Dba+gFiSWOQOQwcNxMQbLKOy1qU=
+github.com/busy-cloud/plugin v0.0.2/go.mod h1:SsxnyUaEruqCeB4i59KwxE1LbI6rF+hVfp+AyqIyw70=
 github.com/busy-cloud/serial v1.6.5 h1:rDq99/cEDFUfZNJ0WmI/6iZz7LvmEDQcyw2gibhLI/E=
 github.com/busy-cloud/serial v1.6.5/go.mod h1:8IkXeVoYe424W0/giUH1Z2YTa9eqPDk/FtRcCu/7khI=
 github.com/busy-cloud/user v0.2.3 h1:bv0nVoC2RE6G9qaJybRCzfzjNmh7QdRtwr0/wO0TFWY=

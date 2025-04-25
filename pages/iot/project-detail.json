@@ -43,28 +43,33 @@
     }
   ],
   "load_api": "iot/project/:id",
-  "children": [
+  "tabs": [
     {
+      "title": "项目空间",
       "app": "iot",
       "page": "space",
       "params_func": "return {project_id: params.id}"
     },
     {
+      "title": "项目设备",
       "app": "iot",
       "page": "project-device",
       "params_func": "return {project_id: params.id}"
     },
     {
+      "title": "项目报警",
       "app": "iot",
       "page": "alarm",
       "params_func": "return {project_id: params.id}"
     },
     {
+      "title": "项目用户",
       "app": "iot",
       "page": "project-user",
       "params_func": "return {project_id: params.id}"
     },
     {
+      "title": "项目插件",
       "app": "iot",
       "page": "project-plugin",
       "params_func": "return {project_id: params.id}"

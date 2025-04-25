@@ -14,6 +14,7 @@ import (
 	_ "github.com/busy-cloud/influxdb"
 	_ "github.com/busy-cloud/modbus"
 	_ "github.com/busy-cloud/noob"
+	_ "github.com/busy-cloud/plugin"
 	_ "github.com/busy-cloud/user"
 	_ "github.com/god-jason/iot-master/internal"
 	"github.com/god-jason/iot-master/protocol"
