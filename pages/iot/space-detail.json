@@ -8,8 +8,7 @@
       "label": "编辑",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "space-edit",
+        "page": "iot/space-edit",
         "params_func": "return {id: data.id}"
       }
     },
@@ -42,8 +41,7 @@
       "label": "项目ID",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "project-detail",
+        "page": "iot/project-detail",
         "params_func": "return {id: data.project_id}"
       }
     },
@@ -52,8 +50,7 @@
       "label": "父空间ID",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "space-detail",
+        "page": "iot/space-detail",
         "params_func": "return {id: data.parent_id}"
       }
     },
@@ -67,8 +64,7 @@
   "tabs": [
     {
       "title": "空间设备",
-      "app": "iot",
-      "page": "space-device",
+      "page": "iot/space-device",
       "params_func": "return {space_id: params.id}"
     }
   ]

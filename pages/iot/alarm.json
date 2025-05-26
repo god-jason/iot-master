@@ -42,8 +42,7 @@
       "label": "设备ID",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "device-detail",
+        "page": "iot/device-detail",
         "params_func": "return {id: data.device_id}"
       }
     },
@@ -52,8 +51,7 @@
       "label": "项目ID",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "project-detail",
+        "page": "iot/project-detail",
         "params_func": "return {id: data.project_id}"
       }
     },

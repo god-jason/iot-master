@@ -8,8 +8,7 @@
       "type": "button",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "product-create"
+        "page": "iot/product-create"
       }
     },
     {
@@ -37,8 +36,7 @@
       "icon": "eye",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "product-detail",
+        "page": "iot/product-detail",
         "params_func": "return {id: data.id}"
       }
     },
@@ -46,8 +44,7 @@
       "icon": "edit",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "product-edit",
+        "page": "iot/product-edit",
         "params_func": "return {id: data.id}"
       }
     },
@@ -67,8 +64,7 @@
       "label": "ID",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "product-detail",
+        "page": "iot/product-detail",
         "params_func": "return {id: data.id}"
       }
     },

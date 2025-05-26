@@ -8,8 +8,7 @@
       "type": "button",
       "action": {
         "type": "dialog",
-        "app": "iot",
-        "page": "project-device-choose",
+        "page": "iot/project-device-choose",
         "params_func": "return {project_id: this.space.project_id}",
         "after_close": "this.request.get('iot/space/'+this.params.space_id+'/device/'+result.device_id+'/bind').subscribe(res=>this.load())"
       }
@@ -20,8 +19,7 @@
       "icon": "eye",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "device-detail",
+        "page": "iot/device-detail",
         "params_func": "return {id: data.id}"
       }
     },
@@ -29,8 +27,7 @@
       "icon": "edit",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "device-edit",
+        "page": "iot/device-edit",
         "params_func": "return {id: data.id}"
       }
     },
@@ -50,8 +47,7 @@
       "label": "设备ID",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "device-detail",
+        "page": "iot/device-detail",
         "params_func": "return {id: data.device_id}"
       }
     },

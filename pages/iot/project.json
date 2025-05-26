@@ -8,8 +8,7 @@
       "type": "button",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "project-create"
+        "page": "iot/project-create"
       }
     },
     {
@@ -37,8 +36,7 @@
       "icon": "eye",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "project-detail",
+        "page": "iot/project-detail",
         "params_func": "return {id: data.id}"
       }
     },
@@ -46,8 +44,7 @@
       "icon": "edit",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "project-edit",
+        "page": "iot/project-edit",
         "params_func": "return {id: data.id}"
       }
     },
@@ -67,8 +64,7 @@
       "label": "ID",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "project-detail",
+        "page": "iot/project-detail",
         "params_func": "return {id: data.id}"
       }
     },

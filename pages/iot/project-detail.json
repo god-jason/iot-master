@@ -8,8 +8,7 @@
       "label": "编辑",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "project-edit",
+        "page": "iot/project-edit",
         "params_func": "return {id: data.id}"
       }
     },
@@ -46,32 +45,27 @@
   "tabs": [
     {
       "title": "项目空间",
-      "app": "iot",
-      "page": "space",
+      "page": "iot/space",
       "params_func": "return {project_id: params.id}"
     },
     {
       "title": "项目设备",
-      "app": "iot",
-      "page": "project-device",
+      "page": "iot/project-device",
       "params_func": "return {project_id: params.id}"
     },
     {
       "title": "项目报警",
-      "app": "iot",
-      "page": "alarm",
+      "page": "iot/alarm",
       "params_func": "return {project_id: params.id}"
     },
     {
       "title": "项目用户",
-      "app": "iot",
-      "page": "project-user",
+      "page": "iot/project-user",
       "params_func": "return {project_id: params.id}"
     },
     {
       "title": "项目插件",
-      "app": "iot",
-      "page": "project-plugin",
+      "page": "iot/project-plugin",
       "params_func": "return {project_id: params.id}"
     }
   ]

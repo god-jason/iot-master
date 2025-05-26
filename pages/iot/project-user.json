@@ -8,8 +8,7 @@
       "type": "button",
       "action": {
         "type": "dialog",
-        "app": "user",
-        "page": "choose",
+        "page": "user/choose",
         "after_close": "this.request.get('iot/project/'+this.params.project_id+'/user/'+result.id+'/bind').subscribe(res=>this.load())"
       }
     }

@@ -5,7 +5,7 @@
   ],
   "items": [],
   "load_api": "iot/device/:id/values",
-  "mount": "this.load_device(); this.value_action={type:'dialog',app:'iot',page:'device-history',params_func:'return {id:this.params.id, point:data.key}'}",
+  "mount": "this.load_device(); this.value_action={type:'dialog',page:'iot/device-history',params_func:'return {id:this.params.id, point:data.key}'}",
   "methods": {
     "load_values": "this.request.get('iot/device/'+this.params.id+'/values').subscribe(res=>{if(res.error)return; this.data=res.data})",
     "load_device": "this.request.get('iot/device/'+this.params.id).subscribe(res=>{if(res.error)return; this.load_model(res.data.product_id)})",

@@ -8,8 +8,7 @@
       "type": "button",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "device-create"
+        "page": "iot/device-create"
       }
     },
     {
@@ -37,8 +36,7 @@
       "icon": "eye",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "device-detail",
+        "page": "iot/device-detail",
         "params_func": "return {id: data.id}"
       }
     },
@@ -46,8 +44,7 @@
       "icon": "edit",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "device-edit",
+        "page": "iot/device-edit",
         "params_func": "return {id: data.id}"
       }
     },
@@ -67,8 +64,7 @@
       "label": "ID",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "device-detail",
+        "page": "iot/device-detail",
         "params_func": "return {id: data.id}"
       }
     },
@@ -77,8 +73,7 @@
       "label": "产品ID",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "product-detail",
+        "page": "iot/product-detail",
         "params_func": "return {id: data.product_id}"
       }
     },

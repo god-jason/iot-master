@@ -8,8 +8,7 @@
       "label": "编辑",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "device-edit",
+        "page": "iot/device-edit",
         "params_func": "return {id: data.id}"
       }
     },
@@ -29,8 +28,7 @@
       "label": "设备物模型",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "device-model",
+        "page": "iot/device-model",
         "params_func": "return {id: data.id}"
       }
     }
@@ -53,8 +51,7 @@
       "label": "产品ID",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "product-detail",
+        "page": "iot/product-detail",
         "params_func": "return {id: data.product_id}"
       }
     },
@@ -64,8 +61,7 @@
       "type": "text",
       "action": {
         "type": "page",
-        "app": "connector",
-        "page": "linker-detail",
+        "page": "connector/linker-detail",
         "params_func": "return {id: data.linker_id}"
       }
     },
@@ -75,8 +71,7 @@
       "type": "text",
       "action": {
         "type": "page",
-        "app": "connector",
-        "page": "tcp-incoming-detail",
+        "page": "connector/tcp-incoming-detail",
         "params_func": "return {id: data.incoming_id}"
       }
     },
@@ -94,14 +89,12 @@
   "tabs": [
     {
       "title": "实时状态",
-      "app": "iot",
-      "page": "device-values",
+      "page": "iot/device-values",
       "params_func": "return {id: params.id}"
     },
     {
       "title": "设备告警",
-      "app": "iot",
-      "page": "alarm",
+      "page": "iot/alarm",
       "params_func": "return {device_id: params.id}"
     }
   ]

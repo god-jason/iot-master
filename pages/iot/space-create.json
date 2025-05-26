@@ -7,8 +7,7 @@
       "label": "选择项目ID",
       "action": {
         "type": "dialog",
-        "app": "iot",
-        "page": "project-choose",
+        "page": "iot/project-choose",
         "after_close": "this.editor.patchValue({project_id: result.id})"
       }
     },
@@ -17,8 +16,7 @@
       "label": "选择父空间ID",
       "action": {
         "type": "dialog",
-        "app": "iot",
-        "page": "space-choose",
+        "page": "iot/space-choose",
         "after_close": "this.editor.patchValue({parent_id: result.id})"
       }
     }

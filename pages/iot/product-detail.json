@@ -8,8 +8,7 @@
       "label": "编辑",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "product-edit",
+        "page": "iot/product-edit",
         "params_func": "return {id: data.id}"
       }
     },
@@ -19,8 +18,7 @@
       "label": "产品协议配置",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "product-config",
+        "page": "iot/product-config",
         "params_func": "return {product: data.id, config: data.protocol}"
       }
     },
@@ -70,14 +68,12 @@
   "tabs": [
     {
       "title": "产品设备",
-      "app": "iot",
-      "page": "product-device",
+      "page": "iot/product-device",
       "params_func": "return {product_id: params.id}"
     },
     {
       "title": "产品物模型",
-      "app": "iot",
-      "page": "product-model",
+      "page": "iot/product-model",
       "params_func": "return {id: params.id}"
     }
   ]

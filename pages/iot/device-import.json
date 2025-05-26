@@ -1,0 +1,55 @@
+{
+  "title": "导入设备",
+  "template": "import",
+  "columns": [
+    {
+      "key": "id",
+      "label": "ID",
+      "type": "text"
+    },
+    {
+      "key": "name",
+      "label": "名称",
+      "type": "text"
+    },
+    {
+      "key": "description",
+      "label": "说明",
+      "type": "text"
+    },
+    {
+      "key": "product_id",
+      "label": "产品ID",
+      "type": "text",
+      "change_action": {
+        "type": "script",
+        "script": "setTimeout(()=>this.load_product(), 100)"
+      }
+    },
+    {
+      "key": "linker_id",
+      "label": "连接器ID",
+      "type": "text",
+      "placeholder": "使用连接器时需要选择"
+    },
+    {
+      "key": "incoming_id",
+      "label": "TCP连接器ID",
+      "type": "text",
+      "placeholder": "TCP服务器时需要选择"
+    },
+    {
+      "key": "station",
+      "label": "地址",
+      "type": "object",
+      "placeholder": "需要先选择产品ID",
+      "children": []
+    },
+    {
+      "key": "disabled",
+      "label": "禁用",
+      "type": "switch"
+    }
+  ],
+  "submit_api": "iot/device/:id"
+}

@@ -7,8 +7,7 @@
       "label": "选择产品ID",
       "action": {
         "type": "dialog",
-        "app": "iot",
-        "page": "product-choose",
+        "page": "iot/product-choose",
         "after_close": "this.editor.patchValue({product_id: result.id})"
       }
     },
@@ -17,8 +16,7 @@
       "label": "选择连接器ID",
       "action": {
         "type": "dialog",
-        "app": "connector",
-        "page": "linker-choose",
+        "page": "connector/linker-choose",
         "after_close": "this.editor.patchValue({linker_id: result.id})"
       }
     },
@@ -27,8 +25,7 @@
       "label": "选择TCP连接器ID",
       "action": {
         "type": "dialog",
-        "app": "connector",
-        "page": "tcp-incoming-choose",
+        "page": "connector/tcp-incoming-choose",
         "after_close": "this.editor.patchValue({incoming_id: result.id})"
       }
     }

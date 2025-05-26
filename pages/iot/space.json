@@ -8,8 +8,7 @@
       "type": "button",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "space-create"
+        "page": "iot/space-create"
       }
     }
   ],
@@ -18,8 +17,7 @@
       "icon": "eye",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "space-detail",
+        "page": "iot/space-detail",
         "params_func": "return {id: data.id}"
       }
     },
@@ -27,8 +25,7 @@
       "icon": "edit",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "space-edit",
+        "page": "iot/space-edit",
         "params_func": "return {id: data.id}"
       }
     },
@@ -48,8 +45,7 @@
       "label": "ID",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "space-detail",
+        "page": "iot/space-detail",
         "params_func": "return {id: data.id}"
       }
     },
@@ -58,8 +54,7 @@
       "label": "父空间ID",
       "action": {
         "type": "page",
-        "app": "iot",
-        "page": "space-detail",
+        "page": "iot/space-detail",
         "params_func": "return {id: data.parent_id}"
       }
     },
