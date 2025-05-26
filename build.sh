@@ -27,8 +27,8 @@ export CGO_ENABLED=0
 export GOARCH=amd64
 
 export GOOS=windows
-go build -ldflags "$ldflags" -o "${app}.exe" main.go
+go build -ldflags "$ldflags" -o "${app}.exe" cmd/main.go
 
 export GOOS=linux
-go build -ldflags "$ldflags" -o "${app}" main.go
+go build -ldflags "$ldflags" -o "${app}" cmd/main.go
 
