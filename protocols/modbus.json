@@ -176,7 +176,7 @@
               "key": "correct",
               "label": "校准",
               "type": "number",
-              "default": 1
+              "default": 0
             }
           ]
         },
@@ -246,7 +246,7 @@
               "key": "correct",
               "label": "校准",
               "type": "number",
-              "default": 1
+              "default": 0
             }
           ]
         }

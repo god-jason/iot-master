@@ -135,6 +135,9 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 	var ret any
 	switch p.Type {
 	case "short", "int16":
+		if len(buf[offset:]) < 2 {
+			return nil, fmt.Errorf("int16长度不足2:%d", l)
+		}
 		if p.BigEndian {
 			ret = int16(bin.ParseUint16(buf[offset:]))
 		} else {
@@ -147,6 +150,9 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 			ret = float64(ret.(int16)) + p.Correct
 		}
 	case "word", "uint16":
+		if len(buf[offset:]) < 2 {
+			return nil, fmt.Errorf("uint16长度不足2:%d", l)
+		}
 		if p.BigEndian {
 			ret = bin.ParseUint16(buf[offset:])
 		} else {
@@ -168,6 +174,9 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 			ret = float64(ret.(int16)) + p.Correct
 		}
 	case "int32", "int":
+		if len(buf[offset:]) < 4 {
+			return nil, fmt.Errorf("int32长度不足4:%d", l)
+		}
 		if p.BigEndian {
 			ret = int32(bin.ParseUint32(buf[offset:]))
 		} else {
@@ -180,6 +189,9 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 			ret = float64(ret.(int16)) + p.Correct
 		}
 	case "qword", "uint32", "uint":
+		if len(buf[offset:]) < 4 {
+			return nil, fmt.Errorf("uint32长度不足4:%d", l)
+		}
 		if p.BigEndian {
 			ret = bin.ParseUint32(buf[offset:])
 		} else {
@@ -192,6 +204,9 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 			ret = float64(ret.(int16)) + p.Correct
 		}
 	case "float", "float32":
+		if len(buf[offset:]) < 4 {
+			return nil, fmt.Errorf("float32长度不足4:%d", l)
+		}
 		if p.BigEndian {
 			ret = bin.ParseFloat32(buf[offset:])
 		} else {
@@ -204,6 +219,9 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 			ret = float64(ret.(int16)) + p.Correct
 		}
 	case "double", "float64":
+		if len(buf[offset:]) < 4 {
+			return nil, fmt.Errorf("float64长度不足8:%d", l)
+		}
 		if p.BigEndian {
 			ret = bin.ParseFloat64(buf[offset:])
 		} else {

@@ -10,12 +10,12 @@ github.com/RaveNoX/go-jsoncommentstrip v1.0.0/go.mod h1:78ihd09MekBnJnxpICcwzCMz
 github.com/apapsch/go-jsonmerge/v2 v2.0.0 h1:axGnT1gRIfimI7gJifB699GoE/oq+F2MU7Dml6nw9rQ=
 github.com/apapsch/go-jsonmerge/v2 v2.0.0/go.mod h1:lvDnEdqiQrp0O42VQGgmlKpxL1AP2+08jFMw88y4klk=
 github.com/bmatcuk/doublestar v1.1.1/go.mod h1:UD6OnuiIn0yFxxA2le/rnRU1G4RaI4UvFv1sNto9p6w=
-github.com/busy-cloud/boat v0.3.1 h1:/A6f8e3x3sKEvnbj53Cc/bHARabISUMUhACh/mV8y9U=
-github.com/busy-cloud/boat v0.3.1/go.mod h1:4gDVBfwLC5weGDU842KiFVN8uwb/HlO63pjeOiSHP60=
+github.com/busy-cloud/boat v0.3.2 h1:r/eHqH6L6JbtarhbUhtQ2f3eQQjGHOzxoILNKYTzLDs=
+github.com/busy-cloud/boat v0.3.2/go.mod h1:4gDVBfwLC5weGDU842KiFVN8uwb/HlO63pjeOiSHP60=
 github.com/busy-cloud/boat-ui v0.2.8 h1:vaosyq6wR0xfQcWkeRAS8p+IDo/UoN64Zcoc5Qlt0V0=
 github.com/busy-cloud/boat-ui v0.2.8/go.mod h1:eVxdB+W0L8+JRZDRQnqcfQlzS4ANC/mlMdqGyTM8t0g=
-github.com/busy-cloud/connector v0.2.11 h1:uyPxdsQYWRJnvQaGM5Eg++F/lxDt4g760VZETcT9u6E=
-github.com/busy-cloud/connector v0.2.11/go.mod h1:r+2flpW+aCA3WAVXGHgHU7irEJStX7lTWKfE7KPlCOw=
+github.com/busy-cloud/connector v0.2.12 h1:2xQhZ5JESXSx7aIiD6jFMRBPA53YMIONalrNkb0018o=
+github.com/busy-cloud/connector v0.2.12/go.mod h1:r+2flpW+aCA3WAVXGHgHU7irEJStX7lTWKfE7KPlCOw=
 github.com/busy-cloud/influxdb v0.2.3 h1:VW+5/q+/ClImAzrxwNT9zaXIbuHKch6rhKy9sJfOygg=
 github.com/busy-cloud/influxdb v0.2.3/go.mod h1:6mfMxknjGxBWcCOaLAkjig6YmssQSQbDPCeGeccCNPM=
 github.com/busy-cloud/modbus v0.2.12 h1:XPF/06cQt993itzGHSsZmRsVNv6qIzXxAd5n9Ui13po=
@@ -60,8 +60,8 @@ github.com/gin-contrib/sessions v1.0.3 h1:AZ4j0AalLsGqdrKNbbrKcXx9OJZqViirvNGsJT
 github.com/gin-contrib/sessions v1.0.3/go.mod h1:5i4XMx4KPtQihnzxEqG9u1K446lO3G19jAi2GtbfsAI=
 github.com/gin-contrib/sse v1.1.0 h1:n0w2GMuUpWDVp7qSpvze6fAu9iRxJY4Hmj6AmBOU05w=
 github.com/gin-contrib/sse v1.1.0/go.mod h1:hxRZ5gVpWMT7Z0B0gSNYqqsSCNIJMjzvm6fqCz9vjwM=
-github.com/gin-gonic/gin v1.10.0 h1:nTuyha1TYqgedzytsKYqna+DfLos46nTv2ygFy86HFU=
-github.com/gin-gonic/gin v1.10.0/go.mod h1:4PMNQiOhvDRa013RKVbsiNwoyezlm2rm0uX/T7kzp5Y=
+github.com/gin-gonic/gin v1.10.1 h1:T0ujvqyCSqRopADpgPgiTT63DUQVSfojyME59Ei63pQ=
+github.com/gin-gonic/gin v1.10.1/go.mod h1:4PMNQiOhvDRa013RKVbsiNwoyezlm2rm0uX/T7kzp5Y=
 github.com/go-co-op/gocron/v2 v2.16.1 h1:ux/5zxVRveCaCuTtNI3DiOk581KC1KpJbpJFYUEVYwo=
 github.com/go-co-op/gocron/v2 v2.16.1/go.mod h1:opexeOFy5BplhsKdA7bzY9zeYih8I8/WNJ4arTIFPVc=
 github.com/go-ole/go-ole v1.2.6/go.mod h1:pprOEPIfldk/42T2oK7lQ4v4JSDwmV0As9GaiUsvbm0=
