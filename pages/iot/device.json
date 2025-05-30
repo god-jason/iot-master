@@ -12,6 +12,15 @@
       }
     },
     {
+      "label": "导入",
+      "icon": "plus",
+      "type": "button",
+      "action": {
+        "type": "page",
+        "page": "iot/device-import"
+      }
+    },
+    {
       "key": "keyword",
       "type": "text",
       "placeholder": "请输入关键字"

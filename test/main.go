@@ -1,19 +1,20 @@
 package main
 
 import (
-	_ "github.com/busy-cloud/boat"
+	_ "github.com/busy-cloud/boat/apis"
+	"github.com/busy-cloud/boat/apps"
 	"github.com/busy-cloud/boat/boot"
+	_ "github.com/busy-cloud/boat/broker"
 	"github.com/busy-cloud/boat/log"
-	"github.com/busy-cloud/boat/menu"
-	"github.com/busy-cloud/boat/page"
+	_ "github.com/busy-cloud/boat/table"
 	"github.com/busy-cloud/boat/web"
 	_ "github.com/busy-cloud/connector"
+	_ "github.com/busy-cloud/dash"
 	_ "github.com/busy-cloud/influxdb"
 	_ "github.com/busy-cloud/modbus"
 	_ "github.com/busy-cloud/noob"
-	_ "github.com/busy-cloud/plugin"
 	_ "github.com/busy-cloud/user"
-	_ "github.com/god-jason/iot-master/internal"
+	_ "github.com/god-jason/iot-master"
 	"github.com/god-jason/iot-master/protocol"
 	"github.com/spf13/viper"
 	"os"
@@ -23,11 +24,11 @@ import (
 
 func init() {
 	//测试
-	page.Dir("pages", "")
+	apps.Pages().Dir("pages", "")
 
-	menu.Dir("menus", "")
-
+	//协议
 	protocol.Dir("protocols", "")
+
 }
 
 func main() {
