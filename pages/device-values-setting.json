@@ -1,0 +1,21 @@
+{
+  "title": "设置属性",
+  "template": "form",
+  "fields": [
+    {
+      "key": "key",
+      "type": "select",
+      "label": "属性",
+      "options": []
+    },{
+      "key": "value",
+      "type": "number",
+      "label": "值"
+    }
+  ],
+  "mount": "this.load_device()",
+  "methods": {
+    "load_device": "this.request.get('iot/device/'+this.params.id).subscribe(res=>{if(res.error)return; this.load_model(res.data.product_id)})",
+    "load_model": ["pid","this.request.get('iot/product/'+pid+'/model').subscribe(res=>{if(res.error)return; this.content.fields[0].options=res.data.properties.map(p=>{return {value:p.name,label:p.label}}) })"]
+  }
+}
