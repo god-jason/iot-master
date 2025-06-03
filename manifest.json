@@ -1,33 +1,66 @@
 {
   "id": "iot",
+  "icon": "device.png",
   "name": "物联网",
   "description": "物联大师基础功能",
   "version": "v0.0.12",
+  "shortcuts": [
+    {
+      "name": "设备",
+      "url": "page/iot/device",
+      "icon": "device.png"
+    },
+    {
+      "name": "项目空间",
+      "url": "page/iot/project",
+      "icon": "project.png"
+    },
+    {
+      "name": "报警日志",
+      "url": "page/iot/alarm",
+      "icon": "alarm.png"
+    },
+    {
+      "name": "产品库",
+      "url": "page/iot/product",
+      "icon": "product.png"
+    },
+    {
+      "name": "协议库",
+      "url": "page/iot/protocol",
+      "icon": "protocol.png"
+    }
+  ],
   "menus": [
     {
       "name": "物联网",
-      "icon": "global",
+      "nz_icon": "global",
       "index": 200,
       "items": [
         {
           "name": "设备",
-          "url": "page/iot/device"
+          "url": "page/iot/device",
+          "icon": "device.png"
         },
         {
           "name": "项目空间",
-          "url": "page/iot/project"
+          "url": "page/iot/project",
+          "icon": "project.png"
         },
         {
           "name": "报警日志",
-          "url": "page/iot/alarm"
+          "url": "page/iot/alarm",
+          "icon": "alarm.png"
         },
         {
           "name": "产品库",
-          "url": "page/iot/product"
+          "url": "page/iot/product",
+          "icon": "product.png"
         },
         {
           "name": "协议库",
-          "url": "page/iot/protocol"
+          "url": "page/iot/protocol",
+          "icon": "protocol.png"
         }
       ]
     }
