@@ -6,6 +6,7 @@ import (
 	_ "github.com/busy-cloud/boat-ui"
 	"github.com/busy-cloud/boat/apps"
 	"github.com/busy-cloud/boat/log"
+	"github.com/busy-cloud/boat/store"
 	_ "github.com/god-jason/iot-master/internal"
 	"github.com/god-jason/iot-master/protocol"
 )
@@ -24,10 +25,7 @@ var protocols embed.FS
 
 func init() {
 	//注册协议
-	protocol.EmbedFS(protocols, "protocols")
-
-	//注册页面
-	apps.Pages().EmbedFS(pages, "pages")
+	protocol.EmbedFS(&protocols, "protocols")
 
 	//注册为内部插件
 	var a apps.App
@@ -35,6 +33,9 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	a.Assets = assets
 	apps.Register(&a)
+
+	//注册资源
+	a.AssetsFS = store.PrefixFS(&assets, "assets")
+	a.PagesFS = store.PrefixFS(&pages, "pages")
 }

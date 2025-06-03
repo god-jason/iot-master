@@ -1,11 +1,14 @@
 package main
 
 import (
+	_ "embed"
+	"encoding/json"
 	_ "github.com/busy-cloud/boat/apis"
 	"github.com/busy-cloud/boat/apps"
 	"github.com/busy-cloud/boat/boot"
 	_ "github.com/busy-cloud/boat/broker"
 	"github.com/busy-cloud/boat/log"
+	"github.com/busy-cloud/boat/store"
 	_ "github.com/busy-cloud/boat/table"
 	"github.com/busy-cloud/boat/web"
 	_ "github.com/busy-cloud/connector"
@@ -23,12 +26,25 @@ import (
 )
 
 func init() {
-	//测试
-	apps.Pages().Dir("pages", "")
+	manifest, err := os.ReadFile("manifest.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//注册为内部插件
+	var a apps.App
+	err = json.Unmarshal(manifest, &a)
+	if err != nil {
+		log.Fatal(err)
+	}
+	apps.Register(&a)
+
+	//注册资源
+	a.AssetsFS = store.Dir("assets")
+	a.PagesFS = store.Dir("pages")
 
 	//协议
-	protocol.Dir("protocols", "")
-
+	protocol.Dir("protocols")
 }
 
 func main() {

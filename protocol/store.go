@@ -7,14 +7,14 @@ import (
 
 var protocolsStore store.Store
 
-func Dir(dir string, base string) {
-	protocolsStore.Dir(dir, base)
+func Dir(dir string) {
+	protocolsStore.AddDir(dir)
 }
 
-func Zip(zip string, base string) {
-	protocolsStore.Zip(zip, base)
+func Zip(zip string) {
+	protocolsStore.AddZip(zip)
 }
 
-func EmbedFS(fs embed.FS, base string) {
-	protocolsStore.EmbedFS(fs, base)
+func EmbedFS(fs *embed.FS, base string) {
+	protocolsStore.Add(store.PrefixFS(fs, base))
 }
