@@ -20,8 +20,8 @@ github.com/busy-cloud/dash v0.5.0 h1:v7onTsSlRKKPN/OHnczyAfPL8+h0pIzrF6FHNh1IJT8
 github.com/busy-cloud/dash v0.5.0/go.mod h1:YpLLCh50vwRy47NM9FFrAeg07Mh0qLxz6dzqYPJZm9c=
 github.com/busy-cloud/influxdb v0.2.3 h1:VW+5/q+/ClImAzrxwNT9zaXIbuHKch6rhKy9sJfOygg=
 github.com/busy-cloud/influxdb v0.2.3/go.mod h1:6mfMxknjGxBWcCOaLAkjig6YmssQSQbDPCeGeccCNPM=
-github.com/busy-cloud/modbus v0.2.12 h1:XPF/06cQt993itzGHSsZmRsVNv6qIzXxAd5n9Ui13po=
-github.com/busy-cloud/modbus v0.2.12/go.mod h1:voMqngF86wuY2p4BWf7wfI/5xsmDrRLuVBfjhYqijm8=
+github.com/busy-cloud/modbus v0.2.13 h1:nFCxZLWwApU/sz4Nfy4mgQVgbUZDr8HdULFENDm8Ha4=
+github.com/busy-cloud/modbus v0.2.13/go.mod h1:voMqngF86wuY2p4BWf7wfI/5xsmDrRLuVBfjhYqijm8=
 github.com/busy-cloud/noob v0.5.0 h1:ejX2+YxRJbjbM5+gZeiwJ6htq5reEwAS+ip7b/OSci4=
 github.com/busy-cloud/noob v0.5.0/go.mod h1:G91PscNeLeOGag8xd6lsP7uEOOhzIfS26jMDam84kfY=
 github.com/busy-cloud/serial v1.6.5 h1:rDq99/cEDFUfZNJ0WmI/6iZz7LvmEDQcyw2gibhLI/E=
