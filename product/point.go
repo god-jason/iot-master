@@ -143,12 +143,6 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 		} else {
 			ret = int16(bin.ParseUint16LittleEndian(buf[offset:]))
 		}
-		if p.Rate != 0 && p.Rate != 1 {
-			ret = float64(ret.(int16)) * p.Rate
-		}
-		if p.Correct != 0 {
-			ret = float64(ret.(int16)) + p.Correct
-		}
 	case "word", "uint16":
 		if len(buf[offset:]) < 2 {
 			return nil, fmt.Errorf("uint16长度不足2:%d", l)
@@ -166,13 +160,6 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 			}
 			return rets, nil
 		}
-
-		if p.Rate != 0 && p.Rate != 1 {
-			ret = float64(ret.(uint16)) * p.Rate
-		}
-		if p.Correct != 0 {
-			ret = float64(ret.(int16)) + p.Correct
-		}
 	case "int32", "int":
 		if len(buf[offset:]) < 4 {
 			return nil, fmt.Errorf("int32长度不足4:%d", l)
@@ -181,12 +168,6 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 			ret = int32(bin.ParseUint32(buf[offset:]))
 		} else {
 			ret = int32(bin.ParseUint32LittleEndian(buf[offset:]))
-		}
-		if p.Rate != 0 && p.Rate != 1 {
-			ret = float64(ret.(int32)) * p.Rate
-		}
-		if p.Correct != 0 {
-			ret = float64(ret.(int16)) + p.Correct
 		}
 	case "qword", "uint32", "uint":
 		if len(buf[offset:]) < 4 {
@@ -197,12 +178,6 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 		} else {
 			ret = bin.ParseUint32LittleEndian(buf[offset:])
 		}
-		if p.Rate != 0 && p.Rate != 1 {
-			ret = float64(ret.(uint32)) * p.Rate
-		}
-		if p.Correct != 0 {
-			ret = float64(ret.(int16)) + p.Correct
-		}
 	case "float", "float32":
 		if len(buf[offset:]) < 4 {
 			return nil, fmt.Errorf("float32长度不足4:%d", l)
@@ -211,12 +186,6 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 			ret = bin.ParseFloat32(buf[offset:])
 		} else {
 			ret = bin.ParseFloat32LittleEndian(buf[offset:])
-		}
-		if p.Rate != 0 && p.Rate != 1 {
-			ret = float64(ret.(float32)) * p.Rate
-		}
-		if p.Correct != 0 {
-			ret = float64(ret.(int16)) + p.Correct
 		}
 	case "double", "float64":
 		if len(buf[offset:]) < 4 {
@@ -227,14 +196,18 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 		} else {
 			ret = bin.ParseFloat64LittleEndian(buf[offset:])
 		}
-		if p.Rate != 0 && p.Rate != 1 {
-			ret = ret.(float64) * p.Rate
-		}
-		if p.Correct != 0 {
-			ret = float64(ret.(int16)) + p.Correct
-		}
 	default:
 		return nil, fmt.Errorf("不支持的数据类型 %s", p.Type)
+	}
+
+	//倍率
+	if p.Rate != 0 && p.Rate != 1 {
+		ret = cast.ToFloat64(ret) * p.Rate
+	}
+
+	//校准
+	if p.Correct != 0 {
+		ret = cast.ToFloat64(ret) + p.Correct
 	}
 
 	return ret, nil
