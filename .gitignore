@@ -30,3 +30,4 @@ go.work.sum
 /plugins
 /iot-master
 /iot-master.yaml
+/vendor
