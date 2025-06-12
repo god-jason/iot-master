@@ -30,17 +30,20 @@
 
 ### 备注：
 
-1. linker_name：连接器名称，比如：serial、can、tcp、tcp-server、udp、udp-server、udp-group、gnet……
+1. linker_name：连接器名称，比如：serial、can、tcp-client、tcp-server、udp-client、udp-server、udp-group、gnet-server
 2. link_id：连接ID
 
 ## 二、协议插件消息
 
-| 消息   | 主题                                                 | 内容   | 说明                     |
-|------|----------------------------------------------------|------|------------------------|
-| 接收数据 | ${protocol_name}/${linker_name}/${link_id}/up      | bin  | 将原始数据定向发送到协议插件         |
-| 添加设备 | ${protocol_name}/${linker_name}/${link_id}/attach  | json | {product_id,device_id} |
-| 删除设备 | ${protocol_name}/${linker_name}/${link_id}/detach  | json | {device_id}            |
-| 数据轮询 | ${protocol_name}/${linker_name}/${link_id}/polling | none | 由连接器主动发起               |
+| 消息   | 主题                                                          | 内容   | 说明                                          |
+|------|-------------------------------------------------------------|------|---------------------------------------------|
+| 打开连接 | protocol/${protocol_name}/${linker_name}/${link_id}/open    | json | {devices:[{product_id,device_id,slave...}]} |
+| 关闭连接 | protocol/${protocol_name}/${linker_name}/${link_id}/close   | none |                                             |
+| 接收数据 | protocol/${protocol_name}/${linker_name}/${link_id}/up      | bin  | 将原始数据定向发送到协议插件                              |
+| 数据轮询 | protocol/${protocol_name}/${linker_name}/${link_id}/polling | json | {msg_id, }                                  |
+| 读取数据 | protocol/${protocol_name}/${linker_name}/${link_id}/read    | json | {msg_id, device_id, points:[]}              |
+| 写入数据 | protocol/${protocol_name}/${linker_name}/${link_id}/write   | json | {msg_id, device_id, points:{k:v}}           |
+| 执行操作 | protocol/${protocol_name}/${linker_name}/${link_id}/action  | json | {msg_id, device_id, action, parameters}     |
 
 ### 备注：
 
@@ -49,7 +52,7 @@
 3. 修改设备，实际操作是先删除，再添加
 4. 发送数据使用 link/${linker_name}/${link_id}/down
 5. 插件需要订阅产品消息，同步产品配置
-
+6. msg_id：消息ID
 
 ## 三、产品消息
 
@@ -64,24 +67,50 @@
 
 ## 四、设备消息
 
-| 消息     | 主题                                                | 内容                  | 说明                                   |
-|--------|---------------------------------------------------|---------------------|--------------------------------------|
-| 上传属性   | device/${product_id}/${device_id}/values          | json: map<k,v>      |                                      |
-| 读取属性   | device/${product_id}/${device_id}/read            | json: array[k,]     | [var1, var2]                         |
-| 读取属性响应 | device/${product_id}/${device_id}/read/response   | json: map<k,v>      | {var1:1, var2:2}                     |
-| 修改属性   | device/${product_id}/${device_id}/write           | json: map<k,v>      | {var1:1, var2:2}                     |
-| 修改属性响应 | device/${product_id}/${device_id}/write/response  | json: map<k,string> | {var1:"success", var2:"fail"}        |
-| 上报事件   | device/${product_id}/${device_id}/event           | json                | {title, message, level,}             |
-| 执行操作   | device/${product_id}/${device_id}/action          | json                | {action:"reboot", parameters:{}}     |
-| 执行操作响应 | device/${product_id}/${device_id}/action/response | json                | {action:"reboot", result: "success"} |
+| 消息     | 主题                                  | 内容   | 说明                                       |
+|--------|-------------------------------------|------|------------------------------------------|
+| 上传属性   | device/${device_id}/values          | json | {k:v}                                    |
+| 读取属性   | device/${device_id}/read            | json | {msg_id, points:[k,]}                    |
+| 读取属性响应 | device/${device_id}/read/response   | json | {msg_id, points:{k:v}}                   |
+| 修改属性   | device/${device_id}/write           | json | {msg_id, points:{k:v}}                   |
+| 修改属性响应 | device/${device_id}/write/response  | json | {msg_id, points:{k:bool}}                |
+| 上报事件   | device/${device_id}/event           | json | {title, message, level,}                 |
+| 执行操作   | device/${device_id}/action          | json | {msg_id, action:"reboot", parameters:{}} |
+| 执行操作响应 | device/${device_id}/action/response | json | {msg_id, action:"reboot", result: {}}    |
 
 ### 备注：
 
+1. device_id：设备ID
+2. msg_id：消息ID
+
 ## 五、项目消息
+
+| 消息   | 主题                                        | 内容   | 说明                       |
+|------|-------------------------------------------|------|--------------------------|
+| 上传属性 | project/${project_id}/${device_id}/values | json | {k:v}                    |
+| 上报事件 | project/${project_id}/${device_id}/event  | json | {title, message, level,} |
+
+### 备注：
+
+1. project_id：项目ID
+2.
 
 ## 六、空间消息
 
+| 消息   | 主题                                    | 内容   | 说明                       |
+|------|---------------------------------------|------|--------------------------|
+| 上传属性 | space/${space_id}/${device_id}/values | json | {k:v}                    |
+| 上报事件 | space/${space_id}/${device_id}/event  | json | {title, message, level,} |
+
+### 备注：
+
+1. space_id：空间ID
+
 ## 七、异常消息
+
+| 消息   | 主题                       | 内容   | 说明                             |
+|------|--------------------------|------|--------------------------------|
+| 推送消息 | push/${device_id}/values | json | {user_id, device_id, event:{}} |
 
 # 协议库支持统计
 
