@@ -13,7 +13,6 @@
 - 支持智能家居应用场景，定时和联动控制
 - 支持WebRTC点对点视频传输
 
-物联大师，物联小白 是本易物联网的一部分，更多信息请关注：[链接](https://busycloud.cn)
 
 # MQTT主题规范
 
@@ -21,7 +20,11 @@
 
 ## 一、连接消息
 
-MQTT主题：link/${linker_name}/${link_id}/#
+MQTT主题：
+
+```javascript
+`link/${linker_name}/${link_id}/#`
+```
 
 | 消息   | 主题        | 内容   | 说明                        |
 |------|-----------|------|---------------------------|
@@ -37,7 +40,11 @@ MQTT主题：link/${linker_name}/${link_id}/#
 
 ## 二、协议插件消息
 
-MQTT主题：protocol/${protocol_name}/${linker_name}/${link_id}/#
+MQTT主题：
+
+```javascript
+`protocol/${protocol_name}/${linker_name}/${link_id}/#`
+```
 
 | 消息   | 主题         | 内容   | 说明                                          |
 |------|------------|------|---------------------------------------------|
@@ -61,7 +68,11 @@ MQTT主题：protocol/${protocol_name}/${linker_name}/${link_id}/#
 
 ## 三、产品消息
 
-MQTT主题：product/${product_id}/#
+MQTT主题：
+
+```javascript
+`product/${product_id}/#`
+```
 
 | 消息   | 主题                        | 内容   | 说明 |
 |------|---------------------------|------|----|
@@ -74,7 +85,11 @@ MQTT主题：product/${product_id}/#
 
 ## 四、设备消息
 
-MQTT主题：device/${device_id}/#
+MQTT主题：
+
+```javascript
+`device/${device_id}/#`
+```
 
 | 消息     | 主题                  | 内容   | 说明                                       |
 |--------|---------------------|------|------------------------------------------|
@@ -96,7 +111,11 @@ MQTT主题：device/${device_id}/#
 
 ## 五、项目消息
 
-MQTT主题：project/${project_id}/${device_id}/#
+MQTT主题：
+
+```javascript
+`project/${project_id}/${device_id}/#`
+```
 
 | 消息   | 主题         | 内容   | 说明                       |
 |------|------------|------|--------------------------|
@@ -110,7 +129,11 @@ MQTT主题：project/${project_id}/${device_id}/#
 
 ## 六、空间消息
 
-MQTT主题：space/${space_id}/${device_id}/#
+MQTT主题：
+
+```javascript
+`space/${space_id}/${device_id}/#`
+```
 
 | 消息   | 主题         | 内容   | 说明                       |
 |------|------------|------|--------------------------|
@@ -165,7 +188,7 @@ MQTT主题：space/${space_id}/${device_id}/#
 
 # 联系方式
 
-南京本易物联网有限公司
+南京真格智能科技有限公司 [链接](https://zgwit.com)
 
 - 邮箱：[jason@zgwit.com](mailto:jason@zgwit.com)
 - 手机：[15161515197](tel:15161515197)(微信同号)
