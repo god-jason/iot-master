@@ -21,12 +21,14 @@
 
 ## 一、连接消息
 
-| 消息   | 主题                                   | 内容   | 说明                        |
-|------|--------------------------------------|------|---------------------------|
-| 打开连接 | link/${linker_name}/${link_id}/open  | json | {...options, remote:"ip"} |
-| 关闭连接 | link/${linker_name}/${link_id}/close | none |                           |
-| 接收数据 | link/${linker_name}/${link_id}/up    | bin  | 原始二进制                     |
-| 发送数据 | link/${linker_name}/${link_id}/down  | bin  | 原始二进制                     |
+MQTT主题：link/${linker_name}/${link_id}/#
+
+| 消息   | 主题        | 内容   | 说明                        |
+|------|-----------|------|---------------------------|
+| 打开连接 | .../open  | json | {...options, remote:"ip"} |
+| 关闭连接 | .../close | none |                           |
+| 接收数据 | .../up    | bin  | 原始二进制                     |
+| 发送数据 | .../down  | bin  | 原始二进制                     |
 
 ### 备注：
 
@@ -35,15 +37,18 @@
 
 ## 二、协议插件消息
 
-| 消息   | 主题                                                          | 内容   | 说明                                          |
-|------|-------------------------------------------------------------|------|---------------------------------------------|
-| 打开连接 | protocol/${protocol_name}/${linker_name}/${link_id}/open    | json | {devices:[{product_id,device_id,slave...}]} |
-| 关闭连接 | protocol/${protocol_name}/${linker_name}/${link_id}/close   | none |                                             |
-| 接收数据 | protocol/${protocol_name}/${linker_name}/${link_id}/up      | bin  | 将原始数据定向发送到协议插件                              |
-| 数据轮询 | protocol/${protocol_name}/${linker_name}/${link_id}/polling | json | {msg_id, }                                  |
-| 读取数据 | protocol/${protocol_name}/${linker_name}/${link_id}/read    | json | {msg_id, device_id, points:[]}              |
-| 写入数据 | protocol/${protocol_name}/${linker_name}/${link_id}/write   | json | {msg_id, device_id, points:{k:v}}           |
-| 执行操作 | protocol/${protocol_name}/${linker_name}/${link_id}/action  | json | {msg_id, device_id, action, parameters}     |
+MQTT主题：protocol/${protocol_name}/${linker_name}/${link_id}/#
+
+| 消息   | 主题         | 内容   | 说明                                          |
+|------|------------|------|---------------------------------------------|
+| 打开连接 | .../open   | json | {devices:[{product_id,device_id,slave...}]} |
+| 关闭连接 | .../close  | none |                                             |
+| 接收数据 | .../up     | bin  | 将原始数据定向发送到协议插件                              |
+| 数据轮询 | .../poll   | json | {msg_id, }                                  |
+| 数据同步 | .../sync   | json | {msg_id, device_id}                         |
+| 读取数据 | .../read   | json | {msg_id, device_id, points:[]}              |
+| 写入数据 | .../write  | json | {msg_id, device_id, values:{k:v}}           |
+| 执行操作 | .../action | json | {msg_id, device_id, action, parameters}     |
 
 ### 备注：
 
@@ -56,10 +61,12 @@
 
 ## 三、产品消息
 
-| 消息   | 主题                                          | 内容   | 说明 |
-|------|---------------------------------------------|------|----|
-| 产品配置 | product/${product_id}/config/${config_name} | json |    |
-| 产品模型 | product/${product_id}/model                 | json |    |
+MQTT主题：product/${product_id}/#
+
+| 消息   | 主题                        | 内容   | 说明 |
+|------|---------------------------|------|----|
+| 产品配置 | .../config/${config_name} | json |    |
+| 产品模型 | .../model                 | json |    |
 
 ### 备注：
 
@@ -67,16 +74,20 @@
 
 ## 四、设备消息
 
-| 消息     | 主题                                  | 内容   | 说明                                       |
-|--------|-------------------------------------|------|------------------------------------------|
-| 上传属性   | device/${device_id}/values          | json | {k:v}                                    |
-| 读取属性   | device/${device_id}/read            | json | {msg_id, points:[k,]}                    |
-| 读取属性响应 | device/${device_id}/read/response   | json | {msg_id, points:{k:v}}                   |
-| 修改属性   | device/${device_id}/write           | json | {msg_id, points:{k:v}}                   |
-| 修改属性响应 | device/${device_id}/write/response  | json | {msg_id, points:{k:bool}}                |
-| 上报事件   | device/${device_id}/event           | json | {title, message, level,}                 |
-| 执行操作   | device/${device_id}/action          | json | {msg_id, action:"reboot", parameters:{}} |
-| 执行操作响应 | device/${device_id}/action/response | json | {msg_id, action:"reboot", result: {}}    |
+MQTT主题：device/${device_id}/#
+
+| 消息     | 主题                  | 内容   | 说明                                       |
+|--------|---------------------|------|------------------------------------------|
+| 上传属性   | .../values          | json | {k:v}                                    |
+| 读取属性   | .../sync            | json | {msg_id}                                 |
+| 读取属性响应 | .../sync/response   | json | {msg_id, values:{k:v}}                   |
+| 读取属性   | .../read            | json | {msg_id, points:[k,]}                    |
+| 读取属性响应 | .../read/response   | json | {msg_id, values:{k:v}}                   |
+| 修改属性   | .../write           | json | {msg_id, values:{k:v}}                   |
+| 修改属性响应 | .../write/response  | json | {msg_id, results:{k:bool}}               |
+| 上报事件   | .../event           | json | {title, message, level,}                 |
+| 执行操作   | .../action          | json | {msg_id, action:"reboot", parameters:{}} |
+| 执行操作响应 | .../action/response | json | {msg_id, action:"reboot", result: {}}    |
 
 ### 备注：
 
@@ -85,10 +96,12 @@
 
 ## 五、项目消息
 
-| 消息   | 主题                                        | 内容   | 说明                       |
-|------|-------------------------------------------|------|--------------------------|
-| 上传属性 | project/${project_id}/${device_id}/values | json | {k:v}                    |
-| 上报事件 | project/${project_id}/${device_id}/event  | json | {title, message, level,} |
+MQTT主题：project/${project_id}/${device_id}/#
+
+| 消息   | 主题         | 内容   | 说明                       |
+|------|------------|------|--------------------------|
+| 上传属性 | .../values | json | {k:v}                    |
+| 上报事件 | .../event  | json | {title, message, level,} |
 
 ### 备注：
 
@@ -97,10 +110,12 @@
 
 ## 六、空间消息
 
-| 消息   | 主题                                    | 内容   | 说明                       |
-|------|---------------------------------------|------|--------------------------|
-| 上传属性 | space/${space_id}/${device_id}/values | json | {k:v}                    |
-| 上报事件 | space/${space_id}/${device_id}/event  | json | {title, message, level,} |
+MQTT主题：space/${space_id}/${device_id}/#
+
+| 消息   | 主题         | 内容   | 说明                       |
+|------|------------|------|--------------------------|
+| 上传属性 | .../values | json | {k:v}                    |
+| 上报事件 | .../event  | json | {title, message, level,} |
 
 ### 备注：
 
