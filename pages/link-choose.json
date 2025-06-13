@@ -55,5 +55,5 @@
       "type": "bool"
     }
   ],
-  "search_api": "link/search"
+  "search_api": "iot/link/search"
 }
