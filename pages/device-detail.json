@@ -56,24 +56,14 @@
       }
     },
     {
-      "key": "linker_id",
-      "label": "连接器ID",
-      "type": "text",
-      "action": {
-        "type": "page",
-        "page": "connector/linker-detail",
-        "params_func": "return {id: data.linker_id}"
-      }
+      "key": "linker",
+      "label": "连接器",
+      "type": "text"
     },
     {
-      "key": "incoming_id",
-      "label": "TCP连接器ID",
-      "type": "text",
-      "action": {
-        "type": "page",
-        "page": "connector/tcp-incoming-detail",
-        "params_func": "return {id: data.incoming_id}"
-      }
+      "key": "link_id",
+      "label": "连接器ID",
+      "type": "text"
     },
     {
       "key": "station",

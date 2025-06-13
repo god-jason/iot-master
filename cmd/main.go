@@ -10,11 +10,10 @@ import (
 	"github.com/busy-cloud/boat/service"
 	_ "github.com/busy-cloud/boat/table"
 	"github.com/busy-cloud/boat/web"
-	_ "github.com/busy-cloud/connector"
 	_ "github.com/busy-cloud/dash"
 	_ "github.com/busy-cloud/influxdb"
 	_ "github.com/busy-cloud/modbus"
-	_ "github.com/busy-cloud/noob"
+	_ "github.com/busy-cloud/tcp-server"
 	_ "github.com/busy-cloud/user"
 	_ "github.com/god-jason/iot-master" //主程序
 	"github.com/spf13/pflag"

@@ -110,5 +110,6 @@
       "type": "date"
     }
   ],
-  "search_api": "iot/device/search"
+  "search_api": "iot/device/search",
+  "mount": "if(this.params.link_id)this.filter.link_id=this.params.link_id;"
 }

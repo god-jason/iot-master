@@ -27,16 +27,9 @@
       }
     },
     {
-      "key": "linker_id",
-      "label": "连接器ID",
-      "type": "text",
-      "placeholder": "使用连接器时需要选择"
-    },
-    {
-      "key": "incoming_id",
-      "label": "TCP连接器ID",
-      "type": "text",
-      "placeholder": "TCP服务器时需要选择"
+      "key": "link_id",
+      "label": "连接ID",
+      "type": "text"
     },
     {
       "key": "station",

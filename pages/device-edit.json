@@ -13,20 +13,11 @@
     },
     {
       "type": "button",
-      "label": "选择连接器ID",
+      "label": "选择连接ID",
       "action": {
         "type": "dialog",
-        "page": "connector/linker-choose",
-        "after_close": "this.editor.patchValue({linker_id: result.id})"
-      }
-    },
-    {
-      "type": "button",
-      "label": "选择TCP连接器ID",
-      "action": {
-        "type": "dialog",
-        "page": "connector/tcp-incoming-choose",
-        "after_close": "this.editor.patchValue({incoming_id: result.id})"
+        "page": "iot/link-choose",
+        "after_close": "this.editor.patchValue({link_id: result.id})"
       }
     }
   ],
@@ -56,16 +47,9 @@
       }
     },
     {
-      "key": "linker_id",
-      "label": "连接器ID",
-      "type": "text",
-      "placeholder": "使用连接器时需要选择"
-    },
-    {
-      "key": "incoming_id",
-      "label": "TCP连接器ID",
-      "type": "text",
-      "placeholder": "TCP服务器时需要选择"
+      "key": "link_id",
+      "label": "连接ID",
+      "type": "text"
     },
     {
       "key": "station",
@@ -87,6 +71,6 @@
   "mount": "",
   "methods": {
     "load_product": "this.editor.value.product_id && this.request.get('iot/product/'+this.editor.value.product_id).subscribe(res=>{if(!res.error) this.load_protocol_station(res.data.protocol)})",
-    "load_protocol_station": ["p", "this.request.get('iot/protocol/'+p).subscribe(res=>{this.content.fields[6].children=res.station; setTimeout(()=>this.editor.rebuild(), 200)})"]
+    "load_protocol_station": ["p", "this.request.get('iot/protocol/'+p).subscribe(res=>{this.content.fields[5].children=res.station; setTimeout(()=>this.editor.rebuild(), 200)})"]
    }
 }

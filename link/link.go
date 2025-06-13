@@ -22,6 +22,6 @@ type Link struct {
 }
 
 type Status struct {
-	Running bool   `json:"running"`
-	Error   string `json:"error"`
+	Running bool   `json:"running,omitempty" xorm:"-"`
+	Error   string `json:"error,omitempty" xorm:"-"`
 }
