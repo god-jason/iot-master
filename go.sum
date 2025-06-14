@@ -12,8 +12,8 @@ github.com/apapsch/go-jsonmerge/v2 v2.0.0/go.mod h1:lvDnEdqiQrp0O42VQGgmlKpxL1AP
 github.com/bmatcuk/doublestar v1.1.1/go.mod h1:UD6OnuiIn0yFxxA2le/rnRU1G4RaI4UvFv1sNto9p6w=
 github.com/busy-cloud/boat v0.5.2 h1:QUskZpuB6Fr8dPhTK3XM7avaDj2WoCS0CNzojfk9txc=
 github.com/busy-cloud/boat v0.5.2/go.mod h1:pArkdISo2peFMtlA61Cex6tftBZ7cXDqfgd/UKZ1zIU=
-github.com/busy-cloud/boat-ui v0.5.0 h1:yTmAtqjQNQJ4IKR5MBrnb6PzTuR9k0d+1aejW+k87LM=
-github.com/busy-cloud/boat-ui v0.5.0/go.mod h1:t9DwLmJyjbPHcm+IKzC9qUE7futO0pLigI9HIPbkhg0=
+github.com/busy-cloud/boat-ui v0.5.1 h1:Zw8K/jPpzly7z7ni5OtzHCO/GztCPfCFKlo4JcedwOQ=
+github.com/busy-cloud/boat-ui v0.5.1/go.mod h1:t9DwLmJyjbPHcm+IKzC9qUE7futO0pLigI9HIPbkhg0=
 github.com/busy-cloud/dash v0.5.0 h1:v7onTsSlRKKPN/OHnczyAfPL8+h0pIzrF6FHNh1IJT8=
 github.com/busy-cloud/dash v0.5.0/go.mod h1:YpLLCh50vwRy47NM9FFrAeg07Mh0qLxz6dzqYPJZm9c=
 github.com/busy-cloud/influxdb v0.2.3 h1:VW+5/q+/ClImAzrxwNT9zaXIbuHKch6rhKy9sJfOygg=
