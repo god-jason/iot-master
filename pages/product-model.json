@@ -4,7 +4,7 @@
   "fields": [
     {
       "key": "properties",
-      "label": "属性表",
+      "label": "属性",
       "type": "table",
       "children": [
         {
@@ -55,6 +55,60 @@
           "label": "精度",
           "type": "number",
           "default": 0
+        }
+      ]
+    },
+    {
+      "key": "actions",
+      "label": "动作",
+      "type": "list",
+      "children": [
+        {
+          "key": "name",
+          "label": "名称",
+          "type": "text"
+        },
+        {
+          "key": "label",
+          "label": "显示",
+          "type": "text"
+        },
+        {
+          "key": "parameters",
+          "type": "table",
+          "label": "参数",
+          "children": [
+            {
+              "key": "key",
+              "label": "变量",
+              "type": "text"
+            },
+            {
+              "key": "label",
+              "label": "显示",
+              "type": "text"
+            },
+            {
+              "key": "type",
+              "label": "类型",
+              "type": "select",
+              "default": "number",
+              "options": [
+                {
+                  "label": "数值",
+                  "value": "number"
+                },
+                {
+                  "label": "布尔",
+                  "value": "switch"
+                },
+                {
+                  "label": "字符串",
+                  "value": "text"
+                }
+              ]
+            }
+          ]
         }
       ]
     },

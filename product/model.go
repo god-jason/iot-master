@@ -20,8 +20,9 @@ type Property struct {
 }
 
 type Parameter struct {
-	Name string `json:"name,omitempty"`
-	Type string `json:"type,omitempty"`
+	Key   string `json:"key,omitempty"`
+	Label string `json:"label,omitempty"`
+	Type  string `json:"type,omitempty"`
 }
 
 type Event struct {
@@ -32,6 +33,7 @@ type Event struct {
 
 type Action struct {
 	Name        string      `json:"name,omitempty"`
+	Label       string      `json:"label,omitempty"`
 	Description string      `json:"description,omitempty"`
 	Parameters  []Parameter `json:"parameters,omitempty"`
 	Returns     []Parameter `json:"returns,omitempty"`

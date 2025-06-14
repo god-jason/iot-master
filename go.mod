@@ -8,7 +8,7 @@ require (
 	github.com/busy-cloud/boat-ui v0.5.1
 	github.com/busy-cloud/dash v0.5.0
 	github.com/busy-cloud/influxdb v0.2.3
-	github.com/busy-cloud/modbus v0.3.1
+	github.com/busy-cloud/modbus v0.3.3
 	github.com/busy-cloud/tcp-server v0.0.10
 	github.com/busy-cloud/user v0.5.0
 	github.com/gin-gonic/gin v1.10.1

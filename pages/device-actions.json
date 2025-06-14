@@ -1,0 +1,13 @@
+{
+  "title": "动作响应",
+  "template": "info",
+  "toolbar": [
+
+  ],
+  "items": [],
+  "mount": "this.load_device(); this.btn_action={type:'dialog',page:'iot/device-action',params_func:'return {id:this.params.id, action:data}'}",
+  "methods": {
+    "load_device": "this.request.get('iot/device/'+this.params.id).subscribe(res=>{if(res.error)return; this.load_model(res.data.product_id)})",
+    "load_model": ["pid","this.request.get('iot/product/'+pid+'/model').subscribe(res=>{if(res.error)return; this.content.toolbar=res.data.actions.map(p=>{return{type:'button', label:p.label||p.name, action:{type:'dialog',page:'iot/device-action',params:{id:this.params.id, action:p.name, parameters:p.parameters}}}}); })"]
+  }
+}
