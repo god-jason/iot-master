@@ -6,6 +6,7 @@ import (
 	"github.com/busy-cloud/boat/db"
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
+	"github.com/god-jason/iot-master/protocol"
 	"strings"
 )
 
@@ -46,95 +47,75 @@ func Startup() error {
 		d.PutValues(values)
 	})
 
-	mqtt.Subscribe(DeviceTopic+"sync", func(topic string, payload []byte) {
+	mqtt.SubscribeStruct[protocol.SyncRequest](DeviceTopic+"sync", func(topic string, request *protocol.SyncRequest) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 
-		var args map[string]any
-		err := json.Unmarshal(payload, &args)
-		if err != nil {
-			log.Error(err)
-			return
-		}
-		args["device_id"] = id
-
 		dev := devices.Load(id)
 		if dev == nil {
+			mqtt.Publish(topic+"/response", &protocol.Response{MsgId: request.MsgId, Error: "设备未上线"})
 			return
 		}
+
+		request.DeviceId = id
 
 		//转发给具体协议
 		topic = fmt.Sprintf("protocol/%s/%s/%s/sync", dev.protocol, dev.linker, dev.LinkId)
-		mqtt.Publish(topic, args)
+		mqtt.Publish(topic, request)
 	})
 
-	mqtt.Subscribe(DeviceTopic+"read", func(topic string, payload []byte) {
+	mqtt.SubscribeStruct[protocol.ReadRequest](DeviceTopic+"read", func(topic string, request *protocol.ReadRequest) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 
-		var args map[string]any
-		err := json.Unmarshal(payload, &args)
-		if err != nil {
-			log.Error(err)
-			return
-		}
-		args["device_id"] = id
-
 		dev := devices.Load(id)
 		if dev == nil {
+			mqtt.Publish(topic+"/response", &protocol.Response{MsgId: request.MsgId, Error: "设备未上线"})
 			return
 		}
+
+		request.DeviceId = id
 
 		//转发给具体协议
 		topic = fmt.Sprintf("protocol/%s/%s/%s/read", dev.protocol, dev.linker, dev.LinkId)
-		mqtt.Publish(topic, args)
+		mqtt.Publish(topic, request)
 	})
 
-	mqtt.Subscribe(DeviceTopic+"write", func(topic string, payload []byte) {
+	mqtt.SubscribeStruct[protocol.WriteRequest](DeviceTopic+"write", func(topic string, request *protocol.WriteRequest) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 
-		var args map[string]any
-		err := json.Unmarshal(payload, &args)
-		if err != nil {
-			log.Error(err)
-			return
-		}
-		args["device_id"] = id
-
 		dev := devices.Load(id)
 		if dev == nil {
+			mqtt.Publish(topic+"/response", &protocol.Response{MsgId: request.MsgId, Error: "设备未上线"})
 			return
 		}
+
+		request.DeviceId = id
 
 		//转发给具体协议
 		topic = fmt.Sprintf("protocol/%s/%s/%s/write", dev.protocol, dev.linker, dev.LinkId)
-		mqtt.Publish(topic, args)
+		mqtt.Publish(topic, request)
 	})
 
-	mqtt.Subscribe(DeviceTopic+"action", func(topic string, payload []byte) {
+	mqtt.SubscribeStruct[protocol.ActionRequest](DeviceTopic+"action", func(topic string, request *protocol.ActionRequest) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 
-		var args map[string]any
-		err := json.Unmarshal(payload, &args)
-		if err != nil {
-			log.Error(err)
-			return
-		}
-		args["device_id"] = id
-
 		dev := devices.Load(id)
 		if dev == nil {
+			mqtt.Publish(topic+"/response", &protocol.Response{MsgId: request.MsgId, Error: "设备未上线"})
 			return
 		}
+
+		request.DeviceId = id
 
 		//转发给具体协议
 		topic = fmt.Sprintf("protocol/%s/%s/%s/action", dev.protocol, dev.linker, dev.LinkId)
-		mqtt.Publish(topic, args)
+		mqtt.Publish(topic, request)
 	})
 
-	mqtt.SubscribeStruct[SyncResponse](DeviceTopic+"sync/response", func(topic string, resp *SyncResponse) {
+	mqtt.SubscribeStruct[protocol.SyncResponse](DeviceTopic+"sync/response", func(topic string, resp *protocol.SyncResponse) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)
@@ -144,7 +125,7 @@ func Startup() error {
 		dev.onSyncResponse(resp)
 	})
 
-	mqtt.SubscribeStruct[ReadResponse](DeviceTopic+"read/response", func(topic string, resp *ReadResponse) {
+	mqtt.SubscribeStruct[protocol.ReadResponse](DeviceTopic+"read/response", func(topic string, resp *protocol.ReadResponse) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)
@@ -154,7 +135,7 @@ func Startup() error {
 		dev.onReadResponse(resp)
 	})
 
-	mqtt.SubscribeStruct[WriteResponse](DeviceTopic+"write/response", func(topic string, resp *WriteResponse) {
+	mqtt.SubscribeStruct[protocol.WriteResponse](DeviceTopic+"write/response", func(topic string, resp *protocol.WriteResponse) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)
@@ -164,7 +145,7 @@ func Startup() error {
 		dev.onWriteResponse(resp)
 	})
 
-	mqtt.SubscribeStruct[ActionResponse](DeviceTopic+"action/response", func(topic string, resp *ActionResponse) {
+	mqtt.SubscribeStruct[protocol.ActionResponse](DeviceTopic+"action/response", func(topic string, resp *protocol.ActionResponse) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)

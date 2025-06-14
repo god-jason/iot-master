@@ -26,6 +26,11 @@ func Startup() error {
 			mqtt.Publish("iot/protocol/register", p)
 			return true
 		})
+
+		//订阅
+		for _, subscribe := range subscribes {
+			subscribe()
+		}
 	}
 
 	return nil

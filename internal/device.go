@@ -10,10 +10,10 @@ import (
 	"github.com/god-jason/iot-master/link"
 	"github.com/god-jason/iot-master/product"
 	"github.com/god-jason/iot-master/project"
+	"github.com/god-jason/iot-master/protocol"
 	"github.com/god-jason/iot-master/space"
 	"math/rand"
 	"strconv"
-	"sync"
 	"time"
 )
 
@@ -37,12 +37,12 @@ type Device struct {
 
 	validators []*Validator
 
-	waitingResponse map[string]chan any
-	waitingLock     sync.RWMutex
+	//waitingResponse map[string]chan any
+	//waitingLock     sync.RWMutex
+	waiting lib.Map[chan any]
 }
 
 func (d *Device) Open() error {
-	d.waitingResponse = make(map[string]chan any)
 
 	//加载连接(主要是协议)
 	if d.LinkId != "" {
@@ -174,19 +174,31 @@ func (d *Device) GetValues() map[string]any {
 	return d.values.Get()
 }
 
-type SyncRequest struct {
-	MsgId    string `json:"msg_id"`
-	DeviceId string `json:"device_id"`
-}
+func (d *Device) waitResponse(msg_id string, timeout int) (any, error) {
+	//等待消息
+	ch := make(chan any)
 
-type SyncResponse struct {
-	MsgId    string         `json:"msg_id"`
-	DeviceId string         `json:"device_id"`
-	Values   map[string]any `json:"values"`
+	c := d.waiting.LoadAndStore(msg_id, &ch)
+	if c != nil {
+		close(*c)
+	}
+
+	if timeout < 1 {
+		timeout = 30
+	}
+
+	select {
+	case resp := <-ch:
+		d.waiting.Delete(msg_id)
+		return resp, nil
+	case <-time.After(time.Duration(timeout) * time.Second):
+		d.waiting.Delete(msg_id)
+		return nil, errors.New("请求超时")
+	}
 }
 
 func (d *Device) Sync(timeout int) (map[string]any, error) {
-	req := SyncRequest{
+	req := protocol.SyncRequest{
 		MsgId:    strconv.FormatInt(rand.Int63(), 10),
 		DeviceId: d.Id,
 	}
@@ -197,57 +209,27 @@ func (d *Device) Sync(timeout int) (map[string]any, error) {
 		return nil, err
 	}
 
-	//等待消息
-	ch := make(chan any)
-
-	d.waitingLock.Lock()
-	d.waitingResponse[req.MsgId] = ch
-	d.waitingLock.Unlock()
-
-	if timeout < 1 {
-		timeout = 30
+	resp, err := d.waitResponse(req.MsgId, timeout)
+	if err != nil {
+		return nil, err
 	}
 
-	select {
-	case resp := <-ch:
-		if res, ok := resp.(*SyncResponse); ok {
-			return res.Values, nil
-		} else {
-			return nil, errors.New("want type SyncResponse")
-		}
-	case <-time.After(time.Duration(timeout) * time.Second):
-
-		d.waitingLock.Lock()
-		delete(d.waitingResponse, req.MsgId)
-		d.waitingLock.Unlock()
-
-		return nil, errors.New("请求超时")
+	if res, ok := resp.(*protocol.SyncResponse); ok {
+		return res.Values, nil
+	} else {
+		return nil, errors.New("want type SyncResponse")
 	}
 }
 
-func (d *Device) onSyncResponse(resp *SyncResponse) {
-	d.waitingLock.RLock()
-	defer d.waitingLock.RUnlock()
-
-	if ch, ok := d.waitingResponse[resp.MsgId]; ok {
-		ch <- ch
+func (d *Device) onSyncResponse(resp *protocol.SyncResponse) {
+	c := d.waiting.LoadAndDelete(resp.MsgId)
+	if c != nil {
+		*c <- resp
 	}
-}
-
-type ReadRequest struct {
-	MsgId    string   `json:"msg_id"`
-	DeviceId string   `json:"device_id"`
-	Points   []string `json:"points"`
-}
-
-type ReadResponse struct {
-	MsgId    string         `json:"msg_id"`
-	DeviceId string         `json:"device_id"`
-	Values   map[string]any `json:"values"`
 }
 
 func (d *Device) Read(points []string, timeout int) (map[string]any, error) {
-	req := ReadRequest{
+	req := protocol.ReadRequest{
 		MsgId:    strconv.FormatInt(rand.Int63(), 10),
 		DeviceId: d.Id,
 	}
@@ -258,57 +240,27 @@ func (d *Device) Read(points []string, timeout int) (map[string]any, error) {
 		return nil, err
 	}
 
-	//等待消息
-	ch := make(chan any)
-
-	d.waitingLock.Lock()
-	d.waitingResponse[req.MsgId] = ch
-	d.waitingLock.Unlock()
-
-	if timeout < 1 {
-		timeout = 30
+	resp, err := d.waitResponse(req.MsgId, timeout)
+	if err != nil {
+		return nil, err
 	}
 
-	select {
-	case resp := <-ch:
-		if res, ok := resp.(*ReadResponse); ok {
-			return res.Values, nil
-		} else {
-			return nil, errors.New("want type ReadResponse")
-		}
-	case <-time.After(time.Duration(timeout) * time.Second):
-
-		d.waitingLock.Lock()
-		delete(d.waitingResponse, req.MsgId)
-		d.waitingLock.Unlock()
-
-		return nil, errors.New("请求超时")
+	if res, ok := resp.(*protocol.ReadResponse); ok {
+		return res.Values, nil
+	} else {
+		return nil, errors.New("want type ReadResponse")
 	}
 }
 
-func (d *Device) onReadResponse(resp *ReadResponse) {
-	d.waitingLock.RLock()
-	defer d.waitingLock.RUnlock()
-
-	if ch, ok := d.waitingResponse[resp.MsgId]; ok {
-		ch <- ch
+func (d *Device) onReadResponse(resp *protocol.ReadResponse) {
+	c := d.waiting.LoadAndDelete(resp.MsgId)
+	if c != nil {
+		*c <- resp
 	}
-}
-
-type WriteRequest struct {
-	MsgId    string         `json:"msg_id"`
-	DeviceId string         `json:"device_id"`
-	Values   map[string]any `json:"values"`
-}
-
-type WriteResponse struct {
-	MsgId    string          `json:"msg_id"`
-	DeviceId string          `json:"device_id"`
-	Result   map[string]bool `json:"result"`
 }
 
 func (d *Device) Write(values map[string]any, timeout int) (map[string]bool, error) {
-	req := WriteRequest{
+	req := protocol.WriteRequest{
 		MsgId:    strconv.FormatInt(rand.Int63(), 10),
 		DeviceId: d.Id,
 		Values:   values,
@@ -320,58 +272,27 @@ func (d *Device) Write(values map[string]any, timeout int) (map[string]bool, err
 		return nil, err
 	}
 
-	//等待消息
-	ch := make(chan any)
-
-	d.waitingLock.Lock()
-	d.waitingResponse[req.MsgId] = ch
-	d.waitingLock.Unlock()
-
-	if timeout < 1 {
-		timeout = 30
+	resp, err := d.waitResponse(req.MsgId, timeout)
+	if err != nil {
+		return nil, err
 	}
 
-	select {
-	case resp := <-ch:
-		if res, ok := resp.(*WriteResponse); ok {
-			return res.Result, nil
-		} else {
-			return nil, errors.New("want type WriteResponse")
-		}
-	case <-time.After(time.Duration(timeout) * time.Second):
-
-		d.waitingLock.Lock()
-		delete(d.waitingResponse, req.MsgId)
-		d.waitingLock.Unlock()
-
-		return nil, errors.New("请求超时")
+	if res, ok := resp.(*protocol.WriteResponse); ok {
+		return res.Result, nil
+	} else {
+		return nil, errors.New("want type WriteResponse")
 	}
 }
 
-func (d *Device) onWriteResponse(resp *WriteResponse) {
-	d.waitingLock.RLock()
-	defer d.waitingLock.RUnlock()
-
-	if ch, ok := d.waitingResponse[resp.MsgId]; ok {
-		ch <- ch
+func (d *Device) onWriteResponse(resp *protocol.WriteResponse) {
+	c := d.waiting.LoadAndDelete(resp.MsgId)
+	if c != nil {
+		*c <- resp
 	}
-}
-
-type ActionRequest struct {
-	MsgId      string         `json:"msg_id"`
-	DeviceId   string         `json:"device_id"`
-	Action     string         `json:"action"`
-	Parameters map[string]any `json:"parameters"`
-}
-
-type ActionResponse struct {
-	MsgId    string         `json:"msg_id"`
-	DeviceId string         `json:"device_id"`
-	Result   map[string]any `json:"result"`
 }
 
 func (d *Device) Action(action string, parameters map[string]any, timeout int) (map[string]any, error) {
-	req := ActionRequest{
+	req := protocol.ActionRequest{
 		MsgId:      strconv.FormatInt(rand.Int63(), 10),
 		DeviceId:   d.Id,
 		Action:     action,
@@ -384,39 +305,21 @@ func (d *Device) Action(action string, parameters map[string]any, timeout int) (
 		return nil, err
 	}
 
-	//等待消息
-	ch := make(chan any)
-
-	d.waitingLock.Lock()
-	d.waitingResponse[req.MsgId] = ch
-	d.waitingLock.Unlock()
-
-	if timeout < 1 {
-		timeout = 30
+	resp, err := d.waitResponse(req.MsgId, timeout)
+	if err != nil {
+		return nil, err
 	}
 
-	select {
-	case resp := <-ch:
-		if res, ok := resp.(*ActionResponse); ok {
-			return res.Result, nil
-		} else {
-			return nil, errors.New("want type ActionResponse")
-		}
-	case <-time.After(time.Duration(timeout) * time.Second):
-
-		d.waitingLock.Lock()
-		delete(d.waitingResponse, req.MsgId)
-		d.waitingLock.Unlock()
-
-		return nil, errors.New("请求超时")
+	if res, ok := resp.(*protocol.ActionResponse); ok {
+		return res.Result, nil
+	} else {
+		return nil, errors.New("want type ActionResponse")
 	}
 }
 
-func (d *Device) onActionResponse(resp *ActionResponse) {
-	d.waitingLock.RLock()
-	defer d.waitingLock.RUnlock()
-
-	if ch, ok := d.waitingResponse[resp.MsgId]; ok {
-		ch <- ch
+func (d *Device) onActionResponse(resp *protocol.ActionResponse) {
+	c := d.waiting.LoadAndDelete(resp.MsgId)
+	if c != nil {
+		*c <- resp
 	}
 }
