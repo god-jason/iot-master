@@ -9,7 +9,7 @@ require (
 	github.com/busy-cloud/dash v0.5.0
 	github.com/busy-cloud/influxdb v0.2.3
 	github.com/busy-cloud/modbus v0.2.13
-	github.com/busy-cloud/tcp-server v0.0.7
+	github.com/busy-cloud/tcp-server v0.0.8
 	github.com/busy-cloud/user v0.5.0
 	github.com/gin-gonic/gin v1.10.1
 	github.com/spf13/cast v1.8.0

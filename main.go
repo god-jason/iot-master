@@ -8,7 +8,6 @@ import (
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/store"
 	_ "github.com/god-jason/iot-master/internal"
-	"github.com/god-jason/iot-master/protocol"
 )
 
 //go:embed assets
@@ -20,13 +19,7 @@ var pages embed.FS
 //go:embed manifest.json
 var manifest []byte
 
-//go:embed protocols
-var protocols embed.FS
-
 func init() {
-	//注册协议
-	protocol.EmbedFS(&protocols, "protocols")
-
 	//注册为内部插件
 	var a apps.App
 	err := json.Unmarshal(manifest, &a)

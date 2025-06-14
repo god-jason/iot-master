@@ -17,7 +17,6 @@ import (
 	_ "github.com/busy-cloud/tcp-server"
 	_ "github.com/busy-cloud/user"
 	_ "github.com/god-jason/iot-master"
-	"github.com/god-jason/iot-master/protocol"
 	"github.com/spf13/viper"
 	"os"
 	"os/signal"
@@ -41,9 +40,6 @@ func init() {
 	//注册资源
 	a.AssetsFS = store.Dir("assets")
 	a.PagesFS = store.Dir("pages")
-
-	//协议
-	protocol.Dir("protocols")
 }
 
 func main() {

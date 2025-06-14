@@ -20,8 +20,8 @@ github.com/busy-cloud/influxdb v0.2.3 h1:VW+5/q+/ClImAzrxwNT9zaXIbuHKch6rhKy9sJf
 github.com/busy-cloud/influxdb v0.2.3/go.mod h1:6mfMxknjGxBWcCOaLAkjig6YmssQSQbDPCeGeccCNPM=
 github.com/busy-cloud/modbus v0.2.13 h1:nFCxZLWwApU/sz4Nfy4mgQVgbUZDr8HdULFENDm8Ha4=
 github.com/busy-cloud/modbus v0.2.13/go.mod h1:voMqngF86wuY2p4BWf7wfI/5xsmDrRLuVBfjhYqijm8=
-github.com/busy-cloud/tcp-server v0.0.7 h1:EM786yhzUTmrh//TbRK/5GsbKcx3fnJHfE5Po23etc0=
-github.com/busy-cloud/tcp-server v0.0.7/go.mod h1:OOirzSeZQkmYsQDoWaGz8j1h1BF+7VL9cnSS6YRMcKM=
+github.com/busy-cloud/tcp-server v0.0.8 h1:0qlfYu31XcsDx/bVgLCb1hDtpUhXW+cQNTpp5aVC6wY=
+github.com/busy-cloud/tcp-server v0.0.8/go.mod h1:OOirzSeZQkmYsQDoWaGz8j1h1BF+7VL9cnSS6YRMcKM=
 github.com/busy-cloud/user v0.5.0 h1:Td5MdA9ichR9PCHp3o+FueezP/RW/TVXhYJE3/jGIEY=
 github.com/busy-cloud/user v0.5.0/go.mod h1:3d6+JNs3yy0DJXZAJwP7NLFMKpCMa6Ag/ACwCioirxg=
 github.com/bytedance/sonic v1.13.2 h1:8/H1FempDZqC4VqjptGo14QQlJx8VdZJegxs6wwfqpQ=
