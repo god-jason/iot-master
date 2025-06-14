@@ -2,106 +2,45 @@ package internal
 
 import (
 	"github.com/busy-cloud/boat/api"
+	"github.com/busy-cloud/boat/curd"
+	"github.com/busy-cloud/boat/db"
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/iot-master/device"
 )
 
 func init() {
-	api.Register("GET", "iot/device/:id/values", deviceValues)
-	api.Register("GET", "iot/device/:id/status", deviceStatus)
-	api.Register("GET", "iot/device/:id/sync", deviceSync)
-	api.Register("GET", "iot/device/:id/read", deviceRead)
-	api.Register("POST", "iot/device/:id/write", deviceWrite)
-	api.Register("POST", "iot/device/:id/action/:action", deviceAction)
+	api.Register("GET", "iot/device/list", curd.ApiList[device.Device]())
+	api.Register("POST", "iot/device/search", curd.ApiSearch[device.Device]())
+	api.Register("POST", "iot/device/create", curd.ApiCreate[device.Device]())
+	api.Register("GET", "iot/device/:id", curd.ApiGet[device.Device]())
+	api.Register("POST", "iot/device/:id", curd.ApiUpdate[device.Device]("id", "name", "description", "product_id", "linker_id", "incoming_id", "disabled", "station"))
+	api.Register("GET", "iot/device/:id/delete", curd.ApiDelete[device.Device]())
+	api.Register("GET", "iot/device/:id/enable", curd.ApiDisable[device.Device](false))
+	api.Register("GET", "iot/device/:id/disable", curd.ApiDisable[device.Device](true))
+
+	//物模型
+	api.Register("GET", "iot/device/:id/model", curd.ApiGet[device.DeviceModel]())
+	api.Register("POST", "iot/device/:id/model", deviceModelUpdate)
+
 }
 
-func deviceValues(ctx *gin.Context) {
-	d := devices.Load(ctx.Param("id"))
-	if d == nil {
-		api.Fail(ctx, "设备未上线")
+func deviceModelUpdate(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	var model device.DeviceModel
+	err := ctx.ShouldBind(&model)
+	if err != nil {
+		api.Error(ctx, err)
 		return
 	}
-	api.OK(ctx, d.values.Get())
-}
+	model.Id = id
 
-func deviceStatus(ctx *gin.Context) {
-	d := devices.Load(ctx.Param("id"))
-	if d == nil {
-		api.Fail(ctx, "设备未上线")
-		return
-	}
-	api.OK(ctx, d.Status)
-}
-
-func deviceSync(ctx *gin.Context) {
-	d := devices.Load(ctx.Param("id"))
-	if d == nil {
-		api.Fail(ctx, "设备未上线")
-		return
-	}
-
-	api.OK(ctx, nil)
-}
-
-func deviceRead(ctx *gin.Context) {
-	d := devices.Load(ctx.Param("id"))
-	if d == nil {
-		api.Fail(ctx, "设备未上线")
-		return
-	}
-
-	points := ctx.QueryArray("point")
-	values, err := d.Read(points, 30)
+	_, err = db.Engine().ID(id).Delete(new(device.DeviceModel)) //不管有没有都删掉
+	_, err = db.Engine().ID(id).Insert(&model)
 	if err != nil {
 		api.Error(ctx, err)
 		return
 	}
 
-	api.OK(ctx, values)
-}
-
-func deviceWrite(ctx *gin.Context) {
-	d := devices.Load(ctx.Param("id"))
-	if d == nil {
-		api.Fail(ctx, "设备未上线")
-		return
-	}
-
-	var values map[string]any
-	err := ctx.ShouldBind(&values)
-	if err != nil {
-		api.Error(ctx, err)
-		return
-	}
-
-	result, err := d.Write(values, 30)
-	if err != nil {
-		api.Error(ctx, err)
-		return
-	}
-
-	api.OK(ctx, result)
-}
-
-func deviceAction(ctx *gin.Context) {
-	d := devices.Load(ctx.Param("id"))
-	if d == nil {
-		api.Fail(ctx, "设备未上线")
-		return
-	}
-	action := ctx.Param("action")
-
-	var values map[string]any
-	err := ctx.ShouldBind(&values)
-	if err != nil {
-		api.Error(ctx, err)
-		return
-	}
-
-	result, err := d.Action(action, values, 30)
-	if err != nil {
-		api.Error(ctx, err)
-		return
-	}
-
-	api.OK(ctx, result)
+	api.OK(ctx, &model)
 }

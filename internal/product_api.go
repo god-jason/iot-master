@@ -1,25 +1,26 @@
-package product
+package internal
 
 import (
 	"github.com/busy-cloud/boat/api"
 	"github.com/busy-cloud/boat/curd"
 	"github.com/busy-cloud/boat/db"
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/iot-master/product"
 	"xorm.io/xorm/schemas"
 )
 
 func init() {
-	api.Register("GET", "iot/product/list", curd.ApiList[Product]())
-	api.Register("POST", "iot/product/search", curd.ApiSearch[Product]())
-	api.Register("POST", "iot/product/create", curd.ApiCreate[Product]())
-	api.Register("GET", "iot/product/:id", curd.ApiGet[Product]())
-	api.Register("POST", "iot/product/:id", curd.ApiUpdate[Product]("id", "name", "description", "type", "version", "protocol", "disabled"))
-	api.Register("GET", "iot/product/:id/delete", curd.ApiDelete[Product]())
-	api.Register("GET", "iot/product/:id/enable", curd.ApiDisable[Product](false))
-	api.Register("GET", "iot/product/:id/disable", curd.ApiDisable[Product](true))
+	api.Register("GET", "iot/product/list", curd.ApiList[product.Product]())
+	api.Register("POST", "iot/product/search", curd.ApiSearch[product.Product]())
+	api.Register("POST", "iot/product/create", curd.ApiCreate[product.Product]())
+	api.Register("GET", "iot/product/:id", curd.ApiGet[product.Product]())
+	api.Register("POST", "iot/product/:id", curd.ApiUpdate[product.Product]("id", "name", "description", "type", "version", "protocol", "disabled"))
+	api.Register("GET", "iot/product/:id/delete", curd.ApiDelete[product.Product]())
+	api.Register("GET", "iot/product/:id/enable", curd.ApiDisable[product.Product](false))
+	api.Register("GET", "iot/product/:id/disable", curd.ApiDisable[product.Product](true))
 
 	//物模型
-	api.Register("GET", "iot/product/:id/model", curd.ApiGet[ProductModel]())
+	api.Register("GET", "iot/product/:id/model", curd.ApiGet[product.ProductModel]())
 	api.Register("POST", "iot/product/:id/model", productModelUpdate)
 
 	//配置接口，一般用于协议点表等
@@ -30,7 +31,7 @@ func init() {
 func productModelUpdate(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	var model ProductModel
+	var model product.ProductModel
 	err := ctx.ShouldBind(&model)
 	if err != nil {
 		api.Error(ctx, err)
@@ -38,7 +39,7 @@ func productModelUpdate(ctx *gin.Context) {
 	}
 	model.Id = id
 
-	_, err = db.Engine().ID(id).Delete(new(ProductModel)) //不管有没有都删掉
+	_, err = db.Engine().ID(id).Delete(new(product.ProductModel)) //不管有没有都删掉
 	_, err = db.Engine().ID(id).Insert(&model)
 	if err != nil {
 		api.Error(ctx, err)
@@ -49,7 +50,7 @@ func productModelUpdate(ctx *gin.Context) {
 }
 
 func productConfig(ctx *gin.Context) {
-	var config ProductConfig
+	var config product.ProductConfig
 	has, err := db.Engine().ID(schemas.PK{ctx.Param("id"), ctx.Param("name")}).Get(&config)
 	if err != nil {
 		api.Error(ctx, err)
@@ -77,13 +78,13 @@ func productConfigUpdate(ctx *gin.Context) {
 		return
 	}
 
-	config := ProductConfig{
+	config := product.ProductConfig{
 		Id:      ctx.Param("id"),
 		Name:    ctx.Param("name"),
 		Content: body,
 	}
 
-	_, err = db.Engine().ID(schemas.PK{config.Id, config.Name}).Delete(new(ProductConfig))
+	_, err = db.Engine().ID(schemas.PK{config.Id, config.Name}).Delete(new(product.ProductConfig))
 	_, err = db.Engine().ID(schemas.PK{config.Id, config.Name}).Insert(&config)
 	if err != nil {
 		api.Error(ctx, err)
