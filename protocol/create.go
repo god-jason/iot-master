@@ -24,7 +24,7 @@ func Create(protocol *Protocol, manager MasterManager) {
 		}
 
 		//订阅数据
-		mqtt.Subscribe(protocol.Name+"/+/+/up", func(topic string, payload []byte) {
+		mqtt.Subscribe("protocol/"+protocol.Name+"/+/+/up", func(topic string, payload []byte) {
 			link_id := strings.Split(topic, "/")[2]
 			master := manager.Get(link_id)
 			if master != nil {
@@ -33,7 +33,7 @@ func Create(protocol *Protocol, manager MasterManager) {
 		})
 
 		//连接打开，加载设备
-		mqtt.Subscribe(protocol.Name+"/+/+/open", func(topic string, payload []byte) {
+		mqtt.Subscribe("protocol/"+protocol.Name+"/+/+/open", func(topic string, payload []byte) {
 			ss := strings.Split(topic, "/")
 			linker := ss[1]
 			link_id := ss[2]
@@ -45,7 +45,7 @@ func Create(protocol *Protocol, manager MasterManager) {
 		})
 
 		//关闭连接
-		mqtt.Subscribe(protocol.Name+"/+/+/close", func(topic string, payload []byte) {
+		mqtt.Subscribe("protocol/"+protocol.Name+"/+/+/close", func(topic string, payload []byte) {
 			link_id := strings.Split(topic, "/")[2]
 			err := manager.Close(link_id)
 			if err != nil {
@@ -55,7 +55,7 @@ func Create(protocol *Protocol, manager MasterManager) {
 		})
 
 		//同步
-		mqtt.SubscribeStruct[SyncRequest](protocol.Name+"/+/+/sync", func(topic string, request *SyncRequest) {
+		mqtt.SubscribeStruct[SyncRequest]("protocol/"+protocol.Name+"/+/+/sync", func(topic string, request *SyncRequest) {
 			link_id := strings.Split(topic, "/")[2]
 			master := manager.Get(link_id)
 			if master != nil {
@@ -70,7 +70,7 @@ func Create(protocol *Protocol, manager MasterManager) {
 		})
 
 		//读
-		mqtt.SubscribeStruct[ReadRequest](protocol.Name+"/+/+/read", func(topic string, request *ReadRequest) {
+		mqtt.SubscribeStruct[ReadRequest]("protocol/"+protocol.Name+"/+/+/read", func(topic string, request *ReadRequest) {
 			link_id := strings.Split(topic, "/")[2]
 			master := manager.Get(link_id)
 			if master != nil {
@@ -85,7 +85,7 @@ func Create(protocol *Protocol, manager MasterManager) {
 		})
 
 		//写
-		mqtt.SubscribeStruct[WriteRequest](protocol.Name+"/+/+/write", func(topic string, request *WriteRequest) {
+		mqtt.SubscribeStruct[WriteRequest]("protocol/"+protocol.Name+"/+/+/write", func(topic string, request *WriteRequest) {
 			link_id := strings.Split(topic, "/")[2]
 			master := manager.Get(link_id)
 			if master != nil {
@@ -100,7 +100,7 @@ func Create(protocol *Protocol, manager MasterManager) {
 		})
 
 		//操作
-		mqtt.SubscribeStruct[ActionRequest](protocol.Name+"/+/+/action", func(topic string, request *ActionRequest) {
+		mqtt.SubscribeStruct[ActionRequest]("protocol/"+protocol.Name+"/+/+/action", func(topic string, request *ActionRequest) {
 			link_id := strings.Split(topic, "/")[2]
 			master := manager.Get(link_id)
 			if master != nil {
