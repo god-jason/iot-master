@@ -17,15 +17,9 @@ import (
 	"time"
 )
 
-var devices lib.Map[Device]
-
-func GetDevice(id string) *Device {
-	return devices.Load(id)
-}
-
 type Device struct {
-	device.Device
-	device.Status
+	device.Device `xorm:"extends"`
+	device.Status `xorm:"-"`
 
 	values Values
 

@@ -51,6 +51,11 @@
       "type": "json"
     },
     {
+      "key": "online",
+      "label": "在线",
+      "type": "boolean"
+    },
+    {
       "key": "disabled",
       "label": "禁用",
       "type": "boolean"

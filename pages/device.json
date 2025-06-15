@@ -100,6 +100,15 @@
       "type": "json"
     },
     {
+      "key": "online",
+      "label": "在线",
+      "type": "boolean"
+    },
+    {
+      "key": "error",
+      "label": "错误"
+    },
+    {
       "key": "disabled",
       "label": "禁用",
       "type": "boolean"

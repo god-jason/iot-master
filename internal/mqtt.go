@@ -3,7 +3,6 @@ package internal
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/busy-cloud/boat/db"
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
 	"github.com/god-jason/iot-master/protocol"
@@ -25,22 +24,11 @@ func Startup() error {
 
 		d := devices.Load(id)
 		if d == nil {
-			d = &Device{}
-			has, err := db.Engine().ID(id).Get(&d.Device)
+			d, err = LoadDevice(id)
 			if err != nil {
 				log.Error(err)
 				return
 			}
-			if !has {
-				log.Error("device not exist")
-				return
-			}
-			err = d.Open()
-			if err != nil {
-				log.Error(err)
-			}
-
-			devices.Store(id, d)
 		}
 
 		d.PutValues(values)
@@ -50,23 +38,14 @@ func Startup() error {
 		id := strings.Split(topic, "/")[1]
 		d := devices.Load(id)
 		if d == nil {
-			d = &Device{}
-			has, err := db.Engine().ID(id).Get(&d.Device)
+			_, err := LoadDevice(id)
 			if err != nil {
 				log.Error(err)
 				return
 			}
-			if !has {
-				log.Error("device not exist")
-				return
-			}
-			err = d.Open()
-			if err != nil {
-				log.Error(err)
-			}
-			devices.Store(id, d)
+		} else {
+			d.Online = true
 		}
-		d.Online = true
 	})
 
 	mqtt.Subscribe(DeviceTopic+"offline", func(topic string, payload []byte) {
