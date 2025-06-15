@@ -39,7 +39,12 @@ func deviceSync(ctx *gin.Context) {
 		return
 	}
 
-	api.OK(ctx, nil)
+	values, err := d.Sync(60)
+	if err != nil {
+		return
+	}
+
+	api.OK(ctx, values)
 }
 
 func deviceRead(ctx *gin.Context) {
