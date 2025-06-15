@@ -43,6 +43,7 @@ type Device struct {
 }
 
 func (d *Device) Open() error {
+	d.Online = true
 
 	//加载连接(主要是协议)
 	if d.LinkId != "" {

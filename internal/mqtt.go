@@ -15,8 +15,7 @@ const DeviceTopic = "device/+/"
 func Startup() error {
 
 	mqtt.Subscribe(DeviceTopic+"values", func(topic string, payload []byte) {
-		ss := strings.Split(topic, "/")
-		id := ss[1]
+		id := strings.Split(topic, "/")[1]
 		var values map[string]any
 		err := json.Unmarshal(payload, &values)
 		if err != nil {
@@ -45,6 +44,37 @@ func Startup() error {
 		}
 
 		d.PutValues(values)
+	})
+
+	mqtt.Subscribe(DeviceTopic+"online", func(topic string, payload []byte) {
+		id := strings.Split(topic, "/")[1]
+		d := devices.Load(id)
+		if d == nil {
+			d = &Device{}
+			has, err := db.Engine().ID(id).Get(&d.Device)
+			if err != nil {
+				log.Error(err)
+				return
+			}
+			if !has {
+				log.Error("device not exist")
+				return
+			}
+			err = d.Open()
+			if err != nil {
+				log.Error(err)
+			}
+			devices.Store(id, d)
+		}
+		d.Online = true
+	})
+
+	mqtt.Subscribe(DeviceTopic+"offline", func(topic string, payload []byte) {
+		id := strings.Split(topic, "/")[1]
+		d := devices.Load(id)
+		if d != nil {
+			d.Online = false
+		}
 	})
 
 	mqtt.SubscribeStruct[protocol.SyncRequest](DeviceTopic+"sync", func(topic string, request *protocol.SyncRequest) {
