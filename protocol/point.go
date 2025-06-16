@@ -1,4 +1,4 @@
-package product
+package protocol
 
 import (
 	"errors"
