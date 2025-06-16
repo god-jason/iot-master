@@ -3,6 +3,7 @@ package protocol
 import (
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
+	"github.com/god-jason/iot-master/link"
 	"strings"
 )
 
@@ -24,8 +25,8 @@ func Create(protocol *Protocol, manager MasterManager) {
 		}
 
 		//订阅数据
-		mqtt.Subscribe("protocol/"+protocol.Name+"/+/+/up", func(topic string, payload []byte) {
-			link_id := strings.Split(topic, "/")[3]
+		mqtt.Subscribe("protocol/"+protocol.Name+"/link/+/+/up", func(topic string, payload []byte) {
+			link_id := strings.Split(topic, "/")[4]
 			master := manager.Get(link_id)
 			if master != nil {
 				master.OnData(payload)
@@ -33,10 +34,10 @@ func Create(protocol *Protocol, manager MasterManager) {
 		})
 
 		//连接打开，加载设备
-		mqtt.Subscribe("protocol/"+protocol.Name+"/+/+/open", func(topic string, payload []byte) {
+		mqtt.Subscribe("protocol/"+protocol.Name+"/link/+/+/open", func(topic string, payload []byte) {
 			ss := strings.Split(topic, "/")
-			linker := ss[2]
-			link_id := ss[3]
+			linker := ss[3]
+			link_id := ss[4]
 			_, err := manager.Create(linker, link_id, payload, writeLinkFunc)
 			if err != nil {
 				log.Error(protocol, "master create err:", err)
@@ -45,8 +46,8 @@ func Create(protocol *Protocol, manager MasterManager) {
 		})
 
 		//关闭连接
-		mqtt.Subscribe("protocol/"+protocol.Name+"/+/+/close", func(topic string, payload []byte) {
-			link_id := strings.Split(topic, "/")[3]
+		mqtt.Subscribe("protocol/"+protocol.Name+"/link/+/+/close", func(topic string, payload []byte) {
+			link_id := strings.Split(topic, "/")[4]
 			err := manager.Close(link_id)
 			if err != nil {
 				log.Error(protocol, "master close err:", err)
@@ -55,8 +56,8 @@ func Create(protocol *Protocol, manager MasterManager) {
 		})
 
 		//同步
-		mqtt.SubscribeStruct[SyncRequest]("protocol/"+protocol.Name+"/+/+/sync", func(topic string, request *SyncRequest) {
-			link_id := strings.Split(topic, "/")[3]
+		mqtt.SubscribeStruct[SyncRequest]("protocol/"+protocol.Name+"/link/+/+/sync", func(topic string, request *SyncRequest) {
+			link_id := strings.Split(topic, "/")[4]
 			master := manager.Get(link_id)
 			if master != nil {
 				topic = "device/" + request.DeviceId + "/sync/response"
@@ -70,8 +71,8 @@ func Create(protocol *Protocol, manager MasterManager) {
 		})
 
 		//读
-		mqtt.SubscribeStruct[ReadRequest]("protocol/"+protocol.Name+"/+/+/read", func(topic string, request *ReadRequest) {
-			link_id := strings.Split(topic, "/")[3]
+		mqtt.SubscribeStruct[ReadRequest]("protocol/"+protocol.Name+"/link/+/+/read", func(topic string, request *ReadRequest) {
+			link_id := strings.Split(topic, "/")[4]
 			master := manager.Get(link_id)
 			if master != nil {
 				topic = "device/" + request.DeviceId + "/read/response"
@@ -85,8 +86,8 @@ func Create(protocol *Protocol, manager MasterManager) {
 		})
 
 		//写
-		mqtt.SubscribeStruct[WriteRequest]("protocol/"+protocol.Name+"/+/+/write", func(topic string, request *WriteRequest) {
-			link_id := strings.Split(topic, "/")[3]
+		mqtt.SubscribeStruct[WriteRequest]("protocol/"+protocol.Name+"/link/+/+/write", func(topic string, request *WriteRequest) {
+			link_id := strings.Split(topic, "/")[4]
 			master := manager.Get(link_id)
 			if master != nil {
 				topic = "device/" + request.DeviceId + "/write/response"
@@ -100,8 +101,8 @@ func Create(protocol *Protocol, manager MasterManager) {
 		})
 
 		//操作
-		mqtt.SubscribeStruct[ActionRequest]("protocol/"+protocol.Name+"/+/+/action", func(topic string, request *ActionRequest) {
-			link_id := strings.Split(topic, "/")[3]
+		mqtt.SubscribeStruct[ActionRequest]("protocol/"+protocol.Name+"/link/+/+/action", func(topic string, request *ActionRequest) {
+			link_id := strings.Split(topic, "/")[4]
 			master := manager.Get(link_id)
 			if master != nil {
 				topic = "device/" + request.DeviceId + "/action/response"
@@ -112,6 +113,30 @@ func Create(protocol *Protocol, manager MasterManager) {
 					mqtt.Publish(topic, response)
 				}
 			}
+		})
+
+		//添加设备
+		mqtt.SubscribeStruct[[]link.Device]("protocol/"+protocol.Name+"/link/+/+/attach", func(topic string, ds *[]link.Device) {
+			link_id := strings.Split(topic, "/")[4]
+			master := manager.Get(link_id)
+			if master != nil {
+				master.OnAttach(*ds)
+			}
+		})
+
+		//删除设备
+		mqtt.SubscribeStruct[[]string]("protocol/"+protocol.Name+"/link/+/+/detach", func(topic string, ds *[]string) {
+			link_id := strings.Split(topic, "/")[4]
+			master := manager.Get(link_id)
+			if master != nil {
+				master.OnDetach(*ds)
+			}
+		})
+
+		//订阅产品配置
+		mqtt.Subscribe("protocol/"+protocol.Name+"/product/+/config", func(topic string, payload []byte) {
+			product_id := strings.Split(topic, "/")[3]
+			manager.Config(product_id, payload)
 		})
 
 	})

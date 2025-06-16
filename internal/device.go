@@ -7,8 +7,6 @@ import (
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
 	"github.com/god-jason/iot-master/device"
-	"github.com/god-jason/iot-master/link"
-	"github.com/god-jason/iot-master/product"
 	"github.com/god-jason/iot-master/project"
 	"github.com/god-jason/iot-master/protocol"
 	"github.com/god-jason/iot-master/space"
@@ -39,22 +37,6 @@ type Device struct {
 func (d *Device) Open() error {
 	d.Online = true
 
-	//加载连接(主要是协议)
-	if d.LinkId != "" {
-		var lnk link.Link
-		has, err := db.Engine().ID(d.LinkId).Get(&lnk)
-		if err != nil {
-			d.Error = err.Error()
-			return err
-		}
-		if !has {
-			d.Error = "没有指定链接"
-			return errors.New(d.Error)
-		}
-		d.protocol = lnk.Protocol
-		d.linker = lnk.Linker
-	}
-
 	//查询绑定的项目
 	var ps []*project.ProjectDevice
 	err := db.Engine().Where("device_id=?", d.Id).Find(&ps) //.Distinct("project_id")
@@ -76,7 +58,7 @@ func (d *Device) Open() error {
 	}
 
 	//加载产品物模型
-	productModel, err := product.LoadModel(d.ProductId)
+	productModel, err := LoadModel(d.ProductId)
 	if err != nil {
 		return err
 	}
@@ -197,7 +179,7 @@ func (d *Device) Sync(timeout int) (map[string]any, error) {
 		MsgId:    strconv.FormatInt(rand.Int63(), 10),
 		DeviceId: d.Id,
 	}
-	token := mqtt.Publish("protocol/"+d.protocol+"/"+d.linker+"/"+d.LinkId+"/sync", &req)
+	token := mqtt.Publish("protocol/"+d.protocol+"/link/"+d.linker+"/"+d.LinkId+"/sync", &req)
 	token.Wait()
 	err := token.Error()
 	if err != nil {
@@ -228,7 +210,7 @@ func (d *Device) Read(points []string, timeout int) (map[string]any, error) {
 		MsgId:    strconv.FormatInt(rand.Int63(), 10),
 		DeviceId: d.Id,
 	}
-	token := mqtt.Publish("protocol/"+d.protocol+"/"+d.linker+"/"+d.LinkId+"/read", &req)
+	token := mqtt.Publish("protocol/"+d.protocol+"/link/"+d.linker+"/"+d.LinkId+"/read", &req)
 	token.Wait()
 	err := token.Error()
 	if err != nil {
@@ -260,7 +242,7 @@ func (d *Device) Write(values map[string]any, timeout int) (map[string]bool, err
 		DeviceId: d.Id,
 		Values:   values,
 	}
-	token := mqtt.Publish("protocol/"+d.protocol+"/"+d.linker+"/"+d.LinkId+"/write", &req)
+	token := mqtt.Publish("protocol/"+d.protocol+"/link/"+d.linker+"/"+d.LinkId+"/write", &req)
 	token.Wait()
 	err := token.Error()
 	if err != nil {
@@ -293,7 +275,7 @@ func (d *Device) Action(action string, parameters map[string]any, timeout int) (
 		Action:     action,
 		Parameters: parameters,
 	}
-	token := mqtt.Publish("protocol/"+d.protocol+"/"+d.linker+"/"+d.LinkId+"/action", &req)
+	token := mqtt.Publish("protocol/"+d.protocol+"/link/"+d.linker+"/"+d.LinkId+"/action", &req)
 	token.Wait()
 	err := token.Error()
 	if err != nil {

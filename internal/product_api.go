@@ -20,7 +20,7 @@ func init() {
 	api.Register("GET", "iot/product/:id/disable", curd.ApiDisable[product.Product](true))
 
 	//物模型
-	api.Register("GET", "iot/product/:id/model", curd.ApiGet[product.ProductModel]())
+	api.Register("GET", "iot/product/:id/model", curd.ApiGet[product.Model]())
 	api.Register("POST", "iot/product/:id/model", productModelUpdate)
 
 	//配置接口，一般用于协议点表等
@@ -31,7 +31,7 @@ func init() {
 func productModelUpdate(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	var model product.ProductModel
+	var model product.Model
 	err := ctx.ShouldBind(&model)
 	if err != nil {
 		api.Error(ctx, err)
@@ -39,7 +39,7 @@ func productModelUpdate(ctx *gin.Context) {
 	}
 	model.Id = id
 
-	_, err = db.Engine().ID(id).Delete(new(product.ProductModel)) //不管有没有都删掉
+	_, err = db.Engine().ID(id).Delete(new(product.Model)) //不管有没有都删掉
 	_, err = db.Engine().ID(id).Insert(&model)
 	if err != nil {
 		api.Error(ctx, err)

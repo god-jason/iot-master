@@ -1,9 +1,6 @@
 package product
 
 import (
-	"fmt"
-	"github.com/busy-cloud/boat/db"
-	"github.com/busy-cloud/boat/lib"
 	"time"
 )
 
@@ -39,7 +36,7 @@ type Action struct {
 	Returns     []Parameter `json:"returns,omitempty"`
 }
 
-type ProductModel struct {
+type Model struct {
 	Id         string       `json:"id,omitempty" xorm:"pk"`
 	Properties []*Property  `json:"properties,omitempty" xorm:"json"`
 	Events     []*Event     `json:"events,omitempty" xorm:"json"`
@@ -47,24 +44,4 @@ type ProductModel struct {
 	Validators []*Validator `json:"validators,omitempty" xorm:"json"`
 	Updated    time.Time    `json:"updated,omitempty" xorm:"updated"`
 	Created    time.Time    `json:"created,omitempty" xorm:"created"`
-}
-
-var modelCache = lib.CacheLoader[ProductModel]{
-	Timeout: 600,
-	Loader: func(key string) (*ProductModel, error) {
-		var pm ProductModel
-		has, err := db.Engine().ID(key).Get(&pm)
-		if err != nil {
-			return nil, err
-		}
-		if !has {
-			return nil, fmt.Errorf("empty product model %s", key)
-		}
-
-		return &pm, nil
-	},
-}
-
-func LoadModel(id string) (*ProductModel, error) {
-	return modelCache.Load(id)
 }

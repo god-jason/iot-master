@@ -16,3 +16,12 @@ func init() {
 		Depends:  []string{"log", "mqtt", "database", "connector"},
 	})
 }
+
+func Startup() error {
+
+	mqttSubscribeDevice()
+
+	mqttSubscribeLink()
+
+	return nil
+}

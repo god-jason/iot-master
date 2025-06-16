@@ -9,11 +9,9 @@ import (
 	"strings"
 )
 
-const DeviceTopic = "device/+/"
+func mqttSubscribeDevice() {
 
-func Startup() error {
-
-	mqtt.Subscribe(DeviceTopic+"values", func(topic string, payload []byte) {
+	mqtt.Subscribe("device/+/values", func(topic string, payload []byte) {
 		id := strings.Split(topic, "/")[1]
 		var values map[string]any
 		err := json.Unmarshal(payload, &values)
@@ -34,7 +32,7 @@ func Startup() error {
 		d.PutValues(values)
 	})
 
-	mqtt.Subscribe(DeviceTopic+"online", func(topic string, payload []byte) {
+	mqtt.Subscribe("device/+/online", func(topic string, payload []byte) {
 		id := strings.Split(topic, "/")[1]
 		d := devices.Load(id)
 		if d == nil {
@@ -48,7 +46,7 @@ func Startup() error {
 		}
 	})
 
-	mqtt.Subscribe(DeviceTopic+"offline", func(topic string, payload []byte) {
+	mqtt.Subscribe("device/+/offline", func(topic string, payload []byte) {
 		id := strings.Split(topic, "/")[1]
 		d := devices.Load(id)
 		if d != nil {
@@ -56,7 +54,7 @@ func Startup() error {
 		}
 	})
 
-	mqtt.SubscribeStruct[protocol.SyncRequest](DeviceTopic+"sync", func(topic string, request *protocol.SyncRequest) {
+	mqtt.SubscribeStruct[protocol.SyncRequest]("device/+/sync", func(topic string, request *protocol.SyncRequest) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 
@@ -69,11 +67,11 @@ func Startup() error {
 		request.DeviceId = id
 
 		//转发给具体协议
-		topic = fmt.Sprintf("protocol/%s/%s/%s/sync", dev.protocol, dev.linker, dev.LinkId)
+		topic = fmt.Sprintf("protocol/%s/link/%s/%s/sync", dev.protocol, dev.linker, dev.LinkId)
 		mqtt.Publish(topic, request)
 	})
 
-	mqtt.SubscribeStruct[protocol.ReadRequest](DeviceTopic+"read", func(topic string, request *protocol.ReadRequest) {
+	mqtt.SubscribeStruct[protocol.ReadRequest]("device/+/read", func(topic string, request *protocol.ReadRequest) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 
@@ -86,11 +84,11 @@ func Startup() error {
 		request.DeviceId = id
 
 		//转发给具体协议
-		topic = fmt.Sprintf("protocol/%s/%s/%s/read", dev.protocol, dev.linker, dev.LinkId)
+		topic = fmt.Sprintf("protocol/%s/link/%s/%s/read", dev.protocol, dev.linker, dev.LinkId)
 		mqtt.Publish(topic, request)
 	})
 
-	mqtt.SubscribeStruct[protocol.WriteRequest](DeviceTopic+"write", func(topic string, request *protocol.WriteRequest) {
+	mqtt.SubscribeStruct[protocol.WriteRequest]("device/+/write", func(topic string, request *protocol.WriteRequest) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 
@@ -103,11 +101,11 @@ func Startup() error {
 		request.DeviceId = id
 
 		//转发给具体协议
-		topic = fmt.Sprintf("protocol/%s/%s/%s/write", dev.protocol, dev.linker, dev.LinkId)
+		topic = fmt.Sprintf("protocol/%s/link/%s/%s/write", dev.protocol, dev.linker, dev.LinkId)
 		mqtt.Publish(topic, request)
 	})
 
-	mqtt.SubscribeStruct[protocol.ActionRequest](DeviceTopic+"action", func(topic string, request *protocol.ActionRequest) {
+	mqtt.SubscribeStruct[protocol.ActionRequest]("device/+/action", func(topic string, request *protocol.ActionRequest) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 
@@ -120,11 +118,11 @@ func Startup() error {
 		request.DeviceId = id
 
 		//转发给具体协议
-		topic = fmt.Sprintf("protocol/%s/%s/%s/action", dev.protocol, dev.linker, dev.LinkId)
+		topic = fmt.Sprintf("protocol/%s/link/%s/%s/action", dev.protocol, dev.linker, dev.LinkId)
 		mqtt.Publish(topic, request)
 	})
 
-	mqtt.SubscribeStruct[protocol.SyncResponse](DeviceTopic+"sync/response", func(topic string, resp *protocol.SyncResponse) {
+	mqtt.SubscribeStruct[protocol.SyncResponse]("device/+/sync/response", func(topic string, resp *protocol.SyncResponse) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)
@@ -134,7 +132,7 @@ func Startup() error {
 		dev.onSyncResponse(resp)
 	})
 
-	mqtt.SubscribeStruct[protocol.ReadResponse](DeviceTopic+"read/response", func(topic string, resp *protocol.ReadResponse) {
+	mqtt.SubscribeStruct[protocol.ReadResponse]("device/+/read/response", func(topic string, resp *protocol.ReadResponse) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)
@@ -144,7 +142,7 @@ func Startup() error {
 		dev.onReadResponse(resp)
 	})
 
-	mqtt.SubscribeStruct[protocol.WriteResponse](DeviceTopic+"write/response", func(topic string, resp *protocol.WriteResponse) {
+	mqtt.SubscribeStruct[protocol.WriteResponse]("device/+/write/response", func(topic string, resp *protocol.WriteResponse) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)
@@ -154,7 +152,7 @@ func Startup() error {
 		dev.onWriteResponse(resp)
 	})
 
-	mqtt.SubscribeStruct[protocol.ActionResponse](DeviceTopic+"action/response", func(topic string, resp *protocol.ActionResponse) {
+	mqtt.SubscribeStruct[protocol.ActionResponse]("device/+/action/response", func(topic string, resp *protocol.ActionResponse) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)
@@ -163,6 +161,4 @@ func Startup() error {
 		}
 		dev.onActionResponse(resp)
 	})
-
-	return nil
 }

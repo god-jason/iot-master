@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	db.Register(&Product{}, &ProductConfig{}, &ProductModel{})
+	db.Register(&Product{}, &ProductConfig{}, &Model{})
 }
 
 type Product struct {
