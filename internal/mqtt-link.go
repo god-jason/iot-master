@@ -19,7 +19,7 @@ func mqttSubscribeLink() {
 
 		//查询相关的设备
 		var ds []*Device
-		err := db.Engine().Where("link_id=", link_id).Find(&ds)
+		err := db.Engine().Where("link_id=?", link_id).Find(&ds)
 		if err != nil {
 			log.Error(err)
 			return

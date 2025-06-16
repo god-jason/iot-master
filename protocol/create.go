@@ -3,7 +3,6 @@ package protocol
 import (
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
-	"github.com/god-jason/iot-master/link"
 	"strings"
 )
 
@@ -116,20 +115,20 @@ func Create(protocol *Protocol, manager MasterManager) {
 		})
 
 		//添加设备
-		mqtt.SubscribeStruct[[]link.Device]("protocol/"+protocol.Name+"/link/+/+/attach", func(topic string, ds *[]link.Device) {
+		mqtt.Subscribe("protocol/"+protocol.Name+"/link/+/+/attach", func(topic string, payload []byte) {
 			link_id := strings.Split(topic, "/")[4]
 			master := manager.Get(link_id)
 			if master != nil {
-				master.OnAttach(*ds)
+				master.OnAttach(payload)
 			}
 		})
 
 		//删除设备
-		mqtt.SubscribeStruct[[]string]("protocol/"+protocol.Name+"/link/+/+/detach", func(topic string, ds *[]string) {
+		mqtt.Subscribe("protocol/"+protocol.Name+"/link/+/+/detach", func(topic string, payload []byte) {
 			link_id := strings.Split(topic, "/")[4]
 			master := manager.Get(link_id)
 			if master != nil {
-				master.OnDetach(*ds)
+				master.OnDetach(payload)
 			}
 		})
 
