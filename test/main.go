@@ -14,6 +14,7 @@ import (
 	_ "github.com/busy-cloud/dash"
 	//_ "github.com/busy-cloud/influxdb"
 	_ "github.com/busy-cloud/modbus"
+	_ "github.com/busy-cloud/tcp-client"
 	_ "github.com/busy-cloud/tcp-server"
 	_ "github.com/busy-cloud/user"
 	_ "github.com/god-jason/iot-master"
