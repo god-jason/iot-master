@@ -12,8 +12,8 @@ github.com/busy-cloud/boat-ui v0.5.1 h1:Zw8K/jPpzly7z7ni5OtzHCO/GztCPfCFKlo4Jced
 github.com/busy-cloud/boat-ui v0.5.1/go.mod h1:t9DwLmJyjbPHcm+IKzC9qUE7futO0pLigI9HIPbkhg0=
 github.com/busy-cloud/dash v0.5.0 h1:v7onTsSlRKKPN/OHnczyAfPL8+h0pIzrF6FHNh1IJT8=
 github.com/busy-cloud/dash v0.5.0/go.mod h1:YpLLCh50vwRy47NM9FFrAeg07Mh0qLxz6dzqYPJZm9c=
-github.com/busy-cloud/modbus v0.3.6 h1:EEphSwcvZmi0hcSLA+OJnnIr8GdvIqIgJUAH2MgIBW4=
-github.com/busy-cloud/modbus v0.3.6/go.mod h1:oNqtdJD/U7GiahbLtIwOuC+vMAUOfV5hsVWJRA5QnRw=
+github.com/busy-cloud/modbus v0.4.0 h1:T1aq3e5v/Bz0LiuerpNsKoMoST5jGEjisW6KPnPoSHM=
+github.com/busy-cloud/modbus v0.4.0/go.mod h1:2LvBR4iRDeMOiP+Z/QJw7nFnA5AhB78vGLkc1jBbAn8=
 github.com/busy-cloud/tcp-server v0.0.10 h1:RoG0F77NYc89e3IG0DxocQh6cTBqE31D4DKdEd2wqZM=
 github.com/busy-cloud/tcp-server v0.0.10/go.mod h1:OOirzSeZQkmYsQDoWaGz8j1h1BF+7VL9cnSS6YRMcKM=
 github.com/busy-cloud/user v0.5.0 h1:Td5MdA9ichR9PCHp3o+FueezP/RW/TVXhYJE3/jGIEY=
