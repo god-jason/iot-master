@@ -107,15 +107,20 @@ func (d *Device) PutValues(values map[string]any) {
 
 	//广播消息
 	var topics []string
+
+	//发给历史数据库
+	topics = append(topics, "history/"+d.ProductId+"/"+d.Id+"/values")
+
+	//发给项目
 	for _, p := range d.projects {
 		topics = append(topics, "project/"+p+"/device/"+d.Id+"/values")
 	}
+	//发给空间
 	for _, s := range d.spaces {
 		topics = append(topics, "space/"+s+"/device/"+d.Id+"/values")
 	}
-	if len(topics) > 0 {
-		mqtt.PublishEx(topics, values)
-	}
+
+	mqtt.PublishEx(topics, values)
 
 	d.values.Put(values)
 
