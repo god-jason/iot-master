@@ -16,17 +16,16 @@ builds:
       - linux
       #- darwin
     goarch:
-      - "386"
       - amd64
       - arm
       - arm64
       #- mips
-      - mipsle #默认小端
+      #- mipsle #默认小端
       #- mips64
-      - mips64le
+      #- mips64le
       - loong64 #龙芯
       #- riscv32
-      - riscv64
+      #- riscv64
     goarm:
       - 6
       - 7
