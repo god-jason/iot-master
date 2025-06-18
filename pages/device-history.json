@@ -57,6 +57,30 @@
         "type": "script",
         "script": "this.load_history()"
       }
+    },
+    {
+      "type": "link",
+      "label": "过去1天",
+      "action": {
+        "type": "script",
+        "script": "this.toolbarValue = {start:this.dayjs().subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss'), end:this.dayjs().format('YYYY-MM-DD HH:mm:ss', window:5, unit:'m'}; setTimeout(()=>this.load_history(), 100)"
+      }
+    },
+    {
+      "type": "link",
+      "label": "过去1小时",
+      "action": {
+        "type": "script",
+        "script": "this.toolbarValue = {start:this.dayjs().subtract(1, 'hour').format('YYYY-MM-DD HH:mm:ss'), end:this.dayjs().format('YYYY-MM-DD HH:mm:ss'), window:10, unit:'s'}; setTimeout(()=>this.load_history(), 100)"
+      }
+    },
+    {
+      "type": "link",
+      "label": "过去10分钟",
+      "action": {
+        "type": "script",
+        "script": "this.toolbarValue = {start:this.dayjs().subtract(10, 'minute').format('YYYY-MM-DD HH:mm:ss'), end:this.dayjs().format('YYYY-MM-DD HH:mm:ss'), window:1, unit:'s'}; setTimeout(()=>this.load_history(), 100)"
+      }
     }
   ],
   "time": true,
@@ -67,6 +91,6 @@
   },
   "mount": "this.toolbarValue = {start:this.dayjs().subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss')}; setTimeout(()=>this.load_history(), 100)",
   "methods": {
-    "load_history": "this.request.get('iot/device/'+this.params.id+'/history/'+this.params.point, {start:this.dayjs(this.toolbar.value.start).toISOString(), end:this.dayjs(this.toolbar.value.end).toISOString(), window:this.toolbar.value.window+this.toolbar.value.unit, method:this.toolbar.value.method}).subscribe(res=>{this.render(res.data.map(i=>{return [i.time, i.value]}))})"
+    "load_history": "this.request.get('iot/device/'+this.params.id+'/history/'+this.params.point, {start:this.dayjs(this.toolbar.value.start).toISOString(), end:this.dayjs(this.toolbar.value.end).toISOString(), window:this.toolbar.value.window+this.toolbar.value.unit, method:this.toolbar.value.method}).subscribe(res=>{if(res.data) this.render(res.data.map(i=>{return [i.time, i.value]}))})"
   }
 }
