@@ -4,7 +4,7 @@ go 1.23.6
 
 require (
 	github.com/PaesslerAG/gval v1.2.4
-	github.com/busy-cloud/boat v0.5.2
+	github.com/busy-cloud/boat v0.5.3
 	github.com/busy-cloud/boat-ui v0.5.2
 	github.com/busy-cloud/dash v0.5.0
 	github.com/busy-cloud/influxdb v0.2.4
@@ -12,6 +12,7 @@ require (
 	github.com/busy-cloud/tcp-client v0.0.2
 	github.com/busy-cloud/tcp-server v0.0.11
 	github.com/busy-cloud/user v0.5.0
+	github.com/bytedance/sonic v1.13.3
 	github.com/gin-gonic/gin v1.10.1
 	github.com/spf13/cast v1.9.2
 	github.com/spf13/pflag v1.0.6
@@ -22,7 +23,6 @@ require (
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
-	github.com/bytedance/sonic v1.13.3 // indirect
 	github.com/bytedance/sonic/loader v0.2.4 // indirect
 	github.com/cloudwego/base64x v0.1.5 // indirect
 	github.com/ebitengine/purego v0.8.4 // indirect

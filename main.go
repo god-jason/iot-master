@@ -6,6 +6,7 @@ import (
 	"github.com/busy-cloud/boat/apps"
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/store"
+	"github.com/bytedance/sonic"
 	_ "github.com/god-jason/iot-master/internal"
 )
 
