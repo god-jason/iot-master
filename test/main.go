@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "embed"
+	"encoding/json"
 	_ "github.com/busy-cloud/boat/apis"
 	"github.com/busy-cloud/boat/apps"
 	"github.com/busy-cloud/boat/boot"
@@ -16,7 +17,6 @@ import (
 	_ "github.com/busy-cloud/tcp-client"
 	_ "github.com/busy-cloud/tcp-server"
 	_ "github.com/busy-cloud/user"
-	"github.com/bytedance/sonic"
 	_ "github.com/god-jason/iot-master"
 	"github.com/spf13/viper"
 	"os"
@@ -32,7 +32,7 @@ func init() {
 
 	//注册为内部插件
 	var a apps.App
-	err = sonic.Unmarshal(manifest, &a)
+	err = json.Unmarshal(manifest, &a)
 	if err != nil {
 		log.Fatal(err)
 	}

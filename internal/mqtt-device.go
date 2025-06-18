@@ -2,9 +2,9 @@ package internal
 
 import (
 	"fmt"
+	"github.com/busy-cloud/boat/json"
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
-	"github.com/bytedance/sonic"
 	"github.com/god-jason/iot-master/protocol"
 	"strings"
 )
@@ -14,7 +14,7 @@ func mqttSubscribeDevice() {
 	mqtt.Subscribe("device/+/values", func(topic string, payload []byte) {
 		id := strings.Split(topic, "/")[1]
 		var values map[string]any
-		err := sonic.Unmarshal(payload, &values)
+		err := json.Unmarshal(payload, &values)
 		if err != nil {
 			log.Error(err)
 			return
