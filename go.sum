@@ -12,8 +12,8 @@ github.com/apapsch/go-jsonmerge/v2 v2.0.0/go.mod h1:lvDnEdqiQrp0O42VQGgmlKpxL1AP
 github.com/bmatcuk/doublestar v1.1.1/go.mod h1:UD6OnuiIn0yFxxA2le/rnRU1G4RaI4UvFv1sNto9p6w=
 github.com/busy-cloud/boat v0.5.4 h1:3fH2mnCPkQh7MWZxvG5vN167JZN1Z8h8ZlKefr7bIM8=
 github.com/busy-cloud/boat v0.5.4/go.mod h1:a91gbwtQnLit5F8dN3VtnEZEZCaAMqquaLi84ce/jfw=
-github.com/busy-cloud/boat-ui v0.5.3 h1:l5fglhvD7fKSjf5M1mlTVsDixrH8AWZM0j6FG7plfu0=
-github.com/busy-cloud/boat-ui v0.5.3/go.mod h1:t9DwLmJyjbPHcm+IKzC9qUE7futO0pLigI9HIPbkhg0=
+github.com/busy-cloud/boat-ui v0.5.5 h1:kuvr/fVm0TrQrZ1lFr2y7pMddqU2fWv3bWozYd4vu7c=
+github.com/busy-cloud/boat-ui v0.5.5/go.mod h1:t9DwLmJyjbPHcm+IKzC9qUE7futO0pLigI9HIPbkhg0=
 github.com/busy-cloud/dash v0.5.0 h1:v7onTsSlRKKPN/OHnczyAfPL8+h0pIzrF6FHNh1IJT8=
 github.com/busy-cloud/dash v0.5.0/go.mod h1:YpLLCh50vwRy47NM9FFrAeg07Mh0qLxz6dzqYPJZm9c=
 github.com/busy-cloud/influxdb v0.2.5 h1:sitTN2yWcjrwVVLHSfBAt2GEmzBjH9ntMDwqFZoMP18=
@@ -24,8 +24,8 @@ github.com/busy-cloud/tcp-client v0.0.2 h1:ozvncfSrtQoaklnMpxV8bxI4jD6TEctDSupoZ
 github.com/busy-cloud/tcp-client v0.0.2/go.mod h1:T81IvysuVrHRzA6L0MNKSqmKTJZXCltZbWWiBRkHXoQ=
 github.com/busy-cloud/tcp-server v0.0.11 h1:nTA5DKE8xVmnbLf/M/4BudQ4CZjlfZTKfgR3OLZTp34=
 github.com/busy-cloud/tcp-server v0.0.11/go.mod h1:ygXe9jPZqIXqpxakNUNn9JpoMClNukuAOK/HRDwxDkI=
-github.com/busy-cloud/user v0.5.0 h1:Td5MdA9ichR9PCHp3o+FueezP/RW/TVXhYJE3/jGIEY=
-github.com/busy-cloud/user v0.5.0/go.mod h1:3d6+JNs3yy0DJXZAJwP7NLFMKpCMa6Ag/ACwCioirxg=
+github.com/busy-cloud/user v0.5.2 h1:AiI8qppc3Z8hEFjIywk38SDrtATRuKLupxDa4rM+RkA=
+github.com/busy-cloud/user v0.5.2/go.mod h1:3d6+JNs3yy0DJXZAJwP7NLFMKpCMa6Ag/ACwCioirxg=
 github.com/bytedance/sonic v1.13.3 h1:MS8gmaH16Gtirygw7jV91pDCN33NyMrPbN7qiYhEsF0=
 github.com/bytedance/sonic v1.13.3/go.mod h1:o68xyaF9u2gvVBuGHPlUVCy+ZfmNNO5ETf1+KgkJhz4=
 github.com/bytedance/sonic/loader v0.1.1/go.mod h1:ncP89zfokxS5LZrJxl5z0UJcsk4M4yY2JpfqGeCtNLU=

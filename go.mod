@@ -5,13 +5,13 @@ go 1.23.6
 require (
 	github.com/PaesslerAG/gval v1.2.4
 	github.com/busy-cloud/boat v0.5.4
-	github.com/busy-cloud/boat-ui v0.5.3
+	github.com/busy-cloud/boat-ui v0.5.5
 	github.com/busy-cloud/dash v0.5.0
 	github.com/busy-cloud/influxdb v0.2.5
 	github.com/busy-cloud/modbus v0.4.3
 	github.com/busy-cloud/tcp-client v0.0.2
 	github.com/busy-cloud/tcp-server v0.0.11
-	github.com/busy-cloud/user v0.5.0
+	github.com/busy-cloud/user v0.5.2
 	github.com/gin-gonic/gin v1.10.1
 	github.com/spf13/cast v1.9.2
 	github.com/spf13/pflag v1.0.6
