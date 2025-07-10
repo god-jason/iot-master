@@ -22,8 +22,8 @@ github.com/busy-cloud/modbus v0.4.3 h1:9IEHw8iCxiMDfCYHTYsn7lM4W7EPgu9oRGmL/t1iG
 github.com/busy-cloud/modbus v0.4.3/go.mod h1:aEPgQ/s/lxLrLMZGhVXiy3EWWHZocFhMZK9mxEcjiMA=
 github.com/busy-cloud/tcp-client v0.0.2 h1:ozvncfSrtQoaklnMpxV8bxI4jD6TEctDSupoZcgSPTo=
 github.com/busy-cloud/tcp-client v0.0.2/go.mod h1:T81IvysuVrHRzA6L0MNKSqmKTJZXCltZbWWiBRkHXoQ=
-github.com/busy-cloud/tcp-server v0.0.11 h1:nTA5DKE8xVmnbLf/M/4BudQ4CZjlfZTKfgR3OLZTp34=
-github.com/busy-cloud/tcp-server v0.0.11/go.mod h1:ygXe9jPZqIXqpxakNUNn9JpoMClNukuAOK/HRDwxDkI=
+github.com/busy-cloud/tcp-server v0.1.0 h1:mFF3BRhDpQ3Satx62cYcHeNyCPXMdgWWGJxn6BPCfas=
+github.com/busy-cloud/tcp-server v0.1.0/go.mod h1:ygXe9jPZqIXqpxakNUNn9JpoMClNukuAOK/HRDwxDkI=
 github.com/busy-cloud/user v0.5.2 h1:AiI8qppc3Z8hEFjIywk38SDrtATRuKLupxDa4rM+RkA=
 github.com/busy-cloud/user v0.5.2/go.mod h1:3d6+JNs3yy0DJXZAJwP7NLFMKpCMa6Ag/ACwCioirxg=
 github.com/bytedance/sonic v1.13.3 h1:MS8gmaH16Gtirygw7jV91pDCN33NyMrPbN7qiYhEsF0=
