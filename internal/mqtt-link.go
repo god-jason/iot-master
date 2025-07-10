@@ -25,6 +25,11 @@ func mqttSubscribeLink() {
 			return
 		}
 
+		//无设备，则不用挂载
+		if len(ds) == 0 {
+			return
+		}
+
 		var products []string
 
 		var lds []*link.Device
