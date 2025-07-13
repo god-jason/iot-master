@@ -11,7 +11,7 @@ require (
 	github.com/busy-cloud/modbus v0.4.3
 	github.com/busy-cloud/tcp-client v0.0.2
 	github.com/busy-cloud/tcp-server v0.1.1
-	github.com/busy-cloud/user v0.5.3
+	github.com/busy-cloud/user v0.5.4
 	github.com/gin-gonic/gin v1.10.1
 	github.com/spf13/cast v1.9.2
 	github.com/spf13/pflag v1.0.6
