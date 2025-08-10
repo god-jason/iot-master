@@ -1,22 +1,23 @@
 module github.com/god-jason/iot-master
 
-go 1.23.6
+go 1.24
 
 require (
 	github.com/PaesslerAG/gval v1.2.4
-	github.com/busy-cloud/boat v0.5.4
-	github.com/busy-cloud/boat-ui v0.5.5
+	github.com/busy-cloud/boat v0.6.5
+	github.com/busy-cloud/boat-ui v0.5.7
 	github.com/busy-cloud/dash v0.5.0
 	github.com/busy-cloud/influxdb v0.2.5
 	github.com/busy-cloud/modbus v0.4.3
+	github.com/busy-cloud/saas v0.0.1
 	github.com/busy-cloud/tcp-client v0.0.2
-	github.com/busy-cloud/tcp-server v0.1.1
-	github.com/busy-cloud/user v0.5.4
+	github.com/busy-cloud/tcp-server v0.1.3
+	github.com/busy-cloud/user v0.6.2
 	github.com/gin-gonic/gin v1.10.1
 	github.com/spf13/cast v1.9.2
-	github.com/spf13/pflag v1.0.6
+	github.com/spf13/pflag v1.0.7
 	github.com/spf13/viper v1.20.1
-	xorm.io/xorm v1.3.9
+	xorm.io/xorm v1.3.10
 )
 
 require (
@@ -25,6 +26,9 @@ require (
 	github.com/bytedance/sonic v1.13.3 // indirect
 	github.com/bytedance/sonic/loader v0.3.0 // indirect
 	github.com/cloudwego/base64x v0.1.5 // indirect
+	github.com/dlclark/regexp2 v1.11.4 // indirect
+	github.com/dop251/goja v0.0.0-20250630131328-58d95d85e994 // indirect
+	github.com/dop251/goja_nodejs v0.0.0-20250409162600-f7acab6894b0 // indirect
 	github.com/ebitengine/purego v0.8.4 // indirect
 	github.com/eclipse/paho.mqtt.golang v1.5.0 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
@@ -37,11 +41,13 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.27.0 // indirect
+	github.com/go-sourcemap/sourcemap v2.1.4+incompatible // indirect
 	github.com/go-sql-driver/mysql v1.9.3 // indirect
 	github.com/go-viper/mapstructure/v2 v2.3.0 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
 	github.com/golang/snappy v1.0.0 // indirect
+	github.com/google/pprof v0.0.0-20240727154555-813a5fbdbec8 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/context v1.1.2 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
