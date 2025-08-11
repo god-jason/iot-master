@@ -1,0 +1,51 @@
+{
+  "name": "project",
+  "comment": "项目",
+  "fields": [
+    {
+      "name": "id",
+      "comment": "ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "tenant_id",
+      "comment": "租户ID",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
+      "name": "name",
+      "comment": "名称",
+      "type": "string",
+      "length": 50
+    },
+    {
+      "name": "description",
+      "comment": "说明",
+      "type": "string",
+      "length": 256
+    },
+    {
+      "name": "keywords",
+      "comment": "关键字",
+      "type": "string",
+      "length": 256,
+      "json": true
+    },
+    {
+      "name": "disabled",
+      "comment": "禁用",
+      "type": "bool",
+      "default": false
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "name": "product-config",
+  "comment": "产品配置",
+  "fields": [
+    {
+      "name": "id",
+      "comment": "ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "name",
+      "comment": "配置名称",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "content",
+      "comment": "配置内容",
+      "type": "text",
+      "json": true
+    },
+    {
+      "name": "updated",
+      "comment": "更新时间",
+      "type": "datetime",
+      "updated": true
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ]
+}

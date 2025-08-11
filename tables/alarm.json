@@ -1,0 +1,52 @@
+{
+  "name": "alarm",
+  "comment": "报警日志",
+  "fields": [
+    {
+      "name": "id",
+      "comment": "ID",
+      "increment": true,
+      "type": "int64",
+      "primary": true
+    },
+    {
+      "name": "device_id",
+      "comment": "设备ID",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
+      "name": "project_id",
+      "comment": "项目ID",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
+      "name": "title",
+      "comment": "标题",
+      "type": "string",
+      "length": 50
+    },
+    {
+      "name": "message",
+      "comment": "内容",
+      "type": "string",
+      "length": 256
+    },
+    {
+      "name": "level",
+      "comment": "等级",
+      "type": "uint8"
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ],
+  "disable_insert": true,
+  "disabled_update": true
+}

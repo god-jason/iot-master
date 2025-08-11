@@ -1,0 +1,32 @@
+{
+  "name": "space-device",
+  "comment": "空间设备",
+  "fields": [
+    {
+      "name": "space_id",
+      "comment": "空间ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "device_id",
+      "comment": "设备ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "name",
+      "comment": "别名",
+      "type": "string",
+      "length": "128"
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ]
+}

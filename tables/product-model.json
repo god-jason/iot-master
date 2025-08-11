@@ -1,0 +1,49 @@
+{
+  "name": "product-model",
+  "comment": "产品模型",
+  "fields": [
+    {
+      "name": "id",
+      "comment": "ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "properties",
+      "comment": "属性",
+      "type": "txt",
+      "json": true
+    },
+    {
+      "name": "events",
+      "comment": "事件",
+      "type": "txt",
+      "json": true
+    },
+    {
+      "name": "actions",
+      "comment": "动作",
+      "type": "txt",
+      "json": true
+    },
+    {
+      "name": "validators",
+      "comment": "检验器",
+      "type": "txt",
+      "json": true
+    },
+    {
+      "name": "updated",
+      "comment": "更新时间",
+      "type": "datetime",
+      "updated": true
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ]
+}

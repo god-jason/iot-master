@@ -1,0 +1,25 @@
+{
+  "name": "device-model",
+  "comment": "设备模型",
+  "fields": [
+    {
+      "name": "id",
+      "comment": "ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "validators",
+      "comment": "检验器",
+      "type": "text",
+      "json": true
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ]
+}

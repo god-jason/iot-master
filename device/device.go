@@ -1,14 +1,9 @@
 package device
 
 import (
-	"github.com/busy-cloud/boat/db"
 	"github.com/god-jason/iot-master/product"
 	"time"
 )
-
-func init() {
-	db.Register(&Device{}, &DeviceModel{})
-}
 
 type Device struct {
 	Id          string         `json:"id,omitempty" xorm:"pk"`

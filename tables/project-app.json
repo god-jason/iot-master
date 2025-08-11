@@ -1,0 +1,32 @@
+{
+  "name": "project-app",
+  "comment": "项目App",
+  "fields": [
+    {
+      "name": "project_id",
+      "comment": "项目ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "app_id",
+      "comment": "AppID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "disabled",
+      "comment": "禁用",
+      "type": "bool",
+      "default": false
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "name": "product",
+  "comment": "产品",
+  "fields": [
+    {
+      "name": "id",
+      "comment": "ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "tenant_id",
+      "comment": "租户ID",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
+      "name": "name",
+      "comment": "名称",
+      "type": "string",
+      "length": 50
+    },
+    {
+      "name": "description",
+      "comment": "说明",
+      "type": "string",
+      "length": 256
+    },
+    {
+      "name": "type",
+      "comment": "类型",
+      "type": "string",
+      "length": 256
+    },
+    {
+      "name": "version",
+      "comment": "版本",
+      "type": "string",
+      "length": 256
+    },
+    {
+      "name": "protocol",
+      "comment": "通讯协议",
+      "type": "string",
+      "length": 256
+    },
+    {
+      "name": "disabled",
+      "comment": "禁用",
+      "type": "bool",
+      "default": false
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ]
+}

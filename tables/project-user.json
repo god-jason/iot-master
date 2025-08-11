@@ -1,0 +1,38 @@
+{
+  "name": "project-user",
+  "comment": "项目用户",
+  "fields": [
+    {
+      "name": "project_id",
+      "comment": "项目ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "user_id",
+      "comment": "用户ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "admin",
+      "comment": "项目管理员",
+      "type": "bool",
+      "default": false
+    },
+    {
+      "name": "disabled",
+      "comment": "禁用",
+      "type": "bool",
+      "default": false
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ]
+}

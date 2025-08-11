@@ -28,7 +28,7 @@
       "confirm": "确认删除？",
       "action": {
         "type": "script",
-        "script": "this.request.get('iot/alarm/'+data.id+'/delete').subscribe(res=>{this.load()})"
+        "script": "this.request.get('table/alarm/'+data.id+'/delete').subscribe(res=>{this.load()})"
       }
     }
   ],
@@ -73,6 +73,6 @@
       "type": "date"
     }
   ],
-  "search_api": "iot/alarm/search",
+  "search_api": "table/alarm/search",
   "mount": "if(this.params.device_id)this.filter.device_id=this.params.device_id;if(this.params.project_id)this.filter.project_id=this.params.project_id;"
 }
