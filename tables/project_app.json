@@ -1,6 +1,6 @@
 {
-  "name": "project-device",
-  "comment": "项目设备",
+  "name": "project_app",
+  "comment": "项目App",
   "joins": [
     {
       "table": "project",
@@ -8,13 +8,6 @@
       "foreign_field": "id",
       "field": "name",
       "as": "project"
-    },
-    {
-      "table": "device",
-      "local_field": "device_id",
-      "foreign_field": "id",
-      "field": "name",
-      "as": "device"
     }
   ],
   "fields": [
@@ -26,17 +19,17 @@
       "primary": true
     },
     {
-      "name": "device_id",
-      "comment": "设备ID",
+      "name": "app_id",
+      "comment": "AppID",
       "type": "string",
       "length": 50,
       "primary": true
     },
     {
-      "name": "name",
-      "comment": "别名",
-      "type": "string",
-      "length": 128
+      "name": "disabled",
+      "comment": "禁用",
+      "type": "bool",
+      "default": "false"
     },
     {
       "name": "created",

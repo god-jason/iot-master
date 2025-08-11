@@ -1,6 +1,6 @@
 {
-  "name": "project-user",
-  "comment": "项目用户",
+  "name": "project_device",
+  "comment": "项目设备",
   "joins": [
     {
       "table": "project",
@@ -10,11 +10,11 @@
       "as": "project"
     },
     {
-      "table": "user",
-      "local_field": "user_id",
+      "table": "device",
+      "local_field": "device_id",
       "foreign_field": "id",
       "field": "name",
-      "as": "user"
+      "as": "device"
     }
   ],
   "fields": [
@@ -26,23 +26,17 @@
       "primary": true
     },
     {
-      "name": "user_id",
-      "comment": "用户ID",
+      "name": "device_id",
+      "comment": "设备ID",
       "type": "string",
       "length": 50,
       "primary": true
     },
     {
-      "name": "admin",
-      "comment": "项目管理员",
-      "type": "bool",
-      "default": "false"
-    },
-    {
-      "name": "disabled",
-      "comment": "禁用",
-      "type": "bool",
-      "default": "false"
+      "name": "name",
+      "comment": "别名",
+      "type": "string",
+      "length": 128
     },
     {
       "name": "created",
