@@ -55,7 +55,7 @@
     }
   ],
   "submit_api": "table/space/create",
-  "submit_success": "this.navigate('/page/iot/space-detail?id='+data.id)",
+  "submit_success": "this.navigate('/page/iot/space-detail?id='+data)",
   "mount": "",
   "methods": {
    }

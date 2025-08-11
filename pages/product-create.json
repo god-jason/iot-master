@@ -42,7 +42,7 @@
     }
   ],
   "submit_api": "table/product/create",
-  "submit_success": "this.navigate('/page/iot/product-detail?id='+data.id)",
+  "submit_success": "this.navigate('/page/iot/product-detail?id='+data)",
   "mount": "this.load_protocols()",
   "methods": {
     "load_protocols": "this.request.get('iot/protocol/list').subscribe(res=>{this.content.fields[5].options=res.data.map(d=>{return {value:d.name,label:d.description}}); })"

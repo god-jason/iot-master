@@ -1,0 +1,55 @@
+{
+  "name": "link",
+  "comment": "连接",
+  "fields": [
+    {
+      "name": "id",
+      "comment": "ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "linker",
+      "comment": "连接器",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
+      "name": "name",
+      "comment": "名称",
+      "type": "string",
+      "length": 50
+    },
+    {
+      "name": "description",
+      "comment": "说明",
+      "type": "string",
+      "length": 256
+    },
+    {
+      "name": "protocol",
+      "comment": "协议",
+      "type": "string",
+      "length": 128
+    },
+    {
+      "name": "protocol_options",
+      "comment": "协议参数",
+      "type": "text"
+    },
+    {
+      "name": "disabled",
+      "comment": "禁用",
+      "type": "bool",
+      "default": "false"
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ]
+}

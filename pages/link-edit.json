@@ -31,7 +31,7 @@
       "children": []
     }
   ],
-  "load_api": "table/link/:id",
+  "load_api": "table/link/detail/:id",
   "submit_api": "table/link/:id",
   "submit_success": "this.navigate('/page/iot/link-detail?id='+data.id)",
   "mount": "this.load_protocols();",
