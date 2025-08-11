@@ -36,7 +36,7 @@
       "name": "name",
       "comment": "别名",
       "type": "string",
-      "length": "128"
+      "length": 128
     },
     {
       "name": "created",

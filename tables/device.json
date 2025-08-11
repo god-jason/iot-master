@@ -69,7 +69,7 @@
       "name": "disabled",
       "comment": "禁用",
       "type": "bool",
-      "default": false
+      "default": "false"
     },
     {
       "name": "created",

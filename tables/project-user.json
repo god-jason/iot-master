@@ -36,13 +36,13 @@
       "name": "admin",
       "comment": "项目管理员",
       "type": "bool",
-      "default": false
+      "default": "false"
     },
     {
       "name": "disabled",
       "comment": "禁用",
       "type": "bool",
-      "default": false
+      "default": "false"
     },
     {
       "name": "created",

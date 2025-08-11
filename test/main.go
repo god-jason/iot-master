@@ -3,6 +3,7 @@ package main
 import (
 	_ "embed"
 	"encoding/json"
+	_ "github.com/busy-cloud/boat-ui"
 	_ "github.com/busy-cloud/boat/apis"
 	"github.com/busy-cloud/boat/apps"
 	"github.com/busy-cloud/boat/boot"
@@ -41,6 +42,7 @@ func init() {
 	//注册资源
 	a.AssetsFS = store.Dir("assets")
 	a.PagesFS = store.Dir("pages")
+	a.TablesFS = store.Dir("tables")
 }
 
 func main() {
