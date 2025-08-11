@@ -18,7 +18,7 @@
   "methods": {
     "load_values": "this.request.get('iot/device/'+this.params.id+'/values').subscribe(res=>{if(res.error)return; this.data=res.data; this.content.toolbar[0].type='text'; label=res.data.__update})",
     "refresh_values": "this.request.get('iot/device/'+this.params.id+'/sync').subscribe(res=>{if(res.error)return; this.data=res.data})",
-    "load_device": "this.request.get('iot/device/'+this.params.id).subscribe(res=>{if(res.error)return; this.load_model(res.data.product_id)})",
+    "load_device": "this.request.get('table/device/'+this.params.id).subscribe(res=>{if(res.error)return; this.load_model(res.data.product_id)})",
     "load_model": ["pid","this.request.get('iot/product/'+pid+'/model').subscribe(res=>{if(res.error)return; this.content.items=res.data.properties.map(p=>{return{key:p.name,label:p.label,suffix:p.unit,span:6,action:this.value_action}}); })"]
   }
 }

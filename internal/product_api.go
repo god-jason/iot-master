@@ -10,14 +10,6 @@ import (
 )
 
 func init() {
-	api.Register("GET", "iot/product/list", curd.ApiList[product.Product]())
-	api.Register("POST", "iot/product/search", curd.ApiSearch[product.Product]())
-	api.Register("POST", "iot/product/create", curd.ApiCreate[product.Product]())
-	api.Register("GET", "iot/product/:id", curd.ApiGet[product.Product]())
-	api.Register("POST", "iot/product/:id", curd.ApiUpdate[product.Product]("id", "name", "description", "type", "version", "protocol", "disabled"))
-	api.Register("GET", "iot/product/:id/delete", curd.ApiDelete[product.Product]())
-	api.Register("GET", "iot/product/:id/enable", curd.ApiDisable[product.Product](false))
-	api.Register("GET", "iot/product/:id/disable", curd.ApiDisable[product.Product](true))
 
 	//物模型
 	api.Register("GET", "iot/product/:id/model", curd.ApiGet[product.Model]())

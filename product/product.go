@@ -1,13 +1,8 @@
 package product
 
 import (
-	"github.com/busy-cloud/boat/db"
 	"time"
 )
-
-func init() {
-	db.Register(&Product{}, &ProductConfig{}, &Model{})
-}
 
 type Product struct {
 	Id          string    `json:"id,omitempty" xorm:"pk"`

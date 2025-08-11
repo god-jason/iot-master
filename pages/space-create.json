@@ -54,7 +54,7 @@
       "type": "switch"
     }
   ],
-  "submit_api": "iot/space/create",
+  "submit_api": "table/space/create",
   "submit_success": "this.navigate('/page/iot/space-detail?id='+data.id)",
   "mount": "",
   "methods": {

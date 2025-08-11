@@ -19,7 +19,7 @@
       "confirm": "确认删除？",
       "action": {
         "type": "script",
-        "script": "this.request.get('iot/device/'+data.id+'/delete').subscribe(res=>{this.navigate('/page/iot/device')})"
+        "script": "this.request.get('table/device/delete/'+data.id).subscribe(res=>{this.navigate('/page/iot/device')})"
       }
     },
     {
@@ -84,7 +84,7 @@
       "label": "禁用"
     }
   ],
-  "load_api": "iot/device/:id",
+  "load_api": "table/device/detail/:id",
   "tabs": [
     {
       "title": "实时状态",

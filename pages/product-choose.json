@@ -46,5 +46,5 @@
       "label": "版本"
     }
   ],
-  "search_api": "iot/product/search"
+  "search_api": "table/product/search"
 }

@@ -6,18 +6,23 @@ import (
 	"github.com/busy-cloud/boat/lib"
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
-	"github.com/god-jason/iot-master/device"
-	"github.com/god-jason/iot-master/project"
+	"github.com/god-jason/iot-master/product"
 	"github.com/god-jason/iot-master/protocol"
-	"github.com/god-jason/iot-master/space"
 	"math/rand"
 	"strconv"
 	"time"
 )
 
 type Device struct {
-	device.Device `xorm:"extends"`
-	device.Status `xorm:"-"`
+	//device.Device `xorm:"extends"`
+	Id        string         `json:"id,omitempty" xorm:"pk"`
+	ProductId string         `json:"product_id,omitempty" xorm:"index"`
+	LinkId    string         `json:"link_id,omitempty" xorm:"index"`
+	Name      string         `json:"name,omitempty"`
+	Station   map[string]any `json:"station,omitempty" xorm:"json"` //从站信息（协议定义表单）
+	Disabled  bool           `json:"disabled,omitempty"`            //禁用
+
+	Status `xorm:"-"`
 
 	values Values
 
@@ -34,27 +39,38 @@ type Device struct {
 	waiting lib.Map[chan any]
 }
 
+type DeviceModel struct {
+	Id         string               `json:"id,omitempty" xorm:"pk"`
+	Validators []*product.Validator `json:"validators,omitempty" xorm:"json"`
+	Created    time.Time            `json:"created,omitempty" xorm:"created"`
+}
+
+type Status struct {
+	Online bool   `json:"online,omitempty"`
+	Error  string `json:"error,omitempty"`
+}
+
 func (d *Device) Open() error {
 	d.Online = true
 
 	//查询绑定的项目
-	var ps []*project.ProjectDevice
-	err := db.Engine().Where("device_id=?", d.Id).Find(&ps) //.Distinct("project_id")
+	var ps []map[string]interface{}
+	err := db.Engine().Cols("project_id").Where("device_id=?", d.Id).Find(&ps) //.Distinct("project_id")
 	if err != nil {
 		return err
 	}
 	for _, p := range ps {
-		d.projects = append(d.projects, p.ProjectId)
+		d.projects = append(d.projects, p["project_id"].(string))
 	}
 
 	//查询绑定的设备
-	var ss []*space.SpaceDevice
-	err = db.Engine().Where("device_id=?", d.Id).Find(&ss) //.Distinct("space_id")
+	var ss []map[string]interface{}
+	err = db.Engine().Cols("space_id").Where("device_id=?", d.Id).Find(&ss) //.Distinct("space_id")
 	if err != nil {
 		return err
 	}
 	for _, s := range ss {
-		d.spaces = append(d.spaces, s.SpaceId)
+		d.spaces = append(d.spaces, s["space_id"].(string))
 	}
 
 	//加载产品物模型
@@ -78,7 +94,7 @@ func (d *Device) Open() error {
 	}
 
 	//加载设备模型
-	var deviceModel device.DeviceModel
+	var deviceModel DeviceModel
 	has, err := db.Engine().ID(d.Id).Get(&deviceModel)
 	if err != nil {
 		return err

@@ -14,7 +14,7 @@ func GetDevice(id string) *Device {
 
 func LoadDevice(id string) (*Device, error) {
 	d := &Device{}
-	has, err := db.Engine().ID(id).Get(&d.Device)
+	has, err := db.Engine().ID(id).Get(&d)
 	if err != nil {
 		return nil, err
 	}

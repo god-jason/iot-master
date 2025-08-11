@@ -8,6 +8,11 @@
       "type": "text"
     },
     {
+      "key": "product_id",
+      "label": "产品ID",
+      "type": "text"
+    },
+    {
       "key": "name",
       "label": "名称",
       "type": "text"
@@ -16,15 +21,6 @@
       "key": "description",
       "label": "说明",
       "type": "text"
-    },
-    {
-      "key": "product_id",
-      "label": "产品ID",
-      "type": "text",
-      "change_action": {
-        "type": "script",
-        "script": "setTimeout(()=>this.load_product(), 100)"
-      }
     },
     {
       "key": "link_id",
@@ -44,5 +40,5 @@
       "type": "switch"
     }
   ],
-  "submit_api": "iot/device/:id"
+  "submit_api": "table/device/create"
 }

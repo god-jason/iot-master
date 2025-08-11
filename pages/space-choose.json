@@ -46,5 +46,5 @@
       "label": "说明"
     }
   ],
-  "search_api": "iot/space/search"
+  "search_api": "table/space/search"
 }

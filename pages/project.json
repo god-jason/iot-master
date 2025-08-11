@@ -54,7 +54,7 @@
       "confirm": "确认删除？",
       "action": {
         "type": "script",
-        "script": "this.request.get('iot/project/'+data.id+'/delete').subscribe(res=>{this.load()})"
+        "script": "this.request.get('table/project/delete/'+data.id).subscribe(res=>{this.load()})"
       }
     }
   ],
@@ -87,5 +87,5 @@
       "type": "date"
     }
   ],
-  "search_api": "iot/project/search"
+  "search_api": "table/project/search"
 }

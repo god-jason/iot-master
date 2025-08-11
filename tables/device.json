@@ -1,6 +1,22 @@
 {
   "name": "device",
   "comment": "设备",
+  "joins": [
+    {
+      "table": "product",
+      "local_field": "product_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "product"
+    },
+    {
+      "table": "tenant",
+      "local_field": "tenant_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "tenant"
+    }
+  ],
   "fields": [
     {
       "name": "id",

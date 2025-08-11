@@ -1,6 +1,22 @@
 {
   "name": "project-device",
   "comment": "项目设备",
+  "joins": [
+    {
+      "table": "project",
+      "local_field": "project_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "project"
+    },
+    {
+      "table": "device",
+      "local_field": "device_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "device"
+    }
+  ],
   "fields": [
     {
       "name": "project_id",

@@ -25,7 +25,7 @@
       "type": "switch"
     }
   ],
-  "submit_api": "iot/project/create",
+  "submit_api": "table/project/create",
   "submit_success": "this.navigate('/page/iot/project-detail?id='+data.id)",
   "methods": {
   }

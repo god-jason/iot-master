@@ -55,7 +55,7 @@
       "confirm": "确认删除？",
       "action": {
         "type": "script",
-        "script": "this.request.get('iot/device/'+data.id+'/delete').subscribe(res=>{this.load()})"
+        "script": "this.request.get('table/device/delete/'+data.id).subscribe(res=>{this.load()})"
       }
     }
   ],
@@ -102,6 +102,6 @@
       "type": "date"
     }
   ],
-  "search_api": "iot/device/search",
+  "search_api": "table/device/search",
   "mount": "if(this.params.product_id)this.filter.product_id=this.params.product_id"
 }

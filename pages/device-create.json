@@ -65,11 +65,11 @@
       "type": "switch"
     }
   ],
-  "submit_api": "iot/device/create",
+  "submit_api": "table/device/create",
   "submit_success": "this.navigate('/page/iot/device-detail?id='+data.id)",
   "mount": "this.data.product_id=this.params.product_id; setTimeout(()=>this.load_product(), 100)",
   "methods": {
-    "load_product": "this.editor.value.product_id && this.request.get('iot/product/'+this.editor.value.product_id).subscribe(res=>{if(!res.error) this.load_protocol_station(res.data.protocol)})",
+    "load_product": "this.editor.value.product_id && this.request.get('table/device/'+this.editor.value.product_id).subscribe(res=>{if(!res.error) this.load_protocol_station(res.data.protocol)})",
     "load_protocol_station": ["p", "this.request.get('iot/protocol/'+p).subscribe(res=>{this.content.fields[5].children=res.station; setTimeout(()=>this.editor.rebuild(), 200)})"]
    }
 }

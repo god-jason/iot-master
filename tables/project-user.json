@@ -1,6 +1,22 @@
 {
   "name": "project-user",
   "comment": "项目用户",
+  "joins": [
+    {
+      "table": "project",
+      "local_field": "project_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "project"
+    },
+    {
+      "table": "user",
+      "local_field": "user_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "user"
+    }
+  ],
   "fields": [
     {
       "name": "project_id",

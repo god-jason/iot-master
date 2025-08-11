@@ -29,7 +29,7 @@
       "confirm": "确认删除？",
       "action": {
         "type": "script",
-        "script": "this.request.get('iot/product/'+data.id+'/delete').subscribe(res=>{this.navigate('/page/iot/product')})"
+        "script": "this.request.get('table/device/delete/'+data.id).subscribe(res=>{this.navigate('/page/iot/product')})"
       }
     }
   ],
@@ -64,7 +64,7 @@
       "type": "boolean"
     }
   ],
-  "load_api": "iot/product/:id",
+  "load_api": "table/product/detail/:id",
   "tabs": [
     {
       "title": "产品设备",

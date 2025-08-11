@@ -35,7 +35,7 @@
       "confirm": "确认删除？",
       "action": {
         "type": "script",
-        "script": "this.request.get('iot/space/'+data.id+'/delete').subscribe(res=>{this.load()})"
+        "script": "this.request.get('iot/space/delete/'+data.id).subscribe(res=>{this.load()})"
       }
     }
   ],
@@ -77,6 +77,6 @@
       "type": "date"
     }
   ],
-  "search_api": "iot/space/search",
+  "search_api": "table/space/search",
   "mount": "if(this.params.project_id)this.filter.project_id=this.params.project_id; if(this.params.parent_id)this.filter.parent_id=this.params.parent_id"
 }

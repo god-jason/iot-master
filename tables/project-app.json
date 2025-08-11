@@ -1,6 +1,15 @@
 {
   "name": "project-app",
   "comment": "项目App",
+  "joins": [
+    {
+      "table": "project",
+      "local_field": "project_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "project"
+    }
+  ],
   "fields": [
     {
       "name": "project_id",

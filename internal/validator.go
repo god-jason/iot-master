@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/PaesslerAG/gval"
-	"github.com/god-jason/iot-master/alarm"
 	"github.com/god-jason/iot-master/calc"
 	"github.com/god-jason/iot-master/product"
 	"github.com/spf13/cast"
@@ -29,7 +28,7 @@ func (v *Validator) Build() (err error) {
 	return err
 }
 
-func (v *Validator) Evaluate(ctx map[string]any) (*alarm.Alarm, error) {
+func (v *Validator) Evaluate(ctx map[string]any) (*Alarm, error) {
 	var err error
 	var ret bool
 
@@ -98,7 +97,7 @@ func (v *Validator) Evaluate(ctx map[string]any) (*alarm.Alarm, error) {
 	v.times = v.times + 1
 
 	//产生报警
-	a := &alarm.Alarm{
+	a := &Alarm{
 		Title:   replaceParams(v.Title, ctx),
 		Message: replaceParams(v.Message, ctx),
 		Level:   v.Level,

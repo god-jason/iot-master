@@ -41,7 +41,7 @@
       "type": "switch"
     }
   ],
-  "submit_api": "iot/product/create",
+  "submit_api": "table/product/create",
   "submit_success": "this.navigate('/page/iot/product-detail?id='+data.id)",
   "mount": "this.load_protocols()",
   "methods": {
