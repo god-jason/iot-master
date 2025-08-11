@@ -10,7 +10,7 @@
         "type": "dialog",
         "page": "iot/project-device-choose",
         "params_func": "return {project_id: this.space.project_id}",
-        "after_close": "this.request.get('iot/space/'+this.params.space_id+'/device/'+result.device_id+'/bind').subscribe(res=>this.load())"
+        "after_close": "this.request.post('iot/space-device/create', {space_id:this.params.space_id, device_id:result.device_id}).subscribe(res=>this.load())"
       }
     }
   ],
@@ -37,14 +37,14 @@
       "confirm": "确认解绑？",
       "action": {
         "type": "script",
-        "script": "this.request.get('iot/space/'+data.space_id+'/device/'+data.device_id+'/unbind').subscribe(res=>this.load())"
+        "script": "this.request.get('table/space-device/delete/'+data.space_id+'/'+data.device_id).subscribe(res=>this.load())"
       }
     }
   ],
   "columns": [
     {
-      "key": "device_id",
-      "label": "设备ID",
+      "key": "device",
+      "label": "设备",
       "action": {
         "type": "page",
         "page": "iot/device-detail",
@@ -61,6 +61,6 @@
       "type": "date"
     }
   ],
-  "load_api": "iot/space/:space_id/device/list?limit=99999",
-  "mount": "this.request.get('iot/space/'+this.params.space_id).subscribe(res=>{this.space=res.data})"
+  "search_api": "table/space-device/search",
+  "mount": "if(this.params.space_id)this.filter.space_id=this.params.space_id;"
 }

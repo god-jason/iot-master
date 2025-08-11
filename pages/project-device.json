@@ -9,7 +9,7 @@
       "action": {
         "type": "dialog",
         "page": "iot/device-choose",
-        "after_close": "this.request.get('iot/project/'+this.params.project_id+'/device/'+result.id+'/bind').subscribe(res=>this.load())"
+        "after_close": "this.request.post('iot/project-device/create', {project_id:this.params.project_id, device_id:result.id}).subscribe(res=>this.load())"
       }
     }
   ],
@@ -36,14 +36,14 @@
       "confirm": "确认解绑？",
       "action": {
         "type": "script",
-        "script": "this.request.get('iot/project/'+data.project_id+'/device/'+data.device_id+'/unbind').subscribe(res=>this.load())"
+        "script": "this.request.get('table/project-device/delete/'+data.project_id+'/'+data.device_id).subscribe(res=>this.load())"
       }
     }
   ],
   "columns": [
     {
-      "key": "device_id",
-      "label": "设备ID",
+      "key": "device",
+      "label": "设备",
       "action": {
         "type": "page",
         "page": "iot/device-detail",
@@ -60,5 +60,6 @@
       "type": "date"
     }
   ],
-  "load_api": "iot/project/:project_id/device/list?limit=99999"
+  "search_api": "table/project-device/search",
+  "mount": "if(this.params.project_id)this.filter.project_id=this.params.project_id;"
 }

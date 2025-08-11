@@ -13,8 +13,8 @@
   ],
   "columns": [
     {
-      "key": "device_id",
-      "label": "设备ID"
+      "key": "device",
+      "label": "设备"
     },
     {
       "key": "name",
@@ -26,5 +26,6 @@
       "type": "date"
     }
   ],
-  "load_api": "iot/project/:project_id/device/list?limit=99999"
+  "search_api": "table/project-device/search",
+  "mount": "if(this.params.project_id)this.filter.project_id=this.params.project_id;"
 }
