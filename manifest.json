@@ -3,12 +3,17 @@
   "icon": "device.png",
   "name": "物联网",
   "description": "物联大师基础功能",
-  "version": "v0.0.12",
+  "version": "v0.4.5",
   "shortcuts": [
     {
       "name": "设备",
       "url": "page/iot/device",
       "icon": "device.png"
+    },
+    {
+      "name": "连接",
+      "url": "page/iot/link",
+      "icon": "link.png"
     },
     {
       "name": "项目空间",
@@ -41,6 +46,11 @@
           "name": "设备",
           "url": "page/iot/device",
           "icon": "device.png"
+        },
+        {
+          "name": "连接",
+          "url": "page/iot/link",
+          "icon": "link.png"
         },
         {
           "name": "项目空间",

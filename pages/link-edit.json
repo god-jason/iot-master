@@ -1,0 +1,42 @@
+{
+  "title": "编辑连接",
+  "template": "form",
+  "fields": [
+    {
+      "key": "id",
+      "label": "ID",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "name",
+      "label": "名称",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "protocol",
+      "label": "协议",
+      "type": "select",
+      "options": [],
+      "change_action": {
+        "type": "script",
+        "script": "setTimeout(()=>this.load_protocol_option(), 200)"
+      }
+    },
+    {
+      "key": "protocol_options",
+      "label": "协议参数",
+      "type": "object",
+      "children": []
+    }
+  ],
+  "load_api": "table/link/:id",
+  "submit_api": "table/link/:id",
+  "submit_success": "this.navigate('/page/iot/link-detail?id='+data.id)",
+  "mount": "this.load_protocols();",
+  "methods": {
+    "load_protocols": "this.request.get('iot/protocol/list').subscribe(res=>{this.content.fields[2].options=res.data.map(d=>{return {value:d.name,label:d.description}}); setTimeout(()=>this.load_protocol_option(), 200);  })",
+    "load_protocol_option": "this.editor.value.protocol && this.request.get('iot/protocol/'+this.editor.value.protocol).subscribe(res=>{this.content.fields[3].children=res.options; setTimeout(()=>this.editor.rebuild(), 200)})"
+  }
+}

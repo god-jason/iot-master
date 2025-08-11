@@ -16,6 +16,7 @@ import (
 	_ "github.com/busy-cloud/influxdb"
 	_ "github.com/busy-cloud/modbus"
 	_ "github.com/busy-cloud/saas"
+	_ "github.com/busy-cloud/serial-port"
 	_ "github.com/busy-cloud/tcp-client"
 	_ "github.com/busy-cloud/tcp-server"
 	_ "github.com/god-jason/iot-master"

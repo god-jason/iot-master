@@ -1,0 +1,76 @@
+{
+  "title": "连接详情",
+  "template": "info",
+  "toolbar": [
+    {
+      "icon": "edit",
+      "type": "button",
+      "label": "编辑",
+      "action": {
+        "type": "page",
+        "page": "iot/link-edit",
+        "params_func": "return {id: data.id}"
+      }
+    },
+    {
+      "icon": "delete",
+      "type": "button",
+      "label": "删除",
+      "confirm": "确认删除？",
+      "action": {
+        "type": "script",
+        "script": "this.request.get('table/link/delete/'+data.id).subscribe(res=>{this.navigate('/page/iot/link')})"
+      }
+    },
+    {
+      "icon": "stop",
+      "type": "button",
+      "label": "停止",
+      "action": {
+        "type": "script",
+        "script": "this.request.get('iot/link/'+data.id+'/close').subscribe(res=>{this.load()})"
+      }
+    }
+  ],
+  "items": [
+    {
+      "key": "id",
+      "label": "ID"
+    },
+    {
+      "key": "name",
+      "label": "名称"
+    },
+    {
+      "key": "linker",
+      "label": "连接器",
+      "type": "text"
+    },
+    {
+      "key": "protocol",
+      "label": "协议",
+      "type": "text"
+    },
+    {
+      "key": "protocol_options",
+      "label": "协议参数",
+      "type": "object"
+    },
+    {
+      "key": "running",
+      "label": "运行",
+      "type": "boolean"
+    },
+    {
+      "key": "error",
+      "label": "错误"
+    }
+  ],
+  "load_api": "table/link/:id",
+  "children": [
+    {
+      "page": "iot/device",
+      "params_func": "return {link_id: params.id}"
+    }
+  ]
+}

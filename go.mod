@@ -10,8 +10,9 @@ require (
 	github.com/busy-cloud/influxdb v0.2.6
 	github.com/busy-cloud/modbus v0.4.4
 	github.com/busy-cloud/saas v0.0.6
-	github.com/busy-cloud/tcp-client v0.0.2
-	github.com/busy-cloud/tcp-server v0.1.3
+	github.com/busy-cloud/serial-port v0.0.5
+	github.com/busy-cloud/tcp-client v0.0.5
+	github.com/busy-cloud/tcp-server v0.1.4
 	github.com/busy-cloud/user v0.6.4
 	github.com/gin-gonic/gin v1.10.1
 	github.com/spf13/cast v1.9.2
@@ -26,6 +27,7 @@ require (
 	github.com/bytedance/sonic v1.13.3 // indirect
 	github.com/bytedance/sonic/loader v0.3.0 // indirect
 	github.com/cloudwego/base64x v0.1.5 // indirect
+	github.com/creack/goselect v0.1.2 // indirect
 	github.com/dlclark/regexp2 v1.11.4 // indirect
 	github.com/dop251/goja v0.0.0-20250630131328-58d95d85e994 // indirect
 	github.com/dop251/goja_nodejs v0.0.0-20250409162600-f7acab6894b0 // indirect
@@ -85,6 +87,7 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.3.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
+	go.bug.st/serial v1.6.4 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/arch v0.19.0 // indirect
 	golang.org/x/crypto v0.40.0 // indirect

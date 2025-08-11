@@ -24,10 +24,12 @@ github.com/busy-cloud/modbus v0.4.4 h1:IRQv18rPHY8gOj6AWxFDMLFaM7vf9z/awVdQDMMty
 github.com/busy-cloud/modbus v0.4.4/go.mod h1:G6pdpajTm/v/Sfebi+FJaOiG9tPoc99MszfVekT+2rs=
 github.com/busy-cloud/saas v0.0.6 h1:q/Oum/K5IkoLmML2If4AgjPQoxLZgtcVgd6TZ0u4Mfg=
 github.com/busy-cloud/saas v0.0.6/go.mod h1:69snbR84ru4IvpfkgA93GJLEjnLVRrKK3VN/g8DVREo=
-github.com/busy-cloud/tcp-client v0.0.2 h1:ozvncfSrtQoaklnMpxV8bxI4jD6TEctDSupoZcgSPTo=
-github.com/busy-cloud/tcp-client v0.0.2/go.mod h1:T81IvysuVrHRzA6L0MNKSqmKTJZXCltZbWWiBRkHXoQ=
-github.com/busy-cloud/tcp-server v0.1.3 h1:J1jqBMaEPEXiCkiuMpy5PZOmyj88WnH4Jr47RCdVdC8=
-github.com/busy-cloud/tcp-server v0.1.3/go.mod h1:ygXe9jPZqIXqpxakNUNn9JpoMClNukuAOK/HRDwxDkI=
+github.com/busy-cloud/serial-port v0.0.5 h1:jDo+POHxa26XuWdZkTMio6mj4DClkbMe/dh5vzQ03sU=
+github.com/busy-cloud/serial-port v0.0.5/go.mod h1:YdIOaKizeE9T2LMXDIMOsi45ZvYlLyFcnLeS5QlEoRk=
+github.com/busy-cloud/tcp-client v0.0.5 h1:cmHRTHPiszVfwATIuI6M2WFzzGEp88d6mFneAyLSMI8=
+github.com/busy-cloud/tcp-client v0.0.5/go.mod h1:gIxI89LKg7ceE1NM5+vb6Q7O+CvUyPpJ/GOy/hMPr6s=
+github.com/busy-cloud/tcp-server v0.1.4 h1:ufacxj+7PAKOMF5khBW8vrFky9E65BvNm+XOtRnvFBU=
+github.com/busy-cloud/tcp-server v0.1.4/go.mod h1:b6FVgGYpw29AxmezcVJ2O+66AVcRv/PFN3BmrxFl6pc=
 github.com/busy-cloud/user v0.6.4 h1:kfaCAUZDYyZvlZubrz5TrrtjTO5lH1ewmxhb7zbbIpE=
 github.com/busy-cloud/user v0.6.4/go.mod h1:azm+7ClpvAP81D5TRrENlhHxDbdnqPxyGbVE9/xJWls=
 github.com/bytedance/sonic v1.13.3 h1:MS8gmaH16Gtirygw7jV91pDCN33NyMrPbN7qiYhEsF0=
@@ -38,6 +40,8 @@ github.com/bytedance/sonic/loader v0.3.0/go.mod h1:N8A3vUdtUebEY2/VQC0MyhYeKUFos
 github.com/cloudwego/base64x v0.1.5 h1:XPciSp1xaq2VCSt6lF0phncD4koWyULpl5bUxbfCyP4=
 github.com/cloudwego/base64x v0.1.5/go.mod h1:0zlkT4Wn5C6NdauXdJRhSKRlJvmclQ1hhJgA0rcu/8w=
 github.com/cloudwego/iasm v0.2.0/go.mod h1:8rXZaNYT2n95jn+zTI1sDr+IgcD2GVs0nlbbQPiEFhY=
+github.com/creack/goselect v0.1.2 h1:2DNy14+JPjRBgPzAd1thbQp4BSIihxcBf0IXhQXDRa0=
+github.com/creack/goselect v0.1.2/go.mod h1:a/NhLweNvqIYMuxcMOuWY516Cimucms3DglDzQP3hKY=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -221,6 +225,8 @@ github.com/ugorji/go/codec v1.3.0 h1:Qd2W2sQawAfG8XSvzwhBeoGq71zXOC/Q1E9y/wUcsUA
 github.com/ugorji/go/codec v1.3.0/go.mod h1:pRBVtBSKl77K30Bv8R2P+cLSGaTtex6fsA2Wjqmfxj4=
 github.com/yusufpapurcu/wmi v1.2.4 h1:zFUKzehAFReQwLys1b/iSMl+JQGSCSjtVqQn9bBrPo0=
 github.com/yusufpapurcu/wmi v1.2.4/go.mod h1:SBZ9tNy3G9/m5Oi98Zks0QjeHVDvuK0qfxQmPyzfmi0=
+go.bug.st/serial v1.6.4 h1:7FmqNPgVp3pu2Jz5PoPtbZ9jJO5gnEnZIvnI1lzve8A=
+go.bug.st/serial v1.6.4/go.mod h1:nofMJxTeNVny/m6+KaafC6vJGj3miwQZ6vW4BZUGJPI=
 go.uber.org/multierr v1.11.0 h1:blXXJkSxSSfBVBlC76pxqeO+LN3aDfLQo+309xJstO0=
 go.uber.org/multierr v1.11.0/go.mod h1:20+QtiLqy0Nd6FdQB9TLXag12DsQkrbs3htMFfDN80Y=
 golang.org/x/arch v0.19.0 h1:LmbDQUodHThXE+htjrnmVD73M//D9GTH6wFZjyDkjyU=

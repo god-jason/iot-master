@@ -5,7 +5,6 @@ import (
 	"github.com/busy-cloud/boat/db"
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
-	"github.com/god-jason/iot-master/link"
 	"strings"
 )
 
@@ -32,14 +31,14 @@ func mqttSubscribeLink() {
 
 		var products []string
 
-		var lds []*link.Device
+		var lds []*LinkDevice
 		for _, d := range ds {
 			if d.Disabled {
 				continue
 			}
 
 			//记录需要挂载的设备
-			lds = append(lds, &link.Device{
+			lds = append(lds, &LinkDevice{
 				Id:        d.Id,
 				ProductId: d.ProductId,
 				Station:   d.Station,
