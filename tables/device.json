@@ -55,14 +55,12 @@
     {
       "name": "description",
       "comment": "说明",
-      "type": "string",
-      "length": 256
+      "type": "text"
     },
     {
       "name": "station",
       "comment": "站号",
-      "type": "string",
-      "length": 256,
+      "type": "text",
       "json": true
     },
     {

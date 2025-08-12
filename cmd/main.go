@@ -7,6 +7,7 @@ import (
 	"github.com/busy-cloud/boat/boot"
 	_ "github.com/busy-cloud/boat/broker"
 	"github.com/busy-cloud/boat/log"
+	_ "github.com/busy-cloud/boat/oem"
 	"github.com/busy-cloud/boat/service"
 	_ "github.com/busy-cloud/boat/table"
 	"github.com/busy-cloud/boat/web"
