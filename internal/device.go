@@ -60,7 +60,7 @@ func (d *Device) Open() error {
 
 	//查询绑定的项目
 	var ps []map[string]interface{}
-	err := db.Engine().Cols("project_id").Where("device_id=?", d.Id).Find(&ps) //.Distinct("project_id")
+	err := db.Engine().Table("project_device").Cols("project_id").Where("device_id=?", d.Id).Find(&ps) //.Distinct("project_id")
 	if err != nil {
 		return err
 	}
@@ -70,7 +70,7 @@ func (d *Device) Open() error {
 
 	//查询绑定的设备
 	var ss []map[string]interface{}
-	err = db.Engine().Cols("space_id").Where("device_id=?", d.Id).Find(&ss) //.Distinct("space_id")
+	err = db.Engine().Table("space_device").Cols("space_id").Where("device_id=?", d.Id).Find(&ss) //.Distinct("space_id")
 	if err != nil {
 		return err
 	}
