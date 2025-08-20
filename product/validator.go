@@ -6,7 +6,7 @@ import (
 )
 
 type Compare struct {
-	Type  string  `json:"type"` //= != > >= < <=
+	Type  string  `json:"type"` //= != > >= < <= eq ne gt lt gte lte
 	Name  string  `json:"name"`
 	Value float64 `json:"value"`
 }
@@ -21,17 +21,17 @@ func (c *Compare) Evaluate(ctx map[string]any) (bool, error) {
 		return false, err
 	}
 	switch c.Type {
-	case "=", "==":
+	case "=", "==", "eq":
 		return v == c.Value, nil
-	case "!=", "~=", "<>":
+	case "!=", "~=", "<>", "ne":
 		return v != c.Value, nil
-	case ">":
+	case ">", "gt":
 		return v > c.Value, nil
-	case "<":
+	case "<", "lt":
 		return v < c.Value, nil
-	case ">=":
+	case ">=", "gte":
 		return v >= c.Value, nil
-	case "<=":
+	case "<=", "lte":
 		return v <= c.Value, nil
 	default:
 		return false, fmt.Errorf("unsupported compare type: %s", c.Type)

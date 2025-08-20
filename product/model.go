@@ -36,7 +36,7 @@ type Action struct {
 	Returns     []Parameter `json:"returns,omitempty"`
 }
 
-type Model struct {
+type ProductModel struct {
 	Id         string       `json:"id,omitempty" xorm:"pk"`
 	Properties []*Property  `json:"properties,omitempty" xorm:"json"`
 	Events     []*Event     `json:"events,omitempty" xorm:"json"`

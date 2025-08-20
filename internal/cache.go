@@ -9,10 +9,10 @@ import (
 	"xorm.io/xorm/schemas"
 )
 
-var modelCache = lib.CacheLoader[product.Model]{
+var modelCache = lib.CacheLoader[product.ProductModel]{
 	Timeout: 600,
-	Loader: func(key string) (*product.Model, error) {
-		var pm product.Model
+	Loader: func(key string) (*product.ProductModel, error) {
+		var pm product.ProductModel
 		has, err := db.Engine().ID(key).Get(&pm)
 		if err != nil {
 			return nil, err
@@ -29,7 +29,7 @@ func InvalidModel(id string) {
 	modelCache.Invalid(id)
 }
 
-func LoadModel(id string) (*product.Model, error) {
+func LoadModel(id string) (*product.ProductModel, error) {
 	return modelCache.Load(id)
 }
 

@@ -13,6 +13,11 @@ import (
 	"time"
 )
 
+type Property struct {
+	Time  int64 `json:"time,omitempty"`
+	Value any   `json:"value,omitempty"`
+}
+
 type Device struct {
 	//device.Device `xorm:"extends"`
 	Id        string         `json:"id,omitempty" xorm:"pk"`
@@ -230,6 +235,7 @@ func (d *Device) Read(points []string, timeout int) (map[string]any, error) {
 	req := protocol.ReadRequest{
 		MsgId:    strconv.FormatInt(rand.Int63(), 10),
 		DeviceId: d.Id,
+		Points:   points,
 	}
 	token := mqtt.Publish("protocol/"+d.protocol+"/link/"+d.linker+"/"+d.LinkId+"/read", &req)
 	token.Wait()

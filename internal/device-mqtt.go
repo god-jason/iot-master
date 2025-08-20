@@ -12,13 +12,8 @@ import (
 func mqttSubscribeDevice() {
 
 	mqtt.Subscribe("device/+/values", func(topic string, payload []byte) {
+		var err error
 		id := strings.Split(topic, "/")[1]
-		var values map[string]any
-		err := json.Unmarshal(payload, &values)
-		if err != nil {
-			log.Error(err)
-			return
-		}
 
 		d := devices.Load(id)
 		if d == nil {
@@ -27,6 +22,43 @@ func mqttSubscribeDevice() {
 				log.Error(err)
 				return
 			}
+		}
+
+		var values map[string]any
+		err = json.Unmarshal(payload, &values)
+		if err != nil {
+			log.Error(err)
+			return
+		}
+
+		d.PutValues(values)
+	})
+
+	mqtt.Subscribe("device/+/property", func(topic string, payload []byte) {
+		var err error
+
+		id := strings.Split(topic, "/")[1]
+
+		d := devices.Load(id)
+		if d == nil {
+			d, err = LoadDevice(id)
+			if err != nil {
+				log.Error(err)
+				return
+			}
+		}
+
+		var props map[string]*Property
+		err = json.Unmarshal(payload, &props)
+		if err != nil {
+			log.Error(err)
+			return
+		}
+
+		//转为普通格式
+		var values = make(map[string]any)
+		for key, prop := range props {
+			values[key] = prop.Value
 		}
 
 		d.PutValues(values)
