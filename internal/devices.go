@@ -13,7 +13,7 @@ func GetDevice(id string) *Device {
 }
 
 func LoadDevice(id string) (*Device, error) {
-	d := &Device{}
+	var d Device
 	has, err := db.Engine().ID(id).Get(&d)
 	if err != nil {
 		return nil, err
@@ -25,9 +25,9 @@ func LoadDevice(id string) (*Device, error) {
 	if err != nil {
 		return nil, err
 	}
-	devices.Store(id, d)
+	devices.Store(id, &d)
 
-	return d, nil
+	return &d, nil
 }
 
 func UnloadDevice(id string) error {
