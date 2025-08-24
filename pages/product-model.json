@@ -1,6 +1,24 @@
 {
   "title": "编辑产品物模型",
   "template": "form",
+  "toolbar": [
+    {
+      "type": "button",
+      "label": "导出JSON",
+      "action": {
+        "type": "script",
+        "script": "this.export_json(this.editor.values, 'product-model-' + this.params.id)"
+      }
+    },
+    {
+      "type": "button",
+      "label": "导入JSON",
+      "action": {
+        "type": "script",
+        "script": "this.import_json().then(data=>this.editor.values = data)"
+      }
+    }
+  ],
   "fields": [
     {
       "key": "properties",
