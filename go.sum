@@ -18,10 +18,10 @@ github.com/busy-cloud/boat-ui v0.5.9 h1:pODWKs6jYdMo0tBNJDQxDr/kmRINHpJNb9J788os
 github.com/busy-cloud/boat-ui v0.5.9/go.mod h1:t9DwLmJyjbPHcm+IKzC9qUE7futO0pLigI9HIPbkhg0=
 github.com/busy-cloud/dash v0.5.0 h1:v7onTsSlRKKPN/OHnczyAfPL8+h0pIzrF6FHNh1IJT8=
 github.com/busy-cloud/dash v0.5.0/go.mod h1:YpLLCh50vwRy47NM9FFrAeg07Mh0qLxz6dzqYPJZm9c=
-github.com/busy-cloud/influxdb v0.2.6 h1:z1wqzwEI4e6WlB8rQtrFDc41epVuPRmnOrD4r3tLtcM=
-github.com/busy-cloud/influxdb v0.2.6/go.mod h1:NGR/zRY4RsaktCGCUcKPAdvyHU2vWksocW3HiEir0Kk=
-github.com/busy-cloud/modbus v0.4.4 h1:IRQv18rPHY8gOj6AWxFDMLFaM7vf9z/awVdQDMMtybg=
-github.com/busy-cloud/modbus v0.4.4/go.mod h1:G6pdpajTm/v/Sfebi+FJaOiG9tPoc99MszfVekT+2rs=
+github.com/busy-cloud/influxdb v0.5.0 h1:4f3MYHOXbc9WQ3pMd4vEz46/iLHBXUrhRlHgxh64q98=
+github.com/busy-cloud/influxdb v0.5.0/go.mod h1:qDqN+0fbxovdble0l7+VgbTtvij0W08+rDvigQKGD9c=
+github.com/busy-cloud/modbus v0.5.0 h1:rvd+oMYxAGZSvQHP1T9Lsm9efl0LGZWgIg/h+xnT0Ys=
+github.com/busy-cloud/modbus v0.5.0/go.mod h1:VFGDov4WJpvKQoPalX3A76vcIuQzfIO/IhK51r8VUdY=
 github.com/busy-cloud/saas v0.0.8 h1:Ysfciv8wybXIb9dLpxT9kf7Rx3TO0TvsirwLkfpP9iA=
 github.com/busy-cloud/saas v0.0.8/go.mod h1:R3PZcRTY3PutFxxPP3LrJIW2SM5q+FWybwbR/SYJiFw=
 github.com/busy-cloud/serial-port v0.0.7 h1:lIzhGAtziwQW/hZtM08/+OHewl43ij16vZIj4HADN8E=
