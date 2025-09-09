@@ -11,9 +11,9 @@ type Point struct {
 	Unit      string `json:"unit,omitempty"`  //单位
 	Type      string `json:"type,omitempty"`  //bool string number array object
 	Precision uint8  `json:"precision,omitempty"`
-	Default   any    `json:"default,omitempty"`  //默认值
-	Writable  bool   `json:"writable,omitempty"` //是否可写
-	History   bool   `json:"history,omitempty"`  //是否保存历史
+	Default   any    `json:"default,omitempty"` //默认值
+	//Writable  bool   `json:"writable,omitempty"` //是否可写
+	//History   bool   `json:"history,omitempty"`  //是否保存历史
 }
 
 type Property struct {

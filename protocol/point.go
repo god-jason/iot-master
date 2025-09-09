@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/god-jason/iot-master/bin"
+	"github.com/god-jason/iot-master/product"
 	"github.com/spf13/cast"
 )
 
@@ -13,7 +14,8 @@ type Point interface {
 }
 
 type PointBit struct {
-	Name    string `json:"name"`    //名称
+	product.Point //继承
+
 	Address uint16 `json:"address"` //偏移
 }
 
@@ -42,8 +44,8 @@ func (p *PointBit) Parse(address uint16, buf []byte) (any, error) {
 }
 
 type PointWord struct {
-	Name      string  `json:"name"`              //名称
-	Type      string  `json:"type"`              //类型
+	product.Point //继承
+
 	Address   uint16  `json:"address"`           //偏移
 	BigEndian bool    `json:"be,omitempty"`      //大端模式
 	Rate      float64 `json:"rate,omitempty"`    //倍率

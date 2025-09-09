@@ -10,7 +10,7 @@ func init() {
 	boot.Register("iot", &boot.Task{
 		Startup:  Startup,
 		Shutdown: nil,
-		Depends:  []string{"log", "mqtt", "database", "protocol"},
+		Depends:  []string{"log", "mqtt", "database", "table"},
 	})
 }
 

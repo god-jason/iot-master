@@ -10,7 +10,7 @@ require (
 	github.com/busy-cloud/boat-ui v0.5.9
 	github.com/busy-cloud/dash v0.5.0
 	github.com/busy-cloud/influxdb v0.5.0
-	github.com/busy-cloud/modbus v0.5.0
+	github.com/busy-cloud/modbus v0.5.1
 	github.com/busy-cloud/saas v0.5.0
 	github.com/busy-cloud/serial-port v0.5.0
 	github.com/busy-cloud/tcp-client v0.5.0
