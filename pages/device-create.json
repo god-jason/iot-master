@@ -53,13 +53,6 @@
       "type": "text"
     },
     {
-      "key": "station",
-      "label": "地址",
-      "type": "object",
-      "placeholder": "需要先选择产品ID",
-      "children": []
-    },
-    {
       "key": "disabled",
       "label": "禁用",
       "type": "switch"
@@ -67,9 +60,8 @@
   ],
   "submit_api": "table/device/create",
   "submit_success": "this.navigate('/page/iot/device-detail?id='+data)",
-  "mount": "this.data.product_id=this.params.product_id; setTimeout(()=>this.load_product(), 100)",
+  "mount": "this.data.product_id=this.params.product_id; this.get_extend_fields()",
   "methods": {
-    "load_product": "this.editor.value.product_id && this.request.get('table/product/detail/'+this.editor.value.product_id).subscribe(res=>{if(!res.error) this.load_protocol_station(res.data.protocol)})",
-    "load_protocol_station": ["p", "this.request.get('iot/protocol/'+p).subscribe(res=>{this.content.fields[5].children=res.station; setTimeout(()=>this.editor.rebuild(), 200)})"]
+    "get_extend_fields": "this.request.get('iot/device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.fields.push(f) })"
    }
 }
