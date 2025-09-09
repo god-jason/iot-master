@@ -1,6 +1,8 @@
 module github.com/god-jason/iot-master
 
-go 1.24
+go 1.24.0
+
+toolchain go1.24.6
 
 require (
 	github.com/PaesslerAG/gval v1.2.4
@@ -9,22 +11,23 @@ require (
 	github.com/busy-cloud/dash v0.5.0
 	github.com/busy-cloud/influxdb v0.5.0
 	github.com/busy-cloud/modbus v0.5.0
-	github.com/busy-cloud/saas v0.0.8
-	github.com/busy-cloud/serial-port v0.0.7
-	github.com/busy-cloud/tcp-client v0.0.7
-	github.com/busy-cloud/tcp-server v0.1.7
-	github.com/busy-cloud/user v0.6.5
+	github.com/busy-cloud/saas v0.5.0
+	github.com/busy-cloud/serial-port v0.5.0
+	github.com/busy-cloud/tcp-client v0.5.0
+	github.com/busy-cloud/tcp-server v0.5.0
+	github.com/busy-cloud/user v0.6.6
 	github.com/gin-gonic/gin v1.10.1
-	github.com/spf13/cast v1.9.2
-	github.com/spf13/pflag v1.0.7
-	github.com/spf13/viper v1.20.1
+	github.com/spf13/cast v1.10.0
+	github.com/spf13/pflag v1.0.10
+	github.com/spf13/viper v1.21.0
 	xorm.io/xorm v1.3.10
 )
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
-	github.com/bytedance/sonic v1.14.0 // indirect
+	github.com/bytedance/gopkg v0.1.3 // indirect
+	github.com/bytedance/sonic v1.14.1 // indirect
 	github.com/bytedance/sonic/loader v0.3.0 // indirect
 	github.com/cloudwego/base64x v0.1.6 // indirect
 	github.com/creack/goselect v0.1.2 // indirect
@@ -34,7 +37,7 @@ require (
 	github.com/ebitengine/purego v0.8.4 // indirect
 	github.com/eclipse/paho.mqtt.golang v1.5.0 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
-	github.com/gabriel-vasile/mimetype v1.4.9 // indirect
+	github.com/gabriel-vasile/mimetype v1.4.10 // indirect
 	github.com/gin-contrib/cors v1.7.6 // indirect
 	github.com/gin-contrib/gzip v1.2.3 // indirect
 	github.com/gin-contrib/sessions v1.0.4 // indirect
@@ -49,7 +52,7 @@ require (
 	github.com/goccy/go-json v0.10.5 // indirect
 	github.com/golang-jwt/jwt/v5 v5.3.0 // indirect
 	github.com/golang/snappy v1.0.0 // indirect
-	github.com/google/pprof v0.0.0-20250630185457-6e76a2b096b5 // indirect
+	github.com/google/pprof v0.0.0-20250903194437-c28834ac2320 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/context v1.1.2 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
@@ -72,13 +75,13 @@ require (
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
 	github.com/power-devops/perfstat v0.0.0-20240221224432-82ca36839d55 // indirect
 	github.com/rs/xid v1.6.0 // indirect
-	github.com/sagikazarmark/locafero v0.10.0 // indirect
+	github.com/sagikazarmark/locafero v0.11.0 // indirect
 	github.com/segmentio/ksuid v1.0.4 // indirect
 	github.com/shirou/gopsutil/v4 v4.25.4 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/sourcegraph/conc v0.3.1-0.20240121214520-5f936abd7ae8 // indirect
-	github.com/spf13/afero v1.14.0 // indirect
+	github.com/spf13/afero v1.15.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/super-l/machine-code v0.0.0-20241121142923-4cb40646deba // indirect
 	github.com/syndtr/goleveldb v1.0.0 // indirect
@@ -89,13 +92,14 @@ require (
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
 	go.bug.st/serial v1.6.4 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/arch v0.20.0 // indirect
-	golang.org/x/crypto v0.41.0 // indirect
-	golang.org/x/net v0.43.0 // indirect
-	golang.org/x/sync v0.16.0 // indirect
-	golang.org/x/sys v0.35.0 // indirect
-	golang.org/x/text v0.28.0 // indirect
-	google.golang.org/protobuf v1.36.7 // indirect
+	go.yaml.in/yaml/v3 v3.0.4 // indirect
+	golang.org/x/arch v0.21.0 // indirect
+	golang.org/x/crypto v0.42.0 // indirect
+	golang.org/x/net v0.44.0 // indirect
+	golang.org/x/sync v0.17.0 // indirect
+	golang.org/x/sys v0.36.0 // indirect
+	golang.org/x/text v0.29.0 // indirect
+	google.golang.org/protobuf v1.36.9 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	xorm.io/builder v0.3.13 // indirect
