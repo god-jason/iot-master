@@ -17,7 +17,7 @@
       "as": "user"
     }
   ],
-  "fields": [
+  "columns": [
     {
       "name": "project_id",
       "comment": "项目ID",

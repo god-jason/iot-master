@@ -1,7 +1,7 @@
 {
   "name": "space",
   "comment": "空间",
-  "fields": [
+  "columns": [
     {
       "name": "id",
       "comment": "ID",

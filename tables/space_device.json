@@ -17,7 +17,7 @@
       "as": "device"
     }
   ],
-  "fields": [
+  "columns": [
     {
       "name": "space_id",
       "comment": "空间ID",

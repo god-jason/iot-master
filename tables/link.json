@@ -1,7 +1,7 @@
 {
   "name": "link",
   "comment": "连接",
-  "fields": [
+  "columns": [
     {
       "name": "id",
       "comment": "ID",

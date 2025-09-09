@@ -1,7 +1,7 @@
 {
   "name": "product_model",
   "comment": "产品模型",
-  "fields": [
+  "columns": [
     {
       "name": "id",
       "comment": "ID",

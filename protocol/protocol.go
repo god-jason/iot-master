@@ -2,7 +2,6 @@ package protocol
 
 import (
 	"github.com/busy-cloud/boat/smart"
-	"github.com/busy-cloud/boat/table"
 )
 
 type Base struct {
@@ -16,8 +15,8 @@ type Base struct {
 type Protocol struct {
 	Base
 
-	DeviceExtendColumns []*table.Field `json:"device_extend_columns"` //设备表扩展字段，比如从站号
-	DeviceExtendFields  []*smart.Field `json:"device_extend_fields"`  //设备编辑扩展字段，比如从站号
+	DeviceExtendColumns []*smart.Column `json:"device_extend_columns"` //设备表扩展字段，比如从站号
+	DeviceExtendFields  []*smart.Field  `json:"device_extend_fields"`  //设备编辑扩展字段，比如从站号
 
 	PointExtendFields []*smart.Field `json:"point_extend_fields"` //属性扩展字段 物模型
 
