@@ -2,6 +2,7 @@ package protocol
 
 import (
 	"github.com/busy-cloud/boat/smart"
+	"github.com/busy-cloud/boat/table"
 )
 
 type Base struct {
@@ -15,7 +16,10 @@ type Base struct {
 type Protocol struct {
 	Base
 
-	Station []*smart.Field `json:"station,omitempty"` //从站信息
-	Options []*smart.Field `json:"options,omitempty"` //协议参数
-	Model   []*smart.Field `json:"model,omitempty"`   //模型配置文件
+	DeviceExtendColumns  []*table.Field `json:"device_extend_columns"`  //设备表扩展字段，比如从站号
+	DeviceExtendFields   []*smart.Field `json:"device_extend_fields"`   //设备编辑扩展字段，比如从站号
+	PropertyExtendFields []*smart.Field `json:"property_extend_fields"` //属性扩展字段 物模型
+
+	OptionFields []*smart.Field `json:"option_fields"` //参数字段（配置在通道之上）
+	//Model []*smart.Field `json:"model,omitempty"` //模型配置文件
 }

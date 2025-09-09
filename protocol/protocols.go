@@ -1,22 +1,12 @@
 package protocol
 
-import "github.com/busy-cloud/boat/lib"
+import (
+	"github.com/busy-cloud/boat/mqtt"
+)
 
-var protocols lib.Map[Protocol]
+const RegisterTopic = "iot/protocol/register"
 
-func GetProtocols() []*Base {
-	var b []*Base
-	protocols.Range(func(name string, p *Protocol) bool {
-		b = append(b, &p.Base)
-		return true
-	})
-	return b
-}
-
-func GetProtocol(name string) *Protocol {
-	return protocols.Load(name)
-}
-
-func Register(protocol *Protocol) {
-	protocols.Store(protocol.Name, protocol)
+func Register(p *Protocol) {
+	mqtt.Publish("iot/protocol/register", p)
+	//protocols.Store(protocol.Name, protocol)
 }

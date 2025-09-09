@@ -2,7 +2,9 @@ package internal
 
 import (
 	"github.com/busy-cloud/boat/api"
+	"github.com/busy-cloud/boat/smart"
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/iot-master/protocol"
 )
 
 func init() {
@@ -12,6 +14,17 @@ func init() {
 	api.Register("GET", "iot/device/:id/read", deviceRead)
 	api.Register("POST", "iot/device/:id/write", deviceWrite)
 	api.Register("POST", "iot/device/:id/action/:action", deviceAction)
+
+	api.Register("GET", "iot/device/extend/fields", deviceExtendFields)
+}
+
+func deviceExtendFields(ctx *gin.Context) {
+	var fields []*smart.Field
+	protocols.Range(func(name string, item *protocol.Protocol) bool {
+		fields = append(fields, item.DeviceExtendFields...)
+		return true
+	})
+	api.OK(ctx, fields)
 }
 
 func deviceValues(ctx *gin.Context) {
