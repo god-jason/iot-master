@@ -1,5 +1,7 @@
 package protocol
 
+import "github.com/god-jason/iot-master/product"
+
 type WriteLinkFunc func(linker, link_id string, data []byte) error
 
 type Master interface {
@@ -16,5 +18,5 @@ type MasterManager interface {
 	Get(link_id string) Master
 	Close(link_id string) error
 	Create(linker, link_id string, options []byte, writer WriteLinkFunc) (Master, error)
-	Config(product_id string, config []byte) //产品协议配置
+	Model(product_id string, model *product.ProductModel) //下发物模型配置
 }
