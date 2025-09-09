@@ -29,7 +29,8 @@ func mqttSubscribeLink() {
 			return
 		}
 
-		var products []string
+		//var products []string
+		products := make(map[string]bool)
 
 		var lds []*LinkDevice
 		for _, d := range ds {
@@ -43,7 +44,8 @@ func mqttSubscribeLink() {
 				ProductId: d.ProductId,
 				Station:   d.Station,
 			})
-			products = append(products, d.ProductId)
+			//products = append(products, d.ProductId)
+			products[d.ProductId] = true
 
 			//打开设备
 			err = d.Open()
@@ -57,20 +59,19 @@ func mqttSubscribeLink() {
 			d.linker = linker
 		}
 
-		//通知协议配置，TODO 这里会重复通知
-		for _, pid := range products {
-			cfg, err := LoadConfigure(pid, protocol)
+		//通知协议配置
+		for pid, _ := range products {
+			model, err := LoadModel(pid)
 			if err != nil {
 				log.Error(err)
 				continue
 			}
-			topic = fmt.Sprintf("protocol/%s/product/%s/config", protocol, pid)
-			mqtt.Publish(topic, cfg)
+			topic = fmt.Sprintf("protocol/%s/product/%s/model", protocol, pid)
+			mqtt.Publish(topic, model)
 		}
 
 		//通知协议加载设备
 		topic = fmt.Sprintf("protocol/%s/link/%s/%s/attach", protocol, linker, link_id)
 		mqtt.Publish(topic, &lds)
-
 	})
 }

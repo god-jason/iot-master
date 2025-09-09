@@ -3,6 +3,7 @@ package protocol
 import (
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
+	"github.com/god-jason/iot-master/product"
 	"strings"
 )
 
@@ -129,9 +130,9 @@ func Create(protocol *Protocol, manager MasterManager) {
 	})
 
 	//订阅产品配置
-	mqtt.Subscribe("protocol/"+protocol.Name+"/product/+/config", func(topic string, payload []byte) {
+	mqtt.SubscribeStruct[product.ProductModel]("protocol/"+protocol.Name+"/product/+/model", func(topic string, model *product.ProductModel) {
 		product_id := strings.Split(topic, "/")[3]
-		manager.Config(product_id, payload)
+		manager.Model(product_id, model)
 	})
 
 }
