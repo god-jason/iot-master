@@ -13,16 +13,6 @@
       }
     },
     {
-      "icon": "api",
-      "type": "button",
-      "label": "产品协议配置",
-      "action": {
-        "type": "page",
-        "page": "iot/product-config",
-        "params_func": "return {product: data.id, config: data.protocol}"
-      }
-    },
-    {
       "icon": "delete",
       "type": "button",
       "label": "删除",

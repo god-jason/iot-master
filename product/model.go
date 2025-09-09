@@ -4,8 +4,8 @@ import (
 	"time"
 )
 
-// Property 属性
-type Property struct {
+// Point 属性
+type Point struct {
 	Name      string `json:"name,omitempty"`  //变量名称
 	Label     string `json:"label,omitempty"` //显示名称
 	Unit      string `json:"unit,omitempty"`  //单位
@@ -16,9 +16,9 @@ type Property struct {
 	History   bool   `json:"history,omitempty"`  //是否保存历史
 }
 
-type PropertyEx struct {
-	Name       string           `json:"name,omitempty"`
-	Properties []map[string]any `json:"properties,omitempty"` //要支持扩展字段，所以用map数组
+type Property struct {
+	Name   string           `json:"name,omitempty"`
+	Points []map[string]any `json:"points,omitempty"` //要支持扩展字段，所以用map数组
 }
 
 type Parameter struct {
@@ -42,11 +42,11 @@ type Action struct {
 }
 
 type ProductModel struct {
-	Id         string        `json:"id,omitempty" xorm:"pk"`
-	Properties []*PropertyEx `json:"properties,omitempty" xorm:"json"` //直接分组的形式
-	Events     []*Event      `json:"events,omitempty" xorm:"json"`
-	Actions    []*Action     `json:"actions,omitempty" xorm:"json"`
-	Validators []*Validator  `json:"validators,omitempty" xorm:"json"`
-	Updated    time.Time     `json:"updated,omitempty" xorm:"updated"`
-	Created    time.Time     `json:"created,omitempty" xorm:"created"`
+	Id         string       `json:"id,omitempty" xorm:"pk"`
+	Properties []*Property  `json:"properties,omitempty" xorm:"json"` //直接分组的形式
+	Events     []*Event     `json:"events,omitempty" xorm:"json"`
+	Actions    []*Action    `json:"actions,omitempty" xorm:"json"`
+	Validators []*Validator `json:"validators,omitempty" xorm:"json"`
+	Updated    time.Time    `json:"updated,omitempty" xorm:"updated"`
+	Created    time.Time    `json:"created,omitempty" xorm:"created"`
 }
