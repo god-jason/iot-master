@@ -1,4 +1,4 @@
-package internal
+package iot
 
 type LinkDevice struct {
 	Id        string         `json:"id"`

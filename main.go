@@ -8,7 +8,7 @@ import (
 	"github.com/busy-cloud/boat/apps"
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/store"
-	_ "github.com/god-jason/iot-master/internal"
+	_ "github.com/god-jason/iot-master/iot"
 )
 
 //go:embed assets
