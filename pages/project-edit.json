@@ -27,7 +27,7 @@
   ],
   "load_api": "table/project/detail/:id",
   "submit_api": "table/project/update/:id",
-  "submit_success": "this.navigate('/page/iot/project-detail?id='+data.id)",
+  "submit_success": "this.navigate('/page/iot/project-detail?id='+this.params.id)",
   "methods": {
   }
 }

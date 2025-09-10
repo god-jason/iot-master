@@ -58,11 +58,11 @@
     }
   ],
   "load_api": "table/device/detail/:id",
-  "load_success": "setTimeout(()=>this.load_product(), 200)",
+  "load_success2": "setTimeout(()=>this.load_product(), 200)",
   "submit_api": "table/device/update/:id",
-  "submit_success": "this.navigate('/page/iot/device-detail?id='+data.id)",
+  "submit_success": "this.navigate('/page/iot/device-detail?id='+this.params.id)",
   "mount": "this.get_extend_fields()",
   "methods": {
-    "get_extend_fields": "this.request.get('iot/device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.fields.push(f) })"
+    "get_extend_fields": "this.request.get('iot/device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.fields.push(f)) })"
   }
 }

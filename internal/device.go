@@ -21,12 +21,11 @@ type Property struct {
 
 type Device struct {
 	//device.Device `xorm:"extends"`
-	Id        string         `json:"id,omitempty" xorm:"pk"`
-	ProductId string         `json:"product_id,omitempty" xorm:"index"`
-	LinkId    string         `json:"link_id,omitempty" xorm:"index"`
-	Name      string         `json:"name,omitempty"`
-	Station   map[string]any `json:"station,omitempty" xorm:"json"` //从站信息（协议定义表单）
-	Disabled  bool           `json:"disabled,omitempty"`            //禁用
+	Id        string `json:"id,omitempty" xorm:"pk"`
+	ProductId string `json:"product_id,omitempty" xorm:"index"`
+	LinkId    string `json:"link_id,omitempty" xorm:"index"`
+	Name      string `json:"name,omitempty"`
+	Disabled  bool   `json:"disabled,omitempty"` //禁用
 
 	Status `xorm:"-"`
 

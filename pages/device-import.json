@@ -28,17 +28,14 @@
       "type": "text"
     },
     {
-      "key": "station",
-      "label": "地址",
-      "type": "object",
-      "placeholder": "需要先选择产品ID",
-      "children": []
-    },
-    {
       "key": "disabled",
       "label": "禁用",
       "type": "switch"
     }
   ],
-  "submit_api": "table/device/create"
+  "submit_api": "table/device/create",
+  "mount": "this.get_extend_fields()",
+  "methods": {
+    "get_extend_fields": "this.request.get('iot/device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.columns.push(f)) })"
+  }
 }

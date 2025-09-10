@@ -95,11 +95,6 @@
       "label": "说明"
     },
     {
-      "key": "station",
-      "label": "地址",
-      "type": "json"
-    },
-    {
       "key": "online",
       "label": "在线",
       "type": "boolean"
@@ -121,7 +116,7 @@
   ],
   "search_api": "table/device/search",
   "mount": "if(this.params.link_id)this.filter.link_id=this.params.link_id; this.get_extend_fields()",
-  "method": {
-    "get_extend_fields": "this.request.get('iot/device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.column.push({name:f.name}) })"
+  "methods": {
+    "get_extend_fields": "this.request.get('iot/device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.columns.push(f)) })"
   }
 }

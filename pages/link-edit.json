@@ -33,7 +33,7 @@
   ],
   "load_api": "table/link/detail/:id",
   "submit_api": "table/link/:id",
-  "submit_success": "this.navigate('/page/iot/link-detail?id='+data.id)",
+  "submit_success": "this.navigate('/page/iot/link-detail?id='+this.params.id)",
   "mount": "this.load_protocols();",
   "methods": {
     "load_protocols": "this.request.get('iot/protocol/list').subscribe(res=>{this.content.fields[2].options=res.data.map(d=>{return {value:d.name,label:d.description}}); setTimeout(()=>this.load_protocol_option(), 200);  })",

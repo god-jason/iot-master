@@ -7,6 +7,7 @@ import (
 	"github.com/busy-cloud/boat/db"
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
+	"github.com/spf13/cast"
 )
 
 func mqttSubscribeLink() {
@@ -18,8 +19,8 @@ func mqttSubscribeLink() {
 		link_id := ss[4]
 
 		//查询相关的设备
-		var ds []*Device
-		err := db.Engine().Where("link_id=?", link_id).Find(&ds)
+		var ds []map[string]any
+		err := db.Engine().Table("device").Where("link_id=?", link_id).Find(&ds)
 		if err != nil {
 			log.Error(err)
 			return
@@ -33,31 +34,40 @@ func mqttSubscribeLink() {
 		//var products []string
 		products := make(map[string]bool)
 
-		var lds []*LinkDevice
+		var lds []map[string]any
 		for _, d := range ds {
-			if d.Disabled {
+
+			var dev Device
+			dev.Id = cast.ToString(d["id"])
+			dev.Name = cast.ToString(d["name"])
+			dev.ProductId = cast.ToString(d["product_id"])
+			dev.LinkId = cast.ToString(d["link_id"])
+			dev.Disabled = cast.ToBool(d["disabled"]) //这里只有手动转。。。
+
+			//err := mapstructure.WeakDecode(d, &dev)
+			//dev, err := map2struct[Device](d)
+
+			//过滤禁用的
+			if dev.Disabled {
 				continue
 			}
 
 			//记录需要挂载的设备
-			lds = append(lds, &LinkDevice{
-				Id:        d.Id,
-				ProductId: d.ProductId,
-				Station:   d.Station,
-			})
+			lds = append(lds, d)
 			//products = append(products, d.ProductId)
-			products[d.ProductId] = true
+			products[dev.ProductId] = true
 
 			//打开设备
-			err = d.Open()
+
+			err = dev.Open()
 			if err != nil {
 				log.Error(err)
 				continue
 			}
-			devices.Store(d.Id, d)
+			devices.Store(dev.Id, &dev)
 
-			d.protocol = protocol
-			d.linker = linker
+			dev.protocol = protocol
+			dev.linker = linker
 		}
 
 		//通知协议配置

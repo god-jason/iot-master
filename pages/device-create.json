@@ -44,7 +44,7 @@
       "type": "text",
       "change_action": {
         "type": "script",
-        "script": "setTimeout(()=>this.load_product(), 100)"
+        "script2": "setTimeout(()=>this.load_product(), 100)"
       }
     },
     {
@@ -62,6 +62,6 @@
   "submit_success": "this.navigate('/page/iot/device-detail?id='+data)",
   "mount": "this.data.product_id=this.params.product_id; this.get_extend_fields()",
   "methods": {
-    "get_extend_fields": "this.request.get('iot/device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.fields.push(f) })"
+    "get_extend_fields": "this.request.get('iot/device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.fields.push(f)) })"
    }
 }

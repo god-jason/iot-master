@@ -22,12 +22,12 @@
   "fields": [
     {
       "key": "properties",
-      "label": "属性",
-      "type": "object",
+      "label": "属性表",
+      "type": "list",
       "children": [
         {
           "key": "name",
-          "label": "变量",
+          "label": "分组",
           "type": "text"
         },
         {
@@ -57,16 +57,52 @@
               "default": "number",
               "options": [
                 {
+                  "label": "uint8",
+                  "value": "uint8"
+                },
+                {
+                  "label": "uint16",
+                  "value": "uint16"
+                },
+                {
+                  "label": "uint32",
+                  "value": "uint32"
+                },
+                {
+                  "label": "uint64",
+                  "value": "uint64"
+                },
+                {
+                  "label": "int8",
+                  "value": "int8"
+                },
+                {
+                  "label": "int16",
+                  "value": "int16"
+                },
+                {
+                  "label": "int32",
+                  "value": "int32"
+                },
+                {
+                  "label": "int64",
+                  "value": "int64"
+                },
+                {
+                  "label": "float32",
+                  "value": "float32"
+                },
+                {
+                  "label": "float64",
+                  "value": "float64"
+                },
+                {
                   "label": "布尔",
                   "value": "bool"
                 },
                 {
                   "label": "字符串",
                   "value": "string"
-                },
-                {
-                  "label": "数值",
-                  "value": "number"
                 },
                 {
                   "label": "数组",
@@ -87,8 +123,7 @@
           ]
         }
       ]
-      },
-
+    },
     {
       "key": "actions",
       "label": "动作",
@@ -157,7 +192,8 @@
             {
               "label": "表达式",
               "value": "expression"
-            },{
+            },
+            {
               "label": "比较器",
               "value": "compare"
             }
@@ -293,11 +329,13 @@
   ],
   "load_api": "iot/product/:id/model",
   "submit_api": "iot/product/:id/model",
-  "submit_success": "this.navigate('/page/iot/product-detail?id='+data.id)",
+  "submit_success": "this.navigate('/page/iot/product-detail?id='+this.params.id)",
   "mount": "this.load_product()",
   "methods": {
     "load_product": "this.request.get('table/product/detail/'+this.params.id).subscribe(res=>{if(!res.error) this.load_protocol(res.data.protocol)})",
-    "load_protocol_station": ["p", "this.request.get('iot/protocol/'+p).subscribe(res=>{this.content.fields[0].children[1].children=this.content.fields[0].children[1].children.concat(res.point_extend_fields); setTimeout(()=>this.editor.rebuild(), 200)})"]
-
+    "load_protocol": [
+      "p",
+      "this.request.get('iot/protocol/'+p).subscribe(res=>{this.content.fields[0].children[1].children=this.content.fields[0].children[1].children.concat(res.point_extend_fields); setTimeout(()=>this.editor.rebuild(), 200)})"
+    ]
   }
 }

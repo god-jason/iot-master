@@ -4,15 +4,15 @@ go 1.24.0
 
 require (
 	github.com/PaesslerAG/gval v1.2.4
-	github.com/busy-cloud/boat v0.6.19
+	github.com/busy-cloud/boat v0.6.21
 	github.com/busy-cloud/boat-ui v0.5.9
 	github.com/busy-cloud/dash v0.5.0
 	github.com/busy-cloud/influxdb v0.5.0
-	github.com/busy-cloud/modbus v0.5.2
+	github.com/busy-cloud/modbus v0.5.5
 	github.com/busy-cloud/saas v0.5.0
-	github.com/busy-cloud/serial-port v0.5.0
-	github.com/busy-cloud/tcp-client v0.5.0
-	github.com/busy-cloud/tcp-server v0.5.0
+	github.com/busy-cloud/serial-port v0.5.3
+	github.com/busy-cloud/tcp-client v0.5.3
+	github.com/busy-cloud/tcp-server v0.5.3
 	github.com/busy-cloud/user v0.6.6
 	github.com/gin-gonic/gin v1.10.1
 	github.com/spf13/cast v1.10.0
