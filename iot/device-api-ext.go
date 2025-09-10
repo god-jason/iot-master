@@ -54,6 +54,7 @@ func deviceSync(ctx *gin.Context) {
 
 	values, err := d.Sync(60)
 	if err != nil {
+		api.Error(ctx, err)
 		return
 	}
 
