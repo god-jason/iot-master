@@ -14,11 +14,16 @@
   "items": [],
   "auto_refresh": 10,
   "load_api": "iot/device/:id/values",
+  "load_success": "this.render_values()",
   "mount": "this.load_device(); this.value_action={type:'dialog',page:'iot/device-history',params_func:'return {id:this.params.id, point:data.key}'}",
   "methods": {
     "load_values": "this.request.get('iot/device/'+this.params.id+'/values').subscribe(res=>{if(res.error)return; this.data=res.data; this.content.toolbar[0].type='text'; label=res.data.__update})",
-    "refresh_values": "this.request.get('iot/device/'+this.params.id+'/sync').subscribe(res=>{if(res.error)return; this.data=res.data})",
+    "refresh_values": "this.request.get('iot/device/'+this.params.id+'/sync').subscribe(res=>{if(res.error)return; this.data=res.data; this.render_values()})",
     "load_device": "this.request.get('table/device/detail/'+this.params.id).subscribe(res=>{if(res.error)return; this.load_model(res.data.product_id)})",
-    "load_model": ["pid","this.request.get('iot/product/'+pid+'/model').subscribe(res=>{if(res.error)return; this.content.items=res.data.properties.map(p=>{return{key:p.name,label:p.label,suffix:p.unit,span:6,action:this.value_action}}); })"]
-  }
+    "load_model": ["pid","this.request.get('iot/product/'+pid+'/model').subscribe(res=>{if(res.error)return; res.data.properties && this.render_properties(res.data.properties); setTimeout(()=>this.render_values(),100); })"],
+    "render_properties": ["properties", "properties && properties.map(p=>{ this.content.children.push({span: 24, content:{title:p.name,template:'statistic',  items: this.render_points(p.points)} }) })"],
+    "render_points": ["points", "return points && points.map(p=>{return{key:p.name,label:p.label,suffix:p.unit,span:6,action:this.value_action}}) "],
+    "render_values": "console.log('render_values'); this.pageComponent.children.map(p=>{p.componentRef.setInput('data', this.data) })"
+  },
+  "children": []
 }
