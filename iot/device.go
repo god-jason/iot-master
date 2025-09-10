@@ -218,6 +218,9 @@ func (d *Device) Sync(timeout int) (map[string]any, error) {
 	}
 
 	if res, ok := resp.(*protocol.SyncResponse); ok {
+		if res.Error != "" {
+			return nil, errors.New(res.Error)
+		}
 		return res.Values, nil
 	} else {
 		return nil, errors.New("want type SyncResponse")
@@ -250,6 +253,9 @@ func (d *Device) Read(points []string, timeout int) (map[string]any, error) {
 	}
 
 	if res, ok := resp.(*protocol.ReadResponse); ok {
+		if res.Error != "" {
+			return nil, errors.New(res.Error)
+		}
 		return res.Values, nil
 	} else {
 		return nil, errors.New("want type ReadResponse")
@@ -282,6 +288,9 @@ func (d *Device) Write(values map[string]any, timeout int) (map[string]bool, err
 	}
 
 	if res, ok := resp.(*protocol.WriteResponse); ok {
+		if res.Error != "" {
+			return nil, errors.New(res.Error)
+		}
 		return res.Result, nil
 	} else {
 		return nil, errors.New("want type WriteResponse")
@@ -315,6 +324,9 @@ func (d *Device) Action(action string, parameters map[string]any, timeout int) (
 	}
 
 	if res, ok := resp.(*protocol.ActionResponse); ok {
+		if res.Error != "" {
+			return nil, errors.New(res.Error)
+		}
 		return res.Result, nil
 	} else {
 		return nil, errors.New("want type ActionResponse")
