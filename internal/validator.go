@@ -3,13 +3,14 @@ package internal
 import (
 	"context"
 	"fmt"
+	"regexp"
+	"strings"
+	"time"
+
 	"github.com/PaesslerAG/gval"
 	"github.com/god-jason/iot-master/calc"
 	"github.com/god-jason/iot-master/product"
 	"github.com/spf13/cast"
-	"regexp"
-	"strings"
-	"time"
 )
 
 type Validator struct {

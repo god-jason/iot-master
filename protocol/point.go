@@ -3,6 +3,7 @@ package protocol
 import (
 	"errors"
 	"fmt"
+
 	"github.com/god-jason/iot-master/bin"
 	"github.com/god-jason/iot-master/product"
 	"github.com/spf13/cast"

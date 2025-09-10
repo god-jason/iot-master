@@ -2,6 +2,7 @@ package internal
 
 import (
 	"errors"
+
 	"github.com/busy-cloud/boat/db"
 	"github.com/busy-cloud/boat/lib"
 )

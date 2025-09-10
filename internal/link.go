@@ -2,10 +2,11 @@ package internal
 
 import (
 	"errors"
+	"time"
+
 	"github.com/busy-cloud/boat/db"
 	"github.com/busy-cloud/boat/lib"
 	"github.com/busy-cloud/boat/mqtt"
-	"time"
 )
 
 type Link struct {

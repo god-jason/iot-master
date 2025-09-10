@@ -3,6 +3,7 @@ package iot_master
 import (
 	"embed"
 	"encoding/json"
+
 	_ "github.com/busy-cloud/boat-ui"
 	"github.com/busy-cloud/boat/apps"
 	"github.com/busy-cloud/boat/log"

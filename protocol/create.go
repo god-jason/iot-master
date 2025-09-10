@@ -1,10 +1,11 @@
 package protocol
 
 import (
+	"strings"
+
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
 	"github.com/god-jason/iot-master/product"
-	"strings"
 )
 
 func Create(protocol *Protocol, manager MasterManager) {

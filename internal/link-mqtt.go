@@ -2,10 +2,11 @@ package internal
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/busy-cloud/boat/db"
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
-	"strings"
 )
 
 func mqttSubscribeLink() {

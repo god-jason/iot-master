@@ -1,9 +1,10 @@
 package calc
 
 import (
+	"math"
+
 	"github.com/PaesslerAG/gval"
 	"github.com/spf13/cast"
-	"math"
 )
 
 func tarFunc(fun func(x float64) float64) func(x any) float64 {

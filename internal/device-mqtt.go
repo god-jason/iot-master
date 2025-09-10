@@ -3,10 +3,11 @@ package internal
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
+
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
 	"github.com/god-jason/iot-master/protocol"
-	"strings"
 )
 
 func mqttSubscribeDevice() {

@@ -3,6 +3,10 @@ package main
 import (
 	_ "embed"
 	"encoding/json"
+	"os"
+	"os/signal"
+	"syscall"
+
 	_ "github.com/busy-cloud/boat-ui"
 	_ "github.com/busy-cloud/boat/apis"
 	"github.com/busy-cloud/boat/apps"
@@ -22,9 +26,6 @@ import (
 	_ "github.com/busy-cloud/tcp-server"
 	_ "github.com/god-jason/iot-master"
 	"github.com/spf13/viper"
-	"os"
-	"os/signal"
-	"syscall"
 )
 
 func init() {

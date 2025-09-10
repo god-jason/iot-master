@@ -2,15 +2,16 @@ package internal
 
 import (
 	"errors"
+	"math/rand"
+	"strconv"
+	"time"
+
 	"github.com/busy-cloud/boat/db"
 	"github.com/busy-cloud/boat/lib"
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
 	"github.com/god-jason/iot-master/product"
 	"github.com/god-jason/iot-master/protocol"
-	"math/rand"
-	"strconv"
-	"time"
 )
 
 type Property struct {

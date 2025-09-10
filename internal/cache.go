@@ -2,10 +2,11 @@ package internal
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/busy-cloud/boat/db"
 	"github.com/busy-cloud/boat/lib"
 	"github.com/god-jason/iot-master/product"
-	"strings"
 	"xorm.io/xorm/schemas"
 )
 

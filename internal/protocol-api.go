@@ -1,9 +1,10 @@
 package internal
 
 import (
+	"net/http"
+
 	"github.com/busy-cloud/boat/api"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func init() {

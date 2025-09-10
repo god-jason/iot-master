@@ -1,6 +1,11 @@
 package main
 
 import (
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
 	_ "github.com/busy-cloud/boat-ui"
 	_ "github.com/busy-cloud/boat/apis"
 	_ "github.com/busy-cloud/boat/apps"
@@ -19,10 +24,6 @@ import (
 	_ "github.com/god-jason/iot-master" //主程序
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
 )
 
 func Startup() error {
