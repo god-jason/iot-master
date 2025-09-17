@@ -17,6 +17,8 @@
   "submit": "this.request.post('iot/device/'+this.params.id+'/write', {[data.key]:data.value}).subscribe(res=>{if(res.error)return; })",
   "methods": {
     "load_device": "this.request.get('table/device/detail/'+this.params.id).subscribe(res=>{if(res.error)return; this.load_model(res.data.product_id)})",
-    "load_model": ["pid","this.request.get('iot/product/'+pid+'/model').subscribe(res=>{if(res.error)return; this.content.fields[0].options=res.data.properties.map(p=>{return {value:p.name,label:p.label}}) })"]
+    "load_model": ["pid","this.request.get('iot/product/'+pid+'/model').subscribe(res=>{if(res.error)return; this.render_properties(res.data.properties) })"],
+    "render_properties": ["properties", "console.log(properties); this.content.fields[0].options=[]; properties.map(p=>this.render_points(p.points) )"],
+    "render_points": ["points", "console.log(points); points.map(p=>{this.content.fields[0].options.push({value:p.name,label:p.label}) }); console.log(this.content.fields[0].options);"]
   }
 }
