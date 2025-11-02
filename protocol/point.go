@@ -44,6 +44,12 @@ func (p *PointBit) Parse(address uint16, buf []byte) (any, error) {
 	return ret > 0, nil
 }
 
+type Enumeration struct {
+	Index uint   `json:"index"`           //索引
+	Value string `json:"value"`           //枚举值
+	Label string `json:"label,omitempty"` //显示
+}
+
 type PointWord struct {
 	product.Point //继承
 
@@ -52,6 +58,8 @@ type PointWord struct {
 	Rate      float64 `json:"rate,omitempty"`    //倍率
 	Correct   float64 `json:"correct,omitempty"` //纠正
 	Bits      []*Bit  `json:"bits,omitempty"`    //位，1 2 3...
+
+	Enumerations []*Enumeration `json:"enumerations,omitempty"` //枚举
 }
 
 type Bit struct {
@@ -59,8 +67,35 @@ type Bit struct {
 	Bit  int    `json:"bit"`  //偏移
 }
 
+func (p *PointWord) getEnumValue(index uint) (string, error) {
+	for _, e := range p.Enumerations {
+		if e.Index == index {
+			return e.Value, nil
+		}
+	}
+	return "", errors.New("找不到对应的枚举值")
+}
+
+func (p *PointWord) getEnumIndex(value string) (uint, error) {
+	for _, e := range p.Enumerations {
+		if e.Value == value {
+			return e.Index, nil
+		}
+	}
+	return 0, errors.New("找不到对应的枚举值")
+}
+
 func (p *PointWord) Encode(data any) ([]byte, error) {
 	var ret []byte
+
+	//枚举值
+	if len(p.Enumerations) > 0 {
+		var err error
+		data, err = p.getEnumIndex(cast.ToString(data))
+		if err != nil {
+			return nil, err
+		}
+	}
 
 	//纠正
 	if p.Correct != 0 {
@@ -348,6 +383,15 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 	//校准
 	if p.Correct != 0 {
 		ret = cast.ToFloat64(ret) + p.Correct
+	}
+
+	//枚举值
+	if len(p.Enumerations) > 0 {
+		var err error
+		ret, err = p.getEnumValue(cast.ToUint(ret))
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return ret, nil
