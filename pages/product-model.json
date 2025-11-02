@@ -24,15 +24,18 @@
       "key": "properties",
       "label": "属性表",
       "type": "list",
+      "span": 24,
       "children": [
         {
           "key": "name",
           "label": "分组",
+          "span": 24,
           "type": "text"
         },
         {
           "key": "points",
           "label": "点位",
+          "span": 24,
           "type": "table",
           "children": [
             {
@@ -137,6 +140,7 @@
     {
       "key": "actions",
       "label": "动作",
+      "span": 24,
       "type": "list",
       "children": [
         {
@@ -191,6 +195,7 @@
     {
       "key": "validators",
       "label": "属性检查",
+      "span": 24,
       "type": "list",
       "children": [
         {
