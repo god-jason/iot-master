@@ -56,6 +56,10 @@
                   "value": "bool"
                 },
                 {
+                  "label": "数值",
+                  "value": "number"
+                },
+                {
                   "label": "字符串",
                   "value": "string"
                 },
@@ -66,6 +70,30 @@
                 {
                   "label": "对象",
                   "value": "object"
+                }
+              ]
+            },
+            {
+              "key": "mode",
+              "label": "模式",
+              "type": "select",
+              "default": "",
+              "options": [
+                {
+                  "label": "读写",
+                  "value": "rw"
+                },
+                {
+                  "label": "只写",
+                  "value": "w"
+                },
+                {
+                  "label": "只读",
+                  "value": "r"
+                },
+                {
+                  "label": "未知",
+                  "value": ""
                 }
               ]
             },
