@@ -10,6 +10,7 @@ type Point struct {
 	Label     string `json:"label,omitempty"` //显示名称
 	Unit      string `json:"unit,omitempty"`  //单位
 	Type      string `json:"type,omitempty"`  //bool string number array object
+	Mode      string `json:"mode,omitempty"`  //模式，rw r w
 	Precision uint8  `json:"precision,omitempty"`
 	Default   any    `json:"default,omitempty"` //默认值
 	//Writable  bool   `json:"writable,omitempty"` //是否可写
