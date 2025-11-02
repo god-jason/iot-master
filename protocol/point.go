@@ -73,6 +73,43 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 	}
 
 	switch p.Type {
+	case "bool", "boolean":
+		val, err := cast.ToBoolE(data)
+		var v uint16 = 0
+		if val {
+			v = 1
+		}
+		if err != nil {
+			return nil, err
+		}
+		ret = make([]byte, 2)
+		if p.BigEndian {
+			bin.WriteUint16(ret, v)
+		} else {
+			bin.WriteUint16LittleEndian(ret, v)
+		}
+	case "int8":
+		val, err := cast.ToInt8E(data)
+		if err != nil {
+			return nil, err
+		}
+		ret = make([]byte, 2)
+		if p.BigEndian {
+			bin.WriteUint16(ret, uint16(val))
+		} else {
+			bin.WriteUint16LittleEndian(ret, uint16(val))
+		}
+	case "uint8":
+		val, err := cast.ToUint8E(data)
+		if err != nil {
+			return nil, err
+		}
+		ret = make([]byte, 2)
+		if p.BigEndian {
+			bin.WriteUint16(ret, uint16(val))
+		} else {
+			bin.WriteUint16LittleEndian(ret, uint16(val))
+		}
 	case "short", "int16":
 		val, err := cast.ToInt16E(data)
 		if err != nil {
@@ -192,6 +229,33 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 
 	var ret any
 	switch p.Type {
+	case "bool", "boolean":
+		if len(buf[offset:]) < 2 {
+			return nil, fmt.Errorf("bool长度不足2:%d", l)
+		}
+		if p.BigEndian {
+			ret = bin.ParseUint16(buf[offset:]) > 0
+		} else {
+			ret = bin.ParseUint16LittleEndian(buf[offset:]) > 0
+		}
+	case "int8":
+		if len(buf[offset:]) < 2 {
+			return nil, fmt.Errorf("int8长度不足2:%d", l)
+		}
+		if p.BigEndian {
+			ret = int8(buf[offset+1])
+		} else {
+			ret = int8(buf[offset])
+		}
+	case "uint8":
+		if len(buf[offset:]) < 2 {
+			return nil, fmt.Errorf("uint8长度不足2:%d", l)
+		}
+		if p.BigEndian {
+			ret = uint8(buf[offset+1])
+		} else {
+			ret = uint8(buf[offset])
+		}
 	case "short", "int16":
 		if len(buf[offset:]) < 2 {
 			return nil, fmt.Errorf("int16长度不足2:%d", l)
@@ -291,6 +355,10 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 
 func (p *PointWord) Size() int {
 	switch p.Type {
+	case "bool", "boolean":
+		return 1
+	case "int8", "uint8":
+		return 1
 	case "short", "int16":
 		return 1
 	case "word", "uint16":
