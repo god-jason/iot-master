@@ -71,6 +71,12 @@
       "json": true
     },
     {
+      "name": "online",
+      "comment": "在线",
+      "type": "bool",
+      "default": "false"
+    },
+    {
       "name": "disabled",
       "comment": "禁用",
       "type": "bool",
