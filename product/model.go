@@ -1,6 +1,7 @@
 package product
 
 import (
+	"github.com/busy-cloud/boat/smart"
 	"time"
 )
 
@@ -42,12 +43,18 @@ type Action struct {
 	Returns     []Parameter `json:"returns,omitempty"`
 }
 
+type Setting struct {
+	Name   string        `json:"name,omitempty"`
+	Label  string        `json:"label,omitempty"`
+	Fields []smart.Field `json:"fields,omitempty"`
+}
 type ProductModel struct {
 	Id         string       `json:"id,omitempty" xorm:"pk"`
 	Properties []*Property  `json:"properties,omitempty" xorm:"json"` //直接分组的形式
 	Events     []*Event     `json:"events,omitempty" xorm:"json"`
 	Actions    []*Action    `json:"actions,omitempty" xorm:"json"`
 	Validators []*Validator `json:"validators,omitempty" xorm:"json"`
+	Settings   []*Setting   `json:"settings,omitempty" xorm:"json"`
 	Updated    time.Time    `json:"updated,omitempty" xorm:"updated"`
 	Created    time.Time    `json:"created,omitempty" xorm:"created"`
 }

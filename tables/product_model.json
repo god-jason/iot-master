@@ -34,6 +34,12 @@
       "json": true
     },
     {
+      "name": "settings",
+      "comment": "配置项",
+      "type": "txt",
+      "json": true
+    },
+    {
       "name": "updated",
       "comment": "更新时间",
       "type": "datetime",

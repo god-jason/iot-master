@@ -22,7 +22,7 @@
   "fields": [
     {
       "key": "properties",
-      "label": "属性表",
+      "label": "【属性表】",
       "type": "list",
       "span": 24,
       "children": [
@@ -139,7 +139,7 @@
     },
     {
       "key": "actions",
-      "label": "动作",
+      "label": "【动作】",
       "span": 24,
       "type": "list",
       "children": [
@@ -194,7 +194,7 @@
     },
     {
       "key": "validators",
-      "label": "属性检查",
+      "label": "【属性检查】",
       "span": 24,
       "type": "list",
       "children": [
@@ -338,6 +338,101 @@
           "key": "disabled",
           "label": "禁用",
           "type": "switch"
+        }
+      ]
+    },
+    {
+      "key": "settings",
+      "label": "【配置参数】",
+      "span": 24,
+      "type": "list",
+      "children": [
+        {
+          "key": "name",
+          "label": "名称",
+          "span": 24,
+          "type": "text"
+        },
+        {
+          "key": "label",
+          "label": "显示",
+          "span": 24,
+          "type": "text"
+        },
+        {
+          "key": "fields",
+          "label": "配置项",
+          "span": 24,
+          "type": "table",
+          "children": [
+            {
+              "key": "name",
+              "label": "变量",
+              "type": "text"
+            },
+            {
+              "key": "label",
+              "label": "显示名称",
+              "type": "text"
+            },
+            {
+              "key": "placeholder",
+              "label": "提示",
+              "type": "text"
+            },
+            {
+              "key": "type",
+              "label": "数据类型",
+              "type": "select",
+              "default": "number",
+              "options": [
+                {
+                  "label": "开关",
+                  "value": "switch"
+                },
+                {
+                  "label": "数值",
+                  "value": "number"
+                },
+                {
+                  "label": "文本",
+                  "value": "text"
+                },
+                {
+                  "label": "下拉框",
+                  "value": "select"
+                }
+              ]
+            },
+            {
+              "key": "unit",
+              "label": "数据单位",
+              "type": "text"
+            },
+            {
+              "key": "precision",
+              "label": "精度",
+              "type": "number",
+              "default": 0
+            },
+            {
+              "key": "options",
+              "label": "选项",
+              "type": "table",
+              "children": [
+                {
+                  "key": "value",
+                  "label": "值",
+                  "type": "text"
+                },
+                {
+                  "key": "label",
+                  "label": "名称",
+                  "type": "text"
+                }
+              ]
+            }
+          ]
         }
       ]
     }
