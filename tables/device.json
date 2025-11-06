@@ -26,6 +26,13 @@
       "primary": true
     },
     {
+      "name": "group_id",
+      "comment": "组织ID",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
       "name": "tenant_id",
       "comment": "租户ID",
       "type": "string",
