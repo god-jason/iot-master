@@ -1,0 +1,17 @@
+{
+  "title": "参数修改",
+  "template": "info",
+  "mount": "this.load_device()",
+  "methods": {
+    "load_device": "this.request.get('table/device/detail/'+this.params.id).subscribe(res=>{if(res.error)return; this.load_model(res.data.product_id)})",
+    "load_model": ["pid","this.request.get('iot/product/'+pid+'/model').subscribe(res=>{if(res.error)return; res.data.settings && this.render_settings(res.data.settings); })"],
+    "render_settings": ["settings", "settings && settings.map(p=>{ this.content.children.push({span: 24, params:{id:this.params.id, name:p.name}, content:Object.assign({title:p.label, fields: p.fields}, this.content.setting_content) }) })"]
+  },
+  "children": [],
+  "setting_content": {
+    "title": "配置",
+    "template":"form",
+    "load_api": "iot/device/:id/setting/:name",
+    "submit_api": "iot/device/:id/setting/:name"
+  }
+}

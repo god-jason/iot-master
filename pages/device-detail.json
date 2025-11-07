@@ -105,6 +105,11 @@
       "title": "设备告警",
       "page": "iot/alarm",
       "params_func": "return {device_id: params.id}"
+    },
+    {
+      "title": "设备参数",
+      "page": "iot/device-settings",
+      "params_func": "return {id: params.id}"
     }
   ]
 }
