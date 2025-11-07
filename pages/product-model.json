@@ -366,7 +366,7 @@
           "type": "table",
           "children": [
             {
-              "key": "name",
+              "key": "key",
               "label": "变量",
               "type": "text"
             },
@@ -403,17 +403,6 @@
                   "value": "select"
                 }
               ]
-            },
-            {
-              "key": "unit",
-              "label": "数据单位",
-              "type": "text"
-            },
-            {
-              "key": "precision",
-              "label": "精度",
-              "type": "number",
-              "default": 0
             },
             {
               "key": "options",
