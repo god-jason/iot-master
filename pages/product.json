@@ -54,7 +54,7 @@
       "confirm": "确认删除？",
       "action": {
         "type": "script",
-        "script": "this.request.get('table/device/delete/'+data.id).subscribe(res=>{this.load()})"
+        "script": "this.request.get('table/product/delete/'+data.id).subscribe(res=>{this.load()})"
       }
     }
   ],
