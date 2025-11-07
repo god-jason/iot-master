@@ -399,8 +399,24 @@
                   "value": "text"
                 },
                 {
+                  "label": "文本框",
+                  "value": "textarea"
+                },
+                {
                   "label": "下拉框",
                   "value": "select"
+                },
+                {
+                  "label": "滑块",
+                  "value": "slider"
+                },
+                {
+                  "label": "日期",
+                  "value": "date"
+                },
+                {
+                  "label": "时间",
+                  "value": "time"
                 }
               ]
             },
@@ -412,7 +428,7 @@
                 {
                   "key": "value",
                   "label": "值",
-                  "type": "text"
+                  "type": "number"
                 },
                 {
                   "key": "label",
@@ -420,6 +436,21 @@
                   "type": "text"
                 }
               ]
+            },
+            {
+              "key": "min",
+              "label": "最小值",
+              "type": "number"
+            },
+            {
+              "key": "max",
+              "label": "最大值",
+              "type": "number"
+            },
+            {
+              "key": "step",
+              "label": "步长",
+              "type": "number"
             }
           ]
         }
