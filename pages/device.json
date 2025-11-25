@@ -8,7 +8,8 @@
       "type": "button",
       "action": {
         "type": "page",
-        "page": "iot/device-create"
+        "page": "iot/device-create",
+        "params_func": "return {product_id: this.params.product_id, group_id: this.params.group_id}"
       }
     },
     {
@@ -115,7 +116,7 @@
     }
   ],
   "search_api": "table/device/search",
-  "mount": "if(this.params.link_id)this.filter.link_id=this.params.link_id; this.get_extend_fields()",
+  "mount": "if(this.params.link_id)this.filter.link_id=this.params.link_id; if(this.params.group_id)this.filter.group_id=this.params.group_id; if(this.params.product_id)this.filter.product_id=this.params.product_id; this.get_extend_fields()",
   "methods": {
     "get_extend_fields": "this.request.get('iot/device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.columns.push(f)) })"
   }

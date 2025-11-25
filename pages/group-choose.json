@@ -1,5 +1,5 @@
 {
-  "title": "设备",
+  "title": "组织",
   "template": "table",
   "toolbar": [
     {
@@ -38,17 +38,16 @@
       "label": "ID"
     },
     {
+      "key": "user_id",
+      "label": "管理员ID"
+    },
+    {
+      "key": "user",
+      "label": "管理员"
+    },
+    {
       "key": "name",
       "label": "名称"
-    },
-    {
-      "key": "description",
-      "label": "说明"
-    },
-    {
-      "key": "online",
-      "label": "在线",
-      "type": "boolean"
     },
     {
       "key": "disabled",
@@ -61,5 +60,14 @@
       "type": "date"
     }
   ],
-  "search_api": "table/device/search"
+  "search_api": "table/group/search",
+  "joins": [
+    {
+      "table": "user",
+      "local_field": "user_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "user"
+    }
+  ]
 }

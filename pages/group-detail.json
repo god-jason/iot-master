@@ -40,6 +40,11 @@
   "load_api": "table/group/detail/:id",
   "tabs": [
     {
+      "title": "组织设备",
+      "page": "iot/device",
+      "params_func": "return {group_id: params.id}"
+    },
+    {
       "title": "成员管理",
       "page": "iot/member",
       "params_func": "return {group_id: params.id}"

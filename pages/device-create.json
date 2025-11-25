@@ -4,6 +4,15 @@
   "toolbar": [
     {
       "type": "button",
+      "label": "选择组织ID",
+      "action": {
+        "type": "dialog",
+        "page": "iot/group-choose",
+        "after_close": "this.editor.patchValue({group_id: result.id})"
+      }
+    },
+    {
+      "type": "button",
       "label": "选择产品ID",
       "action": {
         "type": "dialog",
@@ -36,6 +45,11 @@
     {
       "key": "description",
       "label": "说明",
+      "type": "text"
+    },
+    {
+      "key": "group_id",
+      "label": "组织ID",
       "type": "text"
     },
     {

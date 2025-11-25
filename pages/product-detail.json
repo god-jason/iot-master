@@ -58,7 +58,7 @@
   "tabs": [
     {
       "title": "产品设备",
-      "page": "iot/product-device",
+      "page": "iot/device",
       "params_func": "return {product_id: params.id}"
     },
     {

@@ -65,12 +65,6 @@
       "type": "text"
     },
     {
-      "name": "station",
-      "comment": "站号",
-      "type": "text",
-      "json": true
-    },
-    {
       "name": "online",
       "comment": "在线",
       "type": "bool",
