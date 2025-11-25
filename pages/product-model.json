@@ -192,6 +192,7 @@
         }
       ]
     },
+
     {
       "key": "validators",
       "label": "【属性检查】",
@@ -341,6 +342,92 @@
         }
       ]
     },
+
+    {
+      "key": "operators",
+      "label": "【操作项】",
+      "span": 24,
+      "type": "list",
+      "children": [
+        {
+          "key": "name",
+          "label": "名称",
+          "type": "text"
+        },
+        {
+          "key": "label",
+          "label": "显示",
+          "type": "text"
+        },
+        {
+          "key": "type",
+          "label": "类型",
+          "type": "select",
+          "default": "number",
+          "options": [
+            {
+              "label": "按钮",
+              "value": "button"
+            },
+            {
+              "label": "开关",
+              "value": "switch"
+            },
+            {
+              "label": "滑块",
+              "value": "slider"
+            },
+            {
+              "label": "表单",
+              "value": "form"
+            }
+          ]
+        },
+        {
+          "key": "bind",
+          "label": "数据绑定",
+          "type": "text"
+        },
+        {
+          "key": "parameters",
+          "type": "table",
+          "label": "参数",
+          "children": [
+            {
+              "key": "key",
+              "label": "变量",
+              "type": "text"
+            },
+            {
+              "key": "label",
+              "label": "显示",
+              "type": "text"
+            },
+            {
+              "key": "type",
+              "label": "类型",
+              "type": "select",
+              "default": "number",
+              "options": [
+                {
+                  "label": "数值",
+                  "value": "number"
+                },
+                {
+                  "label": "布尔",
+                  "value": "switch"
+                },
+                {
+                  "label": "字符串",
+                  "value": "text"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+
     {
       "key": "settings",
       "label": "【配置参数】",

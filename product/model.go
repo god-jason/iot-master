@@ -45,11 +45,11 @@ type Action struct {
 }
 
 type Operator struct {
-	Name   string `json:"name,omitempty"`
-	Label  string `json:"label,omitempty"`
-	Type   string `json:"type,omitempty"`   //类型 button switch/toggle slider
-	Bind   string `json:"bind,omitempty"`   //绑定值(状态)
-	Action string `json:"action,omitempty"` //操作
+	Name       string      `json:"name,omitempty"`
+	Label      string      `json:"label,omitempty"`
+	Type       string      `json:"type,omitempty"` //类型 button switch/toggle slider
+	Bind       string      `json:"bind,omitempty"` //绑定值(状态)
+	Parameters []Parameter `json:"parameters,omitempty"`
 }
 
 type Setting struct {
