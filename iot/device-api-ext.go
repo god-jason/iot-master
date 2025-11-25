@@ -13,7 +13,6 @@ func init() {
 	api.Register("GET", "iot/device/:id/sync", deviceSync)
 	api.Register("GET", "iot/device/:id/read", deviceRead)
 	api.Register("POST", "iot/device/:id/write", deviceWrite)
-	api.Register("POST", "iot/device/:id/action/:action", deviceAction)
 
 	api.Register("GET", "iot/device/extend/fields", deviceExtendFields)
 }
@@ -93,30 +92,6 @@ func deviceWrite(ctx *gin.Context) {
 	}
 
 	result, err := d.Write(values, 30)
-	if err != nil {
-		api.Error(ctx, err)
-		return
-	}
-
-	api.OK(ctx, result)
-}
-
-func deviceAction(ctx *gin.Context) {
-	d := devices.Load(ctx.Param("id"))
-	if d == nil {
-		api.Fail(ctx, "设备未上线")
-		return
-	}
-	action := ctx.Param("action")
-
-	var values map[string]any
-	err := ctx.ShouldBind(&values)
-	if err != nil {
-		api.Error(ctx, err)
-		return
-	}
-
-	result, err := d.Action(action, values, 30)
 	if err != nil {
 		api.Error(ctx, err)
 		return

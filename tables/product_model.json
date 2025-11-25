@@ -34,12 +34,6 @@
       "json": true
     },
     {
-      "name": "operators",
-      "comment": "操作项",
-      "type": "txt",
-      "json": true
-    },
-    {
       "name": "settings",
       "comment": "配置项",
       "type": "txt",

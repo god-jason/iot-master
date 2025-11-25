@@ -17,6 +17,9 @@ func init() {
 	api.Register("GET", "iot/device/:id/model", curd.ApiGet[DeviceModel]())
 	api.Register("POST", "iot/device/:id/model", deviceModelUpdate)
 
+	//执行操作
+	api.Register("POST", "iot/device/:id/action/:action", deviceAction)
+
 	//参数
 	api.Register("GET", "iot/device/:id/setting/:name", deviceSetting)
 	api.Register("POST", "iot/device/:id/setting/:name", deviceSettingUpdate)
@@ -112,4 +115,28 @@ func deviceSettingUpdate(ctx *gin.Context) {
 	mqtt.Publish(topic, setting.Content)
 
 	api.OK(ctx, content)
+}
+
+func deviceAction(ctx *gin.Context) {
+	d := devices.Load(ctx.Param("id"))
+	if d == nil {
+		api.Fail(ctx, "设备未上线")
+		return
+	}
+	action := ctx.Param("action")
+
+	var values map[string]any
+	err := ctx.ShouldBind(&values)
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+
+	result, err := d.Action(action, values, 30)
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+
+	api.OK(ctx, result)
 }

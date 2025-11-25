@@ -154,6 +154,35 @@
           "type": "text"
         },
         {
+          "key": "type",
+          "label": "类型",
+          "type": "select",
+          "default": "number",
+          "options": [
+            {
+              "label": "按钮",
+              "value": "button"
+            },
+            {
+              "label": "开关",
+              "value": "switch"
+            },
+            {
+              "label": "滑块",
+              "value": "slider"
+            },
+            {
+              "label": "表单",
+              "value": "form"
+            }
+          ]
+        },
+        {
+          "key": "bind",
+          "label": "数据绑定",
+          "type": "text"
+        },
+        {
           "key": "parameters",
           "type": "table",
           "label": "参数",
@@ -357,35 +386,6 @@
         {
           "key": "label",
           "label": "显示",
-          "type": "text"
-        },
-        {
-          "key": "type",
-          "label": "类型",
-          "type": "select",
-          "default": "number",
-          "options": [
-            {
-              "label": "按钮",
-              "value": "button"
-            },
-            {
-              "label": "开关",
-              "value": "switch"
-            },
-            {
-              "label": "滑块",
-              "value": "slider"
-            },
-            {
-              "label": "表单",
-              "value": "form"
-            }
-          ]
-        },
-        {
-          "key": "bind",
-          "label": "数据绑定",
           "type": "text"
         },
         {

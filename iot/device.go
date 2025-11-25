@@ -201,6 +201,13 @@ func (d *Device) waitResponse(msg_id string, timeout int) (any, error) {
 }
 
 func (d *Device) Sync(timeout int) (map[string]any, error) {
+	if d.protocol == "" || d.linker == "" || d.LinkId == "" {
+		mqtt.Publish("device/"+d.Id+"/sync", nil)
+		//TODO 等待 /device/{id}/sync/response
+		return nil, nil
+		//return nil, errors.New("无协议和连接")
+	}
+
 	req := protocol.SyncRequest{
 		MsgId:    strconv.FormatInt(rand.Int63(), 10),
 		DeviceId: d.Id,
@@ -235,6 +242,12 @@ func (d *Device) onSyncResponse(resp *protocol.SyncResponse) {
 }
 
 func (d *Device) Read(points []string, timeout int) (map[string]any, error) {
+	if d.protocol == "" || d.linker == "" || d.LinkId == "" {
+		mqtt.Publish("device/"+d.Id+"/read", points)
+		//TODO 等待 /device/{id}/read/response
+		return nil, nil
+	}
+
 	req := protocol.ReadRequest{
 		MsgId:    strconv.FormatInt(rand.Int63(), 10),
 		DeviceId: d.Id,
@@ -270,6 +283,12 @@ func (d *Device) onReadResponse(resp *protocol.ReadResponse) {
 }
 
 func (d *Device) Write(values map[string]any, timeout int) (map[string]bool, error) {
+	if d.protocol == "" || d.linker == "" || d.LinkId == "" {
+		mqtt.Publish("device/"+d.Id+"/write", values)
+		//TODO 等待 /device/{id}/write/response
+		return nil, nil
+	}
+
 	req := protocol.WriteRequest{
 		MsgId:    strconv.FormatInt(rand.Int63(), 10),
 		DeviceId: d.Id,
@@ -305,6 +324,12 @@ func (d *Device) onWriteResponse(resp *protocol.WriteResponse) {
 }
 
 func (d *Device) Action(action string, parameters map[string]any, timeout int) (map[string]any, error) {
+	if d.protocol == "" || d.linker == "" || d.LinkId == "" {
+		mqtt.Publish("device/"+d.Id+"/action/"+action, parameters)
+		//TODO 等待 /device/{id}/action/{name}/response
+		return nil, nil
+	}
+
 	req := protocol.ActionRequest{
 		MsgId:      strconv.FormatInt(rand.Int63(), 10),
 		DeviceId:   d.Id,
