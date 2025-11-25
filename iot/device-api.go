@@ -1,11 +1,13 @@
 package iot
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/busy-cloud/boat/api"
 	"github.com/busy-cloud/boat/curd"
 	"github.com/busy-cloud/boat/db"
+	"github.com/busy-cloud/boat/mqtt"
 	"github.com/gin-gonic/gin"
 	"xorm.io/xorm/schemas"
 )
@@ -104,6 +106,10 @@ func deviceSettingUpdate(ctx *gin.Context) {
 		api.Error(ctx, err)
 		return
 	}
+
+	//下发到设备
+	topic := fmt.Sprintf("device/%s/setting/%s", setting.Id, setting.Name)
+	mqtt.Publish(topic, setting.Content)
 
 	api.OK(ctx, content)
 }

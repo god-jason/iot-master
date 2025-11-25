@@ -1,0 +1,57 @@
+{
+  "title": "组织用户",
+  "template": "table",
+  "toolbar": [
+    {
+      "label": "绑定",
+      "icon": "plus",
+      "type": "button",
+      "action": {
+        "type": "dialog",
+        "page": "user/user-choose",
+        "after_close": "result && this.request.post('table/member/create', {group_id:this.params.group_id, user_id:result.id}).subscribe(res=>this.load())"
+      }
+    }
+  ],
+  "operators": [
+    {
+      "icon": "delete",
+      "title": "解绑",
+      "confirm": "确认解绑？",
+      "action": {
+        "type": "script",
+        "script": "this.request.get('table/member/delete/'+data.group_id+'/'+data.user_id).subscribe(res=>this.load())"
+      }
+    }
+  ],
+  "columns": [
+    {
+      "key": "user_id",
+      "label": "用户ID"
+    },
+    {
+      "key": "user",
+      "label": "用户名"
+    },
+    {
+      "key": "role",
+      "label": "权限"
+    },
+    {
+      "key": "created",
+      "label": "日期",
+      "type": "date"
+    }
+  ],
+  "search_api": "table/member/search",
+  "mount": "this.filter={group_id:this.params.group_id}",
+  "joins": [
+    {
+      "table": "user",
+      "local_field": "user_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "user"
+    }
+  ]
+}

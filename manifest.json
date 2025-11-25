@@ -43,6 +43,10 @@
       "index": 200,
       "items": [
         {
+          "name": "组织管理",
+          "url": "page/iot/group"
+        },
+        {
           "name": "设备",
           "url": "page/iot/device",
           "icon": "device.png"
@@ -51,11 +55,6 @@
           "name": "连接",
           "url": "page/iot/link",
           "icon": "link.png"
-        },
-        {
-          "name": "项目空间",
-          "url": "page/iot/project",
-          "icon": "project.png"
         },
         {
           "name": "报警日志",

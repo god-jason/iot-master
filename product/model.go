@@ -1,8 +1,9 @@
 package product
 
 import (
-	"github.com/busy-cloud/boat/smart"
 	"time"
+
+	"github.com/busy-cloud/boat/smart"
 )
 
 // Point 属性
@@ -43,6 +44,14 @@ type Action struct {
 	Returns     []Parameter `json:"returns,omitempty"`
 }
 
+type Operator struct {
+	Name   string `json:"name,omitempty"`
+	Label  string `json:"label,omitempty"`
+	Type   string `json:"type,omitempty"`   //类型 button switch/toggle slider
+	Bind   string `json:"bind,omitempty"`   //绑定值(状态)
+	Action string `json:"action,omitempty"` //操作
+}
+
 type Setting struct {
 	Name   string        `json:"name,omitempty"`
 	Label  string        `json:"label,omitempty"`
@@ -50,11 +59,12 @@ type Setting struct {
 }
 type ProductModel struct {
 	Id         string       `json:"id,omitempty" xorm:"pk"`
-	Properties []*Property  `json:"properties,omitempty" xorm:"json"` //直接分组的形式
-	Events     []*Event     `json:"events,omitempty" xorm:"json"`
-	Actions    []*Action    `json:"actions,omitempty" xorm:"json"`
-	Validators []*Validator `json:"validators,omitempty" xorm:"json"`
-	Settings   []*Setting   `json:"settings,omitempty" xorm:"json"`
+	Properties []*Property  `json:"properties,omitempty" xorm:"json"` //属性表，分组的形式
+	Events     []*Event     `json:"events,omitempty" xorm:"json"`     //事件表
+	Actions    []*Action    `json:"actions,omitempty" xorm:"json"`    //响应表
+	Validators []*Validator `json:"validators,omitempty" xorm:"json"` //检查
+	Operators  []*Operator  `json:"operators,omitempty" xorm:"json"`  //按钮操作
+	Settings   []*Setting   `json:"settings,omitempty" xorm:"json"`   //参数配置
 	Updated    time.Time    `json:"updated,omitempty" xorm:"updated"`
 	Created    time.Time    `json:"created,omitempty" xorm:"created"`
 }

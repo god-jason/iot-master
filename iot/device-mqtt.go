@@ -5,12 +5,38 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/busy-cloud/boat/db"
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
 	"github.com/god-jason/iot-master/protocol"
 )
 
 func mqttSubscribeDevice() {
+
+	//设备自注册
+	mqtt.Subscribe("device/+/register", func(topic string, payload []byte) {
+		var dev Device
+		err := json.Unmarshal(payload, &dev)
+		if err != nil {
+			log.Error("Unmarshal device fail", err)
+			return
+		}
+
+		//查询
+		d := GetDevice(dev.Id)
+		if d == nil {
+			d, err = LoadDevice(dev.Id)
+			if err != nil {
+				//log.Error("Load device fail", err)
+				_, err = db.Engine().Insert(&dev)
+				if err != nil {
+					log.Error("Insert device fail", err)
+					return
+				}
+				_, _ = LoadDevice(dev.Id)
+			}
+		}
+	})
 
 	mqtt.Subscribe("device/+/values", func(topic string, payload []byte) {
 		var err error
