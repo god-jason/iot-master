@@ -23,6 +23,7 @@ type Device struct {
 	//device.Device `xorm:"extends"`
 	Id        string `json:"id,omitempty" xorm:"pk"`
 	ProductId string `json:"product_id,omitempty" xorm:"index"`
+	GroupId   string `json:"group_id,omitempty" xorm:"index"`
 	LinkId    string `json:"link_id,omitempty" xorm:"index"`
 	Name      string `json:"name,omitempty"`
 	Disabled  bool   `json:"disabled,omitempty"` //禁用
