@@ -59,6 +59,13 @@ func mqttSubscribeDevice() {
 		}
 
 		d.PutValues(values)
+
+		//有数据就恢复上线
+		if !d.Online {
+			var dev Device
+			dev.Online = true
+			_, _ = db.Engine().ID(id).Cols("online").Update(&dev)
+		}
 	})
 
 	mqtt.Subscribe("device/+/property", func(topic string, payload []byte) {
@@ -104,11 +111,9 @@ func mqttSubscribeDevice() {
 			d.Online = true
 		}
 
-		go func() {
-			var dev Device
-			dev.Online = true
-			_, _ = db.Engine().ID(id).Cols("online").Update(&dev)
-		}()
+		var dev Device
+		dev.Online = true
+		_, _ = db.Engine().ID(id).Cols("online").Update(&dev)
 	})
 
 	mqtt.Subscribe("device/+/offline", func(topic string, payload []byte) {
@@ -118,11 +123,9 @@ func mqttSubscribeDevice() {
 			d.Online = false
 		}
 
-		go func() {
-			var dev Device
-			dev.Online = false
-			_, _ = db.Engine().ID(id).Cols("online").Update(&dev)
-		}()
+		var dev Device
+		dev.Online = false
+		_, _ = db.Engine().ID(id).Cols("online").Update(&dev)
 	})
 
 	mqtt.SubscribeStruct[protocol.SyncRequest]("device/+/sync", func(topic string, request *protocol.SyncRequest) {
