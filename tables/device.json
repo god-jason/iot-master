@@ -71,6 +71,12 @@
       "default": "false"
     },
     {
+      "name": "error",
+      "comment": "错误",
+      "type": "string",
+      "length": 200
+    },
+    {
       "name": "longitude",
       "comment": "经度",
       "type": "int64"
