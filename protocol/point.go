@@ -53,11 +53,11 @@ type Enumeration struct {
 type PointWord struct {
 	product.Point //继承
 
-	Address   uint16  `json:"address"`           //偏移
-	BigEndian bool    `json:"be,omitempty"`      //大端模式
-	Rate      float64 `json:"rate,omitempty"`    //倍率
-	Correct   float64 `json:"correct,omitempty"` //纠正
-	Bits      []*Bit  `json:"bits,omitempty"`    //位，1 2 3...
+	Address      uint16  `json:"address"`           //偏移
+	LittleEndian bool    `json:"le,omitempty"`      //小端模式
+	Rate         float64 `json:"rate,omitempty"`    //倍率
+	Correct      float64 `json:"correct,omitempty"` //纠正
+	Bits         []*Bit  `json:"bits,omitempty"`    //位，1 2 3...
 
 	Enumerations []*Enumeration `json:"enumerations,omitempty"` //枚举
 }
@@ -118,10 +118,10 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 			return nil, err
 		}
 		ret = make([]byte, 2)
-		if p.BigEndian {
-			bin.WriteUint16(ret, v)
-		} else {
+		if p.LittleEndian {
 			bin.WriteUint16LittleEndian(ret, v)
+		} else {
+			bin.WriteUint16(ret, v)
 		}
 	case "int8":
 		val, err := cast.ToInt8E(data)
@@ -129,10 +129,10 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 			return nil, err
 		}
 		ret = make([]byte, 2)
-		if p.BigEndian {
-			bin.WriteUint16(ret, uint16(val))
-		} else {
+		if p.LittleEndian {
 			bin.WriteUint16LittleEndian(ret, uint16(val))
+		} else {
+			bin.WriteUint16(ret, uint16(val))
 		}
 	case "uint8":
 		val, err := cast.ToUint8E(data)
@@ -140,10 +140,10 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 			return nil, err
 		}
 		ret = make([]byte, 2)
-		if p.BigEndian {
-			bin.WriteUint16(ret, uint16(val))
-		} else {
+		if p.LittleEndian {
 			bin.WriteUint16LittleEndian(ret, uint16(val))
+		} else {
+			bin.WriteUint16(ret, uint16(val))
 		}
 	case "short", "int16":
 		val, err := cast.ToInt16E(data)
@@ -151,10 +151,10 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 			return nil, err
 		}
 		ret = make([]byte, 2)
-		if p.BigEndian {
-			bin.WriteUint16(ret, uint16(val))
-		} else {
+		if p.LittleEndian {
 			bin.WriteUint16LittleEndian(ret, uint16(val))
+		} else {
+			bin.WriteUint16(ret, uint16(val))
 		}
 	case "word", "uint16":
 		val, err := cast.ToUint16E(data)
@@ -162,10 +162,10 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 			return nil, err
 		}
 		ret = make([]byte, 2)
-		if p.BigEndian {
-			bin.WriteUint16(ret, val)
-		} else {
+		if p.LittleEndian {
 			bin.WriteUint16LittleEndian(ret, val)
+		} else {
+			bin.WriteUint16(ret, val)
 		}
 	case "int32", "int":
 		val, err := cast.ToInt32E(data)
@@ -173,10 +173,10 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 			return nil, err
 		}
 		ret = make([]byte, 4)
-		if p.BigEndian {
-			bin.WriteUint32(ret, uint32(val))
-		} else {
+		if p.LittleEndian {
 			bin.WriteUint32LittleEndian(ret, uint32(val))
+		} else {
+			bin.WriteUint32(ret, uint32(val))
 		}
 	case "qword", "uint32", "uint":
 		val, err := cast.ToUint32E(data)
@@ -184,10 +184,10 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 			return nil, err
 		}
 		ret = make([]byte, 4)
-		if p.BigEndian {
-			bin.WriteUint32(ret, val)
-		} else {
+		if p.LittleEndian {
 			bin.WriteUint32LittleEndian(ret, val)
+		} else {
+			bin.WriteUint32(ret, val)
 		}
 	case "int64":
 		val, err := cast.ToInt64E(data)
@@ -195,10 +195,10 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 			return nil, err
 		}
 		ret = make([]byte, 8)
-		if p.BigEndian {
-			bin.WriteUint64(ret, uint64(val))
-		} else {
+		if p.LittleEndian {
 			bin.WriteUint64LittleEndian(ret, uint64(val))
+		} else {
+			bin.WriteUint64(ret, uint64(val))
 		}
 	case "uint64":
 		val, err := cast.ToUint64E(data)
@@ -206,10 +206,10 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 			return nil, err
 		}
 		ret = make([]byte, 4)
-		if p.BigEndian {
-			bin.WriteUint64(ret, val)
-		} else {
+		if p.LittleEndian {
 			bin.WriteUint64LittleEndian(ret, val)
+		} else {
+			bin.WriteUint64(ret, val)
 		}
 	case "float", "float32":
 		val, err := cast.ToFloat32E(data)
@@ -217,10 +217,10 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 			return nil, err
 		}
 		ret = make([]byte, 4)
-		if p.BigEndian {
-			bin.WriteFloat32(ret, val)
-		} else {
+		if p.LittleEndian {
 			bin.WriteFloat32LittleEndian(ret, val)
+		} else {
+			bin.WriteFloat32(ret, val)
 		}
 	case "double", "float64":
 		val, err := cast.ToFloat64E(data)
@@ -228,10 +228,10 @@ func (p *PointWord) Encode(data any) ([]byte, error) {
 			return nil, err
 		}
 		ret = make([]byte, 8)
-		if p.BigEndian {
-			bin.WriteFloat64(ret, val)
-		} else {
+		if p.LittleEndian {
 			bin.WriteFloat64LittleEndian(ret, val)
+		} else {
+			bin.WriteFloat64(ret, val)
 		}
 		//case "string", "bytes":
 		//	switch v := data.(type) {
@@ -268,46 +268,46 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 		if len(buf[offset:]) < 2 {
 			return nil, fmt.Errorf("bool长度不足2:%d", l)
 		}
-		if p.BigEndian {
-			ret = bin.ParseUint16(buf[offset:]) > 0
-		} else {
+		if p.LittleEndian {
 			ret = bin.ParseUint16LittleEndian(buf[offset:]) > 0
+		} else {
+			ret = bin.ParseUint16(buf[offset:]) > 0
 		}
 	case "int8":
 		if len(buf[offset:]) < 2 {
 			return nil, fmt.Errorf("int8长度不足2:%d", l)
 		}
-		if p.BigEndian {
-			ret = int8(buf[offset+1])
-		} else {
+		if p.LittleEndian {
 			ret = int8(buf[offset])
+		} else {
+			ret = int8(buf[offset+1])
 		}
 	case "uint8":
 		if len(buf[offset:]) < 2 {
 			return nil, fmt.Errorf("uint8长度不足2:%d", l)
 		}
-		if p.BigEndian {
-			ret = uint8(buf[offset+1])
-		} else {
+		if p.LittleEndian {
 			ret = uint8(buf[offset])
+		} else {
+			ret = uint8(buf[offset+1])
 		}
 	case "short", "int16":
 		if len(buf[offset:]) < 2 {
 			return nil, fmt.Errorf("int16长度不足2:%d", l)
 		}
-		if p.BigEndian {
-			ret = int16(bin.ParseUint16(buf[offset:]))
-		} else {
+		if p.LittleEndian {
 			ret = int16(bin.ParseUint16LittleEndian(buf[offset:]))
+		} else {
+			ret = int16(bin.ParseUint16(buf[offset:]))
 		}
 	case "word", "uint16":
 		if len(buf[offset:]) < 2 {
 			return nil, fmt.Errorf("uint16长度不足2:%d", l)
 		}
-		if p.BigEndian {
-			ret = bin.ParseUint16(buf[offset:])
-		} else {
+		if p.LittleEndian {
 			ret = bin.ParseUint16LittleEndian(buf[offset:])
+		} else {
+			ret = bin.ParseUint16(buf[offset:])
 		}
 		//取位
 		if p.Bits != nil && len(p.Bits) > 0 {
@@ -321,55 +321,55 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 		if len(buf[offset:]) < 4 {
 			return nil, fmt.Errorf("int32长度不足4:%d", l)
 		}
-		if p.BigEndian {
-			ret = int32(bin.ParseUint32(buf[offset:]))
-		} else {
+		if p.LittleEndian {
 			ret = int32(bin.ParseUint32LittleEndian(buf[offset:]))
+		} else {
+			ret = int32(bin.ParseUint32(buf[offset:]))
 		}
 	case "qword", "uint32", "uint":
 		if len(buf[offset:]) < 4 {
 			return nil, fmt.Errorf("uint32长度不足4:%d", l)
 		}
-		if p.BigEndian {
-			ret = bin.ParseUint32(buf[offset:])
-		} else {
+		if p.LittleEndian {
 			ret = bin.ParseUint32LittleEndian(buf[offset:])
+		} else {
+			ret = bin.ParseUint32(buf[offset:])
 		}
 	case "int64":
 		if len(buf[offset:]) < 8 {
 			return nil, fmt.Errorf("int64长度不足8:%d", l)
 		}
-		if p.BigEndian {
-			ret = int64(bin.ParseUint64(buf[offset:]))
-		} else {
+		if p.LittleEndian {
 			ret = int64(bin.ParseUint64LittleEndian(buf[offset:]))
+		} else {
+			ret = int64(bin.ParseUint64(buf[offset:]))
 		}
 	case "uint64":
 		if len(buf[offset:]) < 8 {
 			return nil, fmt.Errorf("uint64长度不足8:%d", l)
 		}
-		if p.BigEndian {
-			ret = bin.ParseUint64(buf[offset:])
-		} else {
+		if p.LittleEndian {
 			ret = bin.ParseUint64LittleEndian(buf[offset:])
+		} else {
+			ret = bin.ParseUint64(buf[offset:])
 		}
 	case "float", "float32":
 		if len(buf[offset:]) < 4 {
 			return nil, fmt.Errorf("float32长度不足4:%d", l)
 		}
-		if p.BigEndian {
-			ret = bin.ParseFloat32(buf[offset:])
-		} else {
+		if p.LittleEndian {
 			ret = bin.ParseFloat32LittleEndian(buf[offset:])
+		} else {
+			ret = bin.ParseFloat32(buf[offset:])
 		}
 	case "double", "float64":
 		if len(buf[offset:]) < 4 {
 			return nil, fmt.Errorf("float64长度不足8:%d", l)
 		}
-		if p.BigEndian {
-			ret = bin.ParseFloat64(buf[offset:])
-		} else {
+		if p.LittleEndian {
 			ret = bin.ParseFloat64LittleEndian(buf[offset:])
+		} else {
+			ret = bin.ParseFloat64(buf[offset:])
 		}
 	default:
 		return nil, fmt.Errorf("不支持的数据类型 %s", p.Type)
