@@ -18,6 +18,8 @@ func mqttSubscribeLink() {
 		linker := ss[3]
 		link_id := ss[4]
 
+		//TODO 异步处理上线
+
 		//查询相关的设备
 		var ds []map[string]any
 		err := db.Engine().Table("device").Where("link_id=?", link_id).Find(&ds)
@@ -25,6 +27,11 @@ func mqttSubscribeLink() {
 			log.Error(err)
 			return
 		}
+
+		//修改上线
+		var dev Device
+		dev.Online = true
+		_, _ = db.Engine().Where("link_id=?", link_id).Cols("online").Update(&dev)
 
 		//无设备，则不用挂载
 		if len(ds) == 0 {

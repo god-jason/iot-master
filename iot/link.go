@@ -14,12 +14,12 @@ type Link struct {
 	Linker          string         `json:"linker,omitempty" xorm:"index"`
 	Name            string         `json:"name,omitempty"`
 	Description     string         `json:"description,omitempty"`
-	Protocol        string         `json:"protocol,omitempty"`                        //通讯协议
-	ProtocolOptions map[string]any `json:"protocol_options,omitempty" xorm:"json"`    //通讯协议参数
-	Disabled        bool           `json:"disabled,omitempty"`                        //禁用
+	Protocol        string         `json:"protocol,omitempty"`                     //通讯协议
+	ProtocolOptions map[string]any `json:"protocol_options,omitempty" xorm:"json"` //通讯协议参数
+	Disabled        bool           `json:"disabled,omitempty"`                     //禁用
+	Online          bool           `json:"online,omitempty"`
+	Error           string         `json:"error,omitempty"`
 	Created         time.Time      `json:"created,omitempty,omitzero" xorm:"created"` //创建时间
-
-	Status `xorm:"-"`
 }
 
 func (l *Link) Close() error {

@@ -26,21 +26,6 @@ func init() {
 
 }
 
-func getDevicesInfo(ds []*Device) error {
-	for _, d := range ds {
-		_ = getDeviceInfo(d)
-	}
-	return nil
-}
-
-func getDeviceInfo(d *Device) error {
-	l := devices.Load(d.Id)
-	if l != nil {
-		d.Status = l.Status
-	}
-	return nil
-}
-
 func deviceModelUpdate(ctx *gin.Context) {
 	id := ctx.Param("id")
 

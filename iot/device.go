@@ -26,8 +26,8 @@ type Device struct {
 	LinkId    string `json:"link_id,omitempty" xorm:"index"`
 	Name      string `json:"name,omitempty"`
 	Disabled  bool   `json:"disabled,omitempty"` //禁用
-
-	Status `xorm:"-"`
+	Online    bool   `json:"online,omitempty"`
+	Error     string `json:"error,omitempty"`
 
 	values Values
 
@@ -326,7 +326,7 @@ func (d *Device) onWriteResponse(resp *protocol.WriteResponse) {
 func (d *Device) Action(action string, parameters map[string]any, timeout int) (map[string]any, error) {
 	if d.protocol == "" || d.linker == "" || d.LinkId == "" {
 		mqtt.Publish("device/"+d.Id+"/action/"+action, parameters)
-		//TODO 等待 /device/{id}/action/{name}/response
+		//TODO 等待 device/{id}/action/{name}/response
 		return nil, nil
 	}
 
