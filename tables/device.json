@@ -71,6 +71,22 @@
       "default": "false"
     },
     {
+      "name": "longitude",
+      "comment": "经度",
+      "type": "int64"
+    },
+    {
+      "name": "latitude",
+      "comment": "纬度",
+      "type": "int64"
+    },
+    {
+      "name": "geo_code",
+      "comment": "geo hash",
+      "type": "string",
+      "length": 50
+    },
+    {
       "name": "disabled",
       "comment": "禁用",
       "type": "bool",
