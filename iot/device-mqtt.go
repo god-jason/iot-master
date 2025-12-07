@@ -9,31 +9,61 @@ import (
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
 	"github.com/god-jason/iot-master/protocol"
+	"xorm.io/xorm/schemas"
 )
+
+type Register struct {
+	Id        string           `json:"id,omitempty"`
+	ProductId string           `json:"product_id,omitempty"`
+	Bsp       string           `json:"bsp,omitempty"`
+	Firmware  string           `json:"firmware,omitempty"`
+	Imei      string           `json:"imei,omitempty"`
+	Iccid     string           `json:"iccid,omitempty"`
+	Settings  map[string]int64 `json:"settings,omitempty"` //时间戳
+}
 
 func mqttSubscribeDevice() {
 
-	//设备自注册
-	mqtt.Subscribe("device/+/register", func(topic string, payload []byte) {
-		var dev Device
-		err := json.Unmarshal(payload, &dev)
-		if err != nil {
-			log.Error("Unmarshal device fail", err)
-			return
-		}
+	//设备注册
+	mqtt.SubscribeStruct[Register]("device/+/register", func(topic string, reg *Register) {
+		var err error
 
 		//查询
-		d := GetDevice(dev.Id)
+		d := GetDevice(reg.Id)
 		if d == nil {
-			d, err = LoadDevice(dev.Id)
+			d, err = LoadDevice(reg.Id)
 			if err != nil {
-				//log.Error("Load device fail", err)
+				var dev Device
+				dev.Id = reg.Id
+				dev.ProductId = reg.ProductId
+				dev.Online = true
 				_, err = db.Engine().Insert(&dev)
 				if err != nil {
 					log.Error("Insert device fail", err)
 					return
 				}
-				_, _ = LoadDevice(dev.Id)
+				d, _ = LoadDevice(reg.Id)
+			} else {
+				d.Online = true
+			}
+		}
+
+		//检查配置文件
+		for s, t := range reg.Settings {
+			var setting DeviceSetting
+			has, err := db.Engine().ID(schemas.PK{reg.Id, s}).Get(&setting)
+			if err != nil {
+				log.Error("Get device fail", err)
+				continue
+			}
+			if !has {
+				continue
+			}
+			//设备小于服务器
+			if t < setting.Created.Unix() {
+				//下发到设备
+				topic := fmt.Sprintf("device/%s/setting/%s", setting.Id, setting.Name)
+				mqtt.Publish(topic, setting.Content)
 			}
 		}
 	})
@@ -62,6 +92,8 @@ func mqttSubscribeDevice() {
 
 		//有数据就恢复上线
 		if !d.Online {
+			d.Online = true
+
 			var dev Device
 			dev.Online = true
 			_, _ = db.Engine().ID(id).Cols("online").Update(&dev)
@@ -96,6 +128,15 @@ func mqttSubscribeDevice() {
 		}
 
 		d.PutValues(values)
+
+		//有数据就恢复上线
+		if !d.Online {
+			d.Online = true
+
+			var dev Device
+			dev.Online = true
+			_, _ = db.Engine().ID(id).Cols("online").Update(&dev)
+		}
 	})
 
 	mqtt.Subscribe("device/+/online", func(topic string, payload []byte) {
