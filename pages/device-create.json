@@ -22,6 +22,15 @@
     },
     {
       "type": "button",
+      "label": "选择网关ID",
+      "action": {
+        "type": "dialog",
+        "page": "iot/device-choose",
+        "after_close": "this.editor.patchValue({gateway_id: result.id})"
+      }
+    },
+    {
+      "type": "button",
       "label": "选择连接ID",
       "action": {
         "type": "dialog",
@@ -62,6 +71,11 @@
       }
     },
     {
+      "key": "gateway_id",
+      "label": "网关ID",
+      "type": "text"
+    },
+    {
       "key": "link_id",
       "label": "连接ID",
       "type": "text"
@@ -74,7 +88,7 @@
   ],
   "submit_api": "table/device/create",
   "submit_success": "this.navigate('/page/iot/device-detail?id='+data)",
-  "mount": "this.data.product_id=this.params.product_id; this.get_extend_fields()",
+  "mount": "this.data.product_id=this.params.product_id; this.data.group_id=this.params.group_id; this.data.gateway_id=this.params.gateway_id; this.get_extend_fields()",
   "methods": {
     "get_extend_fields": "this.request.get('iot/device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.fields.push(f)) })"
    }

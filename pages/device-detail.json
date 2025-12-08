@@ -105,6 +105,11 @@
       "title": "设备参数",
       "page": "iot/device-settings",
       "params_func": "return {id: params.id}"
+    },
+    {
+      "title": "子设备",
+      "page": "iot/device",
+      "params_func": "return {gateway_id: params.id}"
     }
   ]
 }

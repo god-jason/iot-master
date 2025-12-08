@@ -22,6 +22,15 @@
     },
     {
       "type": "button",
+      "label": "选择网关ID",
+      "action": {
+        "type": "dialog",
+        "page": "iot/device-choose",
+        "after_close": "this.editor.patchValue({gateway_id: result.id})"
+      }
+    },
+    {
+      "type": "button",
       "label": "选择连接ID",
       "action": {
         "type": "dialog",
@@ -59,6 +68,11 @@
         "type": "script",
         "script": "setTimeout(()=>this.load_product(), 100)"
       }
+    },
+    {
+      "key": "gateway_id",
+      "label": "网关ID",
+      "type": "text"
     },
     {
       "key": "link_id",

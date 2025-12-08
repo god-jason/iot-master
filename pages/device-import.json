@@ -23,6 +23,11 @@
       "type": "text"
     },
     {
+      "key": "gateway_id",
+      "label": "网关ID",
+      "type": "text"
+    },
+    {
       "key": "link_id",
       "label": "连接ID",
       "type": "text"

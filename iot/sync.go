@@ -18,7 +18,7 @@ func syncDevices(id string, devices map[string]Sync, models map[string]Sync) {
 	rows, err := tab.Find(&table.ParamSearch{
 		Skip:   0,
 		Limit:  999,
-		Filter: map[string]any{"device_id": id},
+		Filter: map[string]any{"gateway_id": id},
 	})
 	if err != nil {
 		log.Error(err)
@@ -62,7 +62,8 @@ func syncDevices(id string, devices map[string]Sync, models map[string]Sync) {
 		//检查更新时间
 		if u, ok := row["updated"]; ok {
 			if t, ok := u.(time.Time); ok {
-				if m.Updated.Before(t) {
+				tt, err := time.Parse(time.DateTime, m.Updated)
+				if err != nil || tt.Before(t) {
 					mqtt.Publish("device/"+id+"/database/device/insert", row)
 					continue
 				}
@@ -72,7 +73,8 @@ func syncDevices(id string, devices map[string]Sync, models map[string]Sync) {
 		//检查创建时间
 		if u, ok := row["created"]; ok {
 			if t, ok := u.(time.Time); ok {
-				if m.Created.Before(t) {
+				tt, err := time.Parse(time.DateTime, m.Created)
+				if err != nil || tt.Before(t) {
 					mqtt.Publish("device/"+id+"/database/device/insert", row)
 					continue
 				}
@@ -116,7 +118,7 @@ func syncLinks(id string, links map[string]Sync) {
 	rows, err := tab.Find(&table.ParamSearch{
 		Skip:   0,
 		Limit:  999,
-		Filter: map[string]any{"device_id": id},
+		Filter: map[string]any{"gateway_id": id},
 	})
 	if err != nil {
 		log.Error(err)
@@ -160,7 +162,8 @@ func syncLinks(id string, links map[string]Sync) {
 		//检查更新时间
 		if u, ok := row["updated"]; ok {
 			if t, ok := u.(time.Time); ok {
-				if m.Updated.Before(t) {
+				tt, err := time.Parse(time.DateTime, m.Updated)
+				if err != nil || tt.Before(t) {
 					mqtt.Publish("device/"+id+"/database/link/insert", row)
 					continue
 				}
@@ -170,7 +173,8 @@ func syncLinks(id string, links map[string]Sync) {
 		//检查创建时间
 		if u, ok := row["created"]; ok {
 			if t, ok := u.(time.Time); ok {
-				if m.Created.Before(t) {
+				tt, err := time.Parse(time.DateTime, m.Created)
+				if err != nil || tt.Before(t) {
 					mqtt.Publish("device/"+id+"/database/link/insert", row)
 					continue
 				}
@@ -180,7 +184,7 @@ func syncLinks(id string, links map[string]Sync) {
 }
 
 func syncModels(id string, models map[string]Sync) {
-	tab, err := table.Get("model")
+	tab, err := table.Get("product_model")
 	if err != nil {
 		log.Error(err)
 		return
@@ -196,7 +200,8 @@ func syncModels(id string, models map[string]Sync) {
 		//检查更新时间
 		if u, ok := row["updated"]; ok {
 			if t, ok := u.(time.Time); ok {
-				if m.Updated.Before(t) {
+				tt, err := time.Parse(time.DateTime, m.Updated)
+				if err != nil || tt.Before(t) {
 					mqtt.Publish("device/"+id+"/database/model/insert", row)
 					continue
 				}
@@ -206,7 +211,8 @@ func syncModels(id string, models map[string]Sync) {
 		//检查创建时间
 		if u, ok := row["created"]; ok {
 			if t, ok := u.(time.Time); ok {
-				if m.Created.Before(t) {
+				tt, err := time.Parse(time.DateTime, m.Created)
+				if err != nil || tt.Before(t) {
 					mqtt.Publish("device/"+id+"/database/model/insert", row)
 					continue
 				}

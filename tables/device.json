@@ -26,6 +26,13 @@
       "primary": true
     },
     {
+      "name": "gateway_id",
+      "comment": "网关ID",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
       "name": "group_id",
       "comment": "组织ID",
       "type": "string",

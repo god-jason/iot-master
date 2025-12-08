@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/busy-cloud/boat/db"
 	"github.com/busy-cloud/boat/log"
@@ -14,8 +13,8 @@ import (
 )
 
 type Sync struct {
-	Updated time.Time `json:"updated,omitempty"`
-	Created time.Time `json:"created,omitempty"`
+	Updated string `json:"updated,omitempty"`
+	Created string `json:"created,omitempty"`
 }
 
 type Register struct {

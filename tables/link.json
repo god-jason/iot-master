@@ -10,6 +10,13 @@
       "primary": true
     },
     {
+      "name": "gateway_id",
+      "comment": "网关ID",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
       "name": "linker",
       "comment": "连接器",
       "type": "string",
