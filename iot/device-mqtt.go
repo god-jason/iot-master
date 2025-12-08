@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/busy-cloud/boat/db"
 	"github.com/busy-cloud/boat/log"
@@ -12,14 +13,20 @@ import (
 	"xorm.io/xorm/schemas"
 )
 
+type Sync struct {
+	Updated time.Time `json:"updated,omitempty"`
+	Created time.Time `json:"created,omitempty"`
+}
+
 type Register struct {
-	Id        string           `json:"id,omitempty"`
-	ProductId string           `json:"product_id,omitempty"`
-	Bsp       string           `json:"bsp,omitempty"`
-	Firmware  string           `json:"firmware,omitempty"`
-	Imei      string           `json:"imei,omitempty"`
-	Iccid     string           `json:"iccid,omitempty"`
-	Settings  map[string]int64 `json:"settings,omitempty"` //时间戳
+	Id        string                     `json:"id,omitempty"`
+	ProductId string                     `json:"product_id,omitempty"`
+	Bsp       string                     `json:"bsp,omitempty"`
+	Firmware  string                     `json:"firmware,omitempty"`
+	Imei      string                     `json:"imei,omitempty"`
+	Iccid     string                     `json:"iccid,omitempty"`
+	Settings  map[string]int64           `json:"settings,omitempty"`  //配置文件时间戳
+	Databases map[string]map[string]Sync `json:"databases,omitempty"` //数据库同步
 }
 
 func mqttSubscribeDevice() {
@@ -64,6 +71,18 @@ func mqttSubscribeDevice() {
 				//下发到设备
 				topic := fmt.Sprintf("device/%s/setting/%s", setting.Id, setting.Name)
 				mqtt.Publish(topic, setting.Content)
+			}
+		}
+
+		//同步数据库
+		for s, t := range reg.Databases {
+			switch s {
+			case "link":
+				syncLinks(reg.Id, t)
+			case "device":
+				syncDevices(reg.Id, t, reg.Databases["model"])
+			case "model":
+				syncModels(reg.Id, t)
 			}
 		}
 	})
