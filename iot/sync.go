@@ -18,7 +18,7 @@ func syncDevices(id string, devices map[string]Sync, models map[string]Sync) {
 	rows, err := tab.Find(&table.ParamSearch{
 		Skip:   0,
 		Limit:  999,
-		Filter: map[string]any{"gateway_id": id},
+		Filter: map[string]any{"device_id": id},
 	})
 	if err != nil {
 		log.Error(err)
@@ -116,7 +116,7 @@ func syncLinks(id string, links map[string]Sync) {
 	rows, err := tab.Find(&table.ParamSearch{
 		Skip:   0,
 		Limit:  999,
-		Filter: map[string]any{"gateway_id": id},
+		Filter: map[string]any{"device_id": id},
 	})
 	if err != nil {
 		log.Error(err)
