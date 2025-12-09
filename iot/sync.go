@@ -125,6 +125,11 @@ func syncLinks(id string, links map[string]Sync) {
 		return
 	}
 
+	//不能删除默认连接
+	if len(rows) == 0 {
+		return
+	}
+
 	//数量不匹配，全部更新
 	if len(rows) != len(links) {
 		mqtt.Publish("device/"+id+"/database/link/clear", nil)
