@@ -20,8 +20,8 @@ type Point struct {
 }
 
 type Property struct {
-	Name   string           `json:"name,omitempty"`
-	Points []map[string]any `json:"points,omitempty"` //要支持扩展字段，所以用map数组
+	Name   string   `json:"name,omitempty"`
+	Points []*Point `json:"points,omitempty"` //要支持扩展字段，所以用map数组
 }
 
 type Parameter struct {
@@ -51,8 +51,9 @@ type Setting struct {
 	Fields []smart.Field `json:"fields,omitempty"`
 }
 
-type ProductModel struct {
+type ProductModel2 struct {
 	Id         string       `json:"id,omitempty" xorm:"pk"`
+	Type       string       `json:"type,omitempty"`
 	Properties []*Property  `json:"properties,omitempty" xorm:"json"` //属性表，分组的形式
 	Events     []*Event     `json:"events,omitempty" xorm:"json"`     //事件表
 	Actions    []*Action    `json:"actions,omitempty" xorm:"json"`    //响应表
@@ -60,4 +61,15 @@ type ProductModel struct {
 	Settings   []*Setting   `json:"settings,omitempty" xorm:"json"`   //参数配置
 	Updated    time.Time    `json:"updated,omitempty" xorm:"updated"`
 	Created    time.Time    `json:"created,omitempty" xorm:"created"`
+}
+type ProductModel struct {
+	Id         string           `json:"id,omitempty" xorm:"pk"`
+	Type       string           `json:"type,omitempty"`
+	Properties []map[string]any `json:"properties,omitempty" xorm:"json"` //属性表，分组的形式
+	Events     []*Event         `json:"events,omitempty" xorm:"json"`     //事件表
+	Actions    []*Action        `json:"actions,omitempty" xorm:"json"`    //响应表
+	Validators []*Validator     `json:"validators,omitempty" xorm:"json"` //检查
+	Settings   []*Setting       `json:"settings,omitempty" xorm:"json"`   //参数配置
+	Updated    time.Time        `json:"updated,omitempty" xorm:"updated"`
+	Created    time.Time        `json:"created,omitempty" xorm:"created"`
 }

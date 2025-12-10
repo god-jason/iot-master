@@ -18,8 +18,10 @@ type Protocol struct {
 	DeviceExtendColumns []*smart.Column `json:"device_extend_columns"` //设备表扩展字段，比如从站号
 	DeviceExtendFields  []*smart.Field  `json:"device_extend_fields"`  //设备编辑扩展字段，比如从站号
 
-	PointExtendFields []*smart.Field        `json:"point_extend_fields"` //属性扩展字段 物模型
-	PointExtendTypes  []*smart.SelectOption `json:"point_extend_types"`  //属性扩展数据类型
+	PropertyExtendFields []*smart.Field `json:"property_extend_fields"` //属性扩展字段 物模型
+
+	PointExtendFields []*smart.Field        `json:"point_extend_fields"` //点位扩展字段 物模型
+	PointExtendTypes  []*smart.SelectOption `json:"point_extend_types"`  //点位扩展数据类型
 
 	OptionFields []*smart.Field `json:"option_fields"` //参数字段（配置在通道之上）
 	//Model []*smart.Field `json:"model,omitempty"` //模型配置文件

@@ -1,0 +1,149 @@
+{
+  "name": "cjt188",
+  "description": "CJT 188",
+  "device_extend_columns": [
+    {
+      "name": "address",
+      "comment": "地址",
+      "type": "string"
+    }
+  ],
+  "device_extend_fields": [
+    {
+      "key": "address",
+      "label": "地址",
+      "type": "text"
+    }
+  ],
+  "option_fields": [
+    {
+      "key": "timeout",
+      "label": "超时",
+      "type": "number",
+      "default": 1000,
+      "min": 200,
+      "max": 5000,
+      "step": 100
+    },
+    {
+      "key": "polling",
+      "type": "switch",
+      "label": "开启轮询"
+    },
+    {
+      "key": "polling_interval",
+      "type": "number",
+      "label": "轮询间隔",
+      "default": 60,
+      "min": 1,
+      "step": 1
+    }
+  ],
+  "product_extend_fields": [
+    {
+      "key": "type",
+      "label": "设备类型",
+      "type": "text",
+      "span": 24
+    }
+  ],
+  "property_extend_fields": [
+    {
+      "key": "di",
+      "label": "数据标识",
+      "type": "text",
+      "span": 24
+    },
+    {
+      "key": "code",
+      "label": "功能码",
+      "type": "text",
+      "span": 24
+    }
+  ],
+  "point_extend_fields": [
+    {
+      "key": "address",
+      "label": "地址",
+      "type": "number",
+      "default": 0,
+      "min": 0,
+      "step": 1
+    },
+    {
+      "key": "hasUnit",
+      "label": "包含单位",
+      "type": "switch",
+      "default": false
+    },
+    {
+      "key": "unit",
+      "label": "单位",
+      "type": "text"
+    },
+    {
+      "key": "rate",
+      "label": "倍率",
+      "type": "number",
+      "default": 1
+    }
+  ],
+  "point_extend_types": [
+    {
+      "label": "XXXXXXXX",
+      "value": "XXXXXXXX"
+    },
+    {
+      "label": "XXXXXX.XX",
+      "value": "XXXXXX.XX"
+    },
+    {
+      "label": "XXX.XXXX",
+      "value": "XXX.XXXX"
+    },
+    {
+      "label": "XXXXXX",
+      "value": "XXXXXX"
+    },
+    {
+      "label": "XXXX.XX",
+      "value": "XXXX.XX"
+    },
+    {
+      "label": "XXXX",
+      "value": "XXXX"
+    },
+    {
+      "label": "XX",
+      "value": "XX"
+    },
+    {
+      "label": "HH",
+      "value": "HH"
+    },
+    {
+      "label": "HHHH",
+      "value": "HHHH"
+    },
+    {
+      "label": "YYYYMMDDhhmmss",
+      "value": "YYYYMMDDhhmmss"
+    },
+    {
+      "label": "YYMMDDhhmmss",
+      "value": "YYMMDDhhmmss"
+    },
+    {
+      "label": "YYYYMMDD",
+      "value": "YYYYMMDD"
+    },
+    {
+      "label": "uint8",
+      "value": "uint8"
+    },
+    {
+      "label": "uint16",
+      "value": "uint16"
+    }
+  ]
+}

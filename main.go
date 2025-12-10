@@ -8,6 +8,7 @@ import (
 	"github.com/busy-cloud/boat/apps"
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/store"
+	"github.com/god-jason/iot-master/iot"
 	_ "github.com/god-jason/iot-master/iot"
 )
 
@@ -19,6 +20,9 @@ var pages embed.FS
 
 //go:embed tables
 var tables embed.FS
+
+//go:embed protocols
+var protocols embed.FS
 
 //go:embed manifest.json
 var manifest []byte
@@ -36,4 +40,7 @@ func init() {
 	a.AssetsFS = store.PrefixFS(&assets, "assets")
 	a.PagesFS = store.PrefixFS(&pages, "pages")
 	a.TablesFS = store.PrefixFS(&tables, "tables")
+
+	//加载协议
+	iot.Protocols = store.PrefixFS(&protocols, "protocols")
 }

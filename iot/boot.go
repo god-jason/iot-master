@@ -26,7 +26,5 @@ func Startup() error {
 
 	mqttSubscribeLink()
 
-	mqttSubscribeProtocolRegister()
-
 	return nil
 }

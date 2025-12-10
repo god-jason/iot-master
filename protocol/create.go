@@ -10,9 +10,6 @@ import (
 
 func Create(protocol *Protocol, manager MasterManager) {
 
-	//直接注册
-	Register(protocol)
-
 	//数据下发的回调
 	writeLinkFunc := func(linker, linker_id string, data []byte) error {
 		topic := "link/" + linker + "/" + linker_id + "/down"

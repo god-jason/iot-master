@@ -21,6 +21,18 @@
   ],
   "fields": [
     {
+      "key": "icon",
+      "label": "图标",
+      "span": 24,
+      "type": "text"
+    },
+    {
+      "key": "type",
+      "label": "类型",
+      "span": 24,
+      "type": "text"
+    },
+    {
       "key": "properties",
       "label": "【属性表】",
       "type": "list",
@@ -549,10 +561,22 @@
   "submit_success": "this.navigate('/page/iot/product-detail?id='+this.params.id)",
   "mount": "this.load_product()",
   "methods": {
-    "load_product": "this.request.get('table/product/detail/'+this.params.id).subscribe(res=>{if(!res.error) this.load_protocol(res.data.protocol)})",
+    "load_product": "this.request.get('table/product/detail/'+this.params.id).subscribe(res=>{if(!res.error) res.data.protocol && this.load_protocol(res.data.protocol)})",
     "load_protocol": [
       "p",
-      "this.request.get('iot/protocol/'+p).subscribe(res=>{this.content.fields[0].children[1].children=this.content.fields[0].children[1].children.concat(res.point_extend_fields);  this.content.fields[0].children[1].children[2].options=res.point_extend_types;  setTimeout(()=>this.editor.rebuild(), 200)})"
+      "this.request.get('iot/protocol/'+p).subscribe(res=>{ this.add_point_types(res.data); this.add_point_fields(res.data);  this.add_property_fields(res.data);  setTimeout(()=>this.editor.rebuild(), 200)})"
+    ],
+    "add_point_types": [
+      "p",
+      "if (p.point_extend_types && p.point_extend_types.length) this.content.fields[2].children[1].children[2].options=p.point_extend_types;"
+    ],
+    "add_point_fields": [
+      "p",
+      "this.content.fields[2].children[1].children.push(...p.point_extend_fields);"
+    ],
+    "add_property_fields": [
+      "p",
+      "this.content.fields[2].children.splice(0,0,...p.property_extend_fields);"
     ]
   }
 }

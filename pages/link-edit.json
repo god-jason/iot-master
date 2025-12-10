@@ -37,6 +37,6 @@
   "mount": "this.load_protocols();",
   "methods": {
     "load_protocols": "this.request.get('iot/protocol/list').subscribe(res=>{this.content.fields[2].options=res.data.map(d=>{return {value:d.name,label:d.description}}); setTimeout(()=>this.load_protocol_option(), 200);  })",
-    "load_protocol_option": "this.editor.value.protocol && this.request.get('iot/protocol/'+this.editor.value.protocol).subscribe(res=>{this.content.fields[3].children=res.option_fields; setTimeout(()=>this.editor.rebuild(), 200)})"
+    "load_protocol_option": "this.editor.value.protocol && this.request.get('iot/protocol/'+this.editor.value.protocol).subscribe(res=>{this.content.fields[3].children=res.data.option_fields; setTimeout(()=>this.editor.rebuild(), 200)})"
   }
 }
