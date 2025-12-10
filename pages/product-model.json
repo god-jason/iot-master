@@ -23,13 +23,11 @@
     {
       "key": "icon",
       "label": "图标",
-      "span": 24,
       "type": "text"
     },
     {
       "key": "type",
       "label": "类型",
-      "span": 24,
       "type": "text"
     },
     {
@@ -41,8 +39,12 @@
         {
           "key": "name",
           "label": "分组",
-          "span": 24,
           "type": "text"
+        },
+        {
+          "key": "advance",
+          "label": "高级",
+          "type": "switch"
         },
         {
           "key": "points",
@@ -144,6 +146,30 @@
                   "type": "text"
                 }
               ]
+            },
+            {
+              "key": "bits",
+              "label": "位",
+              "type": "table",
+              "children": [
+                {
+                  "key": "name",
+                  "label": "变量",
+                  "type": "text"
+                },
+                {
+                  "key": "label",
+                  "label": "显示",
+                  "type": "text"
+                },
+                {
+                  "key": "bit",
+                  "label": "位",
+                  "type": "number",
+                  "min": 0,
+                  "max": 63
+                }
+              ]
             }
           ]
         }
@@ -164,6 +190,11 @@
           "key": "label",
           "label": "显示",
           "type": "text"
+        },
+        {
+          "key": "advance",
+          "label": "高级",
+          "type": "switch"
         },
         {
           "key": "type",
@@ -385,62 +416,6 @@
     },
 
     {
-      "key": "operators",
-      "label": "【操作项】",
-      "span": 24,
-      "type": "list",
-      "children": [
-        {
-          "key": "name",
-          "label": "名称",
-          "type": "text"
-        },
-        {
-          "key": "label",
-          "label": "显示",
-          "type": "text"
-        },
-        {
-          "key": "parameters",
-          "type": "table",
-          "label": "参数",
-          "children": [
-            {
-              "key": "key",
-              "label": "变量",
-              "type": "text"
-            },
-            {
-              "key": "label",
-              "label": "显示",
-              "type": "text"
-            },
-            {
-              "key": "type",
-              "label": "类型",
-              "type": "select",
-              "default": "number",
-              "options": [
-                {
-                  "label": "数值",
-                  "value": "number"
-                },
-                {
-                  "label": "布尔",
-                  "value": "switch"
-                },
-                {
-                  "label": "字符串",
-                  "value": "text"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-
-    {
       "key": "settings",
       "label": "【配置参数】",
       "span": 24,
@@ -449,14 +424,17 @@
         {
           "key": "name",
           "label": "名称",
-          "span": 24,
           "type": "text"
         },
         {
           "key": "label",
           "label": "显示",
-          "span": 24,
           "type": "text"
+        },
+        {
+          "key": "advance",
+          "label": "高级",
+          "type": "switch"
         },
         {
           "key": "fields",
@@ -568,15 +546,15 @@
     ],
     "add_point_types": [
       "p",
-      "if (p.point_extend_types && p.point_extend_types.length) this.content.fields[2].children[1].children[2].options=p.point_extend_types;"
+      "if (p.point_extend_types && p.point_extend_types.length) this.content.fields[2].children[2].children[2].options=p.point_extend_types;"
     ],
     "add_point_fields": [
       "p",
-      "this.content.fields[2].children[1].children.push(...p.point_extend_fields);"
+      "this.content.fields[2].children[2].children.push(...p.point_extend_fields);"
     ],
     "add_property_fields": [
       "p",
-      "this.content.fields[2].children.splice(0,0,...p.property_extend_fields);"
+      "this.content.fields[2].children.splice(2,0,...p.property_extend_fields);"
     ]
   }
 }

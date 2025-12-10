@@ -39,26 +39,16 @@
       "step": 1
     }
   ],
-  "product_extend_fields": [
-    {
-      "key": "type",
-      "label": "设备类型",
-      "type": "text",
-      "span": 24
-    }
-  ],
   "property_extend_fields": [
     {
       "key": "di",
       "label": "数据标识",
-      "type": "text",
-      "span": 24
+      "type": "text"
     },
     {
       "key": "code",
       "label": "功能码",
-      "type": "text",
-      "span": 24
+      "type": "text"
     }
   ],
   "point_extend_fields": [
@@ -72,14 +62,9 @@
     },
     {
       "key": "hasUnit",
-      "label": "包含单位",
+      "label": "内置单位",
       "type": "switch",
       "default": false
-    },
-    {
-      "key": "unit",
-      "label": "单位",
-      "type": "text"
     },
     {
       "key": "rate",

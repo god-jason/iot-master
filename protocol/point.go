@@ -63,8 +63,9 @@ type PointWord struct {
 }
 
 type Bit struct {
-	Name string `json:"name"` //名称
-	Bit  int    `json:"bit"`  //偏移
+	Name  string `json:"name"`            //名称
+	Label string `json:"label,omitempty"` //显示
+	Bit   int    `json:"bit"`             //偏移
 }
 
 func (p *PointWord) getEnumValue(index uint) (string, error) {

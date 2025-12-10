@@ -10,6 +10,18 @@
       "primary": true
     },
     {
+      "name": "icon",
+      "comment": "图标",
+      "type": "string",
+      "length": 255
+    },
+    {
+      "name": "type",
+      "comment": "类型",
+      "type": "string",
+      "length": 50
+    },
+    {
       "name": "properties",
       "comment": "属性",
       "type": "txt",
