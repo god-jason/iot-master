@@ -42,8 +42,8 @@
           "type": "text"
         },
         {
-          "key": "advance",
-          "label": "高级",
+          "key": "hidden",
+          "label": "隐藏",
           "type": "switch"
         },
         {
@@ -192,8 +192,8 @@
           "type": "text"
         },
         {
-          "key": "advance",
-          "label": "高级",
+          "key": "hidden",
+          "label": "隐藏",
           "type": "switch"
         },
         {
@@ -432,8 +432,8 @@
           "type": "text"
         },
         {
-          "key": "advance",
-          "label": "高级",
+          "key": "hidden",
+          "label": "隐藏",
           "type": "switch"
         },
         {

@@ -21,6 +21,7 @@ type Point struct {
 
 type Property struct {
 	Name   string   `json:"name,omitempty"`
+	Hidden bool     `json:"hidden,omitempty"`
 	Points []*Point `json:"points,omitempty"` //要支持扩展字段，所以用map数组
 }
 
@@ -39,6 +40,7 @@ type Event struct {
 type Action struct {
 	Name       string      `json:"name,omitempty"`
 	Label      string      `json:"label,omitempty"`
+	Hidden     bool        `json:"hidden,omitempty"`
 	Type       string      `json:"type,omitempty"` //类型 button switch/toggle slider
 	Bind       string      `json:"bind,omitempty"` //绑定值(状态)
 	Parameters []Parameter `json:"parameters,omitempty"`
@@ -48,6 +50,7 @@ type Action struct {
 type Setting struct {
 	Name   string        `json:"name,omitempty"`
 	Label  string        `json:"label,omitempty"`
+	Hidden bool          `json:"hidden,omitempty"`
 	Fields []smart.Field `json:"fields,omitempty"`
 }
 
