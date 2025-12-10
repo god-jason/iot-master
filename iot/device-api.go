@@ -9,6 +9,7 @@ import (
 	"github.com/busy-cloud/boat/db"
 	"github.com/busy-cloud/boat/mqtt"
 	"github.com/gin-gonic/gin"
+	"xorm.io/builder"
 	"xorm.io/xorm/schemas"
 )
 
@@ -24,6 +25,7 @@ func init() {
 	api.Register("GET", "iot/device/:id/setting/:name", deviceSetting)
 	api.Register("POST", "iot/device/:id/setting/:name", deviceSettingUpdate)
 
+	api.Register("GET", "iot/device/near", deviceNear)
 }
 
 func deviceModelUpdate(ctx *gin.Context) {
@@ -124,4 +126,14 @@ func deviceAction(ctx *gin.Context) {
 	}
 
 	api.OK(ctx, result)
+}
+
+func deviceNear(ctx *gin.Context) {
+	var devices []Device
+	err := db.Engine().Where(builder.Like{"geo_code", ctx.Param("geo_code") + "%"}).Find(&devices)
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+	api.OK(ctx, devices)
 }
