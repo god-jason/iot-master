@@ -4,7 +4,7 @@ go 1.24.0
 
 require (
 	github.com/PaesslerAG/gval v1.2.4
-	github.com/busy-cloud/boat v0.7.0
+	github.com/busy-cloud/boat v0.7.1
 	github.com/busy-cloud/boat-ui v0.5.13
 	github.com/busy-cloud/dash v0.5.0
 	github.com/busy-cloud/influxdb v0.5.0
@@ -18,6 +18,7 @@ require (
 	github.com/spf13/cast v1.10.0
 	github.com/spf13/pflag v1.0.10
 	github.com/spf13/viper v1.21.0
+	xorm.io/builder v0.3.13
 	xorm.io/xorm v1.3.10
 )
 
@@ -100,5 +101,4 @@ require (
 	google.golang.org/protobuf v1.36.9 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	xorm.io/builder v0.3.13 // indirect
 )
