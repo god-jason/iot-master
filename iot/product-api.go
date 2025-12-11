@@ -12,6 +12,9 @@ func init() {
 	//物模型
 	api.Register("GET", "iot/product/:id/model", productModel)
 	api.Register("POST", "iot/product/:id/model", productModelUpdate)
+
+	//产品扩展字段
+	api.Register("GET", "iot/product/:id/extend/fields", productExtendFields)
 }
 
 func productModel(ctx *gin.Context) {
@@ -46,4 +49,32 @@ func productModelUpdate(ctx *gin.Context) {
 	}
 
 	api.OK(ctx, &model)
+}
+
+func productExtendFields(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	var prod product.Product
+	has, err := db.Engine().ID(id).Get(&prod)
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+	if !has {
+		api.Fail(ctx, "product not found")
+		return
+	}
+
+	if prod.Protocol == "" {
+		api.OK(ctx, nil)
+		return
+	}
+
+	proto, err := GetProtocol(prod.Protocol)
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+
+	api.OK(ctx, proto.DeviceExtendFields)
 }

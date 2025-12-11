@@ -4,6 +4,7 @@ import (
 	"github.com/busy-cloud/boat/api"
 	"github.com/busy-cloud/boat/db"
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/iot-master/product"
 )
 
 func init() {
@@ -12,22 +13,12 @@ func init() {
 	api.Register("GET", "iot/device/:id/read", deviceRead)
 	api.Register("POST", "iot/device/:id/write", deviceWrite)
 
-	//api.Register("GET", "iot/device/extend/fields", deviceExtendFields)
+	api.Register("GET", "iot/device/extend/fields", deviceExtendFields)
+	api.Register("GET", "iot/device/:id/extend/fields", deviceExtendFields)
 
 	api.Register("GET", "iot/device/:id/bind/:gid", deviceBind)
 	api.Register("GET", "iot/device/:id/unbind", deviceUnbind)
 }
-
-//func deviceExtendFields(ctx *gin.Context) {
-//	var fields []*smart.Field
-//
-//	protocols.Range(func(name string, item *protocol.Protocol) bool {
-//		fields = append(fields, item.DeviceExtendFields...)
-//		return true
-//	})
-//
-//	api.OK(ctx, fields)
-//}
 
 func deviceValues(ctx *gin.Context) {
 	d := devices.Load(ctx.Param("id"))
@@ -92,6 +83,54 @@ func deviceWrite(ctx *gin.Context) {
 	}
 
 	api.OK(ctx, result)
+}
+
+func deviceExtendFields(ctx *gin.Context) {
+	id := ctx.Param("id")
+	if id == "" {
+		api.OK(ctx, _deviceExtendFields)
+		return
+	}
+
+	var dev Device
+	has, err := db.Engine().ID(id).Get(&dev)
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+	if !has {
+		api.Fail(ctx, "device not found")
+		return
+	}
+
+	if dev.ProductId == "" {
+		api.OK(ctx, nil)
+		return
+	}
+
+	var prod product.Product
+	has, err = db.Engine().ID(dev.ProductId).Get(&prod)
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+	if !has {
+		api.Fail(ctx, "product not found")
+		return
+	}
+
+	if prod.Protocol == "" {
+		api.OK(ctx, nil)
+		return
+	}
+
+	proto, err := GetProtocol(prod.Protocol)
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+
+	api.OK(ctx, proto.DeviceExtendFields)
 }
 
 func deviceBind(ctx *gin.Context) {
