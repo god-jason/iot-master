@@ -41,6 +41,11 @@
   ],
   "property_extend_fields": [
     {
+      "key": "company",
+      "label": "公司代码",
+      "type": "text"
+    },
+    {
       "key": "di",
       "label": "数据标识",
       "type": "text"
@@ -49,6 +54,11 @@
       "key": "code",
       "label": "功能码",
       "type": "text"
+    },
+    {
+      "key": "address_reverse",
+      "label": "地址逆序",
+      "type": "switch"
     }
   ],
   "point_extend_fields": [
