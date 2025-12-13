@@ -86,12 +86,12 @@
     {
       "name": "longitude",
       "comment": "经度",
-      "type": "int64"
+      "type": "double"
     },
     {
       "name": "latitude",
       "comment": "纬度",
-      "type": "int64"
+      "type": "double"
     },
     {
       "name": "geo_code",

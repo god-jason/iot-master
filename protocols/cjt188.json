@@ -5,7 +5,8 @@
     {
       "name": "address",
       "comment": "地址",
-      "type": "string"
+      "type": "string",
+      "length": 50
     }
   ],
   "device_extend_fields": [
