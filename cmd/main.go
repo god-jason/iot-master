@@ -21,6 +21,7 @@ import (
 	_ "github.com/busy-cloud/modbus"
 	_ "github.com/busy-cloud/tcp-server"
 	_ "github.com/busy-cloud/user"
+	_ "github.com/busy-cloud/weixin"
 	_ "github.com/god-jason/iot-master" //主程序
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
