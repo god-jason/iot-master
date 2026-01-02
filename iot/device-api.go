@@ -86,22 +86,25 @@ func deviceSettingUpdate(ctx *gin.Context) {
 	}
 
 	var setting DeviceSetting
-	setting.Id = id
-	setting.Name = name
-	setting.Content = content
 
-	updated, err := db.Engine().ID(schemas.PK{id, name}).Cols("content").Update(&setting)
+	has, err := db.Engine().ID(schemas.PK{id, name}).Get(&setting)
 	if err != nil {
 		api.Error(ctx, err)
 		return
 	}
 
-	if updated == 0 {
-		_, err = db.Engine().ID(schemas.PK{id, name}).Insert(&setting)
-		if err != nil {
-			api.Error(ctx, err)
-			return
-		}
+	//修改为新内容
+	setting.Content = content
+	if !has {
+		setting.Id = id
+		setting.Name = name
+		_, err = db.Engine().Insert(&setting)
+	} else {
+		_, err = db.Engine().ID(schemas.PK{id, name}).Cols("content").Update(&setting)
+	}
+	if err != nil {
+		api.Error(ctx, err)
+		return
 	}
 
 	//下发最新配置
@@ -119,7 +122,7 @@ func deviceSettingUpdate(ctx *gin.Context) {
 		}
 	}()
 
-	api.OK(ctx, content)
+	api.OK(ctx, nil)
 }
 
 func deviceAction(ctx *gin.Context) {

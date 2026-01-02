@@ -17,6 +17,11 @@
       "primary": true
     },
     {
+      "name": "version",
+      "comment": "版本号",
+      "type": "int"
+    },
+    {
       "name": "content",
       "comment": "内容",
       "type": "text",

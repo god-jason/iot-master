@@ -10,7 +10,6 @@ import (
 	"github.com/busy-cloud/boat/mqtt"
 	"github.com/busy-cloud/boat/table"
 	"github.com/god-jason/iot-master/protocol"
-	"xorm.io/xorm/schemas"
 )
 
 type Sync struct {
@@ -55,22 +54,23 @@ func mqttSubscribeDevice() {
 			}
 		}
 
-		//检查配置文件
-		for s, t := range reg.Settings {
-			var setting DeviceSetting
-			has, err := db.Engine().ID(schemas.PK{reg.Id, s}).Get(&setting)
-			if err != nil {
-				log.Error("Get device fail", err)
-				continue
-			}
-			if !has {
-				continue
-			}
-			//设备小于服务器
-			if t < setting.Version {
-				//下发到设备
-				topic := fmt.Sprintf("device/%s/setting", s)
+		//查出所有配置文件
+		var settings []DeviceSetting
+		err = db.Engine().Where("id=?", d.Id).Find(&settings)
+		if err != nil {
+			log.Error(err)
+			return
+		}
+
+		//同步配置文件
+		for _, setting := range settings {
+			if ver, has := reg.Settings[setting.Name]; !has || ver < setting.Version {
+				topic := fmt.Sprintf("device/%s/setting", reg.Id)
 				mqtt.Publish(topic, &setting)
+			} else if ver > setting.Version {
+				//读取配置
+				topic := fmt.Sprintf("device/%s/setting/%s/read", reg.Id, setting.Name)
+				mqtt.Publish(topic, nil)
 			}
 		}
 
