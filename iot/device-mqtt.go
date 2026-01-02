@@ -25,7 +25,7 @@ type Register struct {
 	Firmware  string                     `json:"firmware,omitempty"`
 	Imei      string                     `json:"imei,omitempty"`
 	Iccid     string                     `json:"iccid,omitempty"`
-	Settings  map[string]int64           `json:"settings,omitempty"`  //配置文件时间戳
+	Settings  map[string]int             `json:"settings,omitempty"`  //配置文件版本号
 	Databases map[string]map[string]Sync `json:"databases,omitempty"` //数据库同步
 }
 
@@ -67,10 +67,10 @@ func mqttSubscribeDevice() {
 				continue
 			}
 			//设备小于服务器
-			if t < setting.Created.Unix() {
+			if t < setting.Version {
 				//下发到设备
-				topic := fmt.Sprintf("device/%s/setting/%s", setting.Id, setting.Name)
-				mqtt.Publish(topic, setting.Content)
+				topic := fmt.Sprintf("device/%s/setting", s)
+				mqtt.Publish(topic, &setting)
 			}
 		}
 

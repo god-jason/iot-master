@@ -7,6 +7,7 @@ import (
 	"github.com/busy-cloud/boat/api"
 	"github.com/busy-cloud/boat/curd"
 	"github.com/busy-cloud/boat/db"
+	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
 	"github.com/gin-gonic/gin"
 	"xorm.io/builder"
@@ -50,6 +51,7 @@ func deviceModelUpdate(ctx *gin.Context) {
 type DeviceSetting struct {
 	Id      string         `json:"id" xorm:"pk"`
 	Name    string         `json:"name" xorm:"pk"`
+	Version int            `json:"version,omitempty" xorm:"version"`
 	Content map[string]any `json:"content,omitempty" xorm:"text"`
 	Created time.Time      `json:"created,omitempty" xorm:"created"`
 }
@@ -88,16 +90,34 @@ func deviceSettingUpdate(ctx *gin.Context) {
 	setting.Name = name
 	setting.Content = content
 
-	_, err = db.Engine().ID(schemas.PK{id, name}).Delete(new(DeviceSetting)) //不管有没有都删掉
-	_, err = db.Engine().ID(schemas.PK{id, name}).Insert(&setting)
+	updated, err := db.Engine().ID(schemas.PK{id, name}).Cols("content").Update(&setting)
 	if err != nil {
 		api.Error(ctx, err)
 		return
 	}
 
-	//下发到设备
-	topic := fmt.Sprintf("device/%s/setting/%s", setting.Id, setting.Name)
-	mqtt.Publish(topic, setting.Content)
+	if updated == 0 {
+		_, err = db.Engine().ID(schemas.PK{id, name}).Insert(&setting)
+		if err != nil {
+			api.Error(ctx, err)
+			return
+		}
+	}
+
+	//下发最新配置
+	go func() {
+		var setting DeviceSetting
+		has, err := db.Engine().ID(schemas.PK{id, name}).Get(&setting)
+		if err != nil {
+			log.Error(err)
+			return
+		}
+		if has {
+			//下发到设备
+			topic := fmt.Sprintf("device/%s/setting", id)
+			mqtt.Publish(topic, &setting)
+		}
+	}()
 
 	api.OK(ctx, content)
 }
