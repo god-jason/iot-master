@@ -87,6 +87,11 @@
       "params_func": "return {id: params.id}"
     },
     {
+      "title": "设备日志",
+      "page": "iot/device-log",
+      "params_func": "return {device_id: params.id}"
+    },
+    {
       "title": "设备变量修改",
       "page": "iot/device-values-setting",
       "params_func": "return {id: params.id}"

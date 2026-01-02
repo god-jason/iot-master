@@ -8,6 +8,7 @@ import (
 	"github.com/busy-cloud/boat/db"
 	"github.com/busy-cloud/boat/log"
 	"github.com/busy-cloud/boat/mqtt"
+	"github.com/busy-cloud/boat/table"
 	"github.com/god-jason/iot-master/protocol"
 	"xorm.io/xorm/schemas"
 )
@@ -185,6 +186,20 @@ func mqttSubscribeDevice() {
 		var dev Device
 		dev.Online = false
 		_, _ = db.Engine().ID(id).Cols("online").Update(&dev)
+	})
+
+	mqtt.Subscribe("device/+/log", func(topic string, payload []byte) {
+		id := strings.Split(topic, "/")[1]
+
+		tab, err := table.Get("device_log")
+		if err != nil {
+			return
+		}
+
+		_, _ = tab.Insert(map[string]interface{}{
+			"device_id": id,
+			"content":   string(payload),
+		})
 	})
 
 	mqtt.SubscribeStruct[protocol.SyncRequest]("device/+/sync", func(topic string, request *protocol.SyncRequest) {

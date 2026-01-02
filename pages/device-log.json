@@ -1,0 +1,48 @@
+{
+  "title": "设备日志",
+  "template": "table",
+  "toolbar": [
+  ],
+  "keywords": [
+    "id",
+    "name",
+    "description"
+  ],
+  "operators": [
+    {
+      "icon": "delete",
+      "title": "删除",
+      "confirm": "确认删除？",
+      "action": {
+        "type": "script",
+        "script": "this.request.get('table/device_log/delete/'+data.id).subscribe(res=>{this.load()})"
+      }
+    }
+  ],
+  "columns": [
+    {
+      "key": "id",
+      "label": "ID"
+    },
+    {
+      "key": "device_id",
+      "label": "设备ID",
+      "action": {
+        "type": "page",
+        "page": "iot/device-detail",
+        "params_func": "return {id: data.device_id}"
+      }
+    },
+    {
+      "key": "content",
+      "label": "日志"
+    },
+    {
+      "key": "created",
+      "label": "日期",
+      "type": "date"
+    }
+  ],
+  "search_api": "table/device_log/search",
+  "mount": "if(this.params.device_id)this.filter.device_id=this.params.device_id"
+}

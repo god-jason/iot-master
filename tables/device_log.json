@@ -1,0 +1,33 @@
+{
+  "name": "device_log",
+  "comment": "设备日志",
+  "columns": [
+    {
+      "name": "id",
+      "comment": "ID",
+      "type": "int64",
+      "length": 50,
+      "primary": true,
+      "increment": true
+    },
+    {
+      "name": "device_id",
+      "comment": "设备ID",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
+      "name": "content",
+      "comment": "内容",
+      "type": "text",
+      "json": true
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ]
+}
