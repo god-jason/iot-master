@@ -14,6 +14,12 @@ func syncDevices(id string, devices map[string]Sync, models map[string]Sync) {
 		log.Error(err)
 		return
 	}
+	model, err := table.Get("product_model")
+	if err != nil {
+		log.Error(err)
+		return
+	}
+
 	//查找子设备
 	rows, err := tab.Find(&table.ParamSearch{
 		Skip:   0,
@@ -86,7 +92,7 @@ func syncDevices(id string, devices map[string]Sync, models map[string]Sync) {
 	if len(models) == 0 {
 		for _, row := range rows {
 			pid := row["product_id"].(string)
-			row, err := tab.Get(pid, nil)
+			row, err := model.Get(pid, nil)
 			if err != nil {
 				log.Error(err)
 				continue
@@ -97,7 +103,7 @@ func syncDevices(id string, devices map[string]Sync, models map[string]Sync) {
 		for _, row := range rows {
 			pid := row["product_id"].(string)
 			if _, ok := models[pid]; !ok {
-				row, err := tab.Get(pid, nil)
+				row, err := model.Get(pid, nil)
 				if err != nil {
 					log.Error(err)
 					continue
