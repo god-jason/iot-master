@@ -110,6 +110,10 @@
       "value": "XXXX"
     },
     {
+      "label": "XX.XX",
+      "value": "XX.XX"
+    },
+    {
       "label": "XX",
       "value": "XX"
     },
@@ -128,6 +132,10 @@
     {
       "label": "YYMMDDhhmmss",
       "value": "YYMMDDhhmmss"
+    },
+    {
+      "label": "YYMMDDhhmm",
+      "value": "YYMMDDhhmm"
     },
     {
       "label": "YYYYMMDD",
