@@ -43,7 +43,12 @@
   "property_extend_fields": [
     {
       "key": "company",
-      "label": "公司代码",
+      "label": "默认公司代码",
+      "type": "text"
+    },
+    {
+      "key": "type",
+      "label": "设备类型",
       "type": "text"
     },
     {
@@ -58,7 +63,7 @@
     },
     {
       "key": "address_reverse",
-      "label": "地址逆序",
+      "label": "逆序地址",
       "type": "switch"
     }
   ],
