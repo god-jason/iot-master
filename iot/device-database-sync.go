@@ -36,6 +36,16 @@ func databaseSync(id string, databases map[string]map[string]Sync) (has bool, er
 	}
 
 	//同步物模型
+	models, ok := databases["model"]
+	if ok {
+		has, err = databaseSyncModels(id, models)
+		if err != nil {
+			return
+		}
+		if has {
+			hasSync = true
+		}
+	}
 
 	return hasSync, nil
 }
@@ -219,7 +229,8 @@ func databaseSyncModels(id string, models map[string]Sync) (has bool, err error)
 		Filter: map[string]any{"gateway_id": id},
 		Fields: []string{"id", "gateway_id", "product_id"},
 	})
-	var pids map[string]any
+
+	pids := map[string]any{}
 	for _, row := range rows {
 		pids[row["product_id"].(string)] = nil
 	}
