@@ -65,6 +65,11 @@
       "key": "address_reverse",
       "label": "逆序地址",
       "type": "switch"
+    },
+    {
+      "key": "writable",
+      "label": "写指令",
+      "type": "switch"
     }
   ],
   "point_extend_fields": [

@@ -54,36 +54,35 @@ func mqttSubscribeDevice() {
 			}
 		}
 
-		//查出所有配置文件
-		var settings []DeviceSetting
-		err = db.Engine().Where("id=?", d.Id).Find(&settings)
-		if err != nil {
-			log.Error(err)
-			return
-		}
+		hasSync := false
 
-		//同步配置文件
-		for _, setting := range settings {
-			if ver, has := reg.Settings[setting.Name]; !has || ver < setting.Version {
-				topic := fmt.Sprintf("device/%s/setting", reg.Id)
-				mqtt.Publish(topic, &setting)
-			} else if ver > setting.Version {
-				//读取配置
-				topic := fmt.Sprintf("device/%s/setting/%s/read", reg.Id, setting.Name)
-				mqtt.Publish(topic, nil)
+		//同步配置
+		if len(reg.Settings) > 0 {
+			has, err := settingSync(d.Id, reg.Settings)
+			if err != nil {
+				log.Error("Sync setting fail", err)
+				return
+			}
+			if has {
+				hasSync = true
 			}
 		}
 
 		//同步数据库
-		for s, t := range reg.Databases {
-			switch s {
-			case "link":
-				syncLinks(reg.Id, t)
-			case "device":
-				syncDevices(reg.Id, t, reg.Databases["model"])
-			case "model":
-				syncModels(reg.Id, t)
+		if len(reg.Databases) > 0 {
+			has, err := databaseSync(d.Id, reg.Databases)
+			if err != nil {
+				log.Error("Sync database fail", err)
+				return
 			}
+			if has {
+				hasSync = true
+			}
+		}
+
+		//配置和数据库更新，重启一下设备
+		if hasSync {
+			mqtt.Publish("device/"+d.Id+"/action/reboot", nil)
 		}
 	})
 

@@ -22,6 +22,7 @@ type Property struct {
 type Device struct {
 	//device.Device `xorm:"extends"`
 	Id        string `json:"id,omitempty" xorm:"pk"`
+	GatewayId string `json:"gateway_id,omitempty" xorm:"index"`
 	ProductId string `json:"product_id,omitempty" xorm:"index"`
 	GroupId   string `json:"group_id,omitempty" xorm:"index"`
 	LinkId    string `json:"link_id,omitempty" xorm:"index"`
@@ -202,6 +203,12 @@ func (d *Device) waitResponse(msg_id string, timeout int) (any, error) {
 }
 
 func (d *Device) Sync(timeout int) (map[string]any, error) {
+	//作为子设备
+	if d.GatewayId != "" {
+		mqtt.Publish("device/"+d.GatewayId+"/sub/"+d.Id+"/sync", nil)
+		return nil, nil
+	}
+
 	if d.protocol == "" || d.linker == "" || d.LinkId == "" {
 		mqtt.Publish("device/"+d.Id+"/sync", nil)
 		//TODO 等待 /device/{id}/sync/response
@@ -243,6 +250,12 @@ func (d *Device) onSyncResponse(resp *protocol.SyncResponse) {
 }
 
 func (d *Device) Read(points []string, timeout int) (map[string]any, error) {
+	//作为子设备
+	if d.GatewayId != "" {
+		mqtt.Publish("device/"+d.GatewayId+"/sub/"+d.Id+"/read", points)
+		return nil, nil
+	}
+
 	if d.protocol == "" || d.linker == "" || d.LinkId == "" {
 		mqtt.Publish("device/"+d.Id+"/read", points)
 		//TODO 等待 /device/{id}/read/response
@@ -284,6 +297,11 @@ func (d *Device) onReadResponse(resp *protocol.ReadResponse) {
 }
 
 func (d *Device) Write(values map[string]any, timeout int) (map[string]bool, error) {
+	//作为子设备
+	if d.GatewayId != "" {
+		mqtt.Publish("device/"+d.GatewayId+"/sub/"+d.Id+"/write", values)
+		return nil, nil
+	}
 	if d.protocol == "" || d.linker == "" || d.LinkId == "" {
 		mqtt.Publish("device/"+d.Id+"/write", values)
 		//TODO 等待 /device/{id}/write/response
@@ -325,6 +343,11 @@ func (d *Device) onWriteResponse(resp *protocol.WriteResponse) {
 }
 
 func (d *Device) Action(action string, parameters map[string]any, timeout int) (map[string]any, error) {
+	//作为子设备
+	if d.GatewayId != "" {
+		mqtt.Publish("device/"+d.GatewayId+"/sub/"+d.Id+"/action/"+action, parameters)
+		return nil, nil
+	}
 	if d.protocol == "" || d.linker == "" || d.LinkId == "" {
 		mqtt.Publish("device/"+d.Id+"/action/"+action, parameters)
 		//TODO 等待 device/{id}/action/{name}/response
