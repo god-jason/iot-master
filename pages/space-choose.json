@@ -13,14 +13,13 @@
       "label": "搜索",
       "action": {
         "type": "script",
-        "script": "this.keyword=this.toolbar.value.keyword; this.search()"
+        "script": "this.keyword=this.toolbar.value.keyword; this.load()"
       }
     }
   ],
   "keywords": [
     "id",
-    "name",
-    "description"
+    "name"
   ],
   "operators": [
     {
