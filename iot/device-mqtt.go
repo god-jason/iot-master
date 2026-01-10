@@ -185,6 +185,16 @@ func mqttSubscribeDevice() {
 		var dev Device
 		dev.Online = false
 		_, _ = db.Engine().ID(id).Cols("online").Update(&dev)
+		_, _ = db.Engine().Where("gateway_id=?", id).Cols("online").Update(&dev) //子设备也掉线
+	})
+
+	//监听总线消息，客户端断开，则视为下线
+	mqtt.Subscribe("client/+/disconnect", func(topic string, payload []byte) {
+		id := strings.Split(topic, "/")[1]
+		d := devices.Load(id)
+		if d != nil {
+			mqtt.Publish("device/"+id+"/offline", nil)
+		}
 	})
 
 	mqtt.Subscribe("device/+/log", func(topic string, payload []byte) {

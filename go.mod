@@ -4,7 +4,7 @@ go 1.24.7
 
 require (
 	github.com/PaesslerAG/gval v1.2.4
-	github.com/busy-cloud/boat v0.7.2
+	github.com/busy-cloud/boat v0.7.3
 	github.com/busy-cloud/boat-ui v0.5.13
 	github.com/busy-cloud/dash v0.5.0
 	github.com/busy-cloud/influxdb v0.5.0
