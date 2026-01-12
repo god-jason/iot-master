@@ -77,10 +77,7 @@
     {
       "key": "address",
       "label": "地址",
-      "type": "number",
-      "default": 0,
-      "min": 0,
-      "step": 1
+      "type": "text"
     },
 
     {
