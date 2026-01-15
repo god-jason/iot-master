@@ -15,6 +15,7 @@ import (
 	_ "github.com/busy-cloud/boat/oem"
 	"github.com/busy-cloud/boat/service"
 	_ "github.com/busy-cloud/boat/table"
+	"github.com/busy-cloud/boat/version"
 	"github.com/busy-cloud/boat/web"
 	_ "github.com/busy-cloud/dash"
 	_ "github.com/busy-cloud/influxdb"
@@ -63,6 +64,7 @@ func main() {
 	help := pflag.BoolP("help", "h", false, "show help")
 	install := pflag.BoolP("install", "i", false, "install as service")
 	uninstall := pflag.BoolP("uninstall", "u", false, "uninstall service")
+	showVersion := pflag.BoolP("version", "v", false, "show version")
 
 	pflag.Parse()
 	if *help {
@@ -87,6 +89,9 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+		return
+	} else if *showVersion {
+		version.Print()
 		return
 	}
 

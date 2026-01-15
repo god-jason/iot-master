@@ -18,6 +18,13 @@
       "indexed": true
     },
     {
+      "name": "user_id",
+      "comment": "用户ID",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
       "name": "content",
       "comment": "内容",
       "type": "text",

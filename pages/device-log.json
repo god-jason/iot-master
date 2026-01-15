@@ -34,6 +34,10 @@
       }
     },
     {
+      "key": "user",
+      "label": "用户"
+    },
+    {
       "key": "content",
       "label": "日志"
     },
@@ -41,6 +45,15 @@
       "key": "created",
       "label": "日期",
       "type": "date"
+    }
+  ],
+  "joins": [
+    {
+      "table": "user",
+      "local_field": "user_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "user"
     }
   ],
   "search_api": "table/device_log/search",

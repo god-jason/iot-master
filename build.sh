@@ -11,7 +11,7 @@ version="1.0.0"
 #npm run build
 
 
-pkg="github.com/busy-cloud/app"
+pkg="github.com/busy-cloud/boat/version"
 gitHash=$(git show -s --format=%H)
 buildTime=$(date -d today +"%Y-%m-%d %H:%M:%S")
 

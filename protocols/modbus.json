@@ -90,12 +90,14 @@
       "key": "rate",
       "label": "倍率",
       "type": "number",
+      "step": 0.00001,
       "default": 1
     },
     {
       "key": "correct",
       "label": "校准",
       "type": "number",
+      "step": 0.01,
       "default": 0
     }
   ],
