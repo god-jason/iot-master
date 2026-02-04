@@ -5,7 +5,7 @@ go 1.24.7
 require (
 	github.com/PaesslerAG/gval v1.2.4
 	github.com/busy-cloud/boat v0.7.5
-	github.com/busy-cloud/boat-ui v0.6.1
+	github.com/busy-cloud/boat-ui v0.6.3
 	github.com/busy-cloud/dash v0.5.0
 	github.com/busy-cloud/influxdb v0.5.0
 	github.com/busy-cloud/modbus v0.6.1
@@ -13,7 +13,7 @@ require (
 	github.com/busy-cloud/serial-port v0.5.7
 	github.com/busy-cloud/tcp-client v0.5.4
 	github.com/busy-cloud/tcp-server v0.5.4
-	github.com/busy-cloud/user v0.6.6
+	github.com/busy-cloud/user v0.6.7
 	github.com/busy-cloud/weixin v0.0.4
 	github.com/gin-gonic/gin v1.10.1
 	github.com/spf13/cast v1.10.0

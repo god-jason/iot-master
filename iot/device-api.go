@@ -140,6 +140,11 @@ func deviceAction(ctx *gin.Context) {
 		return
 	}
 
+	//操作用户ID
+	if _, ok := values["user_id"]; !ok {
+		values["user_id"] = ctx.GetString("user_id")
+	}
+
 	result, err := d.Action(action, values, 30)
 	if err != nil {
 		api.Error(ctx, err)

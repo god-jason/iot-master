@@ -16,6 +16,7 @@ import (
 	_ "github.com/busy-cloud/boat/oem"
 	"github.com/busy-cloud/boat/store"
 	_ "github.com/busy-cloud/boat/table"
+	_ "github.com/busy-cloud/boat/version"
 	"github.com/busy-cloud/boat/web"
 	_ "github.com/busy-cloud/dash"
 	_ "github.com/busy-cloud/influxdb"

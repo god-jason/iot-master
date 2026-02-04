@@ -23,6 +23,24 @@
       "length": 50
     },
     {
+      "name": "cellphone1",
+      "comment": "电话1",
+      "type": "string",
+      "length": 50
+    },
+    {
+      "name": "cellphone2",
+      "comment": "电话2",
+      "type": "string",
+      "length": 50
+    },
+    {
+      "name": "cellphone3",
+      "comment": "电话3",
+      "type": "string",
+      "length": 50
+    },
+    {
       "name": "disabled",
       "comment": "禁用",
       "type": "bool",
