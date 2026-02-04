@@ -142,7 +142,7 @@ func deviceAction(ctx *gin.Context) {
 
 	//操作用户ID
 	if _, ok := values["user_id"]; !ok {
-		values["user_id"] = ctx.GetString("user_id")
+		values["user_id"] = ctx.GetString("user") //从session中取user
 	}
 
 	result, err := d.Action(action, values, 30)

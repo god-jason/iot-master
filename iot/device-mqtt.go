@@ -211,6 +211,22 @@ func mqttSubscribeDevice() {
 		})
 	})
 
+	mqtt.Subscribe("device/+/log/+", func(topic string, payload []byte) {
+		id := strings.Split(topic, "/")[1]
+		user_id := strings.Split(topic, "/")[3]
+
+		tab, err := table.Get("device_log")
+		if err != nil {
+			return
+		}
+
+		_, _ = tab.Insert(map[string]interface{}{
+			"user_id":   user_id,
+			"device_id": id,
+			"content":   string(payload),
+		})
+	})
+
 	mqtt.SubscribeStruct[protocol.SyncRequest]("device/+/sync", func(topic string, request *protocol.SyncRequest) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
