@@ -17,6 +17,13 @@
       "index": true
     },
     {
+      "name": "agent_id",
+      "comment": "经销商",
+      "type": "string",
+      "length": 50,
+      "index": true
+    },
+    {
       "name": "name",
       "comment": "名称",
       "type": "string",
