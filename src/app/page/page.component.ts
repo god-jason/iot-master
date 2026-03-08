@@ -132,7 +132,7 @@ export class PageComponent implements AfterViewInit, OnDestroy{
 
     this.content = undefined //清空页面
 
-    let url = "/pages/" + this.page + ".json"
+    let url = "page/" + this.page
     this.request.get(url).subscribe((res) => {
       if (res.error) {
         //console.log("load page error", res.error)

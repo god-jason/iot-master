@@ -2,19 +2,19 @@ package main
 
 import (
 	_ "embed"
-	"encoding/json"
 	"os"
 	"os/signal"
 	"syscall"
 
 	_ "github.com/god-jason/iot-master"
 	_ "github.com/god-jason/iot-master/apis"
-	"github.com/god-jason/iot-master/apps"
 	"github.com/god-jason/iot-master/iot"
 	"github.com/god-jason/iot-master/pkg/boot"
 	_ "github.com/god-jason/iot-master/pkg/broker"
 	"github.com/god-jason/iot-master/pkg/log"
+	"github.com/god-jason/iot-master/pkg/menu"
 	_ "github.com/god-jason/iot-master/pkg/oem"
+	"github.com/god-jason/iot-master/pkg/page"
 	"github.com/god-jason/iot-master/pkg/store"
 	_ "github.com/god-jason/iot-master/pkg/table"
 	_ "github.com/god-jason/iot-master/pkg/version"
@@ -23,23 +23,11 @@ import (
 )
 
 func init() {
-	manifest, err := os.ReadFile("manifest.json")
-	if err != nil {
-		log.Fatal(err)
-	}
+	//菜单
+	menu.File("menu.json")
 
-	//注册为内部插件
-	var a apps.App
-	err = json.Unmarshal(manifest, &a)
-	if err != nil {
-		log.Fatal(err)
-	}
-	apps.Register(&a)
-
-	//注册资源
-	a.AssetsFS = store.Dir("assets")
-	a.PagesFS = store.Dir("pages")
-	a.TablesFS = store.Dir("tables")
+	//页面
+	page.PagesFS = store.Dir("pages")
 
 	//加载协议
 	iot.Protocols = store.Dir("protocols")

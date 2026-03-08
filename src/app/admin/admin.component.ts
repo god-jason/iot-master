@@ -96,7 +96,7 @@ export class AdminComponent {
   }
 
   loadMenu() {
-    this.request.get("/menu.json").subscribe((res) => {
+    this.request.get("menu").subscribe((res) => {
       if (res.error) return
       this.menus = res
     })

@@ -17,13 +17,11 @@ func Startup() error {
 	var err error
 
 	//加载表
-	paths := config.GetStringSlice(MODULE, "paths")
-	if len(paths) == 0 {
-		for _, path := range paths {
-			err = Scan(path)
-			if err != nil {
-				return err
-			}
+	path := config.GetString(MODULE, "path")
+	if len(path) != 0 {
+		err = Scan(path)
+		if err != nil {
+			return err
 		}
 	}
 

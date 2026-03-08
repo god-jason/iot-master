@@ -8,5 +8,5 @@ const MODULE = "table"
 
 func init() {
 	config.SetDefault(MODULE, "sync", true)
-	config.SetDefault(MODULE, "paths", []string{})
+	config.SetDefault(MODULE, "path", "tables")
 }
