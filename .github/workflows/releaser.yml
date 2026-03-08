@@ -21,8 +21,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Fetch tags
-        run: git fetch --force --tags
+      - run: git fetch --force --tags        
+      - run: |
+          git reset --hard
+          git clean -fdx
 
       - name: Setup Go
         uses: actions/setup-go@v5
