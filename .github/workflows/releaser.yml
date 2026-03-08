@@ -20,11 +20,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - run: git fetch --force --tags        
-      - run: |
-          git reset --hard
-          git clean -fdx
+          clean: true
 
       - name: Setup Go
         uses: actions/setup-go@v5
