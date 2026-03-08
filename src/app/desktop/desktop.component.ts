@@ -6,7 +6,7 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 import {SmartRequestService} from '../lib/smart-request.service';
 import {NzContentComponent, NzFooterComponent, NzHeaderComponent, NzLayoutComponent} from 'ng-zorro-antd/layout';
 import {NzColDirective, NzRowDirective} from 'ng-zorro-antd/grid';
-import { NgClass } from '@angular/common';
+import {NgClass} from '@angular/common';
 import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {WindowComponent, WindowDialog} from './window.component';
 import {NzDropdownDirective, NzDropdownMenuComponent} from 'ng-zorro-antd/dropdown';

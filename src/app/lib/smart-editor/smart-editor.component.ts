@@ -1,13 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output, TemplateRef} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators
+    FormArray,
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    FormsModule,
+    ReactiveFormsModule,
+    Validators
 } from "@angular/forms";
 import {NzFormModule} from "ng-zorro-antd/form";
 import {NzUploadChangeParam, NzUploadComponent} from "ng-zorro-antd/upload";

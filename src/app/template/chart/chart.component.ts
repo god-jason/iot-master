@@ -6,12 +6,12 @@ import {BarChart, GaugeChart, LineChart, PieChart, RadarChart} from 'echarts/cha
 //引入主题色
 import 'echarts/theme/macarons.js';
 import {
-  DatasetComponent,
-  GridComponent,
-  LegendComponent,
-  TitleComponent,
-  TooltipComponent,
-  TransformComponent
+    DatasetComponent,
+    GridComponent,
+    LegendComponent,
+    TitleComponent,
+    TooltipComponent,
+    TransformComponent
 } from 'echarts/components';
 import {LabelLayout, UniversalTransition} from 'echarts/features';
 import {CanvasRenderer} from 'echarts/renderers';

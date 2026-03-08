@@ -5,11 +5,11 @@ import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {Subscription} from 'rxjs';
 
 import {
-  NzTableCellDirective,
-  NzTableComponent,
-  NzTbodyComponent,
-  NzTheadComponent,
-  NzTrDirective
+    NzTableCellDirective,
+    NzTableComponent,
+    NzTbodyComponent,
+    NzTheadComponent,
+    NzTrDirective
 } from 'ng-zorro-antd/table';
 import {TemplateBase} from '../template-base.component';
 import {NzCardComponent} from 'ng-zorro-antd/card';

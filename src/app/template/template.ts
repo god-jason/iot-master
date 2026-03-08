@@ -2,7 +2,13 @@ import {SmartField} from '../lib/smart-editor/smart-editor.component';
 import {EChartsOption} from 'echarts';
 import {SmartRequestService} from '../lib/smart-request.service';
 import {SmartInfoItem} from '../lib/smart-info/smart-info.component';
-import {ParamJoin, ParamSearch, SmartAction, SmartTableColumn, SmartTableOperator} from '../lib/smart-table/smart-table.component';
+import {
+    ParamJoin,
+    ParamSearch,
+    SmartAction,
+    SmartTableColumn,
+    SmartTableOperator
+} from '../lib/smart-table/smart-table.component';
 
 export type PageContent = Content & (
   BlankContent |

@@ -1,10 +1,4 @@
-import {
-  Component, ComponentRef,
-  inject,
-  Input, Optional,
-  ViewChild, ViewChildren,
-  ViewContainerRef
-} from '@angular/core';
+import {Component, ComponentRef, inject, Input, ViewChild, ViewChildren, ViewContainerRef} from '@angular/core';
 import {SmartRequestService} from '../lib/smart-request.service';
 import {ActivatedRoute, NavigationEnd, Params, Router, RouterLink} from '@angular/router';
 import {NzSpinComponent} from 'ng-zorro-antd/spin';
