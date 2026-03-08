@@ -1,37 +1,53 @@
 <nz-table #table
-  nzSize="small"
-  [nzData]="datum"
-  [nzLoading]="loading"
-  [nzShowPagination]="true"
-  [nzShowTotal]="totalTemplate"
-  [nzFrontPagination]="false"
-  [nzPageIndex]="pageIndex"
-  [nzPageSize]="pageSize"
-  [nzTotal]="total"
-  [nzShowQuickJumper]="true"
-  [nzShowSizeChanger]="true"
-  (nzQueryParams)="onQuery($event)">
+          nzSize="small"
+          [nzData]="datum"
+          [nzLoading]="loading"
+          [nzShowPagination]="true"
+          [nzShowTotal]="totalTemplate"
+          [nzFrontPagination]="false"
+          [nzPageIndex]="pageIndex"
+          [nzPageSize]="pageSize"
+          [nzPageSizeOptions]="[10,20,50,100,500,1000]"
+          (nzPageSizeChange)="onPageSizeChange($event)"
+          [nzTotal]="total"
+          [nzShowQuickJumper]="true"
+          [nzShowSizeChanger]="true"
+          (nzQueryParams)="onQuery($event)">
   <thead>
-    <tr>
-      @for (item of columns; track item) {
-        <th
-          [nzColumnKey]="item.key"
-          [nzShowSort]="item.sortable"
-          [nzSortFn]="true"
-          [nzShowFilter]="!!item.filter"
-          [nzFilterFn]="true"
-          [nzFilters]="item.filter || []">
-          {{ item.label }}
-        </th>
-      }
-      @if (operators && operators.length) {
-        <th>操作</th>
-      }
-    </tr>
+  <tr>
+    @if (batch) {
+      <th
+        [nzChecked]="true"
+        [nzIndeterminate]="indeterminate"
+        (nzCheckedChange)="onAllChecked($event)">
+      </th>
+    }
+    @for (item of columns; track item) {
+      <th
+        [nzColumnKey]="item.key"
+        [nzShowSort]="item.sortable"
+        [nzSortFn]="true"
+        [nzShowFilter]="!!item.filter"
+        [nzFilterFn]="true"
+        [nzFilters]="item.filter || []">
+        {{ item.label }}
+      </th>
+    }
+    @if (operators && operators.length) {
+      <th>操作</th>
+    }
+  </tr>
   </thead>
   <tbody>
     @for (data of table.data; track data; let i = $index) {
       <tr>
+        @if (batch) {
+          <td
+            [nzChecked]="selects.has(data.id)"
+            [nzLabel]="data.name"
+            (nzCheckedChange)="onItemChecked(data.id, $event)"
+          ></td>
+        }
         @for (item of columns; track item) {
           <td [nzEllipsis]="item.ellipsis" [nzBreakWord]="item.break">
             @switch (item.type) {
@@ -86,25 +102,25 @@
               <span class="operator">
                 @if (o.confirm) {
                   <a [title]="o.title||''" nz-popconfirm [nzPopconfirmTitle]="o.confirm"
-                    (nzOnConfirm)="action.emit({action:o.action, data:data, index: i})">
+                     (nzOnConfirm)="action.emit({action:o.action, data:data, index: i})">
                     @if (o.icon) {
                       <i nz-icon [nzType]="o.icon"></i>
-                      }{{ o.label }}
+                    }{{ o.label }}
                     </a>
-                  } @else {
-                    <a [title]="o.title||''" (click)="action.emit({action:o.action, data:data, index: i})">
+                } @else {
+                  <a [title]="o.title||''" (click)="action.emit({action:o.action, data:data, index: i})">
                       @if (o.icon) {
                         <i nz-icon [nzType]="o.icon"></i>
-                        }{{ o.label }}
+                      }{{ o.label }}
                       </a>
-                    }
-                  </span>
                 }
-              </td>
+                  </span>
             }
-          </tr>
+          </td>
         }
-      </tbody>
-    </nz-table>
+      </tr>
+    }
+  </tbody>
+</nz-table>
 
-    <ng-template #totalTemplate let-total>总计 {{ total }} 条</ng-template>
+<ng-template #totalTemplate let-total>总计 {{ total }} 条</ng-template>

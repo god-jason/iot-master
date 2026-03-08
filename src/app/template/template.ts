@@ -133,6 +133,8 @@ export interface TableContent {
   template: 'table'
   columns: SmartTableColumn[]
   operators: SmartTableOperator[]
+  batch: boolean
+
   keywords?: string[]
   joins?: ParamJoin[] //表关联
 

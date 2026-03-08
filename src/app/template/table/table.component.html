@@ -2,16 +2,18 @@
   @if (content.template == 'table') {
     <nz-card [nzTitle]="content.title" [nzExtra]="extra">
       @if (content.toolbar) {
-        <smart-toolbar #toolbar [fields]="content.toolbar" [values]="toolbarValue" (action)="execute($event)"></smart-toolbar>
+        <smart-toolbar #toolbar [fields]="content.toolbar" [values]="toolbarValue"
+                       (action)="execute($event)"></smart-toolbar>
       }
       <smart-table #table
-        [columns]="content.columns"
-        [operators]="content.operators"
-        [datum]="data"
-        [total]="total"
-        [loading]="loading"
-        (query)="load($event)"
-        (action)="execute($event.action, $event.data, $event.index)"
+                   [columns]="content.columns"
+                   [operators]="content.operators"
+                   [batch]="content.batch"
+                   [datum]="data"
+                   [total]="total"
+                   [loading]="loading"
+                   (query)="load($event)"
+                   (action)="execute($event.action, $event.data, $event.index)"
       ></smart-table>
     </nz-card>
     <ng-template #extra>

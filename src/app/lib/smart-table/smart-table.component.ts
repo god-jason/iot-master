@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NzIconDirective} from "ng-zorro-antd/icon";
-import {Router} from "@angular/router";
+import {Data, Router} from "@angular/router";
 import {NzTableFilterList, NzTableModule, NzTableQueryParams} from "ng-zorro-antd/table";
 import {CommonModule} from "@angular/common";
 import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
@@ -66,7 +66,8 @@ export interface SmartTableButton {
 export interface SmartTableParams {
   buttons?: SmartTableButton[];
   columns: SmartTableColumn[]
-  operators: SmartTableOperator[]
+  operators: SmartTableOperator[];
+  batches: SmartTableOperator[];
 }
 
 
@@ -107,8 +108,9 @@ export interface ParamSearch {
   styleUrl: './smart-table.component.scss'
 })
 export class SmartTableComponent implements OnInit {
-  @Input() pageSize = 20;
-  pageIndex = 1;
+
+  @Input() pageSize = parseInt(localStorage.getItem("table_page_size") || "10"); //默认10页
+  @Input() pageIndex = 1;
 
   @Input() columns: SmartTableColumn[] = []
   @Input() operators?: SmartTableOperator[]
@@ -122,10 +124,45 @@ export class SmartTableComponent implements OnInit {
   @Output() query = new EventEmitter<ParamSearch>
   @Output() action = new EventEmitter<SmartActionRow>();
 
+  //多选
+  @Input() batch = false;
+  checked = false;
+  indeterminate = false;
+  selects = new Set<number>();
+
   body: ParamSearch = {filter: {}}
 
   constructor(private router: Router, private ms: NzModalService, private request: SmartRequestService) {
   }
+
+
+  updateCheckedSet(id: number, checked: boolean): void {
+    if (checked) {
+      this.selects.add(id);
+    } else {
+      this.selects.delete(id);
+    }
+  }
+
+  onCurrentPageDataChange(listOfCurrentPageData: readonly Data[]): void {
+    this.refreshCheckedStatus();
+  }
+
+  refreshCheckedStatus(): void {
+    this.checked = this.datum.every(({id}) => this.selects.has(id));
+    this.indeterminate = this.datum.some(({id}) => this.selects.has(id)) && !this.checked;
+  }
+
+  onItemChecked(id: number, checked: boolean): void {
+    this.updateCheckedSet(id, checked);
+    this.refreshCheckedStatus();
+  }
+
+  onAllChecked(checked: boolean): void {
+    this.datum.forEach(({id}) => this.updateCheckedSet(id, checked));
+    this.refreshCheckedStatus();
+  }
+
 
   ngOnInit(): void {
   }
@@ -162,4 +199,8 @@ export class SmartTableComponent implements OnInit {
   }
 
   protected readonly parseInt = parseInt;
+
+  protected onPageSizeChange($event: number) {
+    localStorage.setItem("table_page_size", $event + '')
+  }
 }

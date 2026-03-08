@@ -22,6 +22,25 @@
       }
     },
     {
+      "label": "导出",
+      "icon": "download",
+      "type": "button",
+      "action": {
+        "type": "page",
+        "page":"device-export"
+      }
+    },
+    {
+      "label": "批量删除",
+      "icon": "delete",
+      "type": "button",
+      "confirm": "确认批量删除？",
+      "action": {
+        "type": "script",
+        "script": "this.table.selects.forEach(id=>this.request.get('table/device/delete/'+id).subscribe(res=>{this.load()}))"
+      }
+    },
+    {
       "key": "keyword",
       "type": "text",
       "placeholder": "请输入关键字"
@@ -67,6 +86,7 @@
       }
     }
   ],
+  "batch": true,
   "columns": [
     {
       "key": "id",

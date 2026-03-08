@@ -66,7 +66,7 @@ export class FormComponent extends TemplateBase {
         if (res.error) return
         //this.data = res.data
         //this.ns.success("提示", "提交成功")
-        Object.assign(this.data, res.data)
+        //Object.assign(this.data, res.data)
 
         //处理提交成功
         if (typeof content.submit_success == "string" && content.submit_success.length > 0) {
@@ -77,7 +77,7 @@ export class FormComponent extends TemplateBase {
           }
         }
         if (isFunction(content.submit_success)) {
-          content.submit_success.call(this, this.data)
+          content.submit_success.call(this, res.data)
         }
 
         //关闭弹窗

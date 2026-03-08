@@ -50,7 +50,7 @@ export class TemplateBase {
 
   loading = false
 
-  auto_refresh_interval = 0
+  auto_refresh_interval: any = 0
 
   constructor() {
     //super();
@@ -218,6 +218,7 @@ export class TemplateBase {
   }
 
   navigate(uri: string) {
+    console.log("[base] navigate", uri)
     this.router.navigateByUrl(uri).then()
   }
 
