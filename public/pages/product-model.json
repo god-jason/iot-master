@@ -546,15 +546,15 @@
     ],
     "add_point_types": [
       "p",
-      "if (p.point_extend_types && p.point_extend_types.length) this.content.fields[2].children[2].children[2].options=p.point_extend_types;"
+      "if(p.point_extend_types) this.content.fields[2].children[2].children[2].options=p.point_extend_types;"
     ],
     "add_point_fields": [
       "p",
-      "this.content.fields[2].children[2].children.push(...p.point_extend_fields);"
+      "if(p.point_extend_fields) this.content.fields[2].children[2].children.push(...p.point_extend_fields);"
     ],
     "add_property_fields": [
       "p",
-      "this.content.fields[2].children.splice(2,0,...p.property_extend_fields);"
+      "if(p.property_extend_fields) this.content.fields[2].children.splice(2,0,...p.property_extend_fields);"
     ]
   }
 }

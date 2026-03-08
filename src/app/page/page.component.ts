@@ -1,4 +1,13 @@
-import {Component, ComponentRef, inject, Input, ViewChild, ViewChildren, ViewContainerRef} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ComponentRef,
+  inject,
+  Input, OnDestroy,
+  ViewChild,
+  ViewChildren,
+  ViewContainerRef
+} from '@angular/core';
 import {SmartRequestService} from '../lib/smart-request.service';
 import {ActivatedRoute, NavigationEnd, Params, Router, RouterLink} from '@angular/router';
 import {NzSpinComponent} from 'ng-zorro-antd/spin';
@@ -11,6 +20,7 @@ import {ObjectDeepCompare} from '../lib/utils';
 import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {NzResultComponent} from 'ng-zorro-antd/result';
 import {NzTabsModule} from 'ng-zorro-antd/tabs';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-page',
@@ -27,7 +37,7 @@ import {NzTabsModule} from 'ng-zorro-antd/tabs';
   standalone: true,
   styleUrl: './page.component.scss',
 })
-export class PageComponent {
+export class PageComponent implements AfterViewInit, OnDestroy{
   @Input() page?: string
   @Input() content?: PageContent
   @Input() params?: Params
@@ -41,6 +51,8 @@ export class PageComponent {
   componentRef!: ComponentRef<any>
 
   @ViewChildren(PageComponent) children!: PageComponent[]
+
+  private sub?: Subscription;
 
   constructor(protected request: SmartRequestService,
               protected route: ActivatedRoute,
@@ -59,6 +71,11 @@ export class PageComponent {
     console.log("page constructor", this.page, this.params)
   }
 
+  ngOnDestroy() {
+    //取消路由事件订阅
+    this.sub?.unsubscribe()
+  }
+
   ngAfterViewInit(): void {
     if (this.content) {
       //this.ts.setTitle(this.content.title);
@@ -68,7 +85,7 @@ export class PageComponent {
 
       //弹窗之外，需要监听路由参数
       if (!this.nzModalData && !this.isChild) {
-        this.router.events.subscribe(event=>{
+        this.sub = this.router.events.subscribe(event=>{
           if (event instanceof NavigationEnd) {
             const page = location.pathname.substring(6)
             //console.log("[page] NavigationEnd:", page);

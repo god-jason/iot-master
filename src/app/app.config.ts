@@ -24,6 +24,6 @@ export const appConfig: ApplicationConfig = {
     provideNzIcons(icons),
     provideNzI18n(zh_CN),
     importProvidersFrom(FormsModule),
-    provideAnimationsAsync(),
+    //provideAnimationsAsync(),
     provideHttpClient()]
 };
