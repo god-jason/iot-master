@@ -1,6 +1,6 @@
 package protocol
 
-import "github.com/god-jason/iot-master/product"
+import "github.com/god-jason/iot-master/pkg/product"
 
 type WriteLinkFunc func(linker, link_id string, data []byte) error
 

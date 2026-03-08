@@ -1,8 +1,8 @@
 package mqtt
 
 import (
-	"github.com/busy-cloud/boat/config"
-	"github.com/busy-cloud/boat/lib"
+	"github.com/god-jason/iot-master/pkg/config"
+	"github.com/god-jason/iot-master/pkg/lib"
 )
 
 const MODULE = "mqtt"

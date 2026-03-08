@@ -1,8 +1,8 @@
 package iot
 
 import (
-	"github.com/busy-cloud/boat/api"
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/iot-master/pkg/api"
 )
 
 func init() {

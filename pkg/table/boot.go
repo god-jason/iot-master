@@ -1,9 +1,9 @@
 package table
 
 import (
-	"github.com/busy-cloud/boat/boot"
-	"github.com/busy-cloud/boat/config"
-	"github.com/busy-cloud/boat/log"
+	"github.com/god-jason/iot-master/pkg/boot"
+	"github.com/god-jason/iot-master/pkg/config"
+	"github.com/god-jason/iot-master/pkg/log"
 )
 
 func init() {

@@ -1,0 +1,44 @@
+{
+  "name": "user_log",
+  "comment": "用户日志",
+  "columns": [
+    {
+      "name": "id",
+      "comment": "ID",
+      "type": "int64",
+      "primary": true,
+      "increment": true
+    },
+    {
+      "name": "user_id",
+      "comment": "用户ID",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
+      "name": "action",
+      "comment": "操作",
+      "type": "string",
+      "length": 128
+    },
+    {
+      "name": "client",
+      "comment": "客户端",
+      "type": "string",
+      "length": 128
+    },
+    {
+      "name": "ip",
+      "comment": "客户端ip",
+      "type": "string",
+      "length": 128
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ]
+}

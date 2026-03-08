@@ -1,9 +1,9 @@
 package oem
 
 import (
-	"github.com/busy-cloud/boat/api"
-	"github.com/busy-cloud/boat/config"
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/iot-master/pkg/api"
+	"github.com/god-jason/iot-master/pkg/config"
 )
 
 func init() {

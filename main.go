@@ -4,12 +4,11 @@ import (
 	"embed"
 	"encoding/json"
 
-	_ "github.com/busy-cloud/boat-ui"
-	"github.com/busy-cloud/boat/apps"
-	"github.com/busy-cloud/boat/log"
-	"github.com/busy-cloud/boat/store"
+	"github.com/god-jason/iot-master/apps"
 	"github.com/god-jason/iot-master/iot"
 	_ "github.com/god-jason/iot-master/iot"
+	"github.com/god-jason/iot-master/pkg/log"
+	"github.com/god-jason/iot-master/pkg/store"
 )
 
 //go:embed assets

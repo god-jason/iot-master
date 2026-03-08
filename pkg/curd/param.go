@@ -4,9 +4,9 @@ import (
 	"errors"
 	"reflect"
 
-	"github.com/busy-cloud/boat/api"
-	"github.com/busy-cloud/boat/db"
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/iot-master/pkg/api"
+	"github.com/god-jason/iot-master/pkg/db"
 	"xorm.io/builder"
 	"xorm.io/xorm"
 )

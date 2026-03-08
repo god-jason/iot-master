@@ -3,9 +3,9 @@ package protocol
 import (
 	"strings"
 
-	"github.com/busy-cloud/boat/log"
-	"github.com/busy-cloud/boat/mqtt"
-	"github.com/god-jason/iot-master/product"
+	"github.com/god-jason/iot-master/pkg/log"
+	"github.com/god-jason/iot-master/pkg/mqtt"
+	"github.com/god-jason/iot-master/pkg/product"
 )
 
 func Create(protocol *Protocol, manager MasterManager) {

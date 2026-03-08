@@ -3,8 +3,8 @@ package iot
 import (
 	"errors"
 
-	"github.com/busy-cloud/boat/db"
-	"github.com/busy-cloud/boat/lib"
+	"github.com/god-jason/iot-master/pkg/db"
+	"github.com/god-jason/iot-master/pkg/lib"
 )
 
 var devices lib.Map[Device]

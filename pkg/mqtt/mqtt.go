@@ -8,10 +8,10 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/busy-cloud/boat/config"
-	"github.com/busy-cloud/boat/log"
-	"github.com/busy-cloud/boat/pool"
 	paho "github.com/eclipse/paho.mqtt.golang"
+	"github.com/god-jason/iot-master/pkg/config"
+	"github.com/god-jason/iot-master/pkg/log"
+	"github.com/god-jason/iot-master/pkg/pool"
 )
 
 var CustomConnectionFunc paho.OpenConnectionFunc

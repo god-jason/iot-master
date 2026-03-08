@@ -1,7 +1,7 @@
 package cron
 
 import (
-	"github.com/busy-cloud/boat/boot"
+	"github.com/god-jason/iot-master/pkg/boot"
 )
 
 func init() {

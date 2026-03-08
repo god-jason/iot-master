@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/PaesslerAG/gval"
-	"github.com/god-jason/iot-master/calc"
-	"github.com/god-jason/iot-master/product"
+	"github.com/god-jason/iot-master/pkg/calc"
+	"github.com/god-jason/iot-master/pkg/product"
 	"github.com/spf13/cast"
 )
 

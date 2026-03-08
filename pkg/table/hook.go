@@ -1,7 +1,7 @@
 package table
 
 import (
-	"github.com/busy-cloud/boat/javascript"
+	"github.com/god-jason/iot-master/pkg/javascript"
 )
 
 type Hook struct {

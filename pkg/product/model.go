@@ -3,7 +3,7 @@ package product
 import (
 	"time"
 
-	"github.com/busy-cloud/boat/smart"
+	"github.com/god-jason/iot-master/pkg/smart"
 )
 
 // Point 属性

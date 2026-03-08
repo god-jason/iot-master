@@ -1,10 +1,10 @@
 package iot
 
 import (
-	"github.com/busy-cloud/boat/boot"
-	"github.com/busy-cloud/boat/db"
-	_ "github.com/god-jason/iot-master/product"
-	_ "github.com/god-jason/iot-master/protocol"
+	"github.com/god-jason/iot-master/pkg/boot"
+	"github.com/god-jason/iot-master/pkg/db"
+	_ "github.com/god-jason/iot-master/pkg/product"
+	_ "github.com/god-jason/iot-master/pkg/protocol"
 )
 
 func init() {

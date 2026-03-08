@@ -3,8 +3,8 @@ package iot
 import (
 	"fmt"
 
-	"github.com/busy-cloud/boat/db"
-	"github.com/busy-cloud/boat/mqtt"
+	"github.com/god-jason/iot-master/pkg/db"
+	"github.com/god-jason/iot-master/pkg/mqtt"
 )
 
 func settingSync(id string, sts map[string]int) (has bool, err error) {

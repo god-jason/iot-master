@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/busy-cloud/boat/db"
-	"github.com/busy-cloud/boat/log"
-	"github.com/busy-cloud/boat/mqtt"
+	"github.com/god-jason/iot-master/pkg/db"
+	"github.com/god-jason/iot-master/pkg/log"
+	"github.com/god-jason/iot-master/pkg/mqtt"
 	"github.com/spf13/cast"
 )
 

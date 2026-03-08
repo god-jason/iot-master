@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/busy-cloud/boat/lib"
+	"github.com/god-jason/iot-master/pkg/lib"
 )
 
 var tables lib.Map[Table]

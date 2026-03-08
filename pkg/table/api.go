@@ -1,6 +1,6 @@
 package table
 
-import "github.com/busy-cloud/boat/api"
+import "github.com/god-jason/iot-master/pkg/api"
 
 // 表相关接口只能放这里了，否则会import circle: api->table->api
 func init() {

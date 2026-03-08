@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/busy-cloud/boat/db"
-	"github.com/busy-cloud/boat/smart"
+	"github.com/god-jason/iot-master/pkg/db"
+	"github.com/god-jason/iot-master/pkg/smart"
 	"github.com/rs/xid"
 	"github.com/spf13/cast"
 	"xorm.io/builder"

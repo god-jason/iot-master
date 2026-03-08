@@ -3,12 +3,12 @@ package iot
 import (
 	"encoding/json"
 
-	"github.com/busy-cloud/boat/db"
-	"github.com/busy-cloud/boat/log"
-	"github.com/busy-cloud/boat/smart"
-	"github.com/busy-cloud/boat/store"
-	"github.com/busy-cloud/boat/table"
-	"github.com/god-jason/iot-master/protocol"
+	"github.com/god-jason/iot-master/pkg/db"
+	"github.com/god-jason/iot-master/pkg/log"
+	"github.com/god-jason/iot-master/pkg/protocol"
+	"github.com/god-jason/iot-master/pkg/smart"
+	"github.com/god-jason/iot-master/pkg/store"
+	"github.com/god-jason/iot-master/pkg/table"
 )
 
 var Protocols store.FS

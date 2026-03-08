@@ -1,8 +1,8 @@
 package config
 
 import (
-	"github.com/busy-cloud/boat/lib"
-	"github.com/busy-cloud/boat/smart"
+	"github.com/god-jason/iot-master/pkg/lib"
+	"github.com/god-jason/iot-master/pkg/smart"
 )
 
 type Form struct {

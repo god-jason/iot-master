@@ -1,9 +1,9 @@
 package pool
 
 import (
-	"github.com/busy-cloud/boat/config"
-	"github.com/busy-cloud/boat/exception"
-	"github.com/busy-cloud/boat/log"
+	"github.com/god-jason/iot-master/pkg/config"
+	"github.com/god-jason/iot-master/pkg/exception"
+	"github.com/god-jason/iot-master/pkg/log"
 	ants "github.com/panjf2000/ants/v2"
 )
 

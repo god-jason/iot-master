@@ -3,8 +3,8 @@ package web
 import (
 	"net/http"
 
-	"github.com/busy-cloud/boat/config"
-	"github.com/busy-cloud/boat/log"
+	"github.com/god-jason/iot-master/pkg/config"
+	"github.com/god-jason/iot-master/pkg/log"
 	"golang.org/x/crypto/acme/autocert"
 )
 

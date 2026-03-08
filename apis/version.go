@@ -3,9 +3,9 @@ package apis
 import (
 	"runtime"
 
-	"github.com/busy-cloud/boat/api"
-	"github.com/busy-cloud/boat/version"
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/iot-master/pkg/api"
+	"github.com/god-jason/iot-master/pkg/version"
 )
 
 func init() {

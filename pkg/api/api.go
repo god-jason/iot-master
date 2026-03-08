@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/busy-cloud/boat/web"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/iot-master/pkg/web"
 )
 
 type API struct {

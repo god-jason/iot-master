@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/busy-cloud/boat/db"
-	"github.com/busy-cloud/boat/lib"
-	"github.com/god-jason/iot-master/product"
+	"github.com/god-jason/iot-master/pkg/db"
+	"github.com/god-jason/iot-master/pkg/lib"
+	"github.com/god-jason/iot-master/pkg/product"
 	"xorm.io/xorm/schemas"
 )
 

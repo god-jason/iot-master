@@ -1,7 +1,7 @@
 package protocol
 
 import (
-	"github.com/busy-cloud/boat/smart"
+	"github.com/god-jason/iot-master/pkg/smart"
 )
 
 type Base struct {

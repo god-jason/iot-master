@@ -3,8 +3,8 @@ package curd
 import (
 	"reflect"
 
-	"github.com/busy-cloud/boat/config"
-	"github.com/busy-cloud/boat/web"
+	"github.com/god-jason/iot-master/pkg/config"
+	"github.com/god-jason/iot-master/pkg/web"
 	"github.com/google/uuid"
 	"github.com/lithammer/shortuuid"
 	"github.com/rs/xid"

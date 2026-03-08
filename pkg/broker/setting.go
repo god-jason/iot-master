@@ -1,8 +1,8 @@
 package broker
 
 import (
-	"github.com/busy-cloud/boat/config"
-	"github.com/busy-cloud/boat/smart"
+	"github.com/god-jason/iot-master/pkg/config"
+	"github.com/god-jason/iot-master/pkg/smart"
 )
 
 func init() {

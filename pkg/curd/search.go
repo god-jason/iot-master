@@ -3,8 +3,8 @@ package curd
 import (
 	"reflect"
 
-	"github.com/busy-cloud/boat/api"
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/iot-master/pkg/api"
 )
 
 func ApiSearch[T any](fields ...string) gin.HandlerFunc {

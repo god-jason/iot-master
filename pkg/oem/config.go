@@ -1,7 +1,7 @@
 package oem
 
 import (
-	"github.com/busy-cloud/boat/config"
+	"github.com/god-jason/iot-master/pkg/config"
 )
 
 const MODULE = "oem"

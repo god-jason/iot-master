@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/busy-cloud/boat/lib"
+	"github.com/god-jason/iot-master/pkg/lib"
 	"github.com/spf13/viper"
 )
 

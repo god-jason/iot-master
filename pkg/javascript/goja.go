@@ -1,11 +1,11 @@
 package javascript
 
 import (
-	"github.com/busy-cloud/boat/exception"
 	"github.com/dop251/goja"
 	"github.com/dop251/goja_nodejs/console"
 	"github.com/dop251/goja_nodejs/require"
 	"github.com/dop251/goja_nodejs/url"
+	"github.com/god-jason/iot-master/pkg/exception"
 )
 
 var req require.Registry

@@ -8,14 +8,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/busy-cloud/boat/config"
-	"github.com/busy-cloud/boat/exception"
-	"github.com/busy-cloud/boat/log"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/iot-master/pkg/config"
+	"github.com/god-jason/iot-master/pkg/exception"
+	"github.com/god-jason/iot-master/pkg/log"
 )
 
 var engine *gin.Engine

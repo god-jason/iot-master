@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/busy-cloud/boat/config"
+	"github.com/god-jason/iot-master/pkg/config"
 	"xorm.io/xorm"
 	"xorm.io/xorm/log"
 

@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/busy-cloud/boat/api"
-	"github.com/busy-cloud/boat/curd"
-	"github.com/busy-cloud/boat/db"
-	"github.com/busy-cloud/boat/log"
-	"github.com/busy-cloud/boat/mqtt"
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/iot-master/pkg/api"
+	"github.com/god-jason/iot-master/pkg/curd"
+	"github.com/god-jason/iot-master/pkg/db"
+	"github.com/god-jason/iot-master/pkg/log"
+	"github.com/god-jason/iot-master/pkg/mqtt"
 	"xorm.io/builder"
 	"xorm.io/xorm/schemas"
 )

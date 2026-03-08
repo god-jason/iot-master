@@ -6,12 +6,12 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/busy-cloud/boat/db"
-	"github.com/busy-cloud/boat/lib"
-	"github.com/busy-cloud/boat/log"
-	"github.com/busy-cloud/boat/mqtt"
-	"github.com/god-jason/iot-master/product"
-	"github.com/god-jason/iot-master/protocol"
+	"github.com/god-jason/iot-master/pkg/db"
+	"github.com/god-jason/iot-master/pkg/lib"
+	"github.com/god-jason/iot-master/pkg/log"
+	"github.com/god-jason/iot-master/pkg/mqtt"
+	"github.com/god-jason/iot-master/pkg/product"
+	"github.com/god-jason/iot-master/pkg/protocol"
 )
 
 type Property struct {

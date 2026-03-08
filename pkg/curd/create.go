@@ -3,10 +3,10 @@ package curd
 import (
 	"reflect"
 
-	"github.com/busy-cloud/boat/api"
-	"github.com/busy-cloud/boat/db"
-	"github.com/busy-cloud/boat/log"
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/iot-master/pkg/api"
+	"github.com/god-jason/iot-master/pkg/db"
+	"github.com/god-jason/iot-master/pkg/log"
 	"github.com/rs/xid"
 )
 

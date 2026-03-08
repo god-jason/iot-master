@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/busy-cloud/boat/config"
+	"github.com/god-jason/iot-master/pkg/config"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/natefinch/lumberjack.v2"
 )

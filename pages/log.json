@@ -1,0 +1,32 @@
+{
+  "title": "用户日志",
+  "template": "table",
+  "columns": [
+    {
+      "key": "id",
+      "label": "ID"
+    },
+    {
+      "key": "name",
+      "label": "名称"
+    },
+    {
+      "key": "action",
+      "label": "操作"
+    },
+    {
+      "key": "client",
+      "label": "客户端"
+    },
+    {
+      "key": "ip",
+      "label": "IP"
+    },
+    {
+      "key": "created",
+      "label": "日期",
+      "type": "date"
+    }
+  ],
+  "search_api": "table/user_log/search"
+}

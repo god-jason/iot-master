@@ -3,7 +3,7 @@ package service
 import (
 	"log"
 
-	"github.com/busy-cloud/boat/config"
+	"github.com/god-jason/iot-master/pkg/config"
 	"github.com/kardianos/service"
 )
 

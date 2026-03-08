@@ -3,7 +3,7 @@ package table
 import (
 	"context"
 
-	"github.com/busy-cloud/boat/db"
+	"github.com/god-jason/iot-master/pkg/db"
 	"xorm.io/xorm/schemas"
 )
 

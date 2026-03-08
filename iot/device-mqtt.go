@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/busy-cloud/boat/db"
-	"github.com/busy-cloud/boat/log"
-	"github.com/busy-cloud/boat/mqtt"
-	"github.com/busy-cloud/boat/table"
-	"github.com/god-jason/iot-master/protocol"
+	"github.com/god-jason/iot-master/pkg/db"
+	"github.com/god-jason/iot-master/pkg/log"
+	"github.com/god-jason/iot-master/pkg/mqtt"
+	"github.com/god-jason/iot-master/pkg/protocol"
+	"github.com/god-jason/iot-master/pkg/table"
 )
 
 type Sync struct {

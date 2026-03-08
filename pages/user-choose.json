@@ -1,0 +1,49 @@
+{
+  "title": "用户选择",
+  "template": "table",
+  "toolbar": [
+    {
+      "key": "keyword",
+      "type": "text",
+      "placeholder": "请输入关键字"
+    },
+    {
+      "type": "button",
+      "icon": "search",
+      "label": "搜索",
+      "action": {
+        "type": "script",
+        "script": "this.keyword=this.toolbar.value.keyword; this.search()"
+      }
+    }
+  ],
+  "keywords": [
+    "id",
+    "name"
+  ],
+  "operators": [
+    {
+      "icon": "check",
+      "label": "选择",
+      "action": {
+        "type": "script",
+        "script": "this.modelRef.close(data)"
+      }
+    }
+  ],
+  "columns": [
+    {
+      "key": "id",
+      "label": "ID"
+    },
+    {
+      "key": "name",
+      "label": "名称"
+    },
+    {
+      "key": "email",
+      "label": "邮箱"
+    }
+  ],
+  "search_api": "table/user/search"
+}

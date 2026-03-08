@@ -3,7 +3,7 @@ package web
 import (
 	"math/rand/v2"
 
-	"github.com/busy-cloud/boat/config"
+	"github.com/god-jason/iot-master/pkg/config"
 )
 
 const MODULE = "web"

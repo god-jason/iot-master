@@ -1,8 +1,8 @@
 package curd
 
 import (
-	"github.com/busy-cloud/boat/api"
 	"github.com/gin-gonic/gin"
+	"github.com/god-jason/iot-master/pkg/api"
 )
 
 func ApiSum[T any](field string) gin.HandlerFunc {
