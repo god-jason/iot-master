@@ -90,6 +90,10 @@ func diskStats(ctx *gin.Context) {
 
 	var usages []*DiskStat
 	for _, p := range partitions {
+		if p.Mountpoint == "" {
+			continue
+		}
+
 		usage, err := disk.Usage(p.Mountpoint)
 		if err != nil {
 			api.Error(ctx, err)
