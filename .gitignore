@@ -25,7 +25,6 @@ go.work.sum
 .env
 /.idea
 /tstorage
-/apps
 /licenses
 /plugins
 /iot-master
