@@ -14,7 +14,7 @@ import (
 //go:embed assets
 var assets embed.FS
 
-//go:embed pages
+//go:embed public/pages
 var pages embed.FS
 
 //go:embed tables

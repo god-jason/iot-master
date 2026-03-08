@@ -1,0 +1,120 @@
+{
+  "title": "设备详情",
+  "template": "info",
+  "toolbar": [
+    {
+      "icon": "edit",
+      "type": "button",
+      "label": "编辑",
+      "action": {
+        "type": "page",
+        "page":"device-edit",
+        "params_func": "return {id: data.id}"
+      }
+    },
+    {
+      "icon": "delete",
+      "type": "button",
+      "label": "删除",
+      "confirm": "确认删除？",
+      "action": {
+        "type": "script",
+        "script": "this.request.get('table/device/delete/'+data.id).subscribe(res=>{this.navigate('/page/device')})"
+      }
+    },
+    {
+      "icon": "build",
+      "type": "button",
+      "label": "设备物模型",
+      "action": {
+        "type": "page",
+        "page":"device-model",
+        "params_func": "return {id: data.id}"
+      }
+    }
+  ],
+  "items": [
+    {
+      "key": "id",
+      "label": "ID"
+    },
+    {
+      "key": "name",
+      "label": "名称"
+    },
+    {
+      "key": "description",
+      "label": "说明"
+    },
+    {
+      "key": "product_id",
+      "label": "产品ID",
+      "action": {
+        "type": "page",
+        "page":"product-detail",
+        "params_func": "return {id: data.product_id}"
+      }
+    },
+    {
+      "key": "linker",
+      "label": "连接器",
+      "type": "text"
+    },
+    {
+      "key": "link_id",
+      "label": "连接器ID",
+      "type": "text"
+    },
+    {
+      "key": "online",
+      "label": "在线",
+      "type": "boolean"
+    },
+    {
+      "key": "error",
+      "label": "错误"
+    },
+    {
+      "key": "disabled",
+      "label": "禁用"
+    }
+  ],
+  "load_api": "table/device/detail/:id",
+  "tabs": [
+    {
+      "title": "设备状态",
+      "page":"device-values",
+      "params_func": "return {id: params.id}"
+    },
+    {
+      "title": "设备日志",
+      "page":"device-log",
+      "params_func": "return {device_id: params.id}"
+    },
+    {
+      "title": "设备变量修改",
+      "page":"device-values-setting",
+      "params_func": "return {id: params.id}"
+    },
+    {
+      "title": "动作响应",
+      "page":"device-actions",
+      "params_func": "return {id: params.id}"
+    },
+    {
+      "title": "设备告警",
+      "page":"alarm",
+      "params_func": "return {device_id: params.id}"
+    },
+    {
+      "title": "设备参数",
+      "page":"device-settings",
+      "params_func": "return {id: params.id}"
+    },
+    {
+      "title": "子设备",
+      "page":"device",
+      "params_func": "return {gateway_id: params.id}"
+    }
+  ]
+}

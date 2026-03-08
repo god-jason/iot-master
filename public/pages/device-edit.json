@@ -1,0 +1,96 @@
+{
+  "title": "编辑设备",
+  "template": "form",
+  "toolbar": [
+    {
+      "type": "button",
+      "label": "选择组织ID",
+      "action": {
+        "type": "dialog",
+        "page":"group-choose",
+        "after_close": "this.editor.patchValue({group_id: result.id})"
+      }
+    },
+    {
+      "type": "button",
+      "label": "选择产品ID",
+      "action": {
+        "type": "dialog",
+        "page":"product-choose",
+        "after_close": "this.editor.patchValue({product_id: result.id})"
+      }
+    },
+    {
+      "type": "button",
+      "label": "选择网关ID",
+      "action": {
+        "type": "dialog",
+        "page":"device-choose",
+        "after_close": "this.editor.patchValue({gateway_id: result.id})"
+      }
+    },
+    {
+      "type": "button",
+      "label": "选择连接ID",
+      "action": {
+        "type": "dialog",
+        "page":"link-choose",
+        "after_close": "this.editor.patchValue({link_id: result.id})"
+      }
+    }
+  ],
+  "fields": [
+    {
+      "key": "id",
+      "label": "ID",
+      "type": "text"
+    },
+    {
+      "key": "name",
+      "label": "名称",
+      "type": "text"
+    },
+    {
+      "key": "description",
+      "label": "说明",
+      "type": "text"
+    },
+    {
+      "key": "group_id",
+      "label": "组织ID",
+      "type": "text"
+    },
+    {
+      "key": "product_id",
+      "label": "产品ID",
+      "type": "text",
+      "change_action": {
+        "type": "script",
+        "script": "setTimeout(()=>this.load_product(), 100)"
+      }
+    },
+    {
+      "key": "gateway_id",
+      "label": "网关ID",
+      "type": "text"
+    },
+    {
+      "key": "link_id",
+      "label": "连接ID",
+      "type": "text"
+    },
+    {
+      "key": "disabled",
+      "label": "禁用",
+      "type": "switch"
+    }
+  ],
+  "load_api": "table/device/detail/:id",
+  "load_success2": "setTimeout(()=>this.load_product(), 200)",
+  "submit_api": "table/device/update/:id",
+  "submit_success": "this.navigate('/page/device-detail?id='+this.params.id)",
+  "mount": "this.get_extend_fields()",
+  "methods": {
+    "get_extend_fields": "this.request.get('iot/device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.fields.push(f)) })"
+  }
+}

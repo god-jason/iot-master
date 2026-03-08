@@ -35,7 +35,7 @@ export class AdminComponent {
   isCollapsed = false;
 
   oem: any = {
-    name: 'BOAT',
+    name: '物联大师',
     logo: '/boat.svg',
     company: '南京本易物联网有限公司',
   }
@@ -62,7 +62,6 @@ export class AdminComponent {
   ];
 
   menus: any[] = []
-  settings: any[] = []
   primaryColor: any
 
   constructor(protected us: UserService,
@@ -74,7 +73,6 @@ export class AdminComponent {
   ) {
     this.loadOem()
     this.loadMenu()
-    this.loadSetting()
     this.loadVersion()
 
     //主题色
@@ -98,16 +96,9 @@ export class AdminComponent {
   }
 
   loadMenu() {
-    this.request.get("menus").subscribe((res) => {
+    this.request.get("/menu.json").subscribe((res) => {
       if (res.error) return
-      this.menus = res.data
-    })
-  }
-
-  loadSetting() {
-    this.request.get("settings").subscribe((res) => {
-      if (res.error) return
-      this.settings = res.data
+      this.menus = res
     })
   }
 

@@ -1,0 +1,58 @@
+{
+  "title": "项目应用",
+  "template": "table",
+  "toolbar": [
+    {
+      "label": "绑定",
+      "icon": "plus",
+      "type": "button",
+      "action": {
+        "type": "dialog",
+        "page":"plugin-choose",
+        "after_close": "this.request.get('iot/project/'+this.params.project_id+'/plugin/'+result.id+'/bind').subscribe(res=>this.load())"
+      }
+    }
+  ],
+  "operators": [
+    {
+      "icon": "select",
+      "title": "打开",
+      "action": {
+        "type": "script",
+        "script": "window.open('/plugin/'+data.app_id+'?project='+this.params.project_id)"
+      }
+    },
+    {
+      "icon": "delete",
+      "title": "解绑",
+      "confirm": "确认解绑？",
+      "action": {
+        "type": "script",
+        "script": "this.request.get('iot/project/'+data.project_id+'/plugin/'+data.app_id+'/unbind').subscribe(res=>this.load())"
+      }
+    }
+  ],
+  "columns": [
+    {
+      "key": "icon",
+      "label": "图标",
+      "type": "icon"
+    },
+    {
+      "key": "app_id",
+      "label": "AppID"
+    },
+    {
+      "key": "disabled",
+      "label": "禁用",
+      "type": "bool"
+    },
+    {
+      "key": "created",
+      "label": "日期",
+      "type": "date"
+    }
+  ],
+  "load_api": "iot/project/:project_id/plugin/list?limit=99999",
+  "load_success": "data.forEach(d=>{ d.icon = '/api/plugin/' + d.app_id + '/icon' })"
+}

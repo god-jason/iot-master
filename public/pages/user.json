@@ -1,0 +1,96 @@
+{
+  "title": "用户管理",
+  "template": "table",
+  "toolbar": [
+    {
+      "label": "创建",
+      "icon": "plus",
+      "type": "button",
+      "action": {
+        "type": "page",
+        "page":"user-create"
+      }
+    },
+    {
+      "key": "keyword",
+      "type": "text",
+      "placeholder": "请输入关键字"
+    },
+    {
+      "type": "button",
+      "icon": "search",
+      "label": "搜索",
+      "action": {
+        "type": "script",
+        "script": "this.keyword=this.toolbar.value.keyword; this.search()"
+      }
+    }
+  ],
+  "keywords": [
+    "id",
+    "name"
+  ],
+  "operators": [
+    {
+      "icon": "edit",
+      "title": "编辑",
+      "action": {
+        "type": "page",
+        "page":"user-edit",
+        "params_func": "return {id: data.id}"
+      }
+    },
+    {
+      "icon": "lock",
+      "title": "修改密码",
+      "action": {
+        "type": "page",
+        "page":"user-password",
+        "params_func": "return {id: data.id}"
+      }
+    },
+    {
+      "icon": "delete",
+      "title": "删除",
+      "confirm": "确认删除？",
+      "action": {
+        "type": "script",
+        "script": "this.request.get('table/user/delete/'+data.id).subscribe(res=>{this.load()})"
+      }
+    }
+  ],
+  "columns": [
+    {
+      "key": "id",
+      "label": "ID"
+    },
+    {
+      "key": "name",
+      "label": "名称"
+    },
+    {
+      "key": "email",
+      "label": "邮箱"
+    },
+    {
+      "key": "cellphone",
+      "label": "手机号"
+    },
+    {
+      "key": "admin",
+      "label": "管理员",
+      "type": "boolean"
+    },
+    {
+      "key": "disabled",
+      "label": "禁用",
+      "type": "boolean"
+    },
+    {
+      "key": "created",
+      "label": "日期",
+      "type": "date"
+    }
+  ],
+  "search_api": "table/user/search"
+}

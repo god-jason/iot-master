@@ -7,6 +7,6 @@ import (
 const MODULE = "oem"
 
 func init() {
-	config.SetDefault(MODULE, "name", "BOAT")
+	config.SetDefault(MODULE, "name", "")
 	config.SetDefault(MODULE, "logo", "")
 }

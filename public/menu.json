@@ -1,0 +1,87 @@
+[
+  {
+    "name": "控制台",
+    "nz_icon": "dashboard",
+    "items": [
+      {
+        "name": "仪表盘",
+        "url": "page/dash"
+      }
+    ]
+  },
+  {
+    "name": "物联网",
+    "nz_icon": "global",
+    "items": [
+      {
+        "name": "设备",
+        "url": "page/device"
+      },
+      {
+        "name": "连接",
+        "url": "page/link"
+      },
+      {
+        "name": "报警日志",
+        "url": "page/alarm"
+      },
+      {
+        "name": "产品库",
+        "url": "page/product"
+      },
+      {
+        "name": "协议库",
+        "url": "page/protocol"
+      }
+    ]
+  },
+  {
+    "name": "用户管理",
+    "nz_icon": "user",
+    "index": 700,
+    "items": [
+      {
+        "name": "组织管理",
+        "url": "page/group"
+      },
+      {
+        "name": "用户管理",
+        "url": "page/user"
+      },
+      {
+        "name": "用户日志",
+        "url": "page/user-log"
+      }
+    ]
+  },
+  {
+    "name": "系统设置",
+    "nz_icon": "setting",
+    "items": [
+      {
+        "name": "日志配置",
+        "url": "setting/log"
+      },
+      {
+        "name": "MQTT连接配置",
+        "url": "setting/mqtt"
+      },
+      {
+        "name": "Web配置",
+        "url": "setting/web"
+      },
+      {
+        "name": "MQTT总线配置",
+        "url": "setting/broker"
+      },
+      {
+        "name": "OEM配置",
+        "url": "setting/oem"
+      },
+      {
+        "name": "数据库配置",
+        "url": "setting/database"
+      }
+    ]
+  }
+]

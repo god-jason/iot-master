@@ -22,15 +22,6 @@
           </ul>
         </li>
       }
-      <li nz-submenu nzTitle="设置" nzIcon="setting">
-        <ul>
-          @for (setting of settings; track setting) {
-            <li nz-menu-item nzMatchRouter>
-              <a [routerLink]="['setting', setting.module]">{{ setting.title }}</a>
-            </li>
-          }
-        </ul>
-      </li>
     </ul>
 
     {{version.version}} {{version.build}}

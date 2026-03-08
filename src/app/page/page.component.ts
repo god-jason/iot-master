@@ -115,7 +115,7 @@ export class PageComponent {
 
     this.content = undefined //清空页面
 
-    let url = "page/" + this.page
+    let url = "/pages/" + this.page + ".json"
     this.request.get(url).subscribe((res) => {
       if (res.error) {
         //console.log("load page error", res.error)

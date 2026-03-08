@@ -1,0 +1,122 @@
+{
+  "title": "设备",
+  "template": "table",
+  "toolbar": [
+    {
+      "label": "创建",
+      "icon": "plus",
+      "type": "button",
+      "action": {
+        "type": "page",
+        "page":"device-create",
+        "params_func": "return {product_id: this.params.product_id, group_id: this.params.group_id, gateway_id: this.params.gateway_id}"
+      }
+    },
+    {
+      "label": "导入",
+      "icon": "plus",
+      "type": "button",
+      "action": {
+        "type": "page",
+        "page":"device-import"
+      }
+    },
+    {
+      "key": "keyword",
+      "type": "text",
+      "placeholder": "请输入关键字"
+    },
+    {
+      "type": "button",
+      "icon": "search",
+      "label": "搜索",
+      "action": {
+        "type": "script",
+        "script": "this.keyword=this.toolbar.value.keyword; this.load()"
+      }
+    }
+  ],
+  "keywords": [
+    "id",
+    "name"
+  ],
+  "operators": [
+    {
+      "icon": "eye",
+      "action": {
+        "type": "page",
+        "page":"device-detail",
+        "params_func": "return {id: data.id}"
+      }
+    },
+    {
+      "icon": "edit",
+      "action": {
+        "type": "page",
+        "page":"device-edit",
+        "params_func": "return {id: data.id}"
+      }
+    },
+    {
+      "icon": "delete",
+      "title": "删除",
+      "confirm": "确认删除？",
+      "action": {
+        "type": "script",
+        "script": "this.request.get('table/device/delete/'+data.id).subscribe(res=>{this.load()})"
+      }
+    }
+  ],
+  "columns": [
+    {
+      "key": "id",
+      "label": "ID",
+      "action": {
+        "type": "page",
+        "page":"device-detail",
+        "params_func": "return {id: data.id}"
+      }
+    },
+    {
+      "key": "product_id",
+      "label": "产品ID",
+      "action": {
+        "type": "page",
+        "page":"product-detail",
+        "params_func": "return {id: data.product_id}"
+      }
+    },
+    {
+      "key": "name",
+      "label": "名称"
+    },
+    {
+      "key": "description",
+      "label": "说明"
+    },
+    {
+      "key": "online",
+      "label": "在线",
+      "type": "boolean"
+    },
+    {
+      "key": "error",
+      "label": "错误"
+    },
+    {
+      "key": "disabled",
+      "label": "禁用",
+      "type": "boolean"
+    },
+    {
+      "key": "created",
+      "label": "日期",
+      "type": "date"
+    }
+  ],
+  "search_api": "table/device/search",
+  "mount": "if(this.params.link_id)this.filter.link_id=this.params.link_id; if(this.params.group_id)this.filter.group_id=this.params.group_id; if(this.params.product_id)this.filter.product_id=this.params.product_id;  if(this.params.gateway_id)this.filter.gateway_id=this.params.gateway_id; this.get_extend_fields()",
+  "methods": {
+    "get_extend_fields": "this.request.get('iot/device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.columns.push(f)) })"
+  }
+}

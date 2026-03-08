@@ -1,0 +1,560 @@
+{
+  "title": "编辑产品物模型",
+  "template": "form",
+  "toolbar": [
+    {
+      "type": "button",
+      "label": "导出JSON",
+      "action": {
+        "type": "script",
+        "script": "this.export_json(this.editor.values, 'product-model-' + this.params.id)"
+      }
+    },
+    {
+      "type": "button",
+      "label": "导入JSON",
+      "action": {
+        "type": "script",
+        "script": "this.import_json().then(data=>this.editor.values = data)"
+      }
+    }
+  ],
+  "fields": [
+    {
+      "key": "icon",
+      "label": "图标",
+      "type": "text"
+    },
+    {
+      "key": "type",
+      "label": "类型",
+      "type": "text"
+    },
+    {
+      "key": "properties",
+      "label": "【属性表】",
+      "type": "list",
+      "span": 24,
+      "children": [
+        {
+          "key": "name",
+          "label": "分组",
+          "type": "text"
+        },
+        {
+          "key": "hidden",
+          "label": "隐藏",
+          "type": "switch"
+        },
+        {
+          "key": "points",
+          "label": "点位",
+          "span": 24,
+          "type": "table",
+          "children": [
+            {
+              "key": "name",
+              "label": "变量",
+              "type": "text"
+            },
+            {
+              "key": "label",
+              "label": "显示名称",
+              "type": "text"
+            },
+            {
+              "key": "type",
+              "label": "数据类型",
+              "type": "select",
+              "default": "number",
+              "options": [
+                {
+                  "label": "布尔",
+                  "value": "bool"
+                },
+                {
+                  "label": "数值",
+                  "value": "number"
+                },
+                {
+                  "label": "字符串",
+                  "value": "string"
+                },
+                {
+                  "label": "数组",
+                  "value": "array"
+                },
+                {
+                  "label": "对象",
+                  "value": "object"
+                }
+              ]
+            },
+            {
+              "key": "mode",
+              "label": "模式",
+              "type": "select",
+              "default": "",
+              "options": [
+                {
+                  "label": "读写",
+                  "value": "rw"
+                },
+                {
+                  "label": "只写",
+                  "value": "w"
+                },
+                {
+                  "label": "只读",
+                  "value": "r"
+                },
+                {
+                  "label": "未知",
+                  "value": ""
+                }
+              ]
+            },
+            {
+              "key": "unit",
+              "label": "数据单位",
+              "type": "text"
+            },
+            {
+              "key": "precision",
+              "label": "精度",
+              "type": "number",
+              "default": 0
+            },
+            {
+              "key": "enumerations",
+              "label": "枚举",
+              "type": "table",
+              "children": [
+                {
+                  "key": "index",
+                  "label": "数值",
+                  "type": "number"
+                },
+                {
+                  "key": "value",
+                  "label": "枚举值",
+                  "type": "text"
+                },
+                {
+                  "key": "label",
+                  "label": "显示名称",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "key": "bits",
+              "label": "位",
+              "type": "table",
+              "children": [
+                {
+                  "key": "name",
+                  "label": "变量",
+                  "type": "text"
+                },
+                {
+                  "key": "label",
+                  "label": "显示",
+                  "type": "text"
+                },
+                {
+                  "key": "bit",
+                  "label": "位",
+                  "type": "number",
+                  "min": 0,
+                  "max": 63
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "actions",
+      "label": "【动作】",
+      "span": 24,
+      "type": "list",
+      "children": [
+        {
+          "key": "name",
+          "label": "名称",
+          "type": "text"
+        },
+        {
+          "key": "label",
+          "label": "显示",
+          "type": "text"
+        },
+        {
+          "key": "hidden",
+          "label": "隐藏",
+          "type": "switch"
+        },
+        {
+          "key": "type",
+          "label": "类型",
+          "type": "select",
+          "default": "number",
+          "options": [
+            {
+              "label": "按钮",
+              "value": "button"
+            },
+            {
+              "label": "开关",
+              "value": "switch"
+            },
+            {
+              "label": "滑块",
+              "value": "slider"
+            },
+            {
+              "label": "表单",
+              "value": "form"
+            }
+          ]
+        },
+        {
+          "key": "bind",
+          "label": "数据绑定",
+          "type": "text"
+        },
+        {
+          "key": "parameters",
+          "type": "table",
+          "label": "参数",
+          "children": [
+            {
+              "key": "key",
+              "label": "变量",
+              "type": "text"
+            },
+            {
+              "key": "label",
+              "label": "显示",
+              "type": "text"
+            },
+            {
+              "key": "type",
+              "label": "类型",
+              "type": "select",
+              "default": "number",
+              "options": [
+                {
+                  "label": "数值",
+                  "value": "number"
+                },
+                {
+                  "label": "布尔",
+                  "value": "switch"
+                },
+                {
+                  "label": "字符串",
+                  "value": "text"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "key": "validators",
+      "label": "【属性检查】",
+      "span": 24,
+      "type": "list",
+      "children": [
+        {
+          "key": "type",
+          "label": "计算类型",
+          "type": "radio",
+          "default": "compare",
+          "options": [
+            {
+              "label": "表达式",
+              "value": "expression"
+            },
+            {
+              "label": "比较器",
+              "value": "compare"
+            }
+          ]
+        },
+        {
+          "key": "compare",
+          "label": "比较器",
+          "type": "object",
+          "condition": {
+            "key": "type",
+            "type": "==",
+            "value": "compare"
+          },
+          "children": [
+            {
+              "key": "name",
+              "label": "属性（变量）",
+              "type": "text"
+            },
+            {
+              "key": "type",
+              "label": "对比",
+              "type": "select",
+              "default": "==",
+              "options": [
+                {
+                  "label": "等于",
+                  "value": "=="
+                },
+                {
+                  "label": "不等于",
+                  "value": "!="
+                },
+                {
+                  "label": "大于",
+                  "value": ">"
+                },
+                {
+                  "label": "小于",
+                  "value": "<"
+                },
+                {
+                  "label": "小于等于",
+                  "value": ">="
+                },
+                {
+                  "label": "小于等于",
+                  "value": "<="
+                }
+              ]
+            },
+            {
+              "key": "value",
+              "type": "number",
+              "label": "值"
+            }
+          ]
+        },
+        {
+          "key": "expression",
+          "label": "表达式",
+          "type": "text",
+          "condition": {
+            "key": "type",
+            "type": "==",
+            "value": "expression"
+          }
+        },
+        {
+          "key": "title",
+          "label": "报警标题",
+          "type": "text"
+        },
+        {
+          "key": "message",
+          "label": "报警内容",
+          "type": "text"
+        },
+        {
+          "key": "level",
+          "label": "报警等级",
+          "type": "select",
+          "default": 3,
+          "options": [
+            {
+              "label": "一级",
+              "value": 1
+            },
+            {
+              "label": "二级",
+              "value": 2
+            },
+            {
+              "label": "三级",
+              "value": 3
+            },
+            {
+              "label": "四级",
+              "value": 4
+            },
+            {
+              "label": "五级",
+              "value": 5
+            }
+          ]
+        },
+        {
+          "key": "delay",
+          "type": "number",
+          "label": "延迟报警s",
+          "default": 60
+        },
+        {
+          "key": "reset",
+          "type": "number",
+          "label": "报警重置s",
+          "default": 0
+        },
+        {
+          "key": "reset_times",
+          "type": "number",
+          "label": "报警重置次数",
+          "default": 0
+        },
+        {
+          "key": "disabled",
+          "label": "禁用",
+          "type": "switch"
+        }
+      ]
+    },
+
+    {
+      "key": "settings",
+      "label": "【配置参数】",
+      "span": 24,
+      "type": "list",
+      "children": [
+        {
+          "key": "name",
+          "label": "名称",
+          "type": "text"
+        },
+        {
+          "key": "label",
+          "label": "显示",
+          "type": "text"
+        },
+        {
+          "key": "hidden",
+          "label": "隐藏",
+          "type": "switch"
+        },
+        {
+          "key": "fields",
+          "label": "配置项",
+          "span": 24,
+          "type": "table",
+          "children": [
+            {
+              "key": "key",
+              "label": "变量",
+              "type": "text"
+            },
+            {
+              "key": "label",
+              "label": "显示名称",
+              "type": "text"
+            },
+            {
+              "key": "placeholder",
+              "label": "提示",
+              "type": "text"
+            },
+            {
+              "key": "type",
+              "label": "数据类型",
+              "type": "select",
+              "default": "number",
+              "options": [
+                {
+                  "label": "开关",
+                  "value": "switch"
+                },
+                {
+                  "label": "数值",
+                  "value": "number"
+                },
+                {
+                  "label": "文本",
+                  "value": "text"
+                },
+                {
+                  "label": "文本框",
+                  "value": "textarea"
+                },
+                {
+                  "label": "下拉框",
+                  "value": "select"
+                },
+                {
+                  "label": "滑块",
+                  "value": "slider"
+                },
+                {
+                  "label": "日期",
+                  "value": "date"
+                },
+                {
+                  "label": "时间",
+                  "value": "time"
+                }
+              ]
+            },
+            {
+              "key": "options",
+              "label": "选项",
+              "type": "table",
+              "children": [
+                {
+                  "key": "value",
+                  "label": "值",
+                  "type": "number"
+                },
+                {
+                  "key": "label",
+                  "label": "名称",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "key": "min",
+              "label": "最小值",
+              "type": "number"
+            },
+            {
+              "key": "max",
+              "label": "最大值",
+              "type": "number"
+            },
+            {
+              "key": "step",
+              "label": "步长",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "load_api": "iot/product/:id/model",
+  "submit_api": "iot/product/:id/model",
+  "submit_success": "this.navigate('/page/product-detail?id='+this.params.id)",
+  "mount": "this.load_product()",
+  "methods": {
+    "load_product": "this.request.get('table/product/detail/'+this.params.id).subscribe(res=>{if(!res.error) res.data.protocol && this.load_protocol(res.data.protocol)})",
+    "load_protocol": [
+      "p",
+      "this.request.get('iot/protocol/'+p).subscribe(res=>{ this.add_point_types(res.data); this.add_point_fields(res.data);  this.add_property_fields(res.data);  setTimeout(()=>this.editor.rebuild(), 200)})"
+    ],
+    "add_point_types": [
+      "p",
+      "if (p.point_extend_types && p.point_extend_types.length) this.content.fields[2].children[2].children[2].options=p.point_extend_types;"
+    ],
+    "add_point_fields": [
+      "p",
+      "this.content.fields[2].children[2].children.push(...p.point_extend_fields);"
+    ],
+    "add_property_fields": [
+      "p",
+      "this.content.fields[2].children.splice(2,0,...p.property_extend_fields);"
+    ]
+  }
+}
