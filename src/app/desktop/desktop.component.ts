@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Router, RouterLink} from '@angular/router';
+import {Router} from '@angular/router';
 import {NzModalModule, NzModalService} from 'ng-zorro-antd/modal';
 import {UserService} from '../user.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
@@ -9,7 +9,7 @@ import {NzColDirective, NzRowDirective} from 'ng-zorro-antd/grid';
 import { NgClass } from '@angular/common';
 import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {WindowComponent, WindowDialog} from './window.component';
-import {NzDropDownDirective, NzDropdownMenuComponent} from 'ng-zorro-antd/dropdown';
+import {NzDropdownDirective, NzDropdownMenuComponent} from 'ng-zorro-antd/dropdown';
 import {NzMenuDirective, NzMenuDividerDirective, NzMenuItemComponent, NzSubMenuComponent} from 'ng-zorro-antd/menu';
 import {NzConfigService} from 'ng-zorro-antd/core/config';
 import {ThemeService} from '../theme.service';
@@ -28,12 +28,11 @@ import {ThemeService} from '../theme.service';
     NzIconDirective,
     WindowComponent,
     NzModalModule,
-    NzDropDownDirective,
+    NzDropdownDirective,
     NzDropdownMenuComponent,
     NzMenuDirective,
     NzMenuItemComponent,
     NzSubMenuComponent,
-    RouterLink,
     NgClass,
     NzMenuDividerDirective
 ],

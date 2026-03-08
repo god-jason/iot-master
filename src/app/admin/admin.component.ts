@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NzContentComponent, NzHeaderComponent, NzLayoutComponent, NzSiderComponent} from 'ng-zorro-antd/layout';
-import {NzDropDownDirective, NzDropdownMenuComponent} from 'ng-zorro-antd/dropdown';
+import {NzDropdownDirective, NzDropdownMenuComponent} from 'ng-zorro-antd/dropdown';
 import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {NzMenuDirective, NzMenuDividerDirective, NzMenuItemComponent, NzSubMenuComponent} from 'ng-zorro-antd/menu';
 import {Router, RouterLink, RouterOutlet} from '@angular/router';
@@ -9,14 +9,13 @@ import {SmartRequestService} from '../lib/smart-request.service';
 import {NzConfigService} from 'ng-zorro-antd/core/config';
 import {Location} from '@angular/common';
 import {ThemeService} from '../theme.service';
-import {NzButtonComponent} from 'ng-zorro-antd/button';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
   imports: [
     NzContentComponent,
-    NzDropDownDirective,
+    NzDropdownDirective,
     NzDropdownMenuComponent,
     NzHeaderComponent,
     NzIconDirective,
@@ -28,7 +27,6 @@ import {NzButtonComponent} from 'ng-zorro-antd/button';
     NzSubMenuComponent,
     RouterLink,
     RouterOutlet,
-    NzButtonComponent,
   ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss'

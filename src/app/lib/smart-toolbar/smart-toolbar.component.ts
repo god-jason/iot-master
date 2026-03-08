@@ -17,7 +17,7 @@ import {NzTimePickerComponent} from 'ng-zorro-antd/time-picker';
 import {NzTreeSelectComponent} from 'ng-zorro-antd/tree-select';
 import {NzUploadChangeParam, NzUploadComponent} from 'ng-zorro-antd/upload';
 import {createControl, SmartField} from '../smart-editor/smart-editor.component';
-import {NzDropDownDirective, NzDropdownMenuComponent} from 'ng-zorro-antd/dropdown';
+import {NzDropdownDirective, NzDropdownMenuComponent} from 'ng-zorro-antd/dropdown';
 import {NzMenuDirective, NzMenuItemComponent} from 'ng-zorro-antd/menu';
 import {SmartAction} from '../smart-table/smart-table.component';
 import {Router} from '@angular/router';
@@ -50,7 +50,7 @@ import {NzPopconfirmDirective} from 'ng-zorro-antd/popconfirm';
     NzInputNumberComponent,
     NzRadioComponent,
     NzRadioGroupComponent,
-    NzDropDownDirective,
+    NzDropdownDirective,
     NzDropdownMenuComponent,
     NzMenuDirective,
     NzMenuItemComponent,
