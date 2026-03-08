@@ -33,4 +33,3 @@ go.work.sum
 /node_modules
 /package-lock.json
 /.angular
-/dist

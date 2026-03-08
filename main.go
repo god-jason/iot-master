@@ -7,6 +7,7 @@ import (
 	"github.com/god-jason/iot-master/pkg/menu"
 	"github.com/god-jason/iot-master/pkg/page"
 	"github.com/god-jason/iot-master/pkg/store"
+	"github.com/god-jason/iot-master/pkg/web"
 )
 
 //go:embed menu.json
@@ -17,6 +18,9 @@ var pages embed.FS
 
 //go:embed protocols
 var protocols embed.FS
+
+//go:embed dist/browser
+var www embed.FS
 
 func init() {
 
@@ -29,4 +33,7 @@ func init() {
 
 	//加载协议
 	iot.Protocols = store.PrefixFS(&protocols, "protocols")
+
+	//前端页面
+	web.StaticFS(www, "/", "dist/browser", "index.html")
 }
