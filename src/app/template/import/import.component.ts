@@ -3,7 +3,7 @@ import {NzUploadComponent, NzUploadXHRArgs} from 'ng-zorro-antd/upload';
 import {read, utils, writeFile} from 'xlsx';
 import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {Subscription} from 'rxjs';
-import {NgForOf, NgIf} from '@angular/common';
+
 import {
   NzTableCellDirective,
   NzTableComponent,
@@ -32,7 +32,6 @@ import dayjs from 'dayjs';
   imports: [
     NzUploadComponent,
     NzButtonComponent,
-    NgForOf,
     NzTableCellDirective,
     NzTableComponent,
     NzTbodyComponent,
@@ -46,9 +45,8 @@ import dayjs from 'dayjs';
     NzStepsComponent,
     NzStepComponent,
     NzProgressComponent,
-    NzResultComponent,
-    NgIf,
-  ],
+    NzResultComponent
+],
   templateUrl: './import.component.html',
   standalone: true,
   styleUrl: './import.component.scss'

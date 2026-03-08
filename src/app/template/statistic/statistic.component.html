@@ -1,7 +1,9 @@
 @if (content) {
   @if (content.template == 'statistic') {
     <nz-card [nzTitle]="content.title" [nzExtra]="extra">
-      <smart-toolbar #toolbar *ngIf="content.toolbar" [fields]="content.toolbar" [values]="toolbarValue" (action)="execute($event)"></smart-toolbar>
+      @if (content.toolbar) {
+        <smart-toolbar #toolbar [fields]="content.toolbar" [values]="toolbarValue" (action)="execute($event)"></smart-toolbar>
+      }
       <nz-row [nzGutter]="[10,10]">
         @for (item of content.items; track item) {
           <nz-col [nzSpan]="12" [nzMd]="item.span || 8" [nzXs]="24">
@@ -19,10 +21,12 @@
       </nz-row>
     </nz-card>
     <ng-template #extra>
-      <button nz-button nzType="link" (click)="load()" class="load" *ngIf="content.load_api">
-        <span nz-icon nzType="reload" [nzSpin]="loading"></span>
-        刷新
-      </button>
+      @if (content.load_api) {
+        <button nz-button nzType="link" (click)="load()" class="load">
+          <span nz-icon nzType="reload" [nzSpin]="loading"></span>
+          刷新
+        </button>
+      }
     </ng-template>
   } @else {
     模板类型应该是statistic

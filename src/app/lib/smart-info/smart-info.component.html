@@ -1,5 +1,5 @@
 <nz-descriptions [nzTitle]="title" nzBordered nzSize="small"
-                 [nzColumn]="{ xs: 1, sm: 1, md: 2, lg:2, xl:3, xxl:3}">
+  [nzColumn]="{ xs: 1, sm: 1, md: 2, lg:2, xl:3, xxl:3}">
   @for (f of fields; track f) {
     <nz-descriptions-item [nzTitle]="f.label" [nzSpan]="f.span || 1" (click)="action.emit(f.action)">
       @switch (f.type) {
@@ -22,7 +22,9 @@
           <nz-progress [nzPercent]="parseInt(value[f.key])"></nz-progress>
         }
         @case ('tags') {
-          <nz-tag *ngFor="let t of value[f.key]">{{ t }}</nz-tag>
+          @for (t of value[f.key]; track t) {
+            <nz-tag>{{ t }}</nz-tag>
+          }
         }
         @case ("json") {
           {{ value[f.key] | json }}

@@ -5,7 +5,7 @@ import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {NzSpinComponent} from 'ng-zorro-antd/spin';
 import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {SmartToolbarComponent} from '../../lib/smart-toolbar/smart-toolbar.component';
-import {NgIf} from '@angular/common';
+
 import {TemplateBase} from '../template-base.component';
 
 
@@ -17,9 +17,8 @@ import {TemplateBase} from '../template-base.component';
     NzButtonComponent,
     NzSpinComponent,
     NzIconDirective,
-    SmartToolbarComponent,
-    NgIf
-  ],
+    SmartToolbarComponent
+],
   templateUrl: './info.component.html',
   standalone: true,
   styleUrl: './info.component.scss',

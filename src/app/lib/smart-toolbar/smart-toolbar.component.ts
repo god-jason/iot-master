@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
+
 import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {NzInputDirective, NzInputGroupComponent} from 'ng-zorro-antd/input';
@@ -31,7 +31,6 @@ import {NzPopconfirmDirective} from 'ng-zorro-antd/popconfirm';
   standalone: true,
   imports: [
     FormsModule,
-    CommonModule,
     NzSpaceModule,
     NzButtonComponent,
     NzIconDirective,
@@ -56,8 +55,8 @@ import {NzPopconfirmDirective} from 'ng-zorro-antd/popconfirm';
     NzMenuDirective,
     NzMenuItemComponent,
     NzFlexDirective,
-    NzPopconfirmDirective,
-  ],
+    NzPopconfirmDirective
+],
   templateUrl: './smart-toolbar.component.html',
   styleUrl: './smart-toolbar.component.scss'
 })

@@ -1,174 +1,186 @@
 <div class="toolbar" nz-flex nzGap="small" nzWrap="wrap" [formGroup]="group">
   @for (field of fields; track field) {
     <span>
-    @switch (field.type) {
-      @case ('link') {
-        @if (field.confirm) {
-          <button nz-button nz-popconfirm nzType="link"
-                  [nzPopconfirmTitle]="field.confirm"
-                  (nzOnConfirm)="action.emit(field.action)">
-                  <i *ngIf="field.icon" nz-icon [nzType]="field.icon"></i>
-            {{ field.label }}
-              </button>
-        } @else {
-          <button nz-button nzType="link" (click)="action.emit(field.action)">
-            <span nz-icon [nzType]="field.icon" *ngIf="field.icon"></span>
-            {{ field.label }}
-          </button>
+      @switch (field.type) {
+        @case ('link') {
+          @if (field.confirm) {
+            <button nz-button nz-popconfirm nzType="link"
+              [nzPopconfirmTitle]="field.confirm"
+              (nzOnConfirm)="action.emit(field.action)">
+              @if (field.icon) {
+                <i nz-icon [nzType]="field.icon"></i>
+              }
+              {{ field.label }}
+            </button>
+          } @else {
+            <button nz-button nzType="link" (click)="action.emit(field.action)">
+              @if (field.icon) {
+                <span nz-icon [nzType]="field.icon"></span>
+              }
+              {{ field.label }}
+            </button>
+          }
         }
-      }
-      @case ('button') {
-        @if (field.confirm) {
-          <button nz-button nz-popconfirm
-                  [nzPopconfirmTitle]="field.confirm"
-                  (nzOnConfirm)="action.emit(field.action)">
-                  <i *ngIf="field.icon" nz-icon [nzType]="field.icon"></i>
-            {{ field.label }}
-              </button>
-        } @else {
-          <button nz-button (click)="action.emit(field.action)">
-            <span nz-icon [nzType]="field.icon" *ngIf="field.icon"></span>
-            {{ field.label }}
-          </button>
+        @case ('button') {
+          @if (field.confirm) {
+            <button nz-button nz-popconfirm
+              [nzPopconfirmTitle]="field.confirm"
+              (nzOnConfirm)="action.emit(field.action)">
+              @if (field.icon) {
+                <i nz-icon [nzType]="field.icon"></i>
+              }
+              {{ field.label }}
+            </button>
+          } @else {
+            <button nz-button (click)="action.emit(field.action)">
+              @if (field.icon) {
+                <span nz-icon [nzType]="field.icon"></span>
+              }
+              {{ field.label }}
+            </button>
+          }
         }
-      }
-      @case ('dropdown') {
-        <button nz-button nz-dropdown [nzDropdownMenu]="menu">
-          <span nz-icon [nzType]="field.icon" *ngIf="field.icon"></span>
-          {{ field.label }}
-        </button>
-        <nz-dropdown-menu #menu="nzDropdownMenu">
-          <ul nz-menu>
-            @for (item of field.dropdown; track item) {
-              <li nz-menu-item (click)="action.emit(item.action)">{{ item.label }}</li>
+        @case ('dropdown') {
+          <button nz-button nz-dropdown [nzDropdownMenu]="menu">
+            @if (field.icon) {
+              <span nz-icon [nzType]="field.icon"></span>
             }
-          </ul>
-        </nz-dropdown-menu>
-      }
-      @case ('label') {
-        {{ field.label }}
-      }
-      @case ('text') {
-        {{ field.label || '' }}
-        <!--文本-->
-        <input nz-input [formControlName]="field.key"
-               [minlength]="field.min || 0"
-               [maxlength]="field.max || 255"
-               [placeholder]="field.placeholder || ''"
-               [nzAutocomplete]="auto"/>
-        <nz-autocomplete [nzDataSource]="field.auto" #auto></nz-autocomplete>
-      }
-      @case ('number') {
-        {{ field.label || '' }}
-        <!--数值-->
-        <nz-input-number [formControlName]="field.key"
-                         [nzMin]="field.min===undefined ? -Infinity : field.min"
-                         [nzMax]="field.max===undefined ? Infinity : field.max"
-                         [nzStep]="field.step || 1"
-                         [nzPlaceHolder]="field.placeholder || ''"></nz-input-number>
-      }
-      @case ('slider') {
-        {{ field.label || '' }}
-        <!--滑块-->
-        <nz-slider [formControlName]="field.key"
-                   [nzMin]="field.min || 0"
-                   [nzMax]="field.max || 100"
-                   [nzStep]="field.step"></nz-slider>
-      }
-      @case ('radio') {
-        {{ field.label || '' }}
-        <!--单选 有import Bug，先不支持-->
-        <nz-radio-group [formControlName]="field.key" nzButtonStyle="solid">
-                <label nz-radio-button *ngFor="let o of field.options"
-                       [nzValue]="o.value"
-                       [nzDisabled]="o.disabled">{{ o.label }}</label>
-            </nz-radio-group>
-      }
-      @case ('select') {
-        {{ field.label || '' }}
-        <!--选项-->
-        <nz-select [formControlName]="field.key"
-                   [nzOptions]="field.options || empty"
-                   [nzPlaceHolder]="field.placeholder || ''"></nz-select>
-      }
-      @case ('tree') {
-        <!--树选择-->
-        <nz-tree-select nzShowSearch nzCheckable [formControlName]="field.key"
-                        [nzNodes]="field.tree || empty"
-                        [nzMultiple]="field.multiple"
-                        (nzTreeCheckBoxChange)="field.change?.($event)"
-                        [nzPlaceHolder]="field.placeholder || ''"></nz-tree-select>
-      }
-      @case ('switch') {
-        {{ field.label || '' }}
-        <!--开关-->
-        <nz-switch [formControlName]="field.key"></nz-switch>
-      }
-      @case ('checkbox') {
-        {{ field.label || '' }}
-        <!--开关-->
-        <label nz-checkbox [formControlName]="field.key"></label>
-      }
-      @case ('slider') {
-        {{ field.label || '' }}
-        <!--进度条-->
-        <nz-slider [formControlName]="field.key"
-                   [nzMax]="field.max" [nzMin]="field.min" [nzStep]="field.step"></nz-slider>
-      }
-      @case ('datetime') {
-        {{ field.label || '' }}
-        <!--日期和时间-->
-        <nz-date-picker nzShowTime [formControlName]="field.key"
-                        [nzPlaceHolder]="field.placeholder || ''"></nz-date-picker>
-      }
-      @case ('date') {
-        {{ field.label || '' }}
-        <!--日期-->
-        <nz-date-picker [formControlName]="field.key" [nzPlaceHolder]="field.placeholder || ''"></nz-date-picker>
-      }
-      @case ('time') {
-        {{ field.label || '' }}
-        <!--时间-->
-        <nz-time-picker [formControlName]="field.key" [nzPlaceHolder]="field.placeholder || ''"></nz-time-picker>
-      }
-      @case ('upload') {
-        {{ field.label || '' }}
-        <!--文件-->
-        <nz-upload [nzAction]="field.upload" [nzShowUploadList]="false" [nzDisabled]="!!field.disabled">
-            <button nz-button nzType="primary" [disabled]="!!field.disabled">上传</button>
-          </nz-upload>
-      }
-      @case ('file') {
-        {{ field.label || '' }}
-        <!--文件-->
-        <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
+            {{ field.label }}
+          </button>
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+              @for (item of field.dropdown; track item) {
+                <li nz-menu-item (click)="action.emit(item.action)">{{ item.label }}</li>
+              }
+            </ul>
+          </nz-dropdown-menu>
+        }
+        @case ('label') {
+          {{ field.label }}
+        }
+        @case ('text') {
+          {{ field.label || '' }}
+          <!--文本-->
           <input nz-input [formControlName]="field.key"
-                 [placeholder]="field.placeholder || ''"/></nz-input-group>
-        <ng-template #suffixButton>
-          <nz-upload [nzAction]="field.upload" [nzShowUploadList]="false" [nzDisabled]="!!field.disabled"
-                     (nzChange)="handleUpload(field.key, $event)">
+            [minlength]="field.min || 0"
+            [maxlength]="field.max || 255"
+            [placeholder]="field.placeholder || ''"
+            [nzAutocomplete]="auto"/>
+          <nz-autocomplete [nzDataSource]="field.auto" #auto></nz-autocomplete>
+        }
+        @case ('number') {
+          {{ field.label || '' }}
+          <!--数值-->
+          <nz-input-number [formControlName]="field.key"
+            [nzMin]="field.min===undefined ? -Infinity : field.min"
+            [nzMax]="field.max===undefined ? Infinity : field.max"
+            [nzStep]="field.step || 1"
+          [nzPlaceHolder]="field.placeholder || ''"></nz-input-number>
+        }
+        @case ('slider') {
+          {{ field.label || '' }}
+          <!--滑块-->
+          <nz-slider [formControlName]="field.key"
+            [nzMin]="field.min || 0"
+            [nzMax]="field.max || 100"
+          [nzStep]="field.step"></nz-slider>
+        }
+        @case ('radio') {
+          {{ field.label || '' }}
+          <!--单选 有import Bug，先不支持-->
+          <nz-radio-group [formControlName]="field.key" nzButtonStyle="solid">
+            @for (o of field.options; track o) {
+              <label nz-radio-button
+                [nzValue]="o.value"
+              [nzDisabled]="o.disabled">{{ o.label }}</label>
+            }
+          </nz-radio-group>
+        }
+        @case ('select') {
+          {{ field.label || '' }}
+          <!--选项-->
+          <nz-select [formControlName]="field.key"
+            [nzOptions]="field.options || empty"
+          [nzPlaceHolder]="field.placeholder || ''"></nz-select>
+        }
+        @case ('tree') {
+          <!--树选择-->
+          <nz-tree-select nzShowSearch nzCheckable [formControlName]="field.key"
+            [nzNodes]="field.tree || empty"
+            [nzMultiple]="field.multiple"
+            (nzTreeCheckBoxChange)="field.change?.($event)"
+          [nzPlaceHolder]="field.placeholder || ''"></nz-tree-select>
+        }
+        @case ('switch') {
+          {{ field.label || '' }}
+          <!--开关-->
+          <nz-switch [formControlName]="field.key"></nz-switch>
+        }
+        @case ('checkbox') {
+          {{ field.label || '' }}
+          <!--开关-->
+          <label nz-checkbox [formControlName]="field.key"></label>
+        }
+        @case ('slider') {
+          {{ field.label || '' }}
+          <!--进度条-->
+          <nz-slider [formControlName]="field.key"
+          [nzMax]="field.max" [nzMin]="field.min" [nzStep]="field.step"></nz-slider>
+        }
+        @case ('datetime') {
+          {{ field.label || '' }}
+          <!--日期和时间-->
+          <nz-date-picker nzShowTime [formControlName]="field.key"
+          [nzPlaceHolder]="field.placeholder || ''"></nz-date-picker>
+        }
+        @case ('date') {
+          {{ field.label || '' }}
+          <!--日期-->
+          <nz-date-picker [formControlName]="field.key" [nzPlaceHolder]="field.placeholder || ''"></nz-date-picker>
+        }
+        @case ('time') {
+          {{ field.label || '' }}
+          <!--时间-->
+          <nz-time-picker [formControlName]="field.key" [nzPlaceHolder]="field.placeholder || ''"></nz-time-picker>
+        }
+        @case ('upload') {
+          {{ field.label || '' }}
+          <!--文件-->
+          <nz-upload [nzAction]="field.upload" [nzShowUploadList]="false" [nzDisabled]="!!field.disabled">
             <button nz-button nzType="primary" [disabled]="!!field.disabled">上传</button>
           </nz-upload>
-        </ng-template>
+        }
+        @case ('file') {
+          {{ field.label || '' }}
+          <!--文件-->
+          <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
+            <input nz-input [formControlName]="field.key"
+            [placeholder]="field.placeholder || ''"/></nz-input-group>
+            <ng-template #suffixButton>
+              <nz-upload [nzAction]="field.upload" [nzShowUploadList]="false" [nzDisabled]="!!field.disabled"
+                (nzChange)="handleUpload(field.key, $event)">
+              <button nz-button nzType="primary" [disabled]="!!field.disabled">上传</button>
+            </nz-upload>
+          </ng-template>
+        }
+        @case ('images') {
+          {{ field.label || '' }}
+          <!--标签-->
+          <nz-select nzMode="tags" [formControlName]="field.key"
+            [nzTokenSeparators]="[',','，', ' ', ';']"
+            [nzOptions]="field.options || empty"
+            [nzPlaceHolder]="field.placeholder || '输入 逗号，分号，空格 分隔'"
+          ></nz-select>
+          <nz-upload [nzAction]="field.upload" nzMultiple [nzDisabled]="!!field.disabled"
+            (nzChange)="handleUploadImages(field.key, $event)">
+            <button nz-button nzType="primary" [disabled]="!!field.disabled">上传</button>
+          </nz-upload>
+        }
+        @default {
+          {{ field.label || '' }}
+          未支持的组件
+        }
       }
-      @case ('images') {
-        {{ field.label || '' }}
-        <!--标签-->
-        <nz-select nzMode="tags" [formControlName]="field.key"
-                   [nzTokenSeparators]="[',','，', ' ', ';']"
-                   [nzOptions]="field.options || empty"
-                   [nzPlaceHolder]="field.placeholder || '输入 逗号，分号，空格 分隔'"
-        ></nz-select>
-        <nz-upload [nzAction]="field.upload" nzMultiple [nzDisabled]="!!field.disabled"
-                   (nzChange)="handleUploadImages(field.key, $event)">
-          <button nz-button nzType="primary" [disabled]="!!field.disabled">上传</button>
-        </nz-upload>
-      }
-      @default {
-        {{ field.label || '' }}
-        未支持的组件
-      }
-    }
     </span>
   }
 </div>

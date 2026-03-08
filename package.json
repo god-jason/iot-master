@@ -11,11 +11,11 @@
   "private": true,
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
-    "@angular/common": "^20.3.17",
-    "@angular/compiler": "^20.3.17",
-    "@angular/core": "^20.3.17",
+    "@angular/common": "^21.2.1",
+    "@angular/compiler": "^21.2.1",
+    "@angular/core": "^21.2.1",
     "@angular/forms": "^20.3.17",
-    "@angular/platform-browser": "^20.3.17",
+    "@angular/platform-browser": "^21.2.1",
     "@angular/platform-browser-dynamic": "^20.3.17",
     "@angular/router": "^20.3.17",
     "dayjs": "^1.11.13",
@@ -31,9 +31,10 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^20.3.19",
-    "@angular/cli": "^20.3.19",
-    "@angular/compiler-cli": "^20.3.17",
+    "@angular/build": "^21.2.1",
+    "@angular/cli": "^21.2.1",
+    "@angular/compiler-cli": "^21.2.1",
+    "less": "^4.2.0",
     "typescript": "~5.9.3"
   }
 }

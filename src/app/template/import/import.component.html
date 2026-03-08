@@ -16,7 +16,7 @@
         <!--上传-->
         @if (current == 0) {
           <nz-upload nzType="drag" [nzCustomRequest]="onUploadRequest" [nzShowUploadList]="true"
-                     nzFileType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+            nzFileType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
             <p class="ant-upload-drag-icon">
               <nz-icon nzType="inbox"/>
             </p>
@@ -39,20 +39,22 @@
           <form [formGroup]="group">
             <nz-table #header nzSize="small" [nzData]="content.columns" nzShowPagination="false">
               <thead>
-              <tr>
-                <th>字段</th>
-                <th>表头</th>
-              </tr>
+                <tr>
+                  <th>字段</th>
+                  <th>表头</th>
+                </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let col of header.data">
-                <td>
-                  {{ col.label }} / {{ col.key }}
-                </td>
-                <td>
-                  <nz-select [formControlName]="col.key" [nzOptions]="options"></nz-select>
-                </td>
-              </tr>
+                @for (col of header.data; track col) {
+                  <tr>
+                    <td>
+                      {{ col.label }} / {{ col.key }}
+                    </td>
+                    <td>
+                      <nz-select [formControlName]="col.key" [nzOptions]="options"></nz-select>
+                    </td>
+                  </tr>
+                }
               </tbody>
             </nz-table>
           </form>
@@ -67,24 +69,30 @@
         @if (current === 2) {
           <nz-table #table nzSize="small" [nzData]="values" nzShowPagination="false">
             <thead>
-            <tr>
-              <th *ngFor="let item of content.columns">
-                {{ item.label || item.key }}
-              </th>
-              <th>操作</th>
-            </tr>
+              <tr>
+                @for (item of content.columns; track item) {
+                  <th>
+                    {{ item.label || item.key }}
+                  </th>
+                }
+                <th>操作</th>
+              </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let data of values; let i=index">
-              <td *ngFor="let item of content.columns">
-                {{ data[item.key] }}
-              </td>
-              <td>
-                <button nz-button (click)="removeValue(i)">
-                  删除
-                </button>
-              </td>
-            </tr>
+              @for (data of values; track data; let i = $index) {
+                <tr>
+                  @for (item of content.columns; track item) {
+                    <td>
+                      {{ data[item.key] }}
+                    </td>
+                  }
+                  <td>
+                    <button nz-button (click)="removeValue(i)">
+                      删除
+                    </button>
+                  </td>
+                </tr>
+              }
             </tbody>
           </nz-table>
 
@@ -112,8 +120,12 @@
           <nz-result [nzStatus]="resultStatus" [nzTitle]="resultTitle" [nzSubTitle]="resultReport"></nz-result>
 
           <div class="footer">
-            <button nz-button nzType="link" (click)="downloadSucceed()" *ngIf="succeed.length">下载成功记录</button>
-            <button nz-button nzType="link" (click)="downloadFailed()" *ngIf="failed.length">下载失败记录</button>
+            @if (succeed.length) {
+              <button nz-button nzType="link" (click)="downloadSucceed()">下载成功记录</button>
+            }
+            @if (failed.length) {
+              <button nz-button nzType="link" (click)="downloadFailed()">下载失败记录</button>
+            }
           </div>
           <div class="footer">
             <button nz-button nzType="primary" (click)="finish()">结束</button>

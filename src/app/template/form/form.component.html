@@ -1,7 +1,9 @@
 @if (content) {
   @if (content.template == 'form') {
     <nz-card [nzTitle]="content.title" [nzExtra]="extra">
-      <smart-toolbar #toolbar *ngIf="content.toolbar" [fields]="content.toolbar" [values]="toolbarValue" (action)="execute($event)"></smart-toolbar>
+      @if (content.toolbar) {
+        <smart-toolbar #toolbar [fields]="content.toolbar" [values]="toolbarValue" (action)="execute($event)"></smart-toolbar>
+      }
       <smart-editor #editor [fields]="content.fields" [values]="data" (action)="execute($event)"></smart-editor>
     </nz-card>
     <ng-template #extra>

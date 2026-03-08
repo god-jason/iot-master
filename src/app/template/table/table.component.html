@@ -1,7 +1,9 @@
 @if (content) {
   @if (content.template == 'table') {
     <nz-card [nzTitle]="content.title" [nzExtra]="extra">
-      <smart-toolbar #toolbar *ngIf="content.toolbar" [fields]="content.toolbar" [values]="toolbarValue" (action)="execute($event)"></smart-toolbar>
+      @if (content.toolbar) {
+        <smart-toolbar #toolbar [fields]="content.toolbar" [values]="toolbarValue" (action)="execute($event)"></smart-toolbar>
+      }
       <smart-table #table
         [columns]="content.columns"
         [operators]="content.operators"
@@ -13,10 +15,12 @@
       ></smart-table>
     </nz-card>
     <ng-template #extra>
-      <button nz-button nzType="link" (click)="load()" class="load" *ngIf="content.load_api || content.search || content.search_api">
-        <span nz-icon nzType="reload" [nzSpin]="loading"></span>
-        刷新
-      </button>
+      @if (content.load_api || content.search || content.search_api) {
+        <button nz-button nzType="link" (click)="load()" class="load">
+          <span nz-icon nzType="reload" [nzSpin]="loading"></span>
+          刷新
+        </button>
+      }
     </ng-template>
   } @else {
     模板类型应该是table

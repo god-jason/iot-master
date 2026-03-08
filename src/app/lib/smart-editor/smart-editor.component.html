@@ -1,10 +1,22 @@
 <ng-template #errorTip let-control>
-  <ng-container *ngIf="control.hasError('required')">必填项</ng-container>
-  <ng-container *ngIf="control.hasError('pattern')">格式不对</ng-container>
-  <ng-container *ngIf="control.hasError('min')">太小了</ng-container>
-  <ng-container *ngIf="control.hasError('max')">太大了</ng-container>
-  <ng-container *ngIf="control.hasError('minlength')">太短了</ng-container>
-  <ng-container *ngIf="control.hasError('maxlength')">太长了</ng-container>
+  @if (control.hasError('required')) {
+    必填项
+  }
+  @if (control.hasError('pattern')) {
+    格式不对
+  }
+  @if (control.hasError('min')) {
+    太小了
+  }
+  @if (control.hasError('max')) {
+    太大了
+  }
+  @if (control.hasError('minlength')) {
+    太短了
+  }
+  @if (control.hasError('maxlength')) {
+    太长了
+  }
 </ng-template>
 
 
@@ -14,64 +26,66 @@
     @case ('text') {
       <!--文本-->
       <input nz-input [formControl]="control"
-             [minlength]="field.min || 0"
-             [maxlength]="field.max || 255"
-             [placeholder]="field.placeholder || ''"
-             [nzAutocomplete]="auto"/>
+        [minlength]="field.min || 0"
+        [maxlength]="field.max || 255"
+        [placeholder]="field.placeholder || ''"
+        [nzAutocomplete]="auto"/>
       <nz-autocomplete [nzDataSource]="field.auto" #auto></nz-autocomplete>
     }
     @case ('password') {
       <!--密码-->
       <input nz-input type="password" [formControl]="control"
-             [minlength]="field.min || 0"
-             [maxlength]="field.max || 255"
-             [placeholder]="field.placeholder || ''"/>
+        [minlength]="field.min || 0"
+        [maxlength]="field.max || 255"
+        [placeholder]="field.placeholder || ''"/>
     }
     @case ('number') {
       <!--数值-->
       <nz-input-number [formControl]="control"
-                       [nzMin]="field.min===undefined ? -Infinity : field.min"
-                       [nzMax]="field.max===undefined ? Infinity : field.max"
-                       [nzStep]="field.step || 1"
-                       [nzPlaceHolder]="field.placeholder || ''"></nz-input-number>
+        [nzMin]="field.min===undefined ? -Infinity : field.min"
+        [nzMax]="field.max===undefined ? Infinity : field.max"
+        [nzStep]="field.step || 1"
+      [nzPlaceHolder]="field.placeholder || ''"></nz-input-number>
     }
     @case ('slider') {
       <!--滑块-->
       <nz-slider [formControl]="control"
-                 [nzMin]="field.min || 0"
-                 [nzMax]="field.max || 100"
-                 [nzStep]="field.step"></nz-slider>
+        [nzMin]="field.min || 0"
+        [nzMax]="field.max || 100"
+      [nzStep]="field.step"></nz-slider>
     }
     @case ('radio') {
       <!--单选 有import Bug，先不支持-->
       <nz-radio-group [formControl]="control" nzButtonStyle="solid">
-        <label nz-radio-button *ngFor="let o of field.options"
-               [nzValue]="o.value"
-               [nzDisabled]="o.disabled">{{ o.label }}</label>
+        @for (o of field.options; track o) {
+          <label nz-radio-button
+            [nzValue]="o.value"
+          [nzDisabled]="o.disabled">{{ o.label }}</label>
+        }
       </nz-radio-group>
     }
     @case ('select') {
       <!--选项-->
       <nz-select [formControl]="control"
-                 [nzOptions]="field.options || empty"
-                 [nzAllowClear]="field.clear || false"
-                 [nzPlaceHolder]="field.placeholder || ''"></nz-select>
+        [nzOptions]="field.options || empty"
+        [nzAllowClear]="field.clear || false"
+      [nzPlaceHolder]="field.placeholder || ''"></nz-select>
     }
     @case ('tags') {
       <!--标签-->
       <nz-select nzMode="tags" [formControl]="control"
-                 [nzTokenSeparators]="[',','，', ' ', ';']"
-                 [nzOptions]="field.options || empty"
-                 [nzAllowClear]="field.clear || false"
-                 [nzPlaceHolder]="field.placeholder || '输入 逗号，分号，空格 分隔'"></nz-select>
+        [nzTokenSeparators]="[',','，', ' ', ';']"
+        [nzOptions]="field.options || empty"
+        [nzAllowClear]="field.clear || false"
+      [nzPlaceHolder]="field.placeholder || '输入 逗号，分号，空格 分隔'"></nz-select>
     }
     @case ('tree') {
       <!--树选择-->
       <nz-tree-select nzShowSearch nzCheckable [formControl]="control"
-                      [nzNodes]="field.tree || empty"
-                      [nzAllowClear]="field.clear || false"
-                      [nzMultiple]="field.multiple"
-                      [nzPlaceHolder]="field.placeholder || ''"></nz-tree-select>
+        [nzNodes]="field.tree || empty"
+        [nzAllowClear]="field.clear || false"
+        [nzMultiple]="field.multiple"
+      [nzPlaceHolder]="field.placeholder || ''"></nz-tree-select>
     }
     @case ('color') {
       <!--颜色-->
@@ -94,7 +108,7 @@
     @case ('slider') {
       <!--进度条-->
       <nz-slider [formControl]="control"
-                 [nzMax]="field.max" [nzMin]="field.min" [nzStep]="field.step"></nz-slider>
+      [nzMax]="field.max" [nzMin]="field.min" [nzStep]="field.step"></nz-slider>
     }
     @case ('rate') {
       <!--评分-->
@@ -103,7 +117,7 @@
     @case ('datetime') {
       <!--日期和时间-->
       <nz-date-picker nzShowTime [formControl]="control" [nzAllowClear]="field.clear || false"
-                      [nzPlaceHolder]="field.placeholder || ''"></nz-date-picker>
+      [nzPlaceHolder]="field.placeholder || ''"></nz-date-picker>
     }
     @case ('date') {
       <!--日期-->
@@ -117,10 +131,10 @@
       <!--文件-->
       <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
         <input nz-input [formControl]="control"
-               [placeholder]="field.placeholder || ''"/></nz-input-group>
-      <ng-template #suffixButton>
-        <nz-upload [nzAction]="field.upload" [nzShowUploadList]="true" [nzDisabled]="!!field.disabled"
-                   (nzChange)="handleUpload(control, $event)">
+        [placeholder]="field.placeholder || ''"/></nz-input-group>
+        <ng-template #suffixButton>
+          <nz-upload [nzAction]="field.upload" [nzShowUploadList]="true" [nzDisabled]="!!field.disabled"
+            (nzChange)="handleUpload(control, $event)">
           <button nz-button nzType="primary" [disabled]="!!field.disabled">上传</button>
         </nz-upload>
       </ng-template>
@@ -128,12 +142,12 @@
     @case ('images') {
       <!--标签-->
       <nz-select nzMode="tags" [formControl]="control"
-                 [nzTokenSeparators]="[',','，', ' ', ';']"
-                 [nzOptions]="field.options || empty"
-                 [nzPlaceHolder]="field.placeholder || '输入 逗号，分号，空格 分隔'"
+        [nzTokenSeparators]="[',','，', ' ', ';']"
+        [nzOptions]="field.options || empty"
+        [nzPlaceHolder]="field.placeholder || '输入 逗号，分号，空格 分隔'"
       ></nz-select>
       <nz-upload [nzAction]="field.upload" nzMultiple [nzDisabled]="!!field.disabled"
-                 (nzChange)="handleUploadImages(control, $event)">
+        (nzChange)="handleUploadImages(control, $event)">
         <button nz-button nzType="primary" [disabled]="!!field.disabled">上传</button>
       </nz-upload>
     }
@@ -149,66 +163,74 @@
       </a>
       <!--内容-->
       <div cdkDropList (cdkDropListDropped)="tableDrop(control, $event)">
-        <div *ngFor="let c of control.controls; let i=index" cdkDrag>
-          <nz-space>
-            <a *nzSpaceItem title="排序" style="cursor:move;" cdkDragHandle>
-              <i nz-icon nzType="drag"></i>排序
-            </a>
-            <a *nzSpaceItem title="复制" (click)="tableCopy(field.children, control, i)">
-              <i nz-icon nzType="copy"></i>复制
-            </a>
-            <a *nzSpaceItem title="删除" (click)="tableRemove(control, i)">
-              <i nz-icon nzType="delete"></i>删除
-            </a>
-          </nz-space>
-          <ng-container *ngTemplateOutlet="groupTpl; context: { fields: field.children, group:c }">
-          </ng-container>
-        </div>
+        @for (c of control.controls; track c; let i = $index) {
+          <div cdkDrag>
+            <nz-space>
+              <a *nzSpaceItem title="排序" style="cursor:move;" cdkDragHandle>
+                <i nz-icon nzType="drag"></i>排序
+              </a>
+              <a *nzSpaceItem title="复制" (click)="tableCopy(field.children, control, i)">
+                <i nz-icon nzType="copy"></i>复制
+              </a>
+              <a *nzSpaceItem title="删除" (click)="tableRemove(control, i)">
+                <i nz-icon nzType="delete"></i>删除
+              </a>
+            </nz-space>
+            <ng-container *ngTemplateOutlet="groupTpl; context: { fields: field.children, group:c }">
+            </ng-container>
+          </div>
+        }
       </div>
     }
     @case ('table') {
       <!--表格-->
-          @if (control.controls.length) {
-      <nz-table nzSize="small" nzTemplateMode nzBordered>
-        <!--表头-->
-        <thead>
-        <tr>
-          <th *ngFor="let f of field.children;let j=index">{{ f.label }}</th>
-          <th>
-            <a title="添加" (click)="tableAdd(control, field.children)">
-              <i nz-icon nzType="plus"></i>添加
-            </a>
-          </th>
-        </tr>
-        </thead>
-        <!--内容-->
-        <tbody cdkDropList (cdkDropListDropped)="tableDrop(control, $event)">
-        <tr *ngFor="let c of control.controls; let i=index" cdkDrag>
-          <td *ngFor="let f of field.children; let j=index">
-            <ng-container *ngTemplateOutlet="controlTpl; context: { field: f, control:c.get(f.key) }">
-            </ng-container>
-          </td>
-          <td class="operators">
-            <nz-space>
-              <a *nzSpaceItem title="排序" style="cursor:move;" cdkDragHandle>
-                <i nz-icon nzType="drag"></i>
-              </a>
-              <a *nzSpaceItem title="复制" (click)="tableCopy(field.children, control, i)">
-                <i nz-icon nzType="copy"></i>
-              </a>
-              <a *nzSpaceItem title="删除" (click)="tableRemove(control, i)">
-                <i nz-icon nzType="delete"></i>
-              </a>
-            </nz-space>
-          </td>
-        </tr>
-        </tbody>
-      </nz-table>
-        } @else {          
-          <a title="添加" (click)="tableAdd(control, field.children)">
-            <i nz-icon nzType="plus"></i>添加
-          </a>
-        }
+      @if (control.controls.length) {
+        <nz-table nzSize="small" nzTemplateMode nzBordered>
+          <!--表头-->
+          <thead>
+            <tr>
+              @for (f of field.children; track f; let j = $index) {
+                <th>{{ f.label }}</th>
+              }
+              <th>
+                <a title="添加" (click)="tableAdd(control, field.children)">
+                  <i nz-icon nzType="plus"></i>添加
+                </a>
+              </th>
+            </tr>
+          </thead>
+          <!--内容-->
+          <tbody cdkDropList (cdkDropListDropped)="tableDrop(control, $event)">
+            @for (c of control.controls; track c; let i = $index) {
+              <tr cdkDrag>
+                @for (f of field.children; track f; let j = $index) {
+                  <td>
+                    <ng-container *ngTemplateOutlet="controlTpl; context: { field: f, control:c.get(f.key) }">
+                    </ng-container>
+                  </td>
+                }
+                <td class="operators">
+                  <nz-space>
+                    <a *nzSpaceItem title="排序" style="cursor:move;" cdkDragHandle>
+                      <i nz-icon nzType="drag"></i>
+                    </a>
+                    <a *nzSpaceItem title="复制" (click)="tableCopy(field.children, control, i)">
+                      <i nz-icon nzType="copy"></i>
+                    </a>
+                    <a *nzSpaceItem title="删除" (click)="tableRemove(control, i)">
+                      <i nz-icon nzType="delete"></i>
+                    </a>
+                  </nz-space>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </nz-table>
+      } @else {
+        <a title="添加" (click)="tableAdd(control, field.children)">
+          <i nz-icon nzType="plus"></i>添加
+        </a>
+      }
     }
     @case ('template') {
       <ng-container *ngTemplateOutlet="field.template; context: { field: field, control:control }">
@@ -231,25 +253,27 @@
 
   <nz-table nzSize="small" nzTemplateMode nzBordered>
     <tbody cdkDropList (cdkDropListDropped)="arrayDrop(array, $event)">
-    <tr *ngFor="let c of array.controls; let i=index" cdkDrag>
-      <td>
-        <ng-container *ngTemplateOutlet="controlTpl; context: { field: field, control: c }">
-        </ng-container>
-      </td>
-      <td class="operators">
-        <nz-space>
-          <a *nzSpaceItem title="排序" style="cursor:move;" cdkDragHandle>
-            <i nz-icon nzType="drag"></i>
-          </a>
-          <a *nzSpaceItem title="复制" (click)="arrayCopy(field, array, i)">
-            <i nz-icon nzType="copy"></i>
-          </a>
-          <a *nzSpaceItem title="删除" (click)="arrayRemove(array, i)">
-            <i nz-icon nzType="delete"></i>
-          </a>
-        </nz-space>
-      </td>
-    </tr>
+      @for (c of array.controls; track c; let i = $index) {
+        <tr cdkDrag>
+          <td>
+            <ng-container *ngTemplateOutlet="controlTpl; context: { field: field, control: c }">
+            </ng-container>
+          </td>
+          <td class="operators">
+            <nz-space>
+              <a *nzSpaceItem title="排序" style="cursor:move;" cdkDragHandle>
+                <i nz-icon nzType="drag"></i>
+              </a>
+              <a *nzSpaceItem title="复制" (click)="arrayCopy(field, array, i)">
+                <i nz-icon nzType="copy"></i>
+              </a>
+              <a *nzSpaceItem title="删除" (click)="arrayRemove(array, i)">
+                <i nz-icon nzType="delete"></i>
+              </a>
+            </nz-space>
+          </td>
+        </tr>
+      }
     </tbody>
   </nz-table>
 </ng-template>
@@ -261,22 +285,24 @@
       <!-- 什么也不用干 -->
     }
     @else{
-      <nz-form-item>
-        <nz-form-label *ngIf="field.label" [nzSpan]="field.span || 4" [nzRequired]="field.required" [nzFor]="field.key">
+    <nz-form-item>
+      @if (field.label) {
+        <nz-form-label [nzSpan]="field.span || 4" [nzRequired]="field.required" [nzFor]="field.key">
           {{ field.label }}
         </nz-form-label>
-        <nz-form-control [nzSpan]="24 - (field.span || 4)" [nzErrorTip]="errorTip">
-          @if (field.array) {
-            <ng-container *ngTemplateOutlet="arrayTpl; context: { field: field, array: group.get(field.key)}">
-            </ng-container>
-          } @else {
-            <ng-container *ngTemplateOutlet="controlTpl; context: { field: field, control: group.get(field.key)}">
-            </ng-container>
-          }
-        </nz-form-control>
-      </nz-form-item>
-    }
+      }
+      <nz-form-control [nzSpan]="24 - (field.span || 4)" [nzErrorTip]="errorTip">
+        @if (field.array) {
+          <ng-container *ngTemplateOutlet="arrayTpl; context: { field: field, array: group.get(field.key)}">
+          </ng-container>
+        } @else {
+          <ng-container *ngTemplateOutlet="controlTpl; context: { field: field, control: group.get(field.key)}">
+          </ng-container>
+        }
+      </nz-form-control>
+    </nz-form-item>
   }
+}
 </ng-template>
 
 <!-- 入口 -->

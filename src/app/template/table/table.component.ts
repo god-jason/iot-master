@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ParamSearch, SmartTableComponent } from '../../lib/smart-table/smart-table.component';
 import { isFunction } from 'rxjs/internal/util/isFunction';
 import { NzCardComponent } from 'ng-zorro-antd/card';
-import { CommonModule } from '@angular/common';
+
 import { NzSpinComponent } from 'ng-zorro-antd/spin';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
@@ -17,12 +17,11 @@ import { LinkReplaceParams } from '../../lib/utils';
   imports: [
     SmartTableComponent,
     NzCardComponent,
-    CommonModule,
     NzSpinComponent,
     NzButtonComponent,
     NzIconDirective,
-    SmartToolbarComponent,
-  ],
+    SmartToolbarComponent
+],
   templateUrl: './table.component.html',
   standalone: true,
   styleUrl: './table.component.scss',

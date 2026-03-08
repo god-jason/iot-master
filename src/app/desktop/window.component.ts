@@ -1,7 +1,7 @@
 import {Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, ViewChild,} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
-import {NgForOf, NgIf, NgStyle} from '@angular/common';
+import { NgStyle } from '@angular/common';
 import {CdkDrag, CdkDragHandle} from '@angular/cdk/drag-drop';
 import {NzSpaceComponent, NzSpaceItemDirective} from 'ng-zorro-antd/space';
 import {NzButtonComponent} from 'ng-zorro-antd/button';
@@ -31,11 +31,9 @@ export interface WindowDialog {
     NzButtonComponent,
     NzIconDirective,
     NzTabSetComponent,
-    NgIf,
     NzTabComponent,
-    NgForOf,
     FullscreenDirective
-  ],
+],
   standalone: true
 })
 export class WindowComponent implements OnInit {

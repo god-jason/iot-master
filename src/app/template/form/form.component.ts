@@ -6,7 +6,7 @@ import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {NzSpinComponent} from 'ng-zorro-antd/spin';
 import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {SmartToolbarComponent} from '../../lib/smart-toolbar/smart-toolbar.component';
-import {NgIf} from '@angular/common';
+
 import {NzModalRef} from 'ng-zorro-antd/modal';
 import {TemplateBase} from '../template-base.component';
 import {FormContent} from '../template';
@@ -21,9 +21,8 @@ import {LinkReplaceParams} from '../../lib/utils';
     NzButtonComponent,
     NzSpinComponent,
     NzIconDirective,
-    SmartToolbarComponent,
-    NgIf
-  ],
+    SmartToolbarComponent
+],
   templateUrl: './form.component.html',
   standalone: true,
   styleUrl: './form.component.scss',

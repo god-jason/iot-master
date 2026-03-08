@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {TemplateBase} from '../template-base.component';
 import {NzCardComponent} from 'ng-zorro-antd/card';
 import {NzSpinComponent} from 'ng-zorro-antd/spin';
-import {DecimalPipe, NgIf} from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import {SmartToolbarComponent} from '../../lib/smart-toolbar/smart-toolbar.component';
 import {NzColDirective, NzRowDirective} from 'ng-zorro-antd/grid';
 import {NzStatisticComponent} from 'ng-zorro-antd/statistic';
@@ -14,7 +14,6 @@ import {NzIconDirective} from 'ng-zorro-antd/icon';
   imports: [
     NzCardComponent,
     NzSpinComponent,
-    NgIf,
     SmartToolbarComponent,
     NzRowDirective,
     NzColDirective,
@@ -22,7 +21,7 @@ import {NzIconDirective} from 'ng-zorro-antd/icon';
     DecimalPipe,
     NzButtonComponent,
     NzIconDirective
-  ],
+],
   templateUrl: './statistic.component.html',
   standalone: true,
   styleUrl: './statistic.component.scss',

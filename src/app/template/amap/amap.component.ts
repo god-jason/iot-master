@@ -1,6 +1,6 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {load as loadMap} from '@amap/amap-jsapi-loader';
-import {NgIf} from '@angular/common';
+
 import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {NzCardComponent} from 'ng-zorro-antd/card';
 import {NzIconDirective} from 'ng-zorro-antd/icon';
@@ -13,13 +13,12 @@ import {AmapContent} from '../template';
   selector: 'app-amap',
   standalone: true,
   imports: [
-    NgIf,
     NzButtonComponent,
     NzCardComponent,
     NzIconDirective,
     NzSpinComponent,
     SmartToolbarComponent
-  ],
+],
   templateUrl: './amap.component.html',
   styleUrl: './amap.component.scss',
   //inputs: ['app', 'page', 'content', 'params', 'data', 'isChild']

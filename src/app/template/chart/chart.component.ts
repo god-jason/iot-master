@@ -21,7 +21,7 @@ import {NzCardComponent} from 'ng-zorro-antd/card';
 import {NzSpinComponent} from 'ng-zorro-antd/spin';
 import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {SmartToolbarComponent} from '../../lib/smart-toolbar/smart-toolbar.component';
-import {NgIf} from '@angular/common';
+
 import {TemplateBase} from '../template-base.component';
 import {ChartContent} from '../template';
 
@@ -51,9 +51,8 @@ echarts.use([
     NzCardComponent,
     NzSpinComponent,
     NzIconDirective,
-    SmartToolbarComponent,
-    NgIf,
-  ],
+    SmartToolbarComponent
+],
   providers: [
     provideEchartsCore({echarts})
   ],
