@@ -31,3 +31,4 @@ go.work.sum
 /iot-master.yaml
 /vendor
 /node_modules
+/package-lock.json

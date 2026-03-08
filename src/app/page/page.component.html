@@ -21,7 +21,7 @@
     </div>
   }
   @if (content.tabs) {
-    <nz-tabset nzSize="large">
+    <nz-tabs nzSize="large">
       @for (p of content.tabs; track p) {
         <nz-tab [nzTitle]="p.title || 'untitled'">
           <ng-template nz-tab>
@@ -32,7 +32,7 @@
           </ng-template>
         </nz-tab>
       }
-    </nz-tabset>
+    </nz-tabs>
   }
 } @else {
   <nz-spin nzSimple></nz-spin>
