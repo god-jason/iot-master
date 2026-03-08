@@ -1,0 +1,53 @@
+<div [hidden]="!show" class="modal"
+     [ngStyle]="{ width: width, height: height, 'z-index': index }"
+     cdkDrag [cdkDragFreeDragPosition]="dragPosition">
+
+  <div class="modal-center"
+       appFullscreen (screen)="maximize()"
+       (setIndex)="setIndex()" [ngStyle]="{ width: width, height: height }">
+
+    <div class="modal-main">
+
+      <div class="modal-right"></div>
+      <div class="modal-bottom"></div>
+      <div class="modal-right-bottom"></div>
+
+      <div class="modal-top" cdkDragHandle (click)="setIndex()" (dblclick)="maximize()">
+
+        <div nz-space>
+          <button *nzSpaceItem nz-button nzType="default" nzSize="small" (click)="back()" title="回退">
+            <i nz-icon nzType="arrow-left" nzTheme="outline"></i>
+          </button>
+          <button *nzSpaceItem nz-button nzType="default" nzSize="small" (click)="forward()" title="前进">
+            <i nz-icon nzType="arrow-right" nzTheme="outline"></i>
+          </button>
+        </div>
+
+        <div class="modal-title">{{ title }}</div>
+
+
+        <div nz-space>
+          <button *nzSpaceItem nz-button nzType="default" nzSize="small" (click)="minimize()" title="最小化">
+            <i nz-icon nzType="minus" nzTheme="outline"></i>
+          </button>
+          <button *nzSpaceItem nz-button nzType="default" nzSize="small" (click)="maximize()" title="最大化">
+            <i nz-icon nzType="border" nzTheme="outline"></i>
+          </button>
+          <button *nzSpaceItem nz-button nzType="default" nzSize="small" (click)="close()" title="关闭">
+            <i nz-icon nzType="close" nzTheme="outline"></i>
+          </button>
+        </div>
+      </div>
+
+
+      <!-- 为什么嵌套这么多层。。。-->
+      <div class="modal-alert">
+        <div class="modal-detail-content">
+          <div class="modal-details">
+            <iframe style="position: relative" [src]="_url" #iframe></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

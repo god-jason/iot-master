@@ -1,0 +1,18 @@
+@if (content) {
+  @if (content.template == 'form') {
+    <nz-card [nzTitle]="content.title" [nzExtra]="extra">
+      <smart-toolbar #toolbar *ngIf="content.toolbar" [fields]="content.toolbar" [values]="toolbarValue" (action)="execute($event)"></smart-toolbar>
+      <smart-editor #editor [fields]="content.fields" [values]="data" (action)="execute($event)"></smart-editor>
+    </nz-card>
+    <ng-template #extra>
+      <button nz-button nzType="text" nzType="primary" (click)="submit()">
+        <span nz-icon nzType="save" [nzSpin]="submitting"></span>
+        提交
+      </button>
+    </ng-template>
+  } @else {
+    模板类型应该是form
+  }
+} @else {
+  <nz-spin nzSimple></nz-spin>
+}

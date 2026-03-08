@@ -1,0 +1,124 @@
+:host {
+  display: flex;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app-layout {
+  height: 100vh;
+}
+
+.menu-sidebar {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  box-shadow: 2px 0 6px rgba(0, 21, 41, .35);
+}
+
+.sidebar-logo {
+  position: relative;
+  height: 64px;
+  padding-left: 24px;
+  overflow: hidden;
+  line-height: 64px;
+  //background: #001529;
+  transition: all .3s;
+}
+
+.sidebar-logo img {
+  display: inline-block;
+  height: 32px;
+  width: 32px;
+  vertical-align: middle;
+}
+
+.sidebar-logo h1 {
+  display: inline-block;
+  margin: 0 0 0 20px;
+  //color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
+  vertical-align: middle;
+}
+
+nz-header {
+  padding: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+.app-header {
+  position: relative;
+  height: 64px;
+  padding: 0;
+  //background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+  display: flex;
+  //align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  overflow: hidden;
+}
+
+.header-trigger {
+  padding: 0 16px;
+  cursor: pointer;
+  transition: all .3s, padding 0s;
+  display: flex;
+  //flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.header-icon{
+  padding: 0 16px;
+  cursor: pointer;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.header-nav{
+ &>*{
+   margin: 0 5px;
+ }
+}
+
+.header-content {
+  flex: 1;
+}
+
+.header-user {
+  padding: 0 10px;
+  cursor: pointer;
+  display: flex;
+  //flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.theme {
+  padding: 0 10px;
+  cursor: pointer;
+  display: flex;
+  //flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+nz-content {
+  //background: #fff;
+}
+
+.inner-content {
+  padding: 10px;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}

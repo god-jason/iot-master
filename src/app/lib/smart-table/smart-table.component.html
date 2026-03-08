@@ -1,0 +1,94 @@
+<nz-table #table
+          nzSize="small"
+          [nzData]="datum"
+          [nzLoading]="loading"
+          [nzShowPagination]="true"
+          [nzShowTotal]="totalTemplate"
+          [nzFrontPagination]="false"
+          [nzPageIndex]="pageIndex"
+          [nzPageSize]="pageSize"
+          [nzTotal]="total"
+          [nzShowQuickJumper]="true"
+          [nzShowSizeChanger]="true"
+          (nzQueryParams)="onQuery($event)">
+  <thead>
+  <tr>
+    <th *ngFor="let item of columns"
+        [nzColumnKey]="item.key"
+        [nzShowSort]="item.sortable"
+        [nzSortFn]="true"
+        [nzShowFilter]="!!item.filter"
+        [nzFilterFn]="true"
+        [nzFilters]="item.filter || []">
+      {{ item.label }}
+    </th>
+    <th *ngIf="operators && operators.length">操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of table.data; let i=index">
+
+    <td *ngFor="let item of columns" [nzEllipsis]="item.ellipsis" [nzBreakWord]="item.break">
+      @switch (item.type) {
+        @case ("date") {
+          {{ data[item.key] | date: item.format || 'yyyy-MM-dd HH:mm:ss' }}
+        }
+        @case ("number") {
+          {{ data[item.key] | number: item.format || '1.0-2' }}
+        }
+        @case ("bytes") {
+          {{ data[item.key] | nzBytes }}
+        }
+        @case ("bool") {
+          {{ data[item.key] ? '是' : '否' }}
+        }
+        @case ("boolean") {
+          {{ data[item.key] ? '是' : '否' }}
+        }
+        @case ('progress') {
+          <nz-progress [nzPercent]="parseInt(data[item.key])"></nz-progress>
+        }
+        @case ('tags') {
+          <nz-tag *ngFor="let t of data[item.key]">{{ t }}</nz-tag>
+        }
+        @case ("json") {
+          {{ data[item.key] | json }}
+        }
+        @case ("object") {
+          {{ data[item.key] | json }}
+        }
+        @case ("icon") {
+          <nz-avatar nzShape="square" nzIcon="file-image" [nzSrc]="data[item.key]"></nz-avatar>
+        }
+        @case ("avatar") {
+          <nz-avatar nzIcon="user" [nzSrc]="data[item.key]"></nz-avatar>
+        }
+        @default {
+          @if (item.action) {
+            <a (click)="action.emit({action:item.action, data:data, index: i})">{{ data[item.key] }}</a>
+          } @else {
+            {{ data[item.key] }}
+          }
+        }
+      }
+    </td>
+
+    <td *ngIf="operators && operators.length">
+        <span class="operator" *ngFor="let o of operators">
+          @if (o.confirm) {
+            <a [title]="o.title||''" nz-popconfirm [nzPopconfirmTitle]="o.confirm"
+               (nzOnConfirm)="action.emit({action:o.action, data:data, index: i})">
+                  <i *ngIf="o.icon" nz-icon [nzType]="o.icon"></i>{{ o.label }}
+              </a>
+          } @else {
+            <a [title]="o.title||''" (click)="action.emit({action:o.action, data:data, index: i})">
+                  <i *ngIf="o.icon" nz-icon [nzType]="o.icon"></i>{{ o.label }}
+              </a>
+          }
+        </span>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
+
+<ng-template #totalTemplate let-total>总计 {{ total }} 条</ng-template>

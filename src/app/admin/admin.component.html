@@ -1,0 +1,94 @@
+<nz-layout class="app-layout">
+  <nz-sider class="menu-sidebar"
+            nzCollapsible
+            nzWidth="200px"
+            nzBreakpoint="md"
+            [(nzCollapsed)]="isCollapsed"
+            [nzTrigger]="null">
+    <div class="sidebar-logo">
+      <img [src]="oem.logo" alt="logo">
+      <h1>{{ oem.name }}</h1>
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      @for (menu of menus; track menu) {
+        <li nz-submenu [nzTitle]="menu.name" [nzIcon]="menu.nz_icon">
+          <ul>
+            @for (item of menu.items; track item) {
+              <li nz-menu-item nzMatchRouter nzMatchRouterExact>
+                <a [routerLink]="item.url" [queryParams]="item.query"
+                   [target]="item.external?'_blank':'_self'">{{ item.name }}</a>
+              </li>
+            }
+          </ul>
+        </li>
+      }
+      <li nz-submenu nzTitle="设置" nzIcon="setting">
+        <ul>
+          @for (setting of settings; track setting) {
+            <li nz-menu-item nzMatchRouter>
+              <a [routerLink]="['setting', setting.module]">{{ setting.title }}</a>
+            </li>
+          }
+        </ul>
+      </li>
+    </ul>
+
+    {{version.version}} {{version.build}}
+
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <span class="header-trigger" title="折叠菜单"
+              nz-icon
+              (click)="isCollapsed = !isCollapsed"
+              [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+        ></span>
+        <span class="header-icon" title="回退" nz-icon nzType="arrow-left" (click)="location.back()"></span>
+        <span class="header-icon" title="前进" nz-icon nzType="arrow-right" (click)="location.forward()"></span>
+        <div class="header-content">
+
+        </div>
+        <span class="header-user" nz-dropdown [nzDropdownMenu]="user">
+            <span nz-icon nzType="user"></span>
+          {{ us.user.name || us.user.id || '无名' }}
+        </span>
+        <nz-dropdown-menu #user>
+          <ul nz-menu>
+            <li nz-menu-item>个人中心</li>
+            <li nz-menu-item>修改密码</li>
+            <!--            <li nz-submenu nzTitle="主题色" nzDisabled>-->
+            <!--              <ul>-->
+            <!--                <li nz-menu-item *ngFor="let color of colors"-->
+            <!--                    [style.color]="color.value" (click)="onChangePrimaryColor(color.value)" >-->
+            <!--                  {{ color.name  || color.value }}-->
+            <!--                </li>-->
+            <!--                <li nz-menu-item>-->
+            <!--                  <nz-color-picker nzSize="small"-->
+            <!--                                   [nzValue]="primaryColor"-->
+            <!--                                   (nzOnChange)="onChangePrimaryColor($event.color)"></nz-color-picker>-->
+            <!--                </li>-->
+            <!--              </ul>-->
+            <!--            </li>-->
+            <li nz-menu-divider></li>
+            <li nz-menu-item (click)="switchDesktop()">桌面模式</li>
+            <li nz-menu-divider></li>
+            <li nz-menu-item (click)="logout()">退出</li>
+          </ul>
+        </nz-dropdown-menu>
+        <span class="theme">
+          @if (ts.theme == "dark") {
+            <nz-icon nzType="sun" nzTheme="outline" title="亮色主题" (click)="onChangeTheme('default')"/>
+          } @else if (ts.theme == "default") {
+            <nz-icon nzType="moon" nzTheme="outline" title="暗色主题" (click)="onChangeTheme('dark')"/>
+          }
+        </span>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

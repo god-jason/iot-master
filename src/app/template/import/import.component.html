@@ -1,0 +1,131 @@
+@if (content) {
+  @if (content.template == 'import') {
+    <nz-card [nzTitle]="content.title">
+
+
+      <nz-steps [nzCurrent]="current">
+        <nz-step nzTitle="上传excel"></nz-step>
+        <nz-step nzTitle="表头匹配"></nz-step>
+        <nz-step nzTitle="数据预览"></nz-step>
+        <nz-step nzTitle="数据上传"></nz-step>
+        <nz-step nzTitle="完成"></nz-step>
+      </nz-steps>
+
+      <div class="steps-action">
+
+        <!--上传-->
+        @if (current == 0) {
+          <nz-upload nzType="drag" [nzCustomRequest]="onUploadRequest" [nzShowUploadList]="true"
+                     nzFileType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+            <p class="ant-upload-drag-icon">
+              <nz-icon nzType="inbox"/>
+            </p>
+            <p class="ant-upload-text">点击上传或拖拽文件到这里</p>
+            <p class="ant-upload-hint">
+              仅支持*.xlsx格式（请使用WPS或Excel2007更高版本编辑），表格中第一行为表头，建议先下载模板。
+            </p>
+          </nz-upload>
+
+          <div class="footer">
+            <button nz-button nzType="link" (click)="downloadTemplate($event)">
+              <i nz-icon nzType="download"></i>
+              下载模板
+            </button>
+          </div>
+        }
+
+        <!--表头选择-->
+        @if (current == 1) {
+          <form [formGroup]="group">
+            <nz-table #header nzSize="small" [nzData]="content.columns" nzShowPagination="false">
+              <thead>
+              <tr>
+                <th>字段</th>
+                <th>表头</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let col of header.data">
+                <td>
+                  {{ col.label }} / {{ col.key }}
+                </td>
+                <td>
+                  <nz-select [formControlName]="col.key" [nzOptions]="options"></nz-select>
+                </td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </form>
+
+          <div class="footer">
+            <button nz-button nzType="default" (click)="back()"><i nz-icon nzType="left"></i>上一步</button>
+            <button nz-button nzType="primary" (click)="preview()"><i nz-icon nzType="right"></i>下一步</button>
+          </div>
+        }
+
+        <!--数据预览-->
+        @if (current === 2) {
+          <nz-table #table nzSize="small" [nzData]="values" nzShowPagination="false">
+            <thead>
+            <tr>
+              <th *ngFor="let item of content.columns">
+                {{ item.label || item.key }}
+              </th>
+              <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of values; let i=index">
+              <td *ngFor="let item of content.columns">
+                {{ data[item.key] }}
+              </td>
+              <td>
+                <button nz-button (click)="removeValue(i)">
+                  删除
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </nz-table>
+
+          <div class="footer">
+            <button nz-button nzType="default" (click)="back()"><i nz-icon nzType="left"></i>上一步</button>
+            <button nz-button nzType="primary" (click)="upload()"><i nz-icon nzType="right"></i>开始上传</button>
+          </div>
+        }
+
+        <!--数据上传-->
+        @if (current === 3) {
+          <div class="progress">
+            <nz-progress [nzPercent]="percent" nzType="circle"></nz-progress>
+          </div>
+          <div class="footer">
+            <div>
+              总计{{ values.length }}条，已经上传{{ succeed.length }}条，失败{{ failed.length }}条
+            </div>
+          </div>
+        }
+
+        <!--完成-->
+        @if (current === 4) {
+
+          <nz-result [nzStatus]="resultStatus" [nzTitle]="resultTitle" [nzSubTitle]="resultReport"></nz-result>
+
+          <div class="footer">
+            <button nz-button nzType="link" (click)="downloadSucceed()" *ngIf="succeed.length">下载成功记录</button>
+            <button nz-button nzType="link" (click)="downloadFailed()" *ngIf="failed.length">下载失败记录</button>
+          </div>
+          <div class="footer">
+            <button nz-button nzType="primary" (click)="finish()">结束</button>
+          </div>
+        }
+      </div>
+
+    </nz-card>
+  } @else {
+    模板类型应该是import
+  }
+} @else {
+  <nz-spin nzSimple></nz-spin>
+}
+

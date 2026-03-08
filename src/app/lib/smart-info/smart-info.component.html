@@ -1,0 +1,49 @@
+<nz-descriptions [nzTitle]="title" nzBordered nzSize="small"
+                 [nzColumn]="{ xs: 1, sm: 1, md: 2, lg:2, xl:3, xxl:3}">
+  @for (f of fields; track f) {
+    <nz-descriptions-item [nzTitle]="f.label" [nzSpan]="f.span || 1" (click)="action.emit(f.action)">
+      @switch (f.type) {
+        @case ("date") {
+          {{ value[f.key] | date: f.format || 'yyyy-MM-dd HH:mm:ss' }}
+        }
+        @case ("number") {
+          {{ value[f.key] | number: f.format || '1.0-2' }}
+        }
+        @case ("bytes") {
+          {{ value[f.key] | nzBytes }}
+        }
+        @case ("bool") {
+          {{ value[f.key] ? '是' : '否' }}
+        }
+        @case ("boolean") {
+          {{ value[f.key] ? '是' : '否' }}
+        }
+        @case ('progress') {
+          <nz-progress [nzPercent]="parseInt(value[f.key])"></nz-progress>
+        }
+        @case ('tags') {
+          <nz-tag *ngFor="let t of value[f.key]">{{ t }}</nz-tag>
+        }
+        @case ("json") {
+          {{ value[f.key] | json }}
+        }
+        @case ("object") {
+          {{ value[f.key] | json }}
+        }
+        @case ("icon") {
+          <nz-avatar nzShape="square" nzIcon="file-image" [nzSrc]="value[f.key]"></nz-avatar>
+        }
+        @case ("avatar") {
+          <nz-avatar nzIcon="user" [nzSrc]="value[f.key]"></nz-avatar>
+        }
+        @default {
+          @if (f.action) {
+            <a (click)="action.emit(f.action)">{{ value[f.key] }}</a>
+          } @else {
+            {{ value[f.key] }}
+          }
+        }
+      }
+    </nz-descriptions-item>
+  }
+</nz-descriptions>

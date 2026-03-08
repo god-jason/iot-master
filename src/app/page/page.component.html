@@ -1,0 +1,39 @@
+@if (error) {
+  <nz-result nzStatus="404" [nzTitle]="error">
+    <div nz-result-extra class="extra">
+      <a nz-button nzType="primary" routerLink="/">返回首页</a>
+    </div>
+  </nz-result>
+} @else if (content) {
+  <div #container></div>
+
+
+    @if (content.children) {
+    <div nz-row>
+      @for (p of content.children; track p) {
+        <div nz-col [nzSpan]="p.span || 24" [nzMd]="p.span || 24" nzXs="24" nzSm="24">
+          <app-page [page]="p.page"
+                    [content]="p.content"
+                    [params]="p.params || params"
+                    [isChild]="true"></app-page>
+        </div>
+      }
+    </div>
+  }
+  @if (content.tabs) {
+    <nz-tabset nzSize="large">
+      @for (p of content.tabs; track p) {
+        <nz-tab [nzTitle]="p.title || 'untitled'">
+          <ng-template nz-tab>
+            <app-page [page]="p.page"
+                      [content]="p.content"
+                      [params]="p.params || params"
+                      [isChild]="true"></app-page>
+          </ng-template>
+        </nz-tab>
+      }
+    </nz-tabset>
+  }
+} @else {
+  <nz-spin nzSimple></nz-spin>
+}

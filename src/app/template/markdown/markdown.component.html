@@ -1,0 +1,11 @@
+@if (content) {
+  @if (content.template == 'info') {
+    <nz-card [nzTitle]="content.title">
+      <markdown [data]="data"></markdown>
+    </nz-card>
+  } @else {
+    模板类型应该是markdown
+  }
+} @else {
+  <nz-spin nzSimple></nz-spin>
+}

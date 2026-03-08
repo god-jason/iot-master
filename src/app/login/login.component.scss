@@ -1,0 +1,14 @@
+:host {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background: #00152a;
+}
+
+.login {
+  width: 400px;
+  //box-shadow: #001529 5px 3px 3px;
+}

@@ -1,0 +1,7 @@
+<nz-card [nzTitle]="'设置 ' + form.title" [nzExtra]="extra">
+  <smart-editor #editor [fields]="form.fields" [values]="data"></smart-editor>
+</nz-card>
+
+<ng-template #extra>
+  <button nz-button nzType="primary" (click)="submit()">保存</button>
+</ng-template>

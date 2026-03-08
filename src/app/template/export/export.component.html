@@ -1,0 +1,19 @@
+@if (content) {
+  @if (content.template == 'export') {
+    <nz-card [nzTitle]="content.title" [nzExtra]="extra">
+
+
+    </nz-card>
+    <ng-template #extra>
+      <button nz-button nzType="primary" (click)="export()">
+        <span nz-icon nzType="save" [nzSpin]="exporting"></span>
+        开始导出
+      </button>
+    </ng-template>
+  } @else {
+    模板类型应该是export
+  }
+} @else {
+  <nz-spin nzSimple></nz-spin>
+}
+

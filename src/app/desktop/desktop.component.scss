@@ -1,0 +1,155 @@
+.layout{
+  //width: 100%;
+  //height: 100%;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  // position: fixed;
+  // left: 0;
+  //   top: 0;
+  // z-index: 1;
+  min-width: 400px;
+}
+
+.header{
+  color: white;
+  font-weight: bold;
+  font-size: 1.2em;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .system{
+    flex: 1;
+
+    .logo{
+      width: 32px;
+      height: 32px;
+    }
+    .title{
+      margin: 0 10px;
+      letter-spacing: 2px;
+    }
+  }
+  .avatar{
+    width: 32px;
+    height: 32px;
+  }
+  .user{
+    //width: 60px;
+  }
+}
+
+
+.content{
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  background-image: url(/bk.jpg);
+  background-size: cover;
+  background-position: center;
+}
+
+.app{
+  //display: flex;
+  //flex-direction: column;
+  //justify-content: center;
+  //align-content: center;
+
+  padding: 20px;
+  text-align: center;
+  border-radius: 20px;
+  overflow: hidden;
+
+  &:hover{
+    background: #a0a0a077;
+  }
+
+  .icon{
+    width: 60%;
+    //display: block;
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    //border-radius: 50%;
+    //box-shadow: #606060 -1px -1px 5px inset;
+  }
+  .name{
+    margin: 10px 0;
+    text-align: center;
+    //text-shadow: #a0a0a0 1px 1px 0;
+    .inner{
+      //padding: 5px 20px;
+      border-radius: 10px;
+      color: white;
+      text-shadow: #333333 1px 1px 5px;
+      //background: #606060;
+      //color: white;
+      letter-spacing: 1px;
+      font-size: 1.1em;
+      //box-shadow: #a0a0a0 2px 2px 5px inset;
+    }
+  }
+}
+
+
+
+.footer{
+  height: 40px;
+  color: white;
+  background-color: rgba(2, 23, 43, 0.78);
+
+  //padding: 0 20px;
+  padding: 0;
+  line-height: 40px;
+  display: flex;
+
+  user-select: none;
+  cursor: pointer;
+
+  .start{
+    //width: 80px;
+    //padding: 0 20px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: #02172b;
+    font-size: 1.2em;
+  }
+
+  .tab {
+    flex: 1;
+
+    //position: fixed;
+    //left: 3px;
+    //bottom: 28px;
+    display: flex;
+    //flex-wrap: wrap-reverse;
+
+    .tab-btn {
+      color: white;
+      background-color: #02172b;
+      //border: 1px solid grey;
+      margin: 0 0 0 1px;
+      padding: 2px 10px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &.active {
+        background-color: #1a3f65;
+      }
+    }
+  }
+}
+
+
+//
+//a {
+//  color: white;
+//}
+
