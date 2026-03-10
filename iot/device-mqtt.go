@@ -51,6 +51,10 @@ func mqttSubscribeDevice() {
 				d, _ = LoadDevice(reg.Id)
 			} else {
 				d.Online = true
+
+				var dev Device
+				dev.Online = true
+				_, _ = db.Engine().ID(reg.Id).Cols("online").Update(&dev)
 			}
 		}
 

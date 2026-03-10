@@ -58,7 +58,7 @@ type Status struct {
 }
 
 func (d *Device) Open() error {
-	d.Online = true
+	//d.Online = true
 
 	//查询绑定的项目
 	var ps []map[string]interface{}
