@@ -534,15 +534,15 @@
       ]
     }
   ],
-  "load_api": "iot/product/:id/model",
-  "submit_api": "iot/product/:id/model",
+  "load_api": "product/:id/model",
+  "submit_api": "product/:id/model",
   "submit_success": "this.navigate('/page/product-detail?id='+this.params.id)",
   "mount": "this.load_product()",
   "methods": {
     "load_product": "this.request.get('table/product/detail/'+this.params.id).subscribe(res=>{if(!res.error) res.data.protocol && this.load_protocol(res.data.protocol)})",
     "load_protocol": [
       "p",
-      "this.request.get('iot/protocol/'+p).subscribe(res=>{ this.add_point_types(res.data); this.add_point_fields(res.data);  this.add_property_fields(res.data);  setTimeout(()=>this.editor.rebuild(), 200)})"
+      "this.request.get('protocol/'+p).subscribe(res=>{ this.add_point_types(res.data); this.add_point_fields(res.data);  this.add_property_fields(res.data);  setTimeout(()=>this.editor.rebuild(), 200)})"
     ],
     "add_point_types": [
       "p",

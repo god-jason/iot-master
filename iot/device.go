@@ -10,8 +10,6 @@ import (
 	"github.com/god-jason/iot-master/pkg/lib"
 	"github.com/god-jason/iot-master/pkg/log"
 	"github.com/god-jason/iot-master/pkg/mqtt"
-	"github.com/god-jason/iot-master/pkg/product"
-	"github.com/god-jason/iot-master/pkg/protocol"
 )
 
 type Property struct {
@@ -36,20 +34,11 @@ type Device struct {
 	linker   string
 	protocol string
 
-	projects []string
-	spaces   []string
-
 	validators []*Validator
 
 	//waitingResponse map[string]chan any
 	//waitingLock     sync.RWMutex
 	waiting lib.Map[chan any]
-}
-
-type DeviceModel struct {
-	Id         string               `json:"id,omitempty" xorm:"pk"`
-	Validators []*product.Validator `json:"validators,omitempty" xorm:"json"`
-	Created    time.Time            `json:"created,omitempty" xorm:"created"`
 }
 
 type Status struct {
@@ -59,26 +48,6 @@ type Status struct {
 
 func (d *Device) Open() error {
 	//d.Online = true
-
-	//查询绑定的项目
-	var ps []map[string]interface{}
-	err := db.Engine().Table("project_device").Cols("project_id").Where("device_id=?", d.Id).Find(&ps) //.Distinct("project_id")
-	if err != nil {
-		return err
-	}
-	for _, p := range ps {
-		d.projects = append(d.projects, p["project_id"].(string))
-	}
-
-	//查询绑定的设备
-	var ss []map[string]interface{}
-	err = db.Engine().Table("space_device").Cols("space_id").Where("device_id=?", d.Id).Find(&ss) //.Distinct("space_id")
-	if err != nil {
-		return err
-	}
-	for _, s := range ss {
-		d.spaces = append(d.spaces, s["space_id"].(string))
-	}
 
 	//加载产品物模型
 	productModel, err := LoadModel(d.ProductId)
@@ -100,27 +69,6 @@ func (d *Device) Open() error {
 		}
 	}
 
-	//加载设备模型
-	var deviceModel DeviceModel
-	has, err := db.Engine().ID(d.Id).Get(&deviceModel)
-	if err != nil {
-		return err
-	}
-	if has {
-		for _, v := range deviceModel.Validators {
-			if v.Disabled {
-				continue
-			}
-			vv := &Validator{Validator: v}
-			d.validators = append(d.validators, vv)
-			err = vv.Build() //重复编译了
-			if err != nil {
-				d.Error = err.Error()
-				log.Error(err)
-			}
-		}
-	}
-
 	return nil
 }
 
@@ -134,15 +82,6 @@ func (d *Device) PutValues(values map[string]any) {
 	//发给历史数据库
 	topics = append(topics, "history/"+d.ProductId+"/"+d.Id+"/values")
 
-	//发给项目
-	for _, p := range d.projects {
-		topics = append(topics, "project/"+p+"/device/"+d.Id+"/values")
-	}
-	//发给空间
-	for _, s := range d.spaces {
-		topics = append(topics, "space/"+s+"/device/"+d.Id+"/values")
-	}
-
 	mqtt.PublishEx(topics, values)
 
 	d.values.Put(values)
@@ -154,15 +93,10 @@ func (d *Device) PutValues(values map[string]any) {
 			log.Error(err)
 		}
 		if alarm != nil {
-			alarm.Device = d.Name
 			alarm.DeviceId = d.Id
 
 			var topics []string
 			topics = append(topics, "device/"+d.Id+"/alarm")
-			for _, p := range d.projects {
-				alarm.ProjectId = p //TODO 多项目，会被覆盖掉
-				topics = append(topics, "project/"+p+"/device/"+d.Id+"/alarm")
-			}
 
 			//入数据库
 			_, err = db.Engine().InsertOne(alarm)
@@ -203,28 +137,14 @@ func (d *Device) waitResponse(msg_id string, timeout int) (any, error) {
 }
 
 func (d *Device) Sync(timeout int) (map[string]any, error) {
-	//作为子设备
-	if d.GatewayId != "" {
-		mqtt.Publish("device/"+d.GatewayId+"/sub/"+d.Id+"/sync", nil)
-		return nil, nil
-	}
-
-	if d.protocol == "" || d.linker == "" || d.LinkId == "" {
-		mqtt.Publish("device/"+d.Id+"/sync", nil)
-		//TODO 等待 /device/{id}/sync/response
-		return nil, nil
-		//return nil, errors.New("无协议和连接")
-	}
-
-	req := protocol.SyncRequest{
+	req := SyncRequest{
 		MsgId:    strconv.FormatInt(rand.Int63(), 10),
 		DeviceId: d.Id,
 	}
-	token := mqtt.Publish("protocol/"+d.protocol+"/link/"+d.linker+"/"+d.LinkId+"/sync", &req)
-	token.Wait()
-	err := token.Error()
-	if err != nil {
-		return nil, err
+
+	mqtt.Publish("device/"+d.Id+"/sync", req)
+	if d.GatewayId != "" {
+		mqtt.Publish("device/"+d.GatewayId+"/sync", req)
 	}
 
 	resp, err := d.waitResponse(req.MsgId, timeout)
@@ -232,7 +152,7 @@ func (d *Device) Sync(timeout int) (map[string]any, error) {
 		return nil, err
 	}
 
-	if res, ok := resp.(*protocol.SyncResponse); ok {
+	if res, ok := resp.(*SyncResponse); ok {
 		if res.Error != "" {
 			return nil, errors.New(res.Error)
 		}
@@ -242,7 +162,7 @@ func (d *Device) Sync(timeout int) (map[string]any, error) {
 	}
 }
 
-func (d *Device) onSyncResponse(resp *protocol.SyncResponse) {
+func (d *Device) onSyncResponse(resp *SyncResponse) {
 	c := d.waiting.LoadAndDelete(resp.MsgId)
 	if c != nil {
 		*c <- resp
@@ -250,28 +170,14 @@ func (d *Device) onSyncResponse(resp *protocol.SyncResponse) {
 }
 
 func (d *Device) Read(points []string, timeout int) (map[string]any, error) {
-	//作为子设备
-	if d.GatewayId != "" {
-		mqtt.Publish("device/"+d.GatewayId+"/sub/"+d.Id+"/read", points)
-		return nil, nil
-	}
-
-	if d.protocol == "" || d.linker == "" || d.LinkId == "" {
-		mqtt.Publish("device/"+d.Id+"/read", points)
-		//TODO 等待 /device/{id}/read/response
-		return nil, nil
-	}
-
-	req := protocol.ReadRequest{
+	req := ReadRequest{
 		MsgId:    strconv.FormatInt(rand.Int63(), 10),
 		DeviceId: d.Id,
 		Points:   points,
 	}
-	token := mqtt.Publish("protocol/"+d.protocol+"/link/"+d.linker+"/"+d.LinkId+"/read", &req)
-	token.Wait()
-	err := token.Error()
-	if err != nil {
-		return nil, err
+	mqtt.Publish("device/"+d.Id+"/read", req)
+	if d.GatewayId != "" {
+		mqtt.Publish("device/"+d.GatewayId+"/sub/"+d.Id+"/read", req)
 	}
 
 	resp, err := d.waitResponse(req.MsgId, timeout)
@@ -279,7 +185,7 @@ func (d *Device) Read(points []string, timeout int) (map[string]any, error) {
 		return nil, err
 	}
 
-	if res, ok := resp.(*protocol.ReadResponse); ok {
+	if res, ok := resp.(*ReadResponse); ok {
 		if res.Error != "" {
 			return nil, errors.New(res.Error)
 		}
@@ -289,7 +195,7 @@ func (d *Device) Read(points []string, timeout int) (map[string]any, error) {
 	}
 }
 
-func (d *Device) onReadResponse(resp *protocol.ReadResponse) {
+func (d *Device) onReadResponse(resp *ReadResponse) {
 	c := d.waiting.LoadAndDelete(resp.MsgId)
 	if c != nil {
 		*c <- resp
@@ -297,27 +203,14 @@ func (d *Device) onReadResponse(resp *protocol.ReadResponse) {
 }
 
 func (d *Device) Write(values map[string]any, timeout int) (map[string]bool, error) {
-	//作为子设备
-	if d.GatewayId != "" {
-		mqtt.Publish("device/"+d.GatewayId+"/sub/"+d.Id+"/write", values)
-		return nil, nil
-	}
-	if d.protocol == "" || d.linker == "" || d.LinkId == "" {
-		mqtt.Publish("device/"+d.Id+"/write", values)
-		//TODO 等待 /device/{id}/write/response
-		return nil, nil
-	}
-
-	req := protocol.WriteRequest{
+	req := WriteRequest{
 		MsgId:    strconv.FormatInt(rand.Int63(), 10),
 		DeviceId: d.Id,
 		Values:   values,
 	}
-	token := mqtt.Publish("protocol/"+d.protocol+"/link/"+d.linker+"/"+d.LinkId+"/write", &req)
-	token.Wait()
-	err := token.Error()
-	if err != nil {
-		return nil, err
+	mqtt.Publish("device/"+d.Id+"/write", req)
+	if d.GatewayId != "" {
+		mqtt.Publish("device/"+d.GatewayId+"/sub/"+d.Id+"/write", req)
 	}
 
 	resp, err := d.waitResponse(req.MsgId, timeout)
@@ -325,7 +218,7 @@ func (d *Device) Write(values map[string]any, timeout int) (map[string]bool, err
 		return nil, err
 	}
 
-	if res, ok := resp.(*protocol.WriteResponse); ok {
+	if res, ok := resp.(*WriteResponse); ok {
 		if res.Error != "" {
 			return nil, errors.New(res.Error)
 		}
@@ -335,7 +228,7 @@ func (d *Device) Write(values map[string]any, timeout int) (map[string]bool, err
 	}
 }
 
-func (d *Device) onWriteResponse(resp *protocol.WriteResponse) {
+func (d *Device) onWriteResponse(resp *WriteResponse) {
 	c := d.waiting.LoadAndDelete(resp.MsgId)
 	if c != nil {
 		*c <- resp
@@ -343,28 +236,20 @@ func (d *Device) onWriteResponse(resp *protocol.WriteResponse) {
 }
 
 func (d *Device) Action(action string, parameters map[string]any, timeout int) (map[string]any, error) {
-	//作为子设备
-	if d.GatewayId != "" {
-		mqtt.Publish("device/"+d.GatewayId+"/sub/"+d.Id+"/action/"+action, parameters)
-		return nil, nil
-	}
-	if d.protocol == "" || d.linker == "" || d.LinkId == "" {
-		mqtt.Publish("device/"+d.Id+"/action/"+action, parameters)
-		//TODO 等待 device/{id}/action/{name}/response
-		return nil, nil
-	}
-
-	req := protocol.ActionRequest{
+	req := ActionRequest{
 		MsgId:      strconv.FormatInt(rand.Int63(), 10),
 		DeviceId:   d.Id,
 		Action:     action,
 		Parameters: parameters,
 	}
-	token := mqtt.Publish("protocol/"+d.protocol+"/link/"+d.linker+"/"+d.LinkId+"/action", &req)
-	token.Wait()
-	err := token.Error()
-	if err != nil {
-		return nil, err
+
+	//兼容旧设备，TODO 后续需要删除
+	mqtt.Publish("device/"+d.Id+"/action/"+action, parameters)
+
+	//发送消息
+	mqtt.Publish("device/"+d.Id+"/action", req)
+	if d.GatewayId != "" {
+		mqtt.Publish("device/"+d.GatewayId+"/sub/"+d.Id+"/action", req)
 	}
 
 	resp, err := d.waitResponse(req.MsgId, timeout)
@@ -372,7 +257,7 @@ func (d *Device) Action(action string, parameters map[string]any, timeout int) (
 		return nil, err
 	}
 
-	if res, ok := resp.(*protocol.ActionResponse); ok {
+	if res, ok := resp.(*ActionResponse); ok {
 		if res.Error != "" {
 			return nil, errors.New(res.Error)
 		}
@@ -382,7 +267,7 @@ func (d *Device) Action(action string, parameters map[string]any, timeout int) (
 	}
 }
 
-func (d *Device) onActionResponse(resp *protocol.ActionResponse) {
+func (d *Device) onActionResponse(resp *ActionResponse) {
 	c := d.waiting.LoadAndDelete(resp.MsgId)
 	if c != nil {
 		*c <- resp

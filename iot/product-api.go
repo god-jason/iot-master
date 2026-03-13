@@ -10,11 +10,11 @@ import (
 func init() {
 
 	//物模型
-	api.Register("GET", "iot/product/:id/model", productModel)
-	api.Register("POST", "iot/product/:id/model", productModelUpdate)
+	api.Register("GET", "product/:id/model", productModel)
+	api.Register("POST", "product/:id/model", productModelUpdate)
 
 	//产品扩展字段
-	api.Register("GET", "iot/product/:id/extend/fields", productExtendFields)
+	api.Register("GET", "product/:id/extend/fields", productExtendFields)
 }
 
 func productModel(ctx *gin.Context) {

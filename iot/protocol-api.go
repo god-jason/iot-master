@@ -7,7 +7,7 @@ import (
 
 func init() {
 
-	api.Register("GET", "iot/protocol/list", func(ctx *gin.Context) {
+	api.Register("GET", "protocol/list", func(ctx *gin.Context) {
 		ps, err := GetProtocols()
 		if err != nil {
 			api.Error(ctx, err)
@@ -16,7 +16,7 @@ func init() {
 		api.OK(ctx, ps)
 	})
 
-	api.Register("GET", "iot/protocol/:name", func(ctx *gin.Context) {
+	api.Register("GET", "protocol/:name", func(ctx *gin.Context) {
 		name := ctx.Param("name")
 		p, err := GetProtocol(name)
 		if err != nil {

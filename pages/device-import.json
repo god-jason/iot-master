@@ -41,6 +41,6 @@
   "submit_api": "table/device/create",
   "mount": "this.get_extend_fields()",
   "methods": {
-    "get_extend_fields": "this.request.get('iot/device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.columns.push(f)) })"
+    "get_extend_fields": "this.request.get('device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.columns.push(f)) })"
   }
 }

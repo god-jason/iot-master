@@ -8,81 +8,15 @@ import (
 )
 
 func init() {
-	api.Register("GET", "iot/device/:id/values", deviceValues)
-	api.Register("GET", "iot/device/:id/sync", deviceSync)
-	api.Register("GET", "iot/device/:id/read", deviceRead)
-	api.Register("POST", "iot/device/:id/write", deviceWrite)
 
-	api.Register("GET", "iot/device/extend/fields", deviceExtendFields)
-	api.Register("GET", "iot/device/:id/extend/fields", deviceExtendFields)
+	//扩展字段
+	api.Register("GET", "device/extend/fields", deviceExtendFields)
+	api.Register("GET", "device/:id/extend/fields", deviceExtendFields)
 
-	api.Register("GET", "iot/device/:id/bind/:gid", deviceBind)
-	api.Register("GET", "iot/device/:id/unbind", deviceUnbind)
-}
+	//设备绑定
 
-func deviceValues(ctx *gin.Context) {
-	d := devices.Load(ctx.Param("id"))
-	if d == nil {
-		api.Fail(ctx, "设备未上线")
-		return
-	}
-	api.OK(ctx, d.values.Get())
-}
-
-func deviceSync(ctx *gin.Context) {
-	d := devices.Load(ctx.Param("id"))
-	if d == nil {
-		api.Fail(ctx, "设备未上线")
-		return
-	}
-
-	values, err := d.Sync(60)
-	if err != nil {
-		api.Error(ctx, err)
-		return
-	}
-
-	api.OK(ctx, values)
-}
-
-func deviceRead(ctx *gin.Context) {
-	d := devices.Load(ctx.Param("id"))
-	if d == nil {
-		api.Fail(ctx, "设备未上线")
-		return
-	}
-
-	points := ctx.QueryArray("point")
-	values, err := d.Read(points, 30)
-	if err != nil {
-		api.Error(ctx, err)
-		return
-	}
-
-	api.OK(ctx, values)
-}
-
-func deviceWrite(ctx *gin.Context) {
-	d := devices.Load(ctx.Param("id"))
-	if d == nil {
-		api.Fail(ctx, "设备未上线")
-		return
-	}
-
-	var values map[string]any
-	err := ctx.ShouldBind(&values)
-	if err != nil {
-		api.Error(ctx, err)
-		return
-	}
-
-	result, err := d.Write(values, 30)
-	if err != nil {
-		api.Error(ctx, err)
-		return
-	}
-
-	api.OK(ctx, result)
+	api.Register("GET", "device/:id/bind/:gid", deviceBind)
+	api.Register("GET", "device/:id/unbind", deviceUnbind)
 }
 
 func deviceExtendFields(ctx *gin.Context) {

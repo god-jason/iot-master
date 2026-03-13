@@ -23,5 +23,5 @@
       "label": "版权"
     }
   ],
-  "load_api": "iot/protocol/list"
+  "load_api": "protocol/list"
 }

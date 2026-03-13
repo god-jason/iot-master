@@ -2,13 +2,11 @@ package iot
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 
 	"github.com/god-jason/iot-master/pkg/db"
 	"github.com/god-jason/iot-master/pkg/log"
 	"github.com/god-jason/iot-master/pkg/mqtt"
-	"github.com/god-jason/iot-master/pkg/protocol"
 	"github.com/god-jason/iot-master/pkg/table"
 )
 
@@ -231,75 +229,7 @@ func mqttSubscribeDevice() {
 		})
 	})
 
-	mqtt.SubscribeStruct[protocol.SyncRequest]("device/+/sync", func(topic string, request *protocol.SyncRequest) {
-		ss := strings.Split(topic, "/")
-		id := ss[1]
-
-		dev := devices.Load(id)
-		if dev == nil {
-			mqtt.Publish(topic+"/response", &protocol.Response{MsgId: request.MsgId, Error: "设备未上线"})
-			return
-		}
-
-		request.DeviceId = id
-
-		//转发给具体协议
-		topic = fmt.Sprintf("protocol/%s/link/%s/%s/sync", dev.protocol, dev.linker, dev.LinkId)
-		mqtt.Publish(topic, request)
-	})
-
-	mqtt.SubscribeStruct[protocol.ReadRequest]("device/+/read", func(topic string, request *protocol.ReadRequest) {
-		ss := strings.Split(topic, "/")
-		id := ss[1]
-
-		dev := devices.Load(id)
-		if dev == nil {
-			mqtt.Publish(topic+"/response", &protocol.Response{MsgId: request.MsgId, Error: "设备未上线"})
-			return
-		}
-
-		request.DeviceId = id
-
-		//转发给具体协议
-		topic = fmt.Sprintf("protocol/%s/link/%s/%s/read", dev.protocol, dev.linker, dev.LinkId)
-		mqtt.Publish(topic, request)
-	})
-
-	mqtt.SubscribeStruct[protocol.WriteRequest]("device/+/write", func(topic string, request *protocol.WriteRequest) {
-		ss := strings.Split(topic, "/")
-		id := ss[1]
-
-		dev := devices.Load(id)
-		if dev == nil {
-			mqtt.Publish(topic+"/response", &protocol.Response{MsgId: request.MsgId, Error: "设备未上线"})
-			return
-		}
-
-		request.DeviceId = id
-
-		//转发给具体协议
-		topic = fmt.Sprintf("protocol/%s/link/%s/%s/write", dev.protocol, dev.linker, dev.LinkId)
-		mqtt.Publish(topic, request)
-	})
-
-	mqtt.SubscribeStruct[protocol.ActionRequest]("device/+/action", func(topic string, request *protocol.ActionRequest) {
-		ss := strings.Split(topic, "/")
-		id := ss[1]
-
-		dev := devices.Load(id)
-		if dev == nil {
-			mqtt.Publish(topic+"/response", &protocol.Response{MsgId: request.MsgId, Error: "设备未上线"})
-			return
-		}
-
-		request.DeviceId = id
-
-		//转发给具体协议
-		topic = fmt.Sprintf("protocol/%s/link/%s/%s/action", dev.protocol, dev.linker, dev.LinkId)
-		mqtt.Publish(topic, request)
-	})
-
-	mqtt.SubscribeStruct[protocol.SyncResponse]("device/+/sync/response", func(topic string, resp *protocol.SyncResponse) {
+	mqtt.SubscribeStruct[SyncResponse]("device/+/sync/response", func(topic string, resp *SyncResponse) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)
@@ -309,7 +239,7 @@ func mqttSubscribeDevice() {
 		dev.onSyncResponse(resp)
 	})
 
-	mqtt.SubscribeStruct[protocol.ReadResponse]("device/+/read/response", func(topic string, resp *protocol.ReadResponse) {
+	mqtt.SubscribeStruct[ReadResponse]("device/+/read/response", func(topic string, resp *ReadResponse) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)
@@ -319,7 +249,7 @@ func mqttSubscribeDevice() {
 		dev.onReadResponse(resp)
 	})
 
-	mqtt.SubscribeStruct[protocol.WriteResponse]("device/+/write/response", func(topic string, resp *protocol.WriteResponse) {
+	mqtt.SubscribeStruct[WriteResponse]("device/+/write/response", func(topic string, resp *WriteResponse) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)
@@ -329,7 +259,7 @@ func mqttSubscribeDevice() {
 		dev.onWriteResponse(resp)
 	})
 
-	mqtt.SubscribeStruct[protocol.ActionResponse]("device/+/action/response", func(topic string, resp *protocol.ActionResponse) {
+	mqtt.SubscribeStruct[ActionResponse]("device/+/action/response", func(topic string, resp *ActionResponse) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)

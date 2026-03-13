@@ -1,4 +1,4 @@
-package protocol
+package iot
 
 type Request struct {
 	MsgId string `json:"msg_id,omitempty"`
@@ -58,5 +58,6 @@ type ActionResponse struct {
 	MsgId    string         `json:"msg_id"`
 	Error    string         `json:"error,omitempty"`
 	DeviceId string         `json:"device_id"`
+	Action   string         `json:"action"`
 	Result   map[string]any `json:"result,omitempty"`
 }

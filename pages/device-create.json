@@ -28,15 +28,6 @@
         "page":"device-choose",
         "after_close": "this.editor.patchValue({gateway_id: result.id})"
       }
-    },
-    {
-      "type": "button",
-      "label": "选择连接ID",
-      "action": {
-        "type": "dialog",
-        "page":"link-choose",
-        "after_close": "this.editor.patchValue({link_id: result.id})"
-      }
     }
   ],
   "fields": [
@@ -90,6 +81,6 @@
   "submit_success": "this.navigate('/page/device-detail?id='+data)",
   "mount": "this.data.product_id=this.params.product_id; this.data.group_id=this.params.group_id; this.data.gateway_id=this.params.gateway_id; this.get_extend_fields()",
   "methods": {
-    "get_extend_fields": "this.request.get('iot/device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.fields.push(f)) })"
+    "get_extend_fields": "this.request.get('device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.fields.push(f)) })"
    }
 }

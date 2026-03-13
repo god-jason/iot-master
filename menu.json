@@ -14,12 +14,8 @@
     "nz_icon": "global",
     "items": [
       {
-        "name": "设备",
+        "name": "设备管理",
         "url": "page/device"
-      },
-      {
-        "name": "连接",
-        "url": "page/link"
       },
       {
         "name": "报警日志",

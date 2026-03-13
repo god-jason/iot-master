@@ -3,5 +3,5 @@
   "template": "form",
   "fields": [],
   "mount": "this.content.fields = this.params.parameters",
-  "submit_api": "iot/device/:id/action/:action"
+  "submit_api": "device/:id/action/:action"
 }

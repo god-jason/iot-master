@@ -21,16 +21,6 @@
         "type": "script",
         "script": "this.request.get('table/device/delete/'+data.id).subscribe(res=>{this.navigate('/page/device')})"
       }
-    },
-    {
-      "icon": "build",
-      "type": "button",
-      "label": "设备物模型",
-      "action": {
-        "type": "page",
-        "page":"device-model",
-        "params_func": "return {id: data.id}"
-      }
     }
   ],
   "items": [

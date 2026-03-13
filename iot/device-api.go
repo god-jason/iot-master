@@ -6,46 +6,128 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/god-jason/iot-master/pkg/api"
-	"github.com/god-jason/iot-master/pkg/curd"
 	"github.com/god-jason/iot-master/pkg/db"
 	"github.com/god-jason/iot-master/pkg/log"
 	"github.com/god-jason/iot-master/pkg/mqtt"
+	"github.com/god-jason/iot-master/pkg/table"
 	"xorm.io/builder"
 	"xorm.io/xorm/schemas"
 )
 
 func init() {
-	//物模型
-	api.Register("GET", "iot/device/:id/model", curd.ApiGet[DeviceModel]())
-	api.Register("POST", "iot/device/:id/model", deviceModelUpdate)
 
-	//执行操作
-	api.Register("POST", "iot/device/:id/action/:action", deviceAction)
+	//远程操作
+	api.Register("GET", "device/:id/values", deviceValues)
+	api.Register("GET", "device/:id/sync", deviceSync)
+	api.Register("GET", "device/:id/read", deviceRead)
+	api.Register("POST", "device/:id/write", deviceWrite)
+	api.Register("POST", "device/:id/action/:action", deviceAction)
 
 	//参数
-	api.Register("GET", "iot/device/:id/setting/:name", deviceSetting)
-	api.Register("POST", "iot/device/:id/setting/:name", deviceSettingUpdate)
+	api.Register("GET", "device/:id/setting/:name", deviceSetting)
+	api.Register("POST", "device/:id/setting/:name", deviceSettingUpdate)
 }
 
-func deviceModelUpdate(ctx *gin.Context) {
+func deviceValues(ctx *gin.Context) {
+	d := devices.Load(ctx.Param("id"))
+	if d == nil {
+		api.Fail(ctx, "设备未上线")
+		return
+	}
+	api.OK(ctx, d.values.Get())
+}
+
+func deviceSync(ctx *gin.Context) {
+	d := devices.Load(ctx.Param("id"))
+	if d == nil {
+		api.Fail(ctx, "设备未上线")
+		return
+	}
+
+	values, err := d.Sync(60)
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+
+	api.OK(ctx, values)
+}
+
+func deviceRead(ctx *gin.Context) {
+	d := devices.Load(ctx.Param("id"))
+	if d == nil {
+		api.Fail(ctx, "设备未上线")
+		return
+	}
+
+	points := ctx.QueryArray("point")
+	values, err := d.Read(points, 30)
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+
+	api.OK(ctx, values)
+}
+
+func deviceWrite(ctx *gin.Context) {
+	d := devices.Load(ctx.Param("id"))
+	if d == nil {
+		api.Fail(ctx, "设备未上线")
+		return
+	}
+
+	var values map[string]any
+	err := ctx.ShouldBind(&values)
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+
+	result, err := d.Write(values, 30)
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+
+	api.OK(ctx, result)
+}
+
+func deviceAction(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	var model DeviceModel
-	err := ctx.ShouldBind(&model)
+	d := devices.Load(id)
+	if d == nil {
+		api.Fail(ctx, "设备未上线")
+		return
+	}
+	action := ctx.Param("action")
+
+	var values map[string]any
+	err := ctx.ShouldBind(&values)
 	if err != nil {
 		api.Error(ctx, err)
 		return
 	}
-	model.Id = id
 
-	_, err = db.Engine().ID(id).Delete(new(DeviceModel)) //不管有没有都删掉
-	_, err = db.Engine().ID(id).Insert(&model)
+	//记录操作员
+	tab, _ := table.Get("device_log")
+	if tab != nil {
+		_, _ = tab.Insert(map[string]interface{}{
+			"user_id":   ctx.GetString("user"), //操作用户ID
+			"device_id": id,
+			"content":   "远程操作：" + action,
+		})
+	}
+
+	//执行操作
+	result, err := d.Action(action, values, 30)
 	if err != nil {
 		api.Error(ctx, err)
 		return
 	}
 
-	api.OK(ctx, &model)
+	api.OK(ctx, result)
 }
 
 type DeviceSetting struct {
@@ -123,35 +205,6 @@ func deviceSettingUpdate(ctx *gin.Context) {
 	}()
 
 	api.OK(ctx, nil)
-}
-
-func deviceAction(ctx *gin.Context) {
-	d := devices.Load(ctx.Param("id"))
-	if d == nil {
-		api.Fail(ctx, "设备未上线")
-		return
-	}
-	action := ctx.Param("action")
-
-	var values map[string]any
-	err := ctx.ShouldBind(&values)
-	if err != nil {
-		api.Error(ctx, err)
-		return
-	}
-
-	//操作用户ID
-	if _, ok := values["user_id"]; !ok {
-		values["user_id"] = ctx.GetString("user") //从session中取user
-	}
-
-	result, err := d.Action(action, values, 30)
-	if err != nil {
-		api.Error(ctx, err)
-		return
-	}
-
-	api.OK(ctx, result)
 }
 
 func deviceNear(ctx *gin.Context) {

@@ -24,7 +24,5 @@ func Startup() error {
 
 	mqttSubscribeDevice()
 
-	mqttSubscribeLink()
-
 	return addProtocolColumns()
 }

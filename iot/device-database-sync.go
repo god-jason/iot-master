@@ -11,18 +11,6 @@ import (
 func databaseSync(id string, databases map[string]map[string]Sync) (has bool, err error) {
 	hasSync := false
 
-	//同步连接
-	links, ok := databases["link"]
-	if ok {
-		has, err = databaseSyncLinks(id, links)
-		if err != nil {
-			return
-		}
-		if has {
-			hasSync = true
-		}
-	}
-
 	//同步设备
 	devices, ok := databases["device"]
 	if ok {
@@ -48,91 +36,6 @@ func databaseSync(id string, databases map[string]map[string]Sync) (has bool, er
 	}
 
 	return hasSync, nil
-}
-
-func databaseSyncLinks(id string, links map[string]Sync) (has bool, err error) {
-	tab, err := table.Get("link")
-	if err != nil {
-		return false, err
-	}
-	//查找子设备
-	rows, err := tab.Find(&table.ParamSearch{
-		Skip:   0,
-		Limit:  999,
-		Filter: map[string]any{"gateway_id": id},
-	})
-	if err != nil {
-		return false, err
-	}
-
-	//不能删除默认连接
-	if len(rows) == 0 {
-		return false, nil
-	}
-
-	//数量不匹配，全部更新
-	if len(rows) != len(links) {
-		mqtt.Publish("device/"+id+"/database/link/clear", nil)
-		mqtt.Publish("device/"+id+"/database/link/insertArray", rows)
-		return true, nil
-	}
-
-	//ID不匹配，全部更新
-	for i, _ := range links {
-		found := false
-		for _, r := range rows {
-			if r["id"] == i {
-				found = true
-				break
-			}
-		}
-		if !found {
-			mqtt.Publish("device/"+id+"/database/link/clear", nil)
-			mqtt.Publish("device/"+id+"/database/link/insertArray", rows)
-			return true, nil
-		}
-	}
-
-	//麻烦的逐一同步
-	for i, m := range links {
-		//找到对应的row
-		var row map[string]any
-		for _, r := range rows {
-			if r["id"] == i {
-				row = r
-				break
-			}
-		}
-
-		//检查更新时间
-		if u, ok := row["updated"]; ok {
-			if t, ok := u.(time.Time); ok {
-				tt, err := time.Parse(time.DateTime, m.Updated)
-				if err != nil || tt.Before(t) {
-					has = true
-					break
-				}
-			}
-		}
-
-		//检查创建时间
-		if u, ok := row["created"]; ok {
-			if t, ok := u.(time.Time); ok {
-				tt, err := time.Parse(time.DateTime, m.Created)
-				if err != nil || tt.Before(t) {
-					has = true
-					break
-				}
-			}
-		}
-	}
-
-	if has {
-		mqtt.Publish("device/"+id+"/database/link/clear", nil)
-		mqtt.Publish("device/"+id+"/database/link/insertArray", rows)
-	}
-
-	return has, nil
 }
 
 func databaseSyncDevices(id string, devices map[string]Sync) (has bool, err error) {
