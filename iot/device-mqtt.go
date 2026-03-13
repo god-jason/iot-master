@@ -268,4 +268,14 @@ func mqttSubscribeDevice() {
 		}
 		dev.onActionResponse(resp)
 	})
+
+	mqtt.SubscribeStruct[SettingResponse]("device/+/setting/response", func(topic string, resp *SettingResponse) {
+		ss := strings.Split(topic, "/")
+		id := ss[1]
+		dev := devices.Load(id)
+		if dev == nil {
+			return
+		}
+		dev.onSettingResponse(resp)
+	})
 }

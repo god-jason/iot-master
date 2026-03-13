@@ -1,14 +1,11 @@
 package iot
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/god-jason/iot-master/pkg/api"
 	"github.com/god-jason/iot-master/pkg/db"
-	"github.com/god-jason/iot-master/pkg/log"
-	"github.com/god-jason/iot-master/pkg/mqtt"
 	"github.com/god-jason/iot-master/pkg/table"
 	"xorm.io/builder"
 	"xorm.io/xorm/schemas"
@@ -189,20 +186,23 @@ func deviceSettingUpdate(ctx *gin.Context) {
 		return
 	}
 
-	//下发最新配置
-	go func() {
-		var setting DeviceSetting
-		has, err := db.Engine().ID(schemas.PK{id, name}).Get(&setting)
+	//查询最新配置，主要是版本号
+	var setting2 DeviceSetting
+	has, err = db.Engine().ID(schemas.PK{id, name}).Get(&setting2)
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+
+	//如果设备在线，则直接通过MQTT下发配置
+	dev := devices.Load(id)
+	if dev == nil {
+		_, err = dev.Setting(setting2.Name, setting2.Content, setting2.Version, 30)
 		if err != nil {
-			log.Error(err)
+			api.Error(ctx, err)
 			return
 		}
-		if has {
-			//下发到设备
-			topic := fmt.Sprintf("device/%s/setting", id)
-			mqtt.Publish(topic, &setting)
-		}
-	}()
+	}
 
 	api.OK(ctx, nil)
 }

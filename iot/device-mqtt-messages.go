@@ -55,9 +55,23 @@ type ActionRequest struct {
 }
 
 type ActionResponse struct {
-	MsgId    string         `json:"msg_id"`
-	Error    string         `json:"error,omitempty"`
-	DeviceId string         `json:"device_id"`
-	Action   string         `json:"action"`
-	Result   map[string]any `json:"result,omitempty"`
+	MsgId    string `json:"msg_id"`
+	Error    string `json:"error,omitempty"`
+	DeviceId string `json:"device_id"`
+	Action   string `json:"action"`
+	Result   any    `json:"result,omitempty"`
+}
+
+type SettingRequest struct {
+	MsgId   string `json:"msg_id,omitempty"`
+	Name    string `json:"name"`
+	Content any    `json:"content"`
+	Version int    `json:"version"`
+}
+type SettingResponse struct {
+	MsgId   string `json:"msg_id"`
+	Error   string `json:"error,omitempty"`
+	Name    string `json:"name"`
+	Content any    `json:"content"`
+	Version int    `json:"version"`
 }

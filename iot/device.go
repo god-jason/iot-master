@@ -177,7 +177,7 @@ func (d *Device) Read(points []string, timeout int) (map[string]any, error) {
 	}
 	mqtt.Publish("device/"+d.Id+"/read", req)
 	if d.GatewayId != "" {
-		mqtt.Publish("device/"+d.GatewayId+"/sub/"+d.Id+"/read", req)
+		mqtt.Publish("device/"+d.GatewayId+"/read", req)
 	}
 
 	resp, err := d.waitResponse(req.MsgId, timeout)
@@ -210,7 +210,7 @@ func (d *Device) Write(values map[string]any, timeout int) (map[string]bool, err
 	}
 	mqtt.Publish("device/"+d.Id+"/write", req)
 	if d.GatewayId != "" {
-		mqtt.Publish("device/"+d.GatewayId+"/sub/"+d.Id+"/write", req)
+		mqtt.Publish("device/"+d.GatewayId+"/write", req)
 	}
 
 	resp, err := d.waitResponse(req.MsgId, timeout)
@@ -235,7 +235,7 @@ func (d *Device) onWriteResponse(resp *WriteResponse) {
 	}
 }
 
-func (d *Device) Action(action string, parameters map[string]any, timeout int) (map[string]any, error) {
+func (d *Device) Action(action string, parameters map[string]any, timeout int) (any, error) {
 	req := ActionRequest{
 		MsgId:      strconv.FormatInt(rand.Int63(), 10),
 		DeviceId:   d.Id,
@@ -249,7 +249,7 @@ func (d *Device) Action(action string, parameters map[string]any, timeout int) (
 	//发送消息
 	mqtt.Publish("device/"+d.Id+"/action", req)
 	if d.GatewayId != "" {
-		mqtt.Publish("device/"+d.GatewayId+"/sub/"+d.Id+"/action", req)
+		mqtt.Publish("device/"+d.GatewayId+"/action", req)
 	}
 
 	resp, err := d.waitResponse(req.MsgId, timeout)
@@ -268,6 +268,39 @@ func (d *Device) Action(action string, parameters map[string]any, timeout int) (
 }
 
 func (d *Device) onActionResponse(resp *ActionResponse) {
+	c := d.waiting.LoadAndDelete(resp.MsgId)
+	if c != nil {
+		*c <- resp
+	}
+}
+
+func (d *Device) Setting(name string, content any, version int, timeout int) (any, error) {
+	req := SettingRequest{
+		MsgId:   strconv.FormatInt(rand.Int63(), 10),
+		Name:    name,
+		Content: content,
+		Version: version,
+	}
+
+	//发送消息
+	mqtt.Publish("device/"+d.Id+"/setting", req)
+
+	resp, err := d.waitResponse(req.MsgId, timeout)
+	if err != nil {
+		return nil, err
+	}
+
+	if res, ok := resp.(*SettingResponse); ok {
+		if res.Error != "" {
+			return nil, errors.New(res.Error)
+		}
+		return nil, nil
+	} else {
+		return nil, errors.New("want type SettingResponse")
+	}
+}
+
+func (d *Device) onSettingResponse(resp *SettingResponse) {
 	c := d.waiting.LoadAndDelete(resp.MsgId)
 	if c != nil {
 		*c <- resp
