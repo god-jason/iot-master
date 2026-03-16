@@ -196,7 +196,7 @@ func deviceSettingUpdate(ctx *gin.Context) {
 
 	//如果设备在线，则直接通过MQTT下发配置
 	dev := devices.Load(id)
-	if dev == nil {
+	if dev != nil {
 		_, err = dev.Setting(setting2.Name, setting2.Content, setting2.Version, 30)
 		if err != nil {
 			api.Error(ctx, err)
