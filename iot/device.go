@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/god-jason/iot-master/history"
 	"github.com/god-jason/iot-master/pkg/db"
 	"github.com/god-jason/iot-master/pkg/lib"
 	"github.com/god-jason/iot-master/pkg/log"
@@ -76,14 +77,10 @@ func (d *Device) PutValues(values map[string]any) {
 
 	//TODO 过滤器实现
 
-	//广播消息
-	var topics []string
+	//入历史数据库
+	_ = history.Write(d.ProductId, d.Id, time.Now().UnixMilli(), values)
 
-	//发给历史数据库
-	topics = append(topics, "history/"+d.ProductId+"/"+d.Id+"/values")
-
-	mqtt.PublishEx(topics, values)
-
+	//保存的内存中
 	d.values.Put(values)
 
 	//检查属性

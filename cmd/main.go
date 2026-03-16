@@ -16,6 +16,7 @@ import (
 	_ "github.com/god-jason/iot-master/pkg/table"
 	"github.com/god-jason/iot-master/pkg/version"
 	"github.com/god-jason/iot-master/pkg/web"
+	_ "github.com/god-jason/iot-master/weixin"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
