@@ -80,8 +80,14 @@
     {
       "name": "error",
       "comment": "错误",
+      "type": "bool",
+      "default": "false"
+    },
+    {
+      "name": "error_string",
+      "comment": "错误内容",
       "type": "string",
-      "length": 200
+      "length": 255
     },
     {
       "name": "longitude",

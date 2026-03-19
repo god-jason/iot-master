@@ -257,6 +257,14 @@
                 {
                   "label": "字符串",
                   "value": "text"
+                },
+                {
+                  "label": "日期",
+                  "value": "date"
+                },
+                {
+                  "label": "时间",
+                  "value": "time"
                 }
               ]
             }

@@ -7,6 +7,7 @@ import (
 	"github.com/god-jason/iot-master/pkg/api"
 	"github.com/god-jason/iot-master/pkg/db"
 	"github.com/god-jason/iot-master/pkg/table"
+	"github.com/spf13/cast"
 	"xorm.io/builder"
 	"xorm.io/xorm/schemas"
 )
@@ -19,6 +20,7 @@ func init() {
 	api.Register("GET", "device/:id/read", deviceRead)
 	api.Register("POST", "device/:id/write", deviceWrite)
 	api.Register("POST", "device/:id/action/:action", deviceAction)
+	api.Register("GET", "device/:id/error/clear", deviceErrorClear)
 
 	//参数
 	api.Register("GET", "device/:id/setting/:name", deviceSetting)
@@ -36,7 +38,7 @@ func deviceValues(ctx *gin.Context) {
 
 func deviceSync(ctx *gin.Context) {
 	d := devices.Load(ctx.Param("id"))
-	if d == nil {
+	if d == nil || !d.Online {
 		api.Fail(ctx, "设备未上线")
 		return
 	}
@@ -52,7 +54,7 @@ func deviceSync(ctx *gin.Context) {
 
 func deviceRead(ctx *gin.Context) {
 	d := devices.Load(ctx.Param("id"))
-	if d == nil {
+	if d == nil || !d.Online {
 		api.Fail(ctx, "设备未上线")
 		return
 	}
@@ -69,7 +71,7 @@ func deviceRead(ctx *gin.Context) {
 
 func deviceWrite(ctx *gin.Context) {
 	d := devices.Load(ctx.Param("id"))
-	if d == nil {
+	if d == nil || !d.Online {
 		api.Fail(ctx, "设备未上线")
 		return
 	}
@@ -94,7 +96,7 @@ func deviceAction(ctx *gin.Context) {
 	id := ctx.Param("id")
 
 	d := devices.Load(id)
-	if d == nil {
+	if d == nil || !d.Online {
 		api.Fail(ctx, "设备未上线")
 		return
 	}
@@ -110,10 +112,32 @@ func deviceAction(ctx *gin.Context) {
 	//记录操作员
 	tab, _ := table.Get("device_log")
 	if tab != nil {
+		//TODO 获取名称
+		content := "远程操作："
+
+		//操作名
+		if val, ok := values["name"]; ok {
+			content += cast.ToString(val)
+		} else {
+			content += action
+		}
+
+		//操作值
+		if val, ok := values["value"]; ok {
+			if has, ok := val.(bool); ok {
+				if has {
+					content += " 打开"
+				} else {
+					content += " 关闭"
+				}
+			}
+		}
+
+		//记录日志
 		_, _ = tab.Insert(map[string]interface{}{
 			"user_id":   ctx.GetString("user"), //操作用户ID
 			"device_id": id,
-			"content":   "远程操作：" + action,
+			"content":   content,
 		})
 	}
 
@@ -125,6 +149,34 @@ func deviceAction(ctx *gin.Context) {
 	}
 
 	api.OK(ctx, result)
+}
+
+func deviceErrorClear(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	var d Device
+	_, err := db.Engine().ID(id).Cols("error", "error_string").Update(&d)
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+
+	// 如果在线，则直接清理错误
+	dev := devices.Load(id)
+	if dev != nil {
+		// 清空错误状态
+		dev.PutValues(map[string]any{
+			"error":        false,
+			"error_string": "",
+		})
+		//_, err = dev.Action("clear_error", nil, 30)
+		//if err != nil {
+		//	api.Error(ctx, err)
+		//	return
+		//}
+	}
+
+	api.OK(ctx, nil)
 }
 
 type DeviceSetting struct {
@@ -194,14 +246,27 @@ func deviceSettingUpdate(ctx *gin.Context) {
 		return
 	}
 
+	//记录操作员
+	tab, _ := table.Get("device_log")
+	if tab != nil {
+		_, _ = tab.Insert(map[string]interface{}{
+			"user_id":   ctx.GetString("user"), //操作用户ID
+			"device_id": id,
+			"content":   "修改配置：" + name,
+		})
+	}
+
 	//如果设备在线，则直接通过MQTT下发配置
 	dev := devices.Load(id)
-	if dev != nil {
+	if dev != nil && dev.Online {
 		_, err = dev.Setting(setting2.Name, setting2.Content, setting2.Version, 30)
 		if err != nil {
 			api.Error(ctx, err)
 			return
 		}
+	} else {
+		api.Fail(ctx, "设备未在线，配置已经保存")
+		return
 	}
 
 	api.OK(ctx, nil)

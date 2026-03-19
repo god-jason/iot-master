@@ -175,6 +175,15 @@ func mqttSubscribeDevice() {
 		var dev Device
 		dev.Online = true
 		_, _ = db.Engine().ID(id).Cols("online").Update(&dev)
+
+		//记录日志
+		tab, _ := table.Get("device_log")
+		if tab != nil {
+			_, _ = tab.Insert(map[string]interface{}{
+				"device_id": id,
+				"content":   "上线",
+			})
+		}
 	})
 
 	mqtt.Subscribe("device/+/offline", func(topic string, payload []byte) {
@@ -188,6 +197,15 @@ func mqttSubscribeDevice() {
 		dev.Online = false
 		_, _ = db.Engine().ID(id).Cols("online").Update(&dev)
 		_, _ = db.Engine().Where("gateway_id=?", id).Cols("online").Update(&dev) //子设备也掉线
+
+		//记录日志
+		tab, _ := table.Get("device_log")
+		if tab != nil {
+			_, _ = tab.Insert(map[string]interface{}{
+				"device_id": id,
+				"content":   "离线",
+			})
+		}
 	})
 
 	//监听总线消息，客户端断开，则视为下线
@@ -213,6 +231,7 @@ func mqttSubscribeDevice() {
 		})
 	})
 
+	// TODO 过时了，需要删除
 	mqtt.Subscribe("device/+/log/+", func(topic string, payload []byte) {
 		id := strings.Split(topic, "/")[1]
 		user_id := strings.Split(topic, "/")[3]
@@ -227,6 +246,24 @@ func mqttSubscribeDevice() {
 			"device_id": id,
 			"content":   string(payload),
 		})
+	})
+
+	//标记错误
+	mqtt.Subscribe("device/+/error", func(topic string, payload []byte) {
+		id := strings.Split(topic, "/")[1]
+
+		var d Device
+		d.Error = true
+		d.ErrorString = string(payload)
+		_, _ = db.Engine().ID(id).Cols("error", "error_string").Update(&d)
+	})
+
+	//清除错误
+	mqtt.Subscribe("device/+/error/clear", func(topic string, payload []byte) {
+		id := strings.Split(topic, "/")[1]
+
+		var d Device
+		_, _ = db.Engine().ID(id).Cols("error", "error_string").Update(&d)
 	})
 
 	mqtt.SubscribeStruct[SyncResponse]("device/+/sync/response", func(topic string, resp *SyncResponse) {

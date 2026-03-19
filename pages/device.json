@@ -120,7 +120,7 @@
       "type": "boolean"
     },
     {
-      "key": "error",
+      "key": "error_string",
       "label": "错误"
     },
     {

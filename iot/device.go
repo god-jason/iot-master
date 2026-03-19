@@ -20,15 +20,16 @@ type Property struct {
 
 type Device struct {
 	//device.Device `xorm:"extends"`
-	Id        string `json:"id,omitempty" xorm:"pk"`
-	GatewayId string `json:"gateway_id,omitempty" xorm:"index"`
-	ProductId string `json:"product_id,omitempty" xorm:"index"`
-	GroupId   string `json:"group_id,omitempty" xorm:"index"`
-	LinkId    string `json:"link_id,omitempty" xorm:"index"`
-	Name      string `json:"name,omitempty"`
-	Disabled  bool   `json:"disabled,omitempty"` //禁用
-	Online    bool   `json:"online,omitempty"`
-	Error     string `json:"error,omitempty"`
+	Id          string `json:"id,omitempty" xorm:"pk"`
+	GatewayId   string `json:"gateway_id,omitempty" xorm:"index"`
+	ProductId   string `json:"product_id,omitempty" xorm:"index"`
+	GroupId     string `json:"group_id,omitempty" xorm:"index"`
+	LinkId      string `json:"link_id,omitempty" xorm:"index"`
+	Name        string `json:"name,omitempty"`
+	Disabled    bool   `json:"disabled,omitempty"` //禁用
+	Online      bool   `json:"online,omitempty"`
+	Error       bool   `json:"error,omitempty"`
+	ErrorString string `json:"error_string,omitempty"`
 
 	values Values
 
@@ -65,7 +66,8 @@ func (d *Device) Open() error {
 		d.validators = append(d.validators, vv)
 		err = vv.Build() //TODO 重复编译了
 		if err != nil {
-			d.Error = err.Error()
+			d.Error = true
+			d.ErrorString = err.Error()
 			log.Error(err)
 		}
 	}
