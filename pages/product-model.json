@@ -445,6 +445,11 @@
           "type": "switch"
         },
         {
+          "key": "list",
+          "label": "列表",
+          "type": "switch"
+        },
+        {
           "key": "fields",
           "label": "配置项",
           "span": 24,
