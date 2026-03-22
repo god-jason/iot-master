@@ -65,6 +65,11 @@
       "title": "产品物模型",
       "page":"product-model",
       "params_func": "return {id: params.id}"
+    },
+    {
+      "title": "固件版本",
+      "page":"version",
+      "params_func": "return {product_id: params.id}"
     }
   ]
 }

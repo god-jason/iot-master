@@ -1,0 +1,12 @@
+{
+  "title": "上传",
+  "template": "form",
+  "fields": [
+    {
+      "key": "file",
+      "label": "上传文件",
+      "type": "file",
+      "upload": "/api/upload"
+    }
+  ]
+}

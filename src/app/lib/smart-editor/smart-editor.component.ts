@@ -367,11 +367,15 @@ export class SmartEditorComponent implements OnInit {
     }
   }
 
+  uploading = false
 
   handleUpload(control: FormControl, $event: NzUploadChangeParam) {
-    if ($event.type == 'success') {
+    if ($event.type == 'uploading'){
+      this.uploading = true
+    } else if ($event.type == 'success') {
       //this.group.patchValue({[key]: $event.file.response.data[0]})
       control.setValue($event.file.response.data[0])
+      this.uploading = false
     }
   }
 

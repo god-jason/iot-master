@@ -1,0 +1,63 @@
+{
+  "name": "version",
+  "comment": "固件版本",
+  "joins": [
+    {
+      "table": "product",
+      "local_field": "product_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "product"
+    }
+  ],
+  "columns": [
+    {
+      "name": "id",
+      "comment": "ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "product_id",
+      "comment": "产品ID",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
+      "name": "name",
+      "comment": "名称",
+      "type": "string",
+      "length": 50
+    },
+    {
+      "name": "description",
+      "comment": "说明",
+      "type": "text"
+    },
+    {
+      "name": "url",
+      "comment": "固件",
+      "type": "text"
+    },
+    {
+      "name": "disabled",
+      "comment": "禁用",
+      "type": "bool",
+      "default": "false"
+    },
+    {
+      "name": "updated",
+      "comment": "更新时间",
+      "type": "datetime",
+      "updated": true
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ]
+}

@@ -26,9 +26,10 @@ type Property struct {
 }
 
 type Parameter struct {
-	Key   string `json:"key,omitempty"`
-	Label string `json:"label,omitempty"`
-	Type  string `json:"type,omitempty"`
+	Key     string `json:"key,omitempty"`
+	Label   string `json:"label,omitempty"`
+	Type    string `json:"type,omitempty"`
+	DataApi string `json:"data_api,omitempty"` //select类型数据接口
 }
 
 type Event struct {
