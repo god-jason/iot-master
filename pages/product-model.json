@@ -259,6 +259,10 @@
                   "value": "text"
                 },
                 {
+                  "label": "选择器",
+                  "value": "select"
+                },
+                {
                   "label": "日期",
                   "value": "date"
                 },
@@ -267,6 +271,11 @@
                   "value": "time"
                 }
               ]
+            },
+            {
+              "key": "data_api",
+              "label": "数据接口",
+              "type": "text"
             }
           ]
         }
@@ -445,8 +454,8 @@
           "type": "switch"
         },
         {
-          "key": "list",
-          "label": "列表",
+          "key": "multiple",
+          "label": "多项",
           "type": "switch"
         },
         {
