@@ -16,11 +16,11 @@ func init() {
 }
 
 type ProductSetting struct {
-	Id      string    `json:"id" xorm:"pk"`
-	Name    string    `json:"name" xorm:"pk"`
-	Version int       `json:"version,omitempty" xorm:"version"`
-	Content any       `json:"content,omitempty" xorm:"text"`
-	Created time.Time `json:"created,omitempty" xorm:"created"`
+	Id      string           `json:"id" xorm:"pk"`
+	Name    string           `json:"name" xorm:"pk"`
+	Version int              `json:"version,omitempty" xorm:"version"`
+	Content []map[string]any `json:"content,omitempty" xorm:"json"`
+	Created time.Time        `json:"created,omitempty" xorm:"created"`
 }
 
 func productSetting(ctx *gin.Context) {

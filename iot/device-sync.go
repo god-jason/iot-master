@@ -50,7 +50,7 @@ func modelSync(id string, sts map[string]int) (has bool, err error) {
 }
 
 func databaseSync(id string, name string, records map[string]Sync) (has bool, err error) {
-	tab, err := table.Get("device")
+	tab, err := table.Get("name")
 	if err != nil {
 		return false, err
 	}
