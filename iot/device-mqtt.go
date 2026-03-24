@@ -17,14 +17,18 @@ type Sync struct {
 }
 
 type Register struct {
-	Id        string                     `json:"id,omitempty"`
-	ProductId string                     `json:"product_id,omitempty"`
-	Bsp       string                     `json:"bsp,omitempty"`
-	Firmware  string                     `json:"firmware,omitempty"`
-	Imei      string                     `json:"imei,omitempty"`
-	Iccid     string                     `json:"iccid,omitempty"`
-	Settings  map[string]int             `json:"settings,omitempty"`  //配置文件版本号
-	Databases map[string]map[string]Sync `json:"databases,omitempty"` //数据库同步
+	Id        string `json:"id,omitempty"`
+	ProductId string `json:"product_id,omitempty"`
+	Bsp       string `json:"bsp,omitempty"`
+	Firmware  string `json:"firmware,omitempty"`
+	Imei      string `json:"imei,omitempty"`
+	Iccid     string `json:"iccid,omitempty"`
+
+	//同步
+	Settings map[string]int  `json:"settings,omitempty"` //配置文件 文件名->版本号
+	Models   map[string]int  `json:"models,omitempty"`   //物模型 产品ID->版本号
+	Devices  map[string]Sync `json:"devices,omitempty"`  //设备同步
+	Scenes   map[string]Sync `json:"scenes,omitempty"`   //场景同步
 }
 
 type Location struct {
@@ -71,7 +75,7 @@ func mqttSubscribeDevice() {
 
 		//同步配置
 		if len(reg.Settings) > 0 {
-			has, err := settingSync(d.Id, reg.Settings)
+			has, err := deviceSettingSync(d.Id, reg.Settings)
 			if err != nil {
 				log.Error("Sync setting fail", err)
 				return
@@ -81,11 +85,35 @@ func mqttSubscribeDevice() {
 			}
 		}
 
-		//同步数据库
-		if len(reg.Databases) > 0 {
-			has, err := databaseSync(d.Id, reg.Databases)
+		//同步模型
+		if len(reg.Models) > 0 {
+			has, err := modelSync(d.Id, reg.Models)
 			if err != nil {
-				log.Error("Sync database fail", err)
+				log.Error("Sync setting fail", err)
+				return
+			}
+			if has {
+				hasSync = true
+			}
+		}
+
+		//同步设备
+		if len(reg.Devices) > 0 {
+			has, err := databaseSync(d.Id, "devices", reg.Devices)
+			if err != nil {
+				log.Error("Sync devices fail", err)
+				return
+			}
+			if has {
+				hasSync = true
+			}
+		}
+
+		//同步场景
+		if len(reg.Scenes) > 0 {
+			has, err := databaseSync(d.Id, "scenes", reg.Scenes)
+			if err != nil {
+				log.Error("Sync scenes fail", err)
 				return
 			}
 			if has {
@@ -95,7 +123,7 @@ func mqttSubscribeDevice() {
 
 		//配置和数据库更新，重启一下设备
 		if hasSync {
-			mqtt.Publish("device/"+d.Id+"/action/reboot", nil)
+			mqtt.Publish("device/"+d.Id+"/action", &ActionRequest{Action: "reboot"})
 		}
 	})
 

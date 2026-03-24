@@ -1,0 +1,37 @@
+{
+  "name": "product_setting",
+  "comment": "产品参数",
+  "columns": [
+    {
+      "name": "id",
+      "comment": "ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "name",
+      "comment": "名称",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "version",
+      "comment": "版本号",
+      "type": "int"
+    },
+    {
+      "name": "content",
+      "comment": "内容",
+      "type": "text",
+      "json": true
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ]
+}

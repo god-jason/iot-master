@@ -5,7 +5,6 @@ go 1.25.0
 require (
 	github.com/ArtisanCloud/PowerWeChat/v3 v3.4.39
 	github.com/PaesslerAG/gval v1.2.4
-	github.com/busy-cloud/boat v0.7.6
 	github.com/dop251/goja v0.0.0-20260305124333-6a7976c22267
 	github.com/dop251/goja_nodejs v0.0.0-20260212111938-1f56ff5bcf14
 	github.com/eclipse/paho.mqtt.golang v1.5.1
