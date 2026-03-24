@@ -69,12 +69,14 @@ export class AmapComponent extends TemplateBase {
     loadMap({
       key: content.key || 'eb6a831c04b6dfedda190d6254febb58',
       version: '2.0',
-      plugins: ['AMap.Icon', 'AMap.Marker', 'AMap.MarkerCluster', 'AMap.MoveAnimation'],
+      plugins: ['AMap.Icon', "AMap.Circle", 'AMap.BezierCurve', 'AMap.Marker', 'AMap.MarkerCluster', 'AMap.MoveAnimation'],
       AMapUI: {
         version: '1.1',
         plugins: [],
       },
     }).then((AMap) => {
+      this.AMap = AMap;
+
       //this.element.nativeElement
       this.map = new AMap.Map(this.mapContainer.nativeElement, {
         //center: [120.301663, 31.574729],  //设置地图中心点坐标
@@ -98,6 +100,9 @@ export class AmapComponent extends TemplateBase {
         this.map.setCity(content.city)
 
       this.map.setFitView();
+
+      //渲染数据
+      if (this.data && this.data.length) this.render(this.data)
     }).catch((e) => {
       console.log(e);
     });
@@ -109,16 +114,37 @@ export class AmapComponent extends TemplateBase {
     let content = this.content as AmapContent;
     if (!content) return
 
+    if (!this.AMap) {
+      this.data = data;
+      return;
+    }
+
     switch (content.type) {
       case "line":
-        let path = data?.map((item: any) => item.position || [item.longitude, item.latitude])
-        let polyline = new this.AMap.Polyline({path: path})
+        //圆点标注具体位置
+        let circles = data?.map((item: any, index: number) => {
+          let marker = new this.AMap.Circle({
+            center: [item.longitude, item.latitude],
+            radius: 4,
+            strokeColor: index == 0 ? "#FF0000" :"#fc1313",
+            strokeWeight: index == 0 ? 10 : 0,
+            title: item.created,
+          })
+          //响应点击事件
+          marker.on("click", console.log)
+          return marker;
+        })
+        this.map.add(circles);
+
+        //路径
+        let path = data?.map((item: any, index: number) =>  [item.longitude, item.latitude])
+        let polyline = new this.AMap.Polyline({path: path, strokeColor: "#2b8cbe", strokeWeight: 4})
         this.map.add(polyline);
         break
       case "point":
         let markers = data?.map((item: any) => {
           let marker = new this.AMap.Marker({
-            position: item.position || [item.longitude, item.latitude],
+            position: [item.longitude, item.latitude],
             title: item.name || item.id,
           })
           //响应点击事件
@@ -142,6 +168,7 @@ export class AmapComponent extends TemplateBase {
         break
     }
 
+    //自适应
     this.map.setFitView();
   }
 }

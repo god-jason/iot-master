@@ -6,7 +6,6 @@
       "name": "id",
       "comment": "ID",
       "type": "int64",
-      "length": 50,
       "primary": true,
       "increment": true
     },
@@ -20,26 +19,22 @@
     {
       "name": "longitude",
       "comment": "经度",
-      "type": "double",
-      "length": 50
+      "type": "double"
     },
     {
       "name": "latitude",
       "comment": "经度",
-      "type": "double",
-      "length": 50
+      "type": "double"
     },
     {
       "name": "speed",
       "comment": "速度",
-      "type": "float",
-      "length": 50
+      "type": "float"
     },
     {
       "name": "course",
       "comment": "角度",
-      "type": "float",
-      "length": 50
+      "type": "float"
     },
     {
       "name": "created",

@@ -57,5 +57,5 @@
     }
   ],
   "search_api": "table/device_log/search",
-  "mount": "if(this.params.device_id)this.filter.device_id=this.params.device_id"
+  "mount": "this.filter.device_id=this.params.id"
 }

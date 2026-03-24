@@ -77,9 +77,14 @@
       "params_func": "return {id: params.id}"
     },
     {
+      "title": "GPS轨迹",
+      "page":"device-track",
+      "params_func": "return {id: params.id}"
+    },
+    {
       "title": "设备日志",
       "page":"device-log",
-      "params_func": "return {device_id: params.id}"
+      "params_func": "return {id: params.id}"
     },
     {
       "title": "设备变量修改",
