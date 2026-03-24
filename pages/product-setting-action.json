@@ -1,0 +1,138 @@
+{
+  "title": "编辑产品动作响应",
+  "template": "form",
+  "toolbar": [
+    {
+      "type": "button",
+      "label": "导出JSON",
+      "action": {
+        "type": "script",
+        "script": "this.export_json(this.editor.values, 'product-action-' + this.params.id)"
+      }
+    },
+    {
+      "type": "button",
+      "label": "导入JSON",
+      "action": {
+        "type": "script",
+        "script": "this.import_json().then(data=>this.editor.values = data)"
+      }
+    }
+  ],
+  "fields": [
+    {
+      "key": "content",
+      "label": "【动作】",
+      "span": 24,
+      "type": "list",
+      "children": [
+        {
+          "key": "name",
+          "label": "名称",
+          "type": "text"
+        },
+        {
+          "key": "label",
+          "label": "显示",
+          "type": "text"
+        },
+        {
+          "key": "hidden",
+          "label": "隐藏",
+          "type": "switch"
+        },
+        {
+          "key": "type",
+          "label": "类型",
+          "type": "select",
+          "default": "number",
+          "options": [
+            {
+              "label": "按钮",
+              "value": "button"
+            },
+            {
+              "label": "开关",
+              "value": "switch"
+            },
+            {
+              "label": "滑块",
+              "value": "slider"
+            },
+            {
+              "label": "表单",
+              "value": "form"
+            }
+          ]
+        },
+        {
+          "key": "bind",
+          "label": "数据绑定",
+          "type": "text"
+        },
+        {
+          "key": "parameters",
+          "type": "table",
+          "label": "参数",
+          "children": [
+            {
+              "key": "key",
+              "label": "变量",
+              "type": "text"
+            },
+            {
+              "key": "label",
+              "label": "显示",
+              "type": "text"
+            },
+            {
+              "key": "type",
+              "label": "类型",
+              "type": "select",
+              "default": "number",
+              "options": [
+                {
+                  "label": "数值",
+                  "value": "number"
+                },
+                {
+                  "label": "布尔",
+                  "value": "switch"
+                },
+                {
+                  "label": "字符串",
+                  "value": "text"
+                },
+                {
+                  "label": "选择器",
+                  "value": "select"
+                },
+                {
+                  "label": "日期",
+                  "value": "date"
+                },
+                {
+                  "label": "时间",
+                  "value": "time"
+                }
+              ]
+            },
+            {
+              "key": "data_api",
+              "label": "数据接口",
+              "type": "text",
+              "condition": {
+                "key": "type",
+                "type": "==",
+                "value": "select"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "load_api": "product/:id/setting/action",
+  "submit_api": "product/:id/setting/action",
+  "submit_success": "this.navigate('/page/product-detail?id='+this.params.id)"
+}

@@ -38,22 +38,21 @@ func productSetting(ctx *gin.Context) {
 		return
 	}
 
-	api.OK(ctx, &setting.Content)
+	api.OK(ctx, &setting)
 }
 
 func productSettingUpdate(ctx *gin.Context) {
 	id := ctx.Param("id")
 	name := ctx.Param("name")
 
-	var content map[string]any
-	err := ctx.ShouldBind(&content)
+	var ps ProductSetting
+	err := ctx.ShouldBind(&ps)
 	if err != nil {
 		api.Error(ctx, err)
 		return
 	}
 
 	var setting ProductSetting
-
 	has, err := db.Engine().ID(schemas.PK{id, name}).Get(&setting)
 	if err != nil {
 		api.Error(ctx, err)
@@ -61,7 +60,7 @@ func productSettingUpdate(ctx *gin.Context) {
 	}
 
 	//修改为新内容
-	setting.Content = content
+	setting.Content = ps.Content
 	if !has {
 		setting.Id = id
 		setting.Name = name

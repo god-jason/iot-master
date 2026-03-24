@@ -205,8 +205,13 @@
               <tr cdkDrag>
                 @for (f of field.children; track f; let j = $index) {
                   <td>
+                    @if (f.hidden || f.condition && !calc_condition(c, f.condition)) {
+                    <!-- 什么也不用干 -->
+                    }
+                    @else{
                     <ng-container *ngTemplateOutlet="controlTpl; context: { field: f, control:c.get(f.key) }">
                     </ng-container>
+                    }
                   </td>
                 }
                 <td class="operators">

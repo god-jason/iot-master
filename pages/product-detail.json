@@ -62,14 +62,34 @@
       "params_func": "return {product_id: params.id}"
     },
     {
-      "title": "产品物模型",
-      "page":"product-model",
+      "title": "物模型",
+      "page":"product-setting-model",
+      "params_func": "return {id: params.id}"
+    },
+    {
+      "title": "配置参数",
+      "page":"product-setting-setting",
+      "params_func": "return {id: params.id}"
+    },
+    {
+      "title": "事件响应",
+      "page":"product-setting-action",
+      "params_func": "return {id: params.id}"
+    },
+    {
+      "title": "数值检查",
+      "page":"product-setting-validator",
       "params_func": "return {id: params.id}"
     },
     {
       "title": "固件版本",
       "page":"version",
       "params_func": "return {product_id: params.id}"
+    },
+    {
+      "title": "物模型(旧)",
+      "page":"product-model",
+      "params_func": "return {id: params.id}"
     }
   ]
 }

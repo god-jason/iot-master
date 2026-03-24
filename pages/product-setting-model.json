@@ -1,0 +1,192 @@
+{
+  "title": "编辑产品物模型",
+  "template": "form",
+  "toolbar": [
+    {
+      "type": "button",
+      "label": "导出JSON",
+      "action": {
+        "type": "script",
+        "script": "this.export_json(this.editor.values, 'product-model-' + this.params.id)"
+      }
+    },
+    {
+      "type": "button",
+      "label": "导入JSON",
+      "action": {
+        "type": "script",
+        "script": "this.import_json().then(data=>this.editor.values = data)"
+      }
+    }
+  ],
+  "fields": [
+    {
+      "key": "content",
+      "label": "【属性表】",
+      "type": "list",
+      "span": 24,
+      "children": [
+        {
+          "key": "name",
+          "label": "分组",
+          "type": "text"
+        },
+        {
+          "key": "hidden",
+          "label": "隐藏",
+          "type": "switch"
+        },
+        {
+          "key": "points",
+          "label": "点位",
+          "span": 24,
+          "type": "table",
+          "children": [
+            {
+              "key": "name",
+              "label": "变量",
+              "type": "text"
+            },
+            {
+              "key": "label",
+              "label": "显示名称",
+              "type": "text"
+            },
+            {
+              "key": "type",
+              "label": "数据类型",
+              "type": "select",
+              "default": "number",
+              "options": [
+                {
+                  "label": "布尔",
+                  "value": "bool"
+                },
+                {
+                  "label": "数值",
+                  "value": "number"
+                },
+                {
+                  "label": "字符串",
+                  "value": "string"
+                },
+                {
+                  "label": "数组",
+                  "value": "array"
+                },
+                {
+                  "label": "对象",
+                  "value": "object"
+                }
+              ]
+            },
+            {
+              "key": "mode",
+              "label": "模式",
+              "type": "select",
+              "default": "",
+              "options": [
+                {
+                  "label": "读写",
+                  "value": "rw"
+                },
+                {
+                  "label": "只写",
+                  "value": "w"
+                },
+                {
+                  "label": "只读",
+                  "value": "r"
+                },
+                {
+                  "label": "未知",
+                  "value": ""
+                }
+              ]
+            },
+            {
+              "key": "unit",
+              "label": "数据单位",
+              "type": "text"
+            },
+            {
+              "key": "precision",
+              "label": "精度",
+              "type": "number",
+              "default": 0
+            },
+            {
+              "key": "enumerations",
+              "label": "枚举",
+              "type": "table",
+              "children": [
+                {
+                  "key": "index",
+                  "label": "数值",
+                  "type": "number"
+                },
+                {
+                  "key": "value",
+                  "label": "枚举值",
+                  "type": "text"
+                },
+                {
+                  "key": "label",
+                  "label": "显示名称",
+                  "type": "text"
+                }
+              ]
+            },
+            {
+              "key": "bits",
+              "label": "位",
+              "type": "table",
+              "children": [
+                {
+                  "key": "name",
+                  "label": "变量",
+                  "type": "text"
+                },
+                {
+                  "key": "label",
+                  "label": "显示",
+                  "type": "text"
+                },
+                {
+                  "key": "bit",
+                  "label": "位",
+                  "type": "number",
+                  "min": 0,
+                  "max": 63
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "load_api": "product/:id/setting/model",
+  "submit_api": "product/:id/setting/model",
+  "submit_success": "this.navigate('/page/product-detail?id='+this.params.id)",
+  "mount": "this.load_product()",
+  "methods": {
+    "load_product": "this.request.get('table/product/detail/'+this.params.id).subscribe(res=>{if(!res.error) res.data.protocol && this.load_protocol(res.data.protocol)})",
+    "load_protocol": [
+      "p",
+      "this.request.get('protocol/'+p).subscribe(res=>{ this.add_point_types(res.data); this.add_point_fields(res.data);  this.add_property_fields(res.data);  setTimeout(()=>this.editor.rebuild(), 200)})"
+    ],
+    "add_point_types": [
+      "p",
+      "if(p.point_extend_types) this.content.fields[0].children[2].children[2].options=p.point_extend_types;"
+    ],
+    "add_point_fields": [
+      "p",
+      "if(p.point_extend_fields) this.content.fields[0].children[2].children.push(...p.point_extend_fields);"
+    ],
+    "add_property_fields": [
+      "p",
+      "if(p.property_extend_fields) this.content.fields[0].children.splice(2,0,...p.property_extend_fields);"
+    ]
+  }
+}
