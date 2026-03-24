@@ -1,0 +1,51 @@
+{
+  "name": "location",
+  "comment": "定位轨迹",
+  "columns": [
+    {
+      "name": "id",
+      "comment": "ID",
+      "type": "int64",
+      "length": 50,
+      "primary": true,
+      "increment": true
+    },
+    {
+      "name": "device_id",
+      "comment": "设备ID",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
+      "name": "longitude",
+      "comment": "经度",
+      "type": "double",
+      "length": 50
+    },
+    {
+      "name": "latitude",
+      "comment": "经度",
+      "type": "double",
+      "length": 50
+    },
+    {
+      "name": "speed",
+      "comment": "速度",
+      "type": "float",
+      "length": 50
+    },
+    {
+      "name": "course",
+      "comment": "角度",
+      "type": "float",
+      "length": 50
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ]
+}

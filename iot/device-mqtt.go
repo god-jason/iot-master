@@ -3,6 +3,7 @@ package iot
 import (
 	"encoding/json"
 	"strings"
+	"time"
 
 	"github.com/god-jason/iot-master/pkg/db"
 	"github.com/god-jason/iot-master/pkg/log"
@@ -24,6 +25,16 @@ type Register struct {
 	Iccid     string                     `json:"iccid,omitempty"`
 	Settings  map[string]int             `json:"settings,omitempty"`  //配置文件版本号
 	Databases map[string]map[string]Sync `json:"databases,omitempty"` //数据库同步
+}
+
+type Location struct {
+	Id        int64     `json:"id,omitempty" xorm:"pk"`
+	DeviceId  string    `json:"device_id,omitempty" xorm:"index"`
+	Longitude float64   `json:"longitude,omitempty"`
+	Latitude  float64   `json:"latitude,omitempty"`
+	Speed     float32   `json:"speed,omitempty"`
+	Course    float32   `json:"course,omitempty"`
+	Created   time.Time `json:"created,omitempty" xorm:"created"`
 }
 
 func mqttSubscribeDevice() {
@@ -264,6 +275,23 @@ func mqttSubscribeDevice() {
 
 		var d Device
 		_, _ = db.Engine().ID(id).Cols("error", "error_string").Update(&d)
+	})
+
+	//设备定位
+	mqtt.SubscribeStruct[Location]("device/+/location", func(topic string, data *Location) {
+		if data.DeviceId == "" {
+			id := strings.Split(topic, "/")[1]
+			data.DeviceId = id
+		}
+
+		//更新设备当前位置
+		var d Device
+		d.Longitude = data.Longitude
+		d.Latitude = data.Latitude
+		_, _ = db.Engine().ID(data.Id).Cols("longitude", "latitude").Update(&d)
+
+		//存入轨迹数据库
+		_, _ = db.Engine().InsertOne(data)
 	})
 
 	mqtt.SubscribeStruct[SyncResponse]("device/+/sync/response", func(topic string, resp *SyncResponse) {

@@ -20,16 +20,20 @@ type Property struct {
 
 type Device struct {
 	//device.Device `xorm:"extends"`
-	Id          string `json:"id,omitempty" xorm:"pk"`
-	GatewayId   string `json:"gateway_id,omitempty" xorm:"index"`
-	ProductId   string `json:"product_id,omitempty" xorm:"index"`
-	GroupId     string `json:"group_id,omitempty" xorm:"index"`
-	LinkId      string `json:"link_id,omitempty" xorm:"index"`
-	Name        string `json:"name,omitempty"`
-	Disabled    bool   `json:"disabled,omitempty"` //禁用
-	Online      bool   `json:"online,omitempty"`
+	Id        string `json:"id,omitempty" xorm:"pk"`
+	GatewayId string `json:"gateway_id,omitempty" xorm:"index"`
+	ProductId string `json:"product_id,omitempty" xorm:"index"`
+	GroupId   string `json:"group_id,omitempty" xorm:"index"`
+	LinkId    string `json:"link_id,omitempty"`
+	Name      string `json:"name,omitempty"`
+	Disabled  bool   `json:"disabled,omitempty"` //禁用
+	Online    bool   `json:"online,omitempty"`
+	//错误
 	Error       bool   `json:"error,omitempty"`
 	ErrorString string `json:"error_string,omitempty"`
+	//定位
+	Longitude float64 `json:"longitude,omitempty"`
+	Latitude  float64 `json:"latitude,omitempty"`
 
 	values Values
 
