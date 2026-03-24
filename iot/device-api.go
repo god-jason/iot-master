@@ -25,6 +25,7 @@ func init() {
 	//参数
 	api.Register("GET", "device/:id/setting/:name", deviceSetting)
 	api.Register("POST", "device/:id/setting/:name", deviceSettingUpdate)
+	api.Register("GET", "device/:id/setting/clear", deviceSettingClear) //清空云端配置
 }
 
 func deviceValues(ctx *gin.Context) {
@@ -203,6 +204,18 @@ func deviceSetting(ctx *gin.Context) {
 	}
 
 	api.OK(ctx, &setting.Content)
+}
+
+func deviceSettingClear(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	var setting DeviceSetting
+	cnt, err := db.Engine().Where("id=?", id).Delete(&setting)
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+	api.OK(ctx, cnt)
 }
 
 func deviceSettingUpdate(ctx *gin.Context) {

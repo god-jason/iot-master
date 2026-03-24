@@ -42,11 +42,6 @@
           "type": "switch"
         },
         {
-          "key": "multiple",
-          "label": "多项",
-          "type": "switch"
-        },
-        {
           "key": "fields",
           "label": "配置项",
           "span": 24,
