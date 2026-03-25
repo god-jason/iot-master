@@ -1,0 +1,90 @@
+{
+  "title": "定时任务",
+  "template": "table",
+  "toolbar": [
+    {
+      "label": "批量删除",
+      "icon": "delete",
+      "type": "button",
+      "confirm": "确认批量删除？",
+      "action": {
+        "type": "script",
+        "script": "this.table.selects.forEach(id=>this.request.get('table/job/delete/'+id).subscribe(res=>{this.load()}))"
+      }
+    },
+    {
+      "key": "keyword",
+      "type": "text",
+      "placeholder": "请输入关键字"
+    },
+    {
+      "type": "button",
+      "icon": "search",
+      "label": "搜索",
+      "action": {
+        "type": "script",
+        "script": "this.keyword=this.toolbar.value.keyword; this.load()"
+      }
+    }
+  ],
+  "keywords": [
+    "id",
+    "name"
+  ],
+  "operators": [
+    {
+      "icon": "delete",
+      "title": "删除",
+      "confirm": "确认删除？",
+      "action": {
+        "type": "script",
+        "script": "this.request.get('table/job/delete/'+data.id).subscribe(res=>{this.load()})"
+      }
+    }
+  ],
+  "batch": true,
+  "columns": [
+    {
+      "key": "id",
+      "label": "ID"
+    },
+    {
+      "key": "name",
+      "label": "名称"
+    },
+    {
+      "key": "time",
+      "label": "时间"
+    },
+    {
+      "key": "weekdays",
+      "label": "日期"
+    },
+    {
+      "key": "action",
+      "label": "动作"
+    },
+    {
+      "key": "data",
+      "label": "参数",
+      "type": "json"
+    },
+    {
+      "key": "single",
+      "label": "单次",
+      "type": "boolean"
+    },
+    {
+      "key": "disabled",
+      "label": "禁用",
+      "type": "boolean"
+    },
+    {
+      "key": "created",
+      "label": "日期",
+      "type": "date"
+    }
+  ],
+  "search_api": "table/job/search",
+  "mount": "if(this.params.gateway_id)this.filter.gateway_id=this.params.gateway_id"
+}

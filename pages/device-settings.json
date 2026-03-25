@@ -4,7 +4,7 @@
   "mount": "this.load_device()",
   "methods": {
     "load_device": "this.request.get('table/device/detail/'+this.params.id).subscribe(res=>{if(res.error)return; this.load_model(res.data.product_id)})",
-    "load_model": ["pid","this.request.get('product/'+pid+'/model').subscribe(res=>{if(res.error)return; res.data.settings && this.render_settings(res.data.settings); })"],
+    "load_model": ["pid","this.request.get('product/'+pid+'/setting/model').subscribe(res=>{if(res.error)return; res.data.content && this.render_settings(res.data.content); })"],
     "render_settings": ["settings", "settings && settings.map(p=>{ this.content.children.push({span: 24, params:{id:this.params.id, name:p.name}, content:Object.assign({title:p.label, fields: p.fields}, this.content.setting_content) }) })"]
   },
   "children": [],

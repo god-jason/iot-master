@@ -72,23 +72,13 @@
   "load_api": "table/device/detail/:id",
   "tabs": [
     {
-      "title": "状态",
+      "title": "数据",
       "page":"device-values",
       "params_func": "return {id: params.id}"
     },
     {
       "title": "日志",
       "page":"device-log",
-      "params_func": "return {id: params.id}"
-    },
-    {
-      "title": "变量修改",
-      "page":"device-values-setting",
-      "params_func": "return {id: params.id}"
-    },
-    {
-      "title": "操作",
-      "page":"device-actions",
       "params_func": "return {id: params.id}"
     },
     {

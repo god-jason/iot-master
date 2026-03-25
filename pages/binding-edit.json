@@ -1,0 +1,45 @@
+{
+  "title": "编辑数据绑定",
+  "template": "form",
+  "fields": [
+    {
+      "key": "id",
+      "label": "ID",
+      "type": "text",
+      "placeholder": "默认随机ID"
+    },
+    {
+      "key": "gateway_id",
+      "label": "网关ID",
+      "type": "text"
+    },
+    {
+      "key": "name",
+      "label": "名称",
+      "type": "text"
+    },
+    {
+      "key": "device1",
+      "label": "设备1",
+      "type": "text"
+    },
+    {
+      "key": "device2",
+      "label": "设备2",
+      "type": "text"
+    },
+    {
+      "key": "forward",
+      "label": "右向",
+      "type": "switch"
+    },
+    {
+      "key": "backward",
+      "label": "左向",
+      "type": "switch"
+    }
+  ],
+  "load_api": "table/binding/detail/:id",
+  "submit_api": "table/binding/update/:id",
+  "submit_success": "this.navigate('/page/gateway-detail?id='+this.data.gateway_id)"
+}

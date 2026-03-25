@@ -5,10 +5,9 @@
     {
       "name": "id",
       "comment": "ID",
-      "type": "int64",
+      "type": "string",
       "length": 50,
-      "primary": true,
-      "increment": true
+      "primary": true
     },
     {
       "name": "gateway_id",
