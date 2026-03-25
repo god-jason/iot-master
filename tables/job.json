@@ -1,13 +1,14 @@
 {
-  "name": "scene",
-  "comment": "设备场景",
+  "name": "job",
+  "comment": "定时任务",
   "columns": [
     {
       "name": "id",
       "comment": "ID",
-      "type": "string",
+      "type": "int64",
       "length": 50,
-      "primary": true
+      "primary": true,
+      "increment": true
     },
     {
       "name": "gateway_id",
@@ -23,15 +24,10 @@
       "length": 50
     },
     {
-      "name": "delay",
-      "comment": "延迟",
-      "type": "int"
-    },
-    {
-      "name": "ranges",
-      "comment": "时间范围",
-      "type": "text",
-      "json": true
+      "name": "time",
+      "comment": "时间",
+      "type": "string",
+      "length": 50
     },
     {
       "name": "weekdays",
@@ -40,22 +36,22 @@
       "json": true
     },
     {
-      "name": "triggers",
-      "comment": "触发器",
+      "name": "action",
+      "comment": "动作",
+      "type": "string",
+      "length": 50
+    },
+    {
+      "name": "data",
+      "comment": "参数",
       "type": "text",
       "json": true
     },
     {
-      "name": "conditions",
-      "comment": "检查条件",
-      "type": "text",
-      "json": true
-    },
-    {
-      "name": "actions",
-      "comment": "执行动作",
-      "type": "text",
-      "json": true
+      "name": "single",
+      "comment": "单次",
+      "type": "bool",
+      "default": "false"
     },
     {
       "name": "disabled",

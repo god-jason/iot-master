@@ -63,9 +63,8 @@
     {
       "icon": "eye",
       "action": {
-        "type": "page",
-        "page":"device-detail",
-        "params_func": "return {id: data.id}"
+        "type": "script",
+        "script": "this.navigate('/page/'+(data.gateway_id?'device':'gateway')+'-detail?id='+data.id)"
       }
     },
     {
@@ -92,9 +91,8 @@
       "key": "id",
       "label": "ID",
       "action": {
-        "type": "page",
-        "page":"device-detail",
-        "params_func": "return {id: data.id}"
+        "type": "script",
+        "script": "this.navigate('/page/'+(data.gateway_id?'device':'gateway')+'-detail?id='+data.id)"
       }
     },
     {

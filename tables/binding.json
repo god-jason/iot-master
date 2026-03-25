@@ -1,13 +1,14 @@
 {
-  "name": "scene",
-  "comment": "设备场景",
+  "name": "binding",
+  "comment": "设备绑定",
   "columns": [
     {
       "name": "id",
       "comment": "ID",
-      "type": "string",
+      "type": "int64",
       "length": 50,
-      "primary": true
+      "primary": true,
+      "increment": true
     },
     {
       "name": "gateway_id",
@@ -23,39 +24,28 @@
       "length": 50
     },
     {
-      "name": "delay",
-      "comment": "延迟",
-      "type": "int"
+      "name": "device1",
+      "comment": "设备1",
+      "type": "string",
+      "length": 50
     },
     {
-      "name": "ranges",
-      "comment": "时间范围",
-      "type": "text",
-      "json": true
+      "name": "device2",
+      "comment": "设备2",
+      "type": "string",
+      "length": 50
     },
     {
-      "name": "weekdays",
-      "comment": "日期",
-      "type": "text",
-      "json": true
+      "name": "forward",
+      "comment": "右向",
+      "type": "bool",
+      "default": "false"
     },
     {
-      "name": "triggers",
-      "comment": "触发器",
-      "type": "text",
-      "json": true
-    },
-    {
-      "name": "conditions",
-      "comment": "检查条件",
-      "type": "text",
-      "json": true
-    },
-    {
-      "name": "actions",
-      "comment": "执行动作",
-      "type": "text",
-      "json": true
+      "name": "backward",
+      "comment": "左向",
+      "type": "bool",
+      "default": "false"
     },
     {
       "name": "disabled",

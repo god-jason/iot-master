@@ -1,0 +1,114 @@
+{
+  "title": "网关串口管理",
+  "template": "table",
+  "toolbar": [
+    {
+      "label": "创建",
+      "icon": "plus",
+      "type": "button",
+      "action": {
+        "type": "page",
+        "page":"serial-create",
+        "params_func": "return {gateway_id: this.params.gateway_id}"
+      }
+    },
+    {
+      "label": "批量删除",
+      "icon": "delete",
+      "type": "button",
+      "confirm": "确认批量删除？",
+      "action": {
+        "type": "script",
+        "script": "this.table.selects.forEach(id=>this.request.get('table/serial/delete/'+id).subscribe(res=>{this.load()}))"
+      }
+    },
+    {
+      "key": "keyword",
+      "type": "text",
+      "placeholder": "请输入关键字"
+    },
+    {
+      "type": "button",
+      "icon": "search",
+      "label": "搜索",
+      "action": {
+        "type": "script",
+        "script": "this.keyword=this.toolbar.value.keyword; this.load()"
+      }
+    }
+  ],
+  "keywords": [
+    "id",
+    "name"
+  ],
+  "operators": [
+    {
+      "icon": "edit",
+      "action": {
+        "type": "page",
+        "page":"serial-edit",
+        "params_func": "return {id: data.id}"
+      }
+    },
+    {
+      "icon": "delete",
+      "title": "删除",
+      "confirm": "确认删除？",
+      "action": {
+        "type": "script",
+        "script": "this.request.get('table/serial/delete/'+data.id).subscribe(res=>{this.load()})"
+      }
+    }
+  ],
+  "batch": true,
+  "columns": [
+    {
+      "key": "id",
+      "label": "ID"
+    },
+    {
+      "key": "name",
+      "label": "名称"
+    },
+    {
+      "key": "port",
+      "label": "序号"
+    },
+    {
+      "key": "baud_rate",
+      "label": "波特率"
+    },
+    {
+      "key": "data_bits",
+      "label": "字长"
+    },
+    {
+      "key": "stop_bits",
+      "label": "停止位"
+    },
+    {
+      "key": "parity",
+      "label": "检验位"
+    },
+    {
+      "key": "rs485_gpio",
+      "label": "485GPIO"
+    },
+    {
+      "key": "protocol",
+      "label": "协议"
+    },
+    {
+      "key": "disabled",
+      "label": "禁用",
+      "type": "boolean"
+    },
+    {
+      "key": "created",
+      "label": "日期",
+      "type": "date"
+    }
+  ],
+  "search_api": "table/serial/search",
+  "mount": "if(this.params.gateway_id)this.filter.gateway_id=this.params.gateway_id"
+}

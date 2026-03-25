@@ -1,0 +1,153 @@
+{
+  "title": "创建串口",
+  "template": "form",
+  "fields": [
+    {
+      "key": "id",
+      "label": "ID",
+      "type": "text",
+      "placeholder": "默认随机ID"
+    },
+    {
+      "key": "gateway_id",
+      "label": "网关ID",
+      "type": "text"
+    },
+    {
+      "key": "name",
+      "label": "名称",
+      "type": "text"
+    },
+    {
+      "key": "port",
+      "label": "端口号",
+      "type": "number",
+      "default": 1
+    },
+    {
+      "key": "baud_rate",
+      "label": "波特率",
+      "type": "select",
+      "default": 9600,
+      "options": [
+        {
+          "label": "2400",
+          "value": 2400
+        },
+        {
+          "label": "4800",
+          "value": 4800
+        },
+        {
+          "label": "9600",
+          "value": 9600
+        },
+        {
+          "label": "19200",
+          "value": 19200
+        },
+        {
+          "label": "38400",
+          "value": 38400
+        },
+        {
+          "label": "57600",
+          "value": 57600
+        },
+        {
+          "label": "115200",
+          "value": 115200
+        }
+      ]
+    },
+    {
+      "key": "data_bits",
+      "label": "字长",
+      "type": "radio",
+      "default": 8,
+      "options": [
+        {
+          "label": "7",
+          "value": 7
+        },
+        {
+          "label": "8",
+          "value": 8
+        }
+      ]
+    },
+    {
+      "key": "stop_bits",
+      "label": "停止位",
+      "type": "radio",
+      "default": 1,
+      "options": [
+        {
+          "label": "0.5",
+          "value": 0.5,
+          "disabled": true
+        },
+        {
+          "label": "1",
+          "value": 1
+        },
+        {
+          "label": "1.5",
+          "value": 1.5,
+          "disabled": true
+        },
+        {
+          "label": "2",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "key": "parity",
+      "label": "类型",
+      "type": "radio",
+      "options": [
+        {
+          "label": "无校验 NONE",
+          "value": "N"
+        },
+        {
+          "label": "偶校验 EVEN",
+          "value": "E"
+        },
+        {
+          "label": "奇校验 ODD",
+          "value": "O"
+        }
+      ]
+    },
+    {
+      "key": "rs485_gpio",
+      "label": "485GPIO",
+      "type": "number"
+    },
+    {
+      "key": "protocol",
+      "label": "协议",
+      "type": "select",
+      "options": [],
+      "change_action": {
+        "type": "script",
+        "script": "setTimeout(()=>this.load_protocol_option(), 200)"
+      }
+    },
+    {
+      "key": "protocol_options",
+      "label": "协议参数",
+      "type": "object",
+      "children": []
+    }
+  ],
+  "submit_api": "table/serial/create",
+  "submit_success": "this.navigate('/page/gateway-detail?id='+this.data.gateway_id)",
+  "mount": "this.data.gateway_id=this.params.gateway_id; this.load_protocols();",
+  "methods": {
+    "load_protocols": "this.request.get('protocol/list').subscribe(res=>{this.content.fields[9].options=[{value:'',label:'无'}].concat(res.data.map(d=>{return {value:d.name,label:d.description}})); setTimeout(()=>this.load_protocol_option(), 200);  })",
+    "load_protocol_option": "if (this.editor.value.protocol) { this.request.get('protocol/'+this.editor.value.protocol).subscribe(res=>{this.content.fields[10].children=res.data.option_fields; setTimeout(()=>this.editor.rebuild(), 200)}) } else {this.content.fields[10].children=[]; setTimeout(()=>this.editor.rebuild(), 200)}"
+  }
+}

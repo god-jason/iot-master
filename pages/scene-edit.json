@@ -1,0 +1,255 @@
+{
+  "title": "编辑智能场景",
+  "template": "form",
+  "fields": [
+    {
+      "key": "id",
+      "label": "ID",
+      "type": "text",
+      "placeholder": "默认随机ID"
+    },
+    {
+      "key": "gateway_id",
+      "label": "网关ID",
+      "type": "text"
+    },
+    {
+      "key": "name",
+      "label": "名称",
+      "type": "text"
+    },
+    {
+      "key": "delay",
+      "label": "延时s",
+      "type": "number"
+    },
+    {
+      "key": "ranges",
+      "label": "时间范围",
+      "type": "table",
+      "children": [
+        {
+          "key": "start",
+          "label": "开始",
+          "type": "time"
+        },
+        {
+          "key": "finish",
+          "label": "结束",
+          "type": "time"
+        }
+      ]
+    },
+    {
+      "key": "triggers",
+      "label": "触发器",
+      "type": "list",
+      "children": [
+        {
+          "key": "type",
+          "label": "类型",
+          "type": "radio",
+          "options": [
+            {
+              "label": "定时启动",
+              "value": "time"
+            },
+            {
+              "label": "设备变化",
+              "value": "device"
+            }
+          ]
+        },
+        {
+          "key": "time",
+          "label": "时钟",
+          "type": "time",
+          "condition": {
+            "key": "type",
+            "type": "==",
+            "value": "time"
+          }
+        },
+        {
+          "key": "device",
+          "label": "设备ID",
+          "type": "text",
+          "condition": {
+            "key": "type",
+            "type": "==",
+            "value": "device"
+          }
+        }
+      ]
+    },
+    {
+      "key": "conditions",
+      "label": "执行条件",
+      "type": "list",
+      "children": [
+        {
+          "key": "type",
+          "label": "类型",
+          "type": "radio",
+          "options": [
+            {
+              "label": "设备",
+              "value": "device"
+            },
+            {
+              "label": "脚本",
+              "value": "script"
+            }
+          ]
+        },
+        {
+          "key": "key",
+          "label": "变量",
+          "type": "text",
+          "condition": {
+            "key": "type",
+            "type": "==",
+            "value": "device"
+          }
+        },
+        {
+          "key": "compare",
+          "label": "算子",
+          "type": "radio",
+          "options": [
+            {
+              "label": "大于",
+              "value": ">"
+            },
+            {
+              "label": "大于等于",
+              "value": ">="
+            },
+            {
+              "label": "小于",
+              "value": "<"
+            },
+            {
+              "label": "小于等于",
+              "value": "<="
+            },
+            {
+              "label": "等于",
+              "value": "=="
+            },
+            {
+              "label": "不等于",
+              "value": "~="
+            }
+          ],
+          "condition": {
+            "key": "type",
+            "type": "==",
+            "value": "device"
+          }
+        },
+        {
+          "key": "value",
+          "label": "值",
+          "type": "number",
+          "step": 0.01,
+          "condition": {
+            "key": "type",
+            "type": "==",
+            "value": "device"
+          }
+        },
+        {
+          "key": "script",
+          "label": "脚本",
+          "type": "textarea",
+          "condition": {
+            "key": "type",
+            "type": "==",
+            "value": "script"
+          }
+        }
+      ]
+    },
+    {
+      "key": "actions",
+      "label": "执行动作",
+      "type": "list",
+      "children": [
+        {
+          "key": "type",
+          "label": "类型",
+          "type": "radio",
+          "options": [
+            {
+              "label": "设备操作",
+              "value": "device"
+            },
+            {
+              "label": "场景",
+              "value": "scene"
+            },
+            {
+              "label": "脚本",
+              "value": "script"
+            }
+          ]
+        },
+        {
+          "key": "device",
+          "label": "设备ID",
+          "type": "text",
+          "condition": {
+            "key": "type",
+            "type": "==",
+            "value": "device"
+          }
+        },
+        {
+          "key": "key",
+          "label": "变量",
+          "type": "text",
+          "condition": {
+            "key": "type",
+            "type": "==",
+            "value": "device"
+          }
+        },
+        {
+          "key": "value",
+          "label": "值",
+          "type": "number",
+          "step": 0.01,
+          "condition": {
+            "key": "type",
+            "type": "==",
+            "value": "device"
+          }
+        },
+        {
+          "key": "script",
+          "label": "脚本",
+          "type": "textarea",
+          "condition": {
+            "key": "type",
+            "type": "==",
+            "value": "script"
+          }
+        },
+        {
+          "key": "scene",
+          "label": "场景ID",
+          "type": "text",
+          "condition": {
+            "key": "type",
+            "type": "==",
+            "value": "scene"
+          }
+        }
+      ]
+    }
+  ],
+  "load_api": "table/scene/detail/:id",
+  "submit_api": "table/scene/update/:id",
+  "submit_success": "this.navigate('/page/gateway-detail?id='+this.data.gateway_id)"
+}

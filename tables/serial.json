@@ -1,6 +1,6 @@
 {
-  "name": "scene",
-  "comment": "设备场景",
+  "name": "serial",
+  "comment": "串口连接",
   "columns": [
     {
       "name": "id",
@@ -11,7 +11,7 @@
     },
     {
       "name": "gateway_id",
-      "comment": "设备ID",
+      "comment": "网关ID",
       "type": "string",
       "length": 50,
       "indexed": true
@@ -23,37 +23,45 @@
       "length": 50
     },
     {
-      "name": "delay",
-      "comment": "延迟",
+      "name": "port",
+      "comment": "序号",
       "type": "int"
     },
     {
-      "name": "ranges",
-      "comment": "时间范围",
-      "type": "text",
-      "json": true
+      "name": "baud_rate",
+      "comment": "波特率",
+      "type": "int"
     },
     {
-      "name": "weekdays",
-      "comment": "日期",
-      "type": "text",
-      "json": true
+      "name": "data_bits",
+      "comment": "字长",
+      "type": "int"
     },
     {
-      "name": "triggers",
-      "comment": "触发器",
-      "type": "text",
-      "json": true
+      "name": "stop_bits",
+      "comment": "停止位",
+      "type": "int"
     },
     {
-      "name": "conditions",
-      "comment": "检查条件",
-      "type": "text",
-      "json": true
+      "name": "parity",
+      "comment": "检验位",
+      "type": "string",
+      "length": 2
     },
     {
-      "name": "actions",
-      "comment": "执行动作",
+      "name": "rs485_gpio",
+      "comment": "485GPIO",
+      "type": "int"
+    },
+    {
+      "name": "protocol",
+      "comment": "协议",
+      "type": "string",
+      "length": 128
+    },
+    {
+      "name": "protocol_options",
+      "comment": "协议参数",
       "type": "text",
       "json": true
     },
@@ -62,12 +70,6 @@
       "comment": "禁用",
       "type": "bool",
       "default": "false"
-    },
-    {
-      "name": "updated",
-      "comment": "更新时间",
-      "type": "datetime",
-      "updated": true
     },
     {
       "name": "created",
