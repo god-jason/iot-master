@@ -8,7 +8,7 @@
       "type": "button",
       "action": {
         "type": "page",
-        "page":"device-create",
+        "page": "device-create",
         "params_func": "return {product_id: this.params.product_id, group_id: this.params.group_id, gateway_id: this.params.gateway_id}"
       }
     },
@@ -18,7 +18,7 @@
       "type": "button",
       "action": {
         "type": "page",
-        "page":"device-import"
+        "page": "device-import"
       }
     },
     {
@@ -27,7 +27,7 @@
       "type": "button",
       "action": {
         "type": "page",
-        "page":"device-export"
+        "page": "device-export"
       }
     },
     {
@@ -71,7 +71,7 @@
       "icon": "edit",
       "action": {
         "type": "page",
-        "page":"device-edit",
+        "page": "device-edit",
         "params_func": "return {id: data.id}"
       }
     },
@@ -100,7 +100,7 @@
       "label": "产品ID",
       "action": {
         "type": "page",
-        "page":"product-detail",
+        "page": "product-detail",
         "params_func": "return {id: data.product_id}"
       }
     },
@@ -133,8 +133,19 @@
     }
   ],
   "search_api": "table/device/search",
-  "mount": "if(this.params.link_id)this.filter.link_id=this.params.link_id; if(this.params.group_id)this.filter.group_id=this.params.group_id; if(this.params.product_id)this.filter.product_id=this.params.product_id;  if(this.params.gateway_id)this.filter.gateway_id=this.params.gateway_id; this.get_extend_fields()",
+  "mount": "if(this.params.link_id)this.filter.link_id=this.params.link_id; if(this.params.group_id)this.filter.group_id=this.params.group_id; if(this.params.product_id)this.filter.product_id=this.params.product_id;  if(this.params.gateway_id)this.filter.gateway_id=this.params.gateway_id; this.get_extend_fields(); if (this.params.gateway_id) this.add_sync()",
   "methods": {
-    "get_extend_fields": "this.request.get('device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.columns.push(f)) })"
+    "get_extend_fields": "this.request.get('device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.columns.push(f)) })",
+    "add_sync": "this.content.toolbar.push(this.content.sync)"
+  },
+  "sync": {
+    "label": "下载到网关",
+    "icon": "download",
+    "type": "button",
+    "confirm": "确认下载到网关？",
+    "action": {
+      "type": "script",
+      "script": "this.request.get('device/'+this.params.gateway_id+'/download/device').subscribe(res=>{})"
+    }
   }
 }

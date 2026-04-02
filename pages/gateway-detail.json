@@ -82,6 +82,11 @@
       "params_func": "return {id: params.id}"
     },
     {
+      "title": "参数配置",
+      "page":"device-settings",
+      "params_func": "return {id: params.id}"
+    },
+    {
       "title": "子设备",
       "page":"device",
       "params_func": "return {gateway_id: params.id}"
@@ -90,11 +95,6 @@
       "title": "内联设备",
       "page":"inline",
       "params_func": "return {gateway_id: params.id}"
-    },
-    {
-      "title": "参数配置",
-      "page":"device-settings",
-      "params_func": "return {id: params.id}"
     },
     {
       "title": "场景管理",

@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/god-jason/iot-master/pkg/api"
 	"github.com/god-jason/iot-master/pkg/db"
+	"github.com/god-jason/iot-master/pkg/mqtt"
 	"github.com/god-jason/iot-master/pkg/table"
 	"github.com/spf13/cast"
 	"xorm.io/builder"
@@ -26,6 +27,9 @@ func init() {
 	api.Register("GET", "device/:id/setting/:name", deviceSetting)
 	api.Register("POST", "device/:id/setting/:name", deviceSettingUpdate)
 	api.Register("GET", "device/:id/setting/clear", deviceSettingClear) //清空云端配置
+
+	//同步数据库
+	api.Register("GET", "device/:id/download/:database", deviceDownloadDatabase)
 }
 
 func deviceValues(ctx *gin.Context) {
@@ -283,6 +287,42 @@ func deviceSettingUpdate(ctx *gin.Context) {
 	}
 
 	api.OK(ctx, nil)
+}
+
+func deviceDownloadDatabase(ctx *gin.Context) {
+	id := ctx.Param("id")
+	name := ctx.Param("database")
+
+	d := devices.Load(id)
+	if d == nil || !d.Online {
+		api.Fail(ctx, "设备未上线，等待重新上线后会自动同步")
+		return
+	}
+
+	tab, err := table.Get(name)
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+
+	//查找子设备
+	rows, err := tab.Find(&table.ParamSearch{
+		Skip:   0,
+		Limit:  999,
+		Filter: map[string]any{"gateway_id": id},
+	})
+	if err != nil {
+		api.Error(ctx, err)
+		return
+	}
+
+	//清空，并插入新数据
+	if len(rows) > 0 {
+		mqtt.Publish("device/"+id+"/database/"+name+"/clear", nil)
+		mqtt.Publish("device/"+id+"/database/"+name+"/insertArray", rows)
+	}
+
+	api.OK(ctx, len(rows))
 }
 
 func deviceNear(ctx *gin.Context) {

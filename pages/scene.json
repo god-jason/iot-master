@@ -35,6 +35,16 @@
         "type": "script",
         "script": "this.keyword=this.toolbar.value.keyword; this.load()"
       }
+    },
+    {
+      "label": "下载到网关",
+      "icon": "download",
+      "type": "button",
+      "confirm": "确认下载到网关？",
+      "action": {
+        "type": "script",
+        "script": "this.request.get('device/'+this.params.gateway_id+'/download/scene').subscribe(res=>{})"
+      }
     }
   ],
   "keywords": [
