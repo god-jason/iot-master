@@ -577,7 +577,7 @@ func (t *Table) Join(body *ParamSearch) (rows []map[string]any, err error) {
 			columns = append(columns, "t."+db.Engine().Quote(f))
 		}
 	}
-	for i, join := range body.Joins {
+	for i, join := range joins {
 		//body.Columns = append(body.Columns)
 		if slices.Index(body.Fields, join.LocalField) < 0 {
 			lf := "t." + db.Engine().Quote(join.LocalField)
@@ -598,12 +598,12 @@ func (t *Table) Join(body *ParamSearch) (rows []map[string]any, err error) {
 		bdr.Where(c)
 	}
 
-	for i, join := range body.Joins {
+	for i, join := range joins {
 		as := "t" + strconv.Itoa(i+1)
 		lf := "t." + db.Engine().Quote(join.LocalField)
 		ff := as + "." + db.Engine().Quote(join.ForeignField)
 		//bdr.LeftJoin(builder.As(join.Table, as), builder.Eq{lf: ff})
-		bdr.LeftJoin(builder.As(join.Table, as), lf+"="+ff) //Eq会转化成字符串参数
+		bdr.LeftJoin(builder.As(db.Engine().Quote(join.Table), as), lf+"="+ff) //Eq会转化成字符串参数
 	}
 
 	//排序

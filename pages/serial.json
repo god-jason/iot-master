@@ -19,7 +19,7 @@
       "confirm": "确认批量删除？",
       "action": {
         "type": "script",
-        "script": "this.table.selects.forEach(id=>this.request.get('table/serial/delete/'+id).subscribe(res=>{this.load()}))"
+        "script": "this.table.selects.forEach(id=>this.request.get('table/serial/delete/'+id+'/'+this.params.gateway_id).subscribe(res=>{this.load()}))"
       }
     },
     {
