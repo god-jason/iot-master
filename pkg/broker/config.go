@@ -1,9 +1,6 @@
 package broker
 
 import (
-	"os"
-	"runtime"
-
 	"github.com/god-jason/iot-master/pkg/config"
 )
 
@@ -12,13 +9,16 @@ const MODULE = "broker"
 func init() {
 	config.SetDefault(MODULE, "enable", true)
 	config.SetDefault(MODULE, "anonymous", false)
+
 	config.SetDefault(MODULE, "port", 1883)
 
-	if runtime.GOOS == "windows" {
-		config.SetDefault(MODULE, "unixsock", os.TempDir()+"/boat.sock")
-	} else {
-		config.SetDefault(MODULE, "unixsock", "/var/run/boat.sock")
-	}
+	//if runtime.GOOS == "windows" {
+	//	config.SetDefault(MODULE, "unixsock", os.TempDir()+"/boat.sock")
+	//} else {
+	//	config.SetDefault(MODULE, "unixsock", "/var/run/boat.sock")
+	//}
 
+	config.SetDefault(MODULE, "unixsock", "")
 	config.SetDefault(MODULE, "loglevel", "ERROR")
+	config.SetDefault(MODULE, "key", "noob")
 }

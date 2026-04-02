@@ -58,12 +58,12 @@
             }
         },
         {
-            "key": "project_id",
-            "label": "项目ID",
+            "key": "group_id",
+            "label": "组织ID",
             "action": {
                 "type": "page",
-                "page": "project-detail",
-                "params_func": "return {id: data.project_id}"
+                "page": "group-detail",
+                "params_func": "return {id: data.group_id}"
             }
         },
         {
@@ -85,5 +85,5 @@
         }
     ],
     "search_api": "table/alarm/search",
-    "mount": "if(this.params.device_id)this.filter.device_id=this.params.device_id;if(this.params.project_id)this.filter.project_id=this.params.project_id;"
+    "mount": "if(this.params.device_id)this.filter.device_id=this.params.device_id;if(this.params.group_id)this.filter.group_id=this.params.group_id;"
 }

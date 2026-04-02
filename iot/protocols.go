@@ -93,11 +93,14 @@ func addProtocolColumns() error {
 
 				//向数据库表定义中添加字段 TODO 存在冗余添加了
 				col := field.ToColumn()
+
+				//设备表
 				sql := db.Engine().Dialect().AddColumnSQL("device", col)
-				_, err := db.Engine().Exec(sql)
-				if err != nil {
-					log.Error(err)
-				}
+				_, _ = db.Engine().Exec(sql)
+
+				//内联设备表
+				sql = db.Engine().Dialect().AddColumnSQL("inline", col)
+				_, _ = db.Engine().Exec(sql)
 			}
 		}
 	}

@@ -1,22 +1,13 @@
 {
-  "title": "编辑设备",
+  "title": "编辑内联设备",
   "template": "form",
   "toolbar": [
-    {
-      "type": "button",
-      "label": "选择组织ID",
-      "action": {
-        "type": "dialog",
-        "page": "group-choose",
-        "after_close": "this.editor.patchValue({group_id: result.id})"
-      }
-    },
     {
       "type": "button",
       "label": "选择产品ID",
       "action": {
         "type": "dialog",
-        "page": "product-choose",
+        "page":"product-choose",
         "after_close": "this.editor.patchValue({product_id: result.id})"
       }
     },
@@ -25,7 +16,7 @@
       "label": "选择网关ID",
       "action": {
         "type": "dialog",
-        "page": "device-choose",
+        "page":"device-choose",
         "after_close": "this.editor.patchValue({gateway_id: result.id})"
       }
     }
@@ -44,11 +35,6 @@
     {
       "key": "description",
       "label": "说明",
-      "type": "text"
-    },
-    {
-      "key": "group_id",
-      "label": "组织ID",
       "type": "text"
     },
     {
@@ -72,9 +58,9 @@
       "type": "switch"
     }
   ],
-  "load_api": "table/device/detail/:id",
-  "submit_api": "table/device/update/:id",
-  "submit_success": "this.navigate('/page/device-detail?id='+this.params.id)",
+  "load_api": "table/inline/detail/:id/:gateway_id",
+  "submit_api": "table/inline/update/:id/:gateway_id",
+  "submit_success": "this.navigate('/page/gateway-detail?id='+this.params.gateway_id)",
   "mount": "this.get_extend_fields()",
   "methods": {
     "get_extend_fields": "this.request.get('device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.fields.push(f)) })"

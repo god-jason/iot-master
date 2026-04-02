@@ -67,11 +67,6 @@
       "params_func": "return {id: params.id}"
     },
     {
-      "title": "子设备",
-      "page":"device",
-      "params_func": "return {gateway_id: params.id}"
-    },
-    {
       "title": "日志",
       "page":"device-log",
       "params_func": "return {id: params.id}"
@@ -82,22 +77,32 @@
       "params_func": "return {device_id: params.id}"
     },
     {
-      "title": "参数",
-      "page":"device-settings",
-      "params_func": "return {id: params.id}"
-    },
-    {
-      "title": "轨迹",
+      "title": "历史轨迹",
       "page":"device-track",
       "params_func": "return {id: params.id}"
     },
     {
-      "title": "场景",
+      "title": "子设备",
+      "page":"device",
+      "params_func": "return {gateway_id: params.id}"
+    },
+    {
+      "title": "内联设备",
+      "page":"inline",
+      "params_func": "return {gateway_id: params.id}"
+    },
+    {
+      "title": "参数配置",
+      "page":"device-settings",
+      "params_func": "return {id: params.id}"
+    },
+    {
+      "title": "场景管理",
       "page":"scene",
       "params_func": "return {gateway_id: params.id}"
     },
     {
-      "title": "串口",
+      "title": "串口管理",
       "page":"serial",
       "params_func": "return {gateway_id: params.id}"
     },

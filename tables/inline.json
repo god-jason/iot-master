@@ -1,6 +1,6 @@
 {
-  "name": "device",
-  "comment": "设备",
+  "name": "inline",
+  "comment": "内联设备",
   "joins": [
     {
       "table": "product",
@@ -8,13 +8,6 @@
       "foreign_field": "id",
       "field": "name",
       "as": "product"
-    },
-    {
-      "table": "group",
-      "local_field": "group_id",
-      "foreign_field": "id",
-      "field": "name",
-      "as": "group"
     }
   ],
   "columns": [
@@ -30,28 +23,19 @@
       "comment": "网关ID",
       "type": "string",
       "length": 50,
-      "indexed": true
-    },
-    {
-      "name": "group_id",
-      "comment": "组织ID",
-      "type": "string",
-      "length": 50,
-      "indexed": true
+      "primary": true
     },
     {
       "name": "product_id",
       "comment": "产品ID",
       "type": "string",
-      "length": 50,
-      "indexed": true
+      "length": 50
     },
     {
       "name": "link_id",
       "comment": "连接ID",
       "type": "string",
-      "length": 50,
-      "indexed": true
+      "length": 50
     },
     {
       "name": "name",
@@ -63,40 +47,6 @@
       "name": "description",
       "comment": "说明",
       "type": "text"
-    },
-    {
-      "name": "online",
-      "comment": "在线",
-      "type": "bool",
-      "default": "false"
-    },
-    {
-      "name": "error",
-      "comment": "错误",
-      "type": "bool",
-      "default": "false"
-    },
-    {
-      "name": "error_string",
-      "comment": "错误内容",
-      "type": "string",
-      "length": 255
-    },
-    {
-      "name": "longitude",
-      "comment": "经度",
-      "type": "double"
-    },
-    {
-      "name": "latitude",
-      "comment": "纬度",
-      "type": "double"
-    },
-    {
-      "name": "geo_code",
-      "comment": "geo hash",
-      "type": "string",
-      "length": 50
     },
     {
       "name": "disabled",

@@ -17,8 +17,8 @@
       "indexed": true
     },
     {
-      "name": "project_id",
-      "comment": "项目ID",
+      "name": "group_id",
+      "comment": "组织ID",
       "type": "string",
       "length": 50,
       "indexed": true

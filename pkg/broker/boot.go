@@ -56,7 +56,7 @@ func Startup() (err error) {
 	if config.GetBool(MODULE, "anonymous") {
 		err = server.AddHook(new(auth.AllowHook), nil)
 	} else {
-		err = server.AddHook(new(Hook), nil)
+		err = server.AddHook(&Hook{Key: config.GetString(MODULE, "key")}, nil)
 	}
 
 	if err != nil {

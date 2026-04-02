@@ -55,27 +55,6 @@ type Status struct {
 func (d *Device) Open() error {
 	//d.Online = true
 
-	//加载产品物模型
-	productModel, err := LoadModel(d.ProductId)
-	if err != nil {
-		return err
-	}
-
-	//复制
-	for _, v := range productModel.Validators {
-		if v.Disabled {
-			continue
-		}
-		vv := &Validator{Validator: v}
-		d.validators = append(d.validators, vv)
-		err = vv.Build() //TODO 重复编译了
-		if err != nil {
-			d.Error = true
-			d.ErrorString = err.Error()
-			log.Error(err)
-		}
-	}
-
 	return nil
 }
 
@@ -97,6 +76,7 @@ func (d *Device) PutValues(values map[string]any) {
 		}
 		if alarm != nil {
 			alarm.DeviceId = d.Id
+			alarm.GroupId = d.GroupId
 
 			var topics []string
 			topics = append(topics, "device/"+d.Id+"/alarm")

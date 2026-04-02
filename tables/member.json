@@ -1,6 +1,22 @@
 {
   "name": "member",
   "comment": "组织成员",
+  "joins": [
+    {
+      "table": "user",
+      "local_field": "user_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "user"
+    },
+    {
+      "table": "group",
+      "local_field": "group_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "group"
+    }
+  ],
   "columns": [
     {
       "name": "group_id",

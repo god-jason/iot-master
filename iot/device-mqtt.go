@@ -230,6 +230,13 @@ func mqttSubscribeDevice() {
 		d := devices.Load(id)
 		if d != nil {
 			d.Online = false
+
+			//需要清空Device，避免信息不同步 延时清理
+			time.AfterFunc(time.Minute, func() {
+				if !d.Online {
+					devices.Delete(id)
+				}
+			})
 		}
 
 		var dev Device
@@ -291,10 +298,31 @@ func mqttSubscribeDevice() {
 	mqtt.Subscribe("device/+/error", func(topic string, payload []byte) {
 		id := strings.Split(topic, "/")[1]
 
+		//写入故障信息到设备上
 		var d Device
 		d.Error = true
 		d.ErrorString = string(payload)
 		_, _ = db.Engine().ID(id).Cols("error", "error_string").Update(&d)
+
+		dev := devices.Load(id)
+		if dev == nil {
+			var err error
+			dev, err = LoadDevice(id)
+			if err != nil {
+				log.Error(err)
+				return
+			}
+		}
+
+		//写入故障记录
+		a := &Alarm{
+			DeviceId: dev.Id,
+			GroupId:  dev.GroupId,
+			Title:    "设备故障",
+			Message:  d.ErrorString,
+			Level:    1,
+		}
+		_, _ = db.Engine().InsertOne(a)
 	})
 
 	//清除错误

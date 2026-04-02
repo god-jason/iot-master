@@ -2,6 +2,8 @@ package broker
 
 import (
 	"bytes"
+	"crypto/md5"
+	"encoding/hex"
 	"net"
 	"time"
 
@@ -11,6 +13,7 @@ import (
 
 type Hook struct {
 	mqtt.HookBase
+	Key string
 }
 
 func (h *Hook) ID() string {
@@ -53,7 +56,17 @@ func (h *Hook) OnConnectAuthenticate(cl *mqtt.Client, pk packets.Packet) bool {
 		return true
 	case "base":
 		//log.Info("[base] OnConnectAuthenticate ", cl.ID, pk.Connect.Username, pk.Connect.Password)
-		//TODO 检测用户名 和 密码
+
+		//不支持匿名
+		if !pk.Connect.UsernameFlag {
+			return false
+		}
+
+		//检测用户名 和 密码
+		pas := md5.Sum([]byte(string(pk.Connect.Username) + h.Key))
+		if string(pk.Connect.Password) != hex.EncodeToString(pas[:]) {
+			return false
+		}
 
 		return true
 	default:

@@ -14,7 +14,7 @@
       "comment": "网关ID",
       "type": "string",
       "length": 50,
-      "indexed": true
+      "primary": true
     },
     {
       "name": "name",

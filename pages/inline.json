@@ -1,5 +1,5 @@
 {
-  "title": "网关串口管理",
+  "title": "内联设备",
   "template": "table",
   "toolbar": [
     {
@@ -8,8 +8,8 @@
       "type": "button",
       "action": {
         "type": "page",
-        "page":"serial-create",
-        "params_func": "return {gateway_id: this.params.gateway_id}"
+        "page":"inline-create",
+        "params_func": "return {product_id: this.params.product_id, gateway_id: this.params.gateway_id}"
       }
     },
     {
@@ -19,7 +19,7 @@
       "confirm": "确认批量删除？",
       "action": {
         "type": "script",
-        "script": "this.table.selects.forEach(id=>this.request.get('table/serial/delete/'+id).subscribe(res=>{this.load()}))"
+        "script": "this.table.selects.forEach(id=>this.request.get('table/inline/delete/'+id).subscribe(res=>{this.load()}))"
       }
     },
     {
@@ -46,8 +46,8 @@
       "icon": "edit",
       "action": {
         "type": "page",
-        "page":"serial-edit",
-        "params_func": "return {id: data.id, gateway_id:data.gateway_id}"
+        "page":"inline-edit",
+        "params_func": "return {id: data.id, gateway_id: data.gateway_id}"
       }
     },
     {
@@ -56,7 +56,7 @@
       "confirm": "确认删除？",
       "action": {
         "type": "script",
-        "script": "this.request.get('table/serial/delete/'+data.id+'/'+data.gateway_id).subscribe(res=>{this.load()})"
+        "script": "this.request.get('table/inline/delete/'+data.id+'/'+data.gateway_id).subscribe(res=>{this.load()})"
       }
     }
   ],
@@ -67,36 +67,21 @@
       "label": "ID"
     },
     {
+      "key": "product_id",
+      "label": "产品ID",
+      "action": {
+        "type": "page",
+        "page":"product-detail",
+        "params_func": "return {id: data.product_id}"
+      }
+    },
+    {
       "key": "name",
       "label": "名称"
     },
     {
-      "key": "port",
-      "label": "序号"
-    },
-    {
-      "key": "baud_rate",
-      "label": "波特率"
-    },
-    {
-      "key": "data_bits",
-      "label": "字长"
-    },
-    {
-      "key": "stop_bits",
-      "label": "停止位"
-    },
-    {
-      "key": "parity",
-      "label": "检验位"
-    },
-    {
-      "key": "rs485_gpio",
-      "label": "485GPIO"
-    },
-    {
-      "key": "protocol",
-      "label": "协议"
+      "key": "description",
+      "label": "说明"
     },
     {
       "key": "disabled",
@@ -109,6 +94,9 @@
       "type": "date"
     }
   ],
-  "search_api": "table/serial/search",
-  "mount": "if(this.params.gateway_id)this.filter.gateway_id=this.params.gateway_id"
+  "search_api": "table/inline/search",
+  "mount": "if(this.params.gateway_id)this.filter.gateway_id=this.params.gateway_id; this.get_extend_fields()",
+  "methods": {
+    "get_extend_fields": "this.request.get('device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.columns.push(f)) })"
+  }
 }
