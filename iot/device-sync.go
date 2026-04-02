@@ -50,7 +50,7 @@ func modelSync(id string, sts map[string]int) (has bool, err error) {
 }
 
 func databaseSync(id string, name string, records map[string]Sync) (has bool, err error) {
-	tab, err := table.Get("name")
+	tab, err := table.Get(name)
 	if err != nil {
 		return false, err
 	}
@@ -63,6 +63,11 @@ func databaseSync(id string, name string, records map[string]Sync) (has bool, er
 	})
 	if err != nil {
 		return false, err
+	}
+
+	//后台没有配置，则不更新
+	if len(rows) == 0 {
+		return false, nil
 	}
 
 	//数量不匹配，全部更新

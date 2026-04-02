@@ -25,10 +25,9 @@ type Register struct {
 	Iccid     string `json:"iccid,omitempty"`
 
 	//同步
-	Settings map[string]int  `json:"settings,omitempty"` //配置文件 文件名->版本号
-	Models   map[string]int  `json:"models,omitempty"`   //物模型 产品ID->版本号
-	Devices  map[string]Sync `json:"devices,omitempty"`  //设备同步
-	Scenes   map[string]Sync `json:"scenes,omitempty"`   //场景同步
+	Settings  map[string]int             `json:"settings,omitempty"`  //配置文件 文件名->版本号
+	Models    map[string]int             `json:"models,omitempty"`    //物模型 产品ID->版本号
+	Databases map[string]map[string]Sync `json:"databases,omitempty"` //数据库同步
 }
 
 type Location struct {
@@ -97,23 +96,11 @@ func mqttSubscribeDevice() {
 			}
 		}
 
-		//同步设备
-		if len(reg.Devices) > 0 {
-			has, err := databaseSync(d.Id, "devices", reg.Devices)
+		//同步数据库
+		for tab, sync := range reg.Databases {
+			has, err := databaseSync(d.Id, tab, sync)
 			if err != nil {
 				log.Error("Sync devices fail", err)
-				return
-			}
-			if has {
-				hasSync = true
-			}
-		}
-
-		//同步场景
-		if len(reg.Scenes) > 0 {
-			has, err := databaseSync(d.Id, "scenes", reg.Scenes)
-			if err != nil {
-				log.Error("Sync scenes fail", err)
 				return
 			}
 			if has {
