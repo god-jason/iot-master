@@ -83,6 +83,11 @@
       ]
     },
     {
+      "key": "is_and",
+      "label": "并且条件",
+      "type": "switch"
+    },
+    {
       "key": "conditions",
       "label": "执行条件",
       "type": "list",

@@ -46,6 +46,12 @@
       "json": true
     },
     {
+      "name": "is_and",
+      "comment": "并且条件",
+      "type": "bool",
+      "default": "false"
+    },
+    {
       "name": "conditions",
       "comment": "检查条件",
       "type": "text",
