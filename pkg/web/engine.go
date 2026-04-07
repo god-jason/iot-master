@@ -44,6 +44,7 @@ func Startup() error {
 		c := cors.DefaultConfig()
 		c.AllowAllOrigins = true
 		c.AllowCredentials = true
+		c.AllowHeaders = []string{"*"}
 		engine.Use(cors.New(c))
 	}
 

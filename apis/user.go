@@ -7,6 +7,7 @@ type User struct {
 	Id       string    `json:"id" xorm:"pk"`
 	Name     string    `json:"name,omitempty"`
 	Admin    bool      `json:"admin,omitempty"`
+	TenantId string    `json:"tenant_id,omitempty"` //多租户
 	Disabled bool      `json:"disabled,omitempty"`
 	Created  time.Time `json:"created,omitempty" xorm:"created"`
 }

@@ -57,7 +57,7 @@ func auth(ctx *gin.Context) {
 	}
 
 	//生成Token
-	token, err := web.JwtGenerate(user.Id, user.Admin, "")
+	token, err := web.JwtGenerate(user.Id, user.Admin, user.TenantId)
 	if err != nil {
 		api.Error(ctx, err)
 		return

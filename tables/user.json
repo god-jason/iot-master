@@ -10,6 +10,13 @@
       "primary": true
     },
     {
+      "name": "tenant_id",
+      "comment": "租户ID",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
       "name": "name",
       "comment": "用户名",
       "type": "string",
