@@ -5,6 +5,7 @@ import (
 	"github.com/god-jason/iot-master/pkg/api"
 	"github.com/god-jason/iot-master/pkg/db"
 	"github.com/god-jason/iot-master/pkg/web"
+	"github.com/spf13/viper"
 )
 
 func auth(ctx *gin.Context) {
@@ -62,13 +63,22 @@ func auth(ctx *gin.Context) {
 		return
 	}
 
-	//非管理员，都是租户
-	if !user.Admin && user.TenantId == "" {
-		user.TenantId = user.Id
+	//多租户
+	tid := ""
+	if viper.GetBool("tenant") {
+		if user.Admin {
+			tid = ""
+		} else {
+			tid = user.TenantId
+			//非管理员，默认租户主账号
+			if tid == "" {
+				tid = user.Id
+			}
+		}
 	}
 
 	//生成Token
-	token, err := web.JwtGenerate(user.Id, user.Admin, user.TenantId)
+	token, err := web.JwtGenerate(user.Id, user.Admin, tid)
 	if err != nil {
 		api.Error(ctx, err)
 		return

@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/god-jason/iot-master/pkg/api"
 	"github.com/god-jason/iot-master/pkg/db"
+	"github.com/spf13/viper"
 )
 
 type loginObj struct {
@@ -82,15 +83,24 @@ func login(ctx *gin.Context) {
 
 	//_, _ = db.Engine().InsertOne(&types.UserEvent{UserId: user.id, ModEvent: types.ModEvent{Type: "登录"}})
 
-	//非管理员，都是租户
-	if !user.Admin && user.TenantId == "" {
-		user.TenantId = user.Id
+	//多租户
+	tid := ""
+	if viper.GetBool("tenant") {
+		if user.Admin {
+			tid = ""
+		} else {
+			tid = user.TenantId
+			//非管理员，默认租户主账号
+			if tid == "" {
+				tid = user.Id
+			}
+		}
 	}
 
 	//存入session
 	session.Set("user", user.Id)
 	session.Set("admin", user.Admin)
-	session.Set("tenant", user.TenantId)
+	session.Set("tenant", tid)
 	_ = session.Save()
 
 	api.OK(ctx, user)

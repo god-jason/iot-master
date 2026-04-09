@@ -19,6 +19,9 @@ func init() {
 	//绑定环境变量
 	viper.SetEnvPrefix("boat")
 	viper.AutomaticEnv()
+
+	//默认关闭多租户
+	//viper.SetDefault("tenant", false)
 }
 
 func Name(name string) {

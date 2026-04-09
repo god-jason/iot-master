@@ -2,6 +2,7 @@ package table
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
 type Join struct {
@@ -35,16 +36,18 @@ func ApiSearch(ctx *gin.Context) {
 	}
 
 	//多租户过滤
-	tid := ctx.GetString("tenant")
-	if tid != "" {
-		column := table.Column("tenant_id")
-		if column != nil {
-			if body.Filter == nil {
-				body.Filter = make(map[string]any)
-			}
-			//只有未传值tenant_id时，才会赋值用户所在的tenant_id
-			if _, ok := body.Filter["tenant_id"]; !ok {
-				body.Filter["tenant_id"] = tid
+	if viper.GetBool("tenant") {
+		tid := ctx.GetString("tenant")
+		if tid != "" {
+			column := table.Column("tenant_id")
+			if column != nil {
+				if body.Filter == nil {
+					body.Filter = make(map[string]any)
+				}
+				//只有未传值tenant_id时，才会赋值用户所在的tenant_id
+				if _, ok := body.Filter["tenant_id"]; !ok {
+					body.Filter["tenant_id"] = tid
+				}
 			}
 		}
 	}

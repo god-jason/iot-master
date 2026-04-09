@@ -2,6 +2,7 @@ package table
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
 func ApiCreate(ctx *gin.Context) {
@@ -19,13 +20,15 @@ func ApiCreate(ctx *gin.Context) {
 	}
 
 	//多租户创建数据，用默认租户id
-	tid := ctx.GetString("tenant")
-	if tid != "" {
-		column := table.Column("tenant_id")
-		if column != nil {
-			//只有未传值tenant_id时，才会赋值用户所在的tenant_id
-			if _, ok := doc["tenant_id"]; !ok {
-				doc["tenant_id"] = tid
+	if viper.GetBool("tenant") {
+		tid := ctx.GetString("tenant")
+		if tid != "" {
+			column := table.Column("tenant_id")
+			if column != nil {
+				//只有未传值tenant_id时，才会赋值用户所在的tenant_id
+				if _, ok := doc["tenant_id"]; !ok {
+					doc["tenant_id"] = tid
+				}
 			}
 		}
 	}
