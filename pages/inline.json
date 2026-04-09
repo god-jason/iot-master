@@ -8,7 +8,7 @@
       "type": "button",
       "action": {
         "type": "page",
-        "page":"inline-create",
+        "page": "inline-create",
         "params_func": "return {product_id: this.params.product_id, gateway_id: this.params.gateway_id}"
       }
     },
@@ -56,7 +56,7 @@
       "icon": "edit",
       "action": {
         "type": "page",
-        "page":"inline-edit",
+        "page": "inline-edit",
         "params_func": "return {id: data.id, gateway_id: data.gateway_id}"
       }
     },
@@ -81,7 +81,7 @@
       "label": "产品ID",
       "action": {
         "type": "page",
-        "page":"product-detail",
+        "page": "product-detail",
         "params_func": "return {id: data.product_id}"
       }
     },
@@ -105,7 +105,10 @@
     }
   ],
   "search_api": "table/inline/search",
-  "mount": "if(this.params.gateway_id)this.filter.gateway_id=this.params.gateway_id; this.get_extend_fields()",
+  "mounts": [
+    "if(this.params.gateway_id)this.filter.gateway_id=this.params.gateway_id;",
+    "this.get_extend_fields()"
+  ],
   "methods": {
     "get_extend_fields": "this.request.get('device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.columns.push(f)) })"
   }

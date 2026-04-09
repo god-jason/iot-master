@@ -126,7 +126,15 @@
     }
   ],
   "search_api": "table/device/search",
-  "mount": "if(this.params.link_id)this.filter.link_id=this.params.link_id; if(this.params.group_id)this.filter.group_id=this.params.group_id; if(this.params.product_id)this.filter.product_id=this.params.product_id;  if(this.params.gateway_id)this.filter.gateway_id=this.params.gateway_id; this.get_extend_fields(); if (this.params.gateway_id) this.add_sync(); if (!this.params.gateway_id) this.add_bind() ",
+  "mounts": [
+    "if(this.params.link_id)this.filter.link_id=this.params.link_id;",
+    "if(this.params.group_id)this.filter.group_id=this.params.group_id;",
+    "if(this.params.product_id)this.filter.product_id=this.params.product_id; ",
+    "if(this.params.gateway_id)this.filter.gateway_id=this.params.gateway_id;",
+    "this.get_extend_fields();",
+    "if(this.params.gateway_id) this.add_sync();",
+    "if(!this.params.gateway_id) this.add_bind() "
+  ],
   "methods": {
     "get_extend_fields": "this.request.get('device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.columns.push(f)) })",
     "add_sync": "this.content.toolbar.push(this.content.sync)",
