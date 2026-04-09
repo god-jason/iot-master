@@ -48,21 +48,6 @@
           <ul nz-menu>
             <li nz-menu-item>个人中心</li>
             <li nz-menu-item>修改密码</li>
-            <!--            <li nz-submenu nzTitle="主题色" nzDisabled>-->
-            <!--              <ul>-->
-            <!--                <li nz-menu-item *ngFor="let color of colors"-->
-            <!--                    [style.color]="color.value" (click)="onChangePrimaryColor(color.value)" >-->
-            <!--                  {{ color.name  || color.value }}-->
-            <!--                </li>-->
-            <!--                <li nz-menu-item>-->
-            <!--                  <nz-color-picker nzSize="small"-->
-            <!--                                   [nzValue]="primaryColor"-->
-            <!--                                   (nzOnChange)="onChangePrimaryColor($event.color)"></nz-color-picker>-->
-            <!--                </li>-->
-            <!--              </ul>-->
-            <!--            </li>-->
-            <li nz-menu-divider></li>
-            <li nz-menu-item (click)="switchDesktop()">桌面模式</li>
             <li nz-menu-divider></li>
             <li nz-menu-item (click)="logout()">退出</li>
           </ul>
