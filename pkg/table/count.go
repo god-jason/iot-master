@@ -1,11 +1,8 @@
 package table
 
 import (
-	"slices"
-
 	"github.com/gin-gonic/gin"
 	"github.com/god-jason/iot-master/pkg/api"
-	"github.com/god-jason/iot-master/pkg/smart"
 )
 
 func ApiCount(ctx *gin.Context) {
@@ -25,10 +22,11 @@ func ApiCount(ctx *gin.Context) {
 	//多租户过滤
 	tid := ctx.GetString("tenant")
 	if tid != "" {
-		tenantId := slices.IndexFunc(table.Columns, func(column *smart.Column) bool {
-			return column.Name == "tenant_id"
-		})
-		if tenantId > -1 {
+		column := table.Column("tenant_id")
+		if column != nil {
+			if body.Filter == nil {
+				body.Filter = make(map[string]any)
+			}
 			//只有未传值tenant_id时，才会赋值用户所在的tenant_id
 			if _, ok := body.Filter["tenant_id"]; !ok {
 				body.Filter["tenant_id"] = tid
