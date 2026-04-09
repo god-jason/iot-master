@@ -156,7 +156,7 @@ func password(ctx *gin.Context) {
 			return
 		}
 
-		pwd.Password = md5hash(obj.New)
+		pwd.Password = obj.New
 		_, err = db.Engine().ID(ctx.GetString("user")).Cols("password").Update(&pwd)
 		if err != nil {
 			api.Error(ctx, err)

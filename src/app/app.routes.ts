@@ -6,10 +6,12 @@ import {UnknownComponent} from './unknown/unknown.component';
 import {PageComponent} from './page/page.component';
 import {SettingComponent} from './setting/setting.component';
 import {AdminComponent} from './admin/admin.component';
+import {PasswordComponent} from './password/password';
 
 export const adminRoutes: Routes = [
   //{path: '', pathMatch: 'full', redirectTo: ''},
   {path: 'login', component: LoginComponent},
+  {path: 'password', component: PasswordComponent},
   {
     path: '',
     canActivate: [loginGuard],

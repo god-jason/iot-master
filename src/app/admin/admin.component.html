@@ -47,7 +47,9 @@
         <nz-dropdown-menu #user>
           <ul nz-menu>
             <li nz-menu-item>个人中心</li>
-            <li nz-menu-item>修改密码</li>
+            <li nz-menu-item>
+              <a routerLink="/password">修改密码</a>
+            </li>
             <li nz-menu-divider></li>
             <li nz-menu-item (click)="logout()">退出</li>
           </ul>
