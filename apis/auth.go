@@ -22,11 +22,18 @@ func auth(ctx *gin.Context) {
 	}
 
 	if !has {
+		//管理员自动创建
 		if u.Username == "admin" {
 			user.Id = "admin"
 			user.Name = "管理员"
 			user.Admin = true
 			_, _ = db.Engine().InsertOne(&user)
+
+			//初始化管理员密码
+			var pas Password
+			pas.Id = user.Id
+			pas.Password = md5hash("123456") //管理默认密码
+			_, _ = db.Engine().InsertOne(&pas)
 		} else {
 			api.Fail(ctx, "找不到用户")
 			return
@@ -45,14 +52,13 @@ func auth(ctx *gin.Context) {
 		return
 	}
 
-	//初始化密码
 	if !has {
-		dp := "123456"
-		obj.Password = md5hash(dp)
+		api.Fail(ctx, "用户未初始化密码")
+		return
 	}
 
 	if obj.Password != u.Password {
-		api.Fail(ctx, "密码错误")
+		api.Fail(ctx, "用户名或密码错误")
 		return
 	}
 

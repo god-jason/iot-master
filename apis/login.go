@@ -26,14 +26,14 @@ func md5hash(text string) string {
 func login(ctx *gin.Context) {
 	session := sessions.Default(ctx)
 
-	var obj loginObj
-	if err := ctx.ShouldBindJSON(&obj); err != nil {
+	var u loginObj
+	if err := ctx.ShouldBindJSON(&u); err != nil {
 		api.Error(ctx, err)
 		return
 	}
 
 	var user User
-	has, err := db.Engine().Where("id=?", obj.Username).Get(&user)
+	has, err := db.Engine().Where("id=?", u.Username).Get(&user)
 	if err != nil {
 		api.Error(ctx, err)
 		return
@@ -41,11 +41,17 @@ func login(ctx *gin.Context) {
 
 	if !has {
 		//管理员自动创建
-		if obj.Username == "admin" {
+		if u.Username == "admin" {
 			user.Id = "admin"
 			user.Name = "管理员"
 			user.Admin = true
 			_, _ = db.Engine().InsertOne(&user)
+
+			//初始化管理员密码
+			var pas Password
+			pas.Id = user.Id
+			pas.Password = md5hash("123456") //管理默认密码
+			_, _ = db.Engine().InsertOne(&pas)
 		} else {
 			api.Fail(ctx, "找不到用户")
 			return
@@ -57,28 +63,20 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	var password Password
-	has, err = db.Engine().ID(user.Id).Get(&password)
+	var obj Password
+	has, err = db.Engine().ID(user.Id).Get(&obj)
 	if err != nil {
 		api.Error(ctx, err)
 		return
 	}
 
-	//初始化密码
 	if !has {
-		dp := "123456"
-
-		password.Id = user.Id
-		password.Password = md5hash(dp)
-		_, err = db.Engine().InsertOne(&password)
-		if err != nil {
-			api.Error(ctx, err)
-			return
-		}
+		api.Fail(ctx, "用户未初始化密码")
+		return
 	}
 
-	if password.Password != obj.Password {
-		api.Fail(ctx, "密码错误")
+	if obj.Password != u.Password {
+		api.Fail(ctx, "用户名或密码错误")
 		return
 	}
 

@@ -44,7 +44,7 @@
       "icon": "lock",
       "title": "修改密码",
       "action": {
-        "type": "page",
+        "type": "dialog",
         "page":"user-password",
         "params_func": "return {id: data.id}"
       }
