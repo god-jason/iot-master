@@ -92,6 +92,18 @@ export class TemplateBase {
     if (isFunction(this.content?.mount)) {
       this.content?.mount.call(this)
     }
+
+    //支持多个mount，方便书写
+    if (Array.isArray(this.content?.mounts)) {
+      this.content.mounts.forEach(m => {
+        try {
+          let mount = new Function(m)
+          mount.call(this)
+        } catch (e) {
+          console.error(e)
+        }
+      })
+    }
   }
 
   unmount() {

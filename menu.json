@@ -4,8 +4,13 @@
     "nz_icon": "dashboard",
     "items": [
       {
-        "name": "仪表盘",
+        "name": "控制台",
         "url": "page/dash"
+      },
+      {
+        "name": "系统信息",
+        "url": "page/system",
+        "admin": true
       }
     ]
   },

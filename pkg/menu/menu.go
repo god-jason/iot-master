@@ -14,6 +14,7 @@ type Item struct {
 	Url        string   `json:"url,omitempty"`
 	External   bool     `json:"external,omitempty"`
 	Privileges []string `json:"privileges,omitempty"`
+	Admin      bool     `json:"admin,omitempty"` //管理员
 }
 
 type Menu struct {

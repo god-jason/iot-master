@@ -2,109 +2,28 @@
   "title": "控制台",
   "children": [
     {
-      "span": 12,
       "content": {
-        "template": "chart",
-        "title": "CPU",
-        "type": "gauge",
-        "load_api": "dash/cpu",
-        "auto_refresh": 5
-      }
-    },
-    {
-      "span": 12,
-      "content": {
-        "template": "chart",
-        "title": "内存",
-        "type": "gauge",
-        "load_api": "dash/memory",
-        "auto_refresh": 5,
-        "gauge": {
-          "key": "percent"
-        }
-      }
-    },
-    {
-      "content": {
-        "template": "table",
-        "title": "硬盘使用",
-        "span": 24,
-        "columns": [
+        "template": "statistic",
+        "items": [
           {
-            "key": "path",
-            "label": "路径"
+            "label": "在线",
+            "key": "online"
           },
           {
-            "key": "free",
-            "label": "可用",
-            "type": "bytes"
+            "label": "离线",
+            "key": "offline"
           },
           {
-            "key": "used",
-            "label": "已用",
-            "type": "bytes"
-          },
-          {
-            "key": "total",
-            "label": "全部",
-            "type": "bytes"
-          },
-          {
-            "key": "percent",
-            "label": "百分比",
-            "type": "progress"
+            "label": "错误",
+            "key": "error"
           }
         ],
-        "load_api": "dash/disk"
-      }
-    },
-    {
-      "span": 24,
-      "content": {
-        "template": "table",
-        "title": "网络使用",
-        "columns": [
-          {
-            "key": "index",
-            "label": "索引"
-          },
-          {
-            "key": "name",
-            "label": "名称"
-          },
-          {
-            "key": "mtu",
-            "label": "MTU"
-          },
-          {
-            "key": "hardware_address",
-            "label": "硬件地址"
-          },
-          {
-            "key": "address",
-            "label": "IP地址",
-            "type": "tags"
-          },
-          {
-            "key": "bytes_sent",
-            "label": "发送数据",
-            "type": "bytes"
-          },
-          {
-            "key": "bytes_recv",
-            "label": "接收数据",
-            "type": "bytes"
-          },
-          {
-            "key": "packets_sent",
-            "label": "发送数据包"
-          },
-          {
-            "key": "packets_recv",
-            "label": "接收数据包"
-          }
-        ],
-        "load_api": "dash/net"
+        "mounts":[
+          "this.data = {}",
+          "this.request.post('table/device/count', {filter:{online:1}}).subscribe(res=>{this.data.online = res.data})",
+          "this.request.post('table/device/count', {filter:{online:0}}).subscribe(res=>{this.data.offline = res.data})",
+          "this.request.post('table/device/count', {filter:{error:1}}).subscribe(res=>{this.data.error = res.data})"
+        ]
       }
     }
   ]

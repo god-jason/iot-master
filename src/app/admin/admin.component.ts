@@ -101,7 +101,11 @@ export class AdminComponent {
       if (this.us.user.admin)
         this.menus = res
       else
-        this.menus = res.filter((m:any)=>!m.admin) //不显示管理员项
+        //不显示管理员项
+        this.menus = res.filter((m:any)=> {
+          m.items = m.items.filter((i:any)=>!i.admin)
+          return !m.admin
+        })
     })
   }
 

@@ -54,6 +54,8 @@ export interface Content {
 
   //挂载
   mount?: string | Function | (() => void)
+  mounts?: string[]
+  
   //卸载
   unmount?: string | Function | (() => void)
 
