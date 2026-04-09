@@ -48,10 +48,6 @@
       {
         "name": "用户管理",
         "url": "page/user"
-      },
-      {
-        "name": "用户日志",
-        "url": "page/user-log"
       }
     ]
   },

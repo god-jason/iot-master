@@ -3,11 +3,6 @@
   "template": "form",
   "fields": [
     {
-      "key": "id",
-      "label": "ID",
-      "type": "text"
-    },
-    {
       "key": "user_id",
       "label": "管理员ID",
       "type": "text"
