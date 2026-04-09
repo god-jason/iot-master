@@ -21,6 +21,7 @@ type Property struct {
 type Device struct {
 	//device.Device `xorm:"extends"`
 	Id        string `json:"id,omitempty" xorm:"pk"`
+	TenantId  string `json:"tenant_id,omitempty" xorm:"index"`
 	GatewayId string `json:"gateway_id,omitempty" xorm:"index"`
 	ProductId string `json:"product_id,omitempty" xorm:"index"`
 	GroupId   string `json:"group_id,omitempty" xorm:"index"`

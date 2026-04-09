@@ -17,6 +17,11 @@ export interface SmartInfoItem {
   span?: number
   action?: SmartAction
   options?: { [p: string | number]: any }
+
+  //仅限管理员
+  admin?: boolean
+  //仅限非管理员
+  not_admin?: boolean
 }
 
 @Component({
@@ -36,9 +41,25 @@ export interface SmartInfoItem {
 })
 export class SmartInfoComponent {
   @Input() title: string = '';
-  @Input() fields: SmartInfoItem[] = []
+  _fields: SmartInfoItem[] = []
   @Input() value: any = {}
   @Output() action = new EventEmitter<SmartAction>();
+  @Input() user:any = {}
+
+  @Input() set fields(fs: SmartInfoItem[]) {
+    this._fields = fs.filter(f=>{
+      //管理员
+      if (f.admin)
+        return this.user?.admin
+      //非管理员
+      if (f.not_admin)
+        return !(this.user?.admin)
+      return true
+    })
+  }
+  get fields() {
+    return this._fields
+  }
 
   constructor() {
   }

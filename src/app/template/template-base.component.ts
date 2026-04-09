@@ -10,6 +10,7 @@ import {PageComponent} from '../page/page.component';
 import {LinkReplaceParams} from '../lib/utils';
 
 import dayjs from 'dayjs'
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-template',
@@ -23,6 +24,7 @@ import dayjs from 'dayjs'
 export class TemplateBase {
   dayjs: any = dayjs //引入dayjs
 
+  user = inject(UserService)
   request = inject(SmartRequestService)
   modal = inject(NzModalService)
   router = inject(Router)

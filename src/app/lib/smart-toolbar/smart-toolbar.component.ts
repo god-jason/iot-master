@@ -64,6 +64,8 @@ export class SmartToolbarComponent {
   @Output() change = new EventEmitter<any>();
   @Output() action = new EventEmitter<SmartAction>();
 
+  @Input() user:any = {}
+
   group: FormGroup = new FormGroup({})
   _fields: SmartField[] = []
   _values: any = {}
@@ -73,7 +75,15 @@ export class SmartToolbarComponent {
     //console.log("[SmartToolbar] set fields", fs)
     if (fs && fs.length) {
       setTimeout(() => {
-        this._fields = fs
+        this._fields = fs.filter(f=>{
+          //管理员
+          if (f.admin)
+            return this.user?.admin
+          //非管理员
+          if (f.not_admin)
+            return !(this.user?.admin)
+          return true
+        })
         //this.group = this.build()
         //this.group.valueChanges.subscribe(res => this.change.emit(res))
         this.build()

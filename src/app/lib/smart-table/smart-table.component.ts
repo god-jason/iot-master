@@ -45,6 +45,11 @@ export interface SmartTableColumn {
   ellipsis?: boolean
   break?: boolean
   action?: SmartAction
+
+  //仅限管理员
+  admin?: boolean
+  //仅限非管理员
+  not_admin?: boolean
 }
 
 export interface SmartTableOperator {
@@ -53,6 +58,11 @@ export interface SmartTableOperator {
   title?: string
   action: SmartAction
   confirm?: string
+
+  //仅限管理员
+  admin?: boolean
+  //仅限非管理员
+  not_admin?: boolean
 }
 
 export interface SmartTableButton {
@@ -67,7 +77,6 @@ export interface SmartTableParams {
   buttons?: SmartTableButton[];
   columns: SmartTableColumn[]
   operators: SmartTableOperator[];
-  batches: SmartTableOperator[];
 }
 
 
@@ -112,8 +121,38 @@ export class SmartTableComponent implements OnInit {
   @Input() pageSize = parseInt(localStorage.getItem("table_page_size") || "10"); //默认10页
   @Input() pageIndex = 1;
 
-  @Input() columns: SmartTableColumn[] = []
-  @Input() operators?: SmartTableOperator[]
+  _columns: SmartTableColumn[] = []
+  @Input() set columns(cols: SmartTableColumn[]){
+    this._columns = cols?.filter(f=>{
+      //管理员
+      if (f.admin)
+        return this.user?.admin
+      //非管理员
+      if (f.not_admin)
+        return !(this.user?.admin)
+      return true
+    })
+  }
+  get columns(){
+    return this._columns
+  }
+
+  _operators: SmartTableOperator[] = []
+  @Input() set operators(ops: SmartTableOperator[]){
+    this._operators = ops?.filter(f=>{
+      //管理员
+      if (f.admin)
+        return this.user?.admin
+      //非管理员
+      if (f.not_admin)
+        return !(this.user?.admin)
+      return true
+    })
+  }
+  get operators(){
+    return this._operators
+  }
+
 
   @Input() datum: any[] = [];
   @Input() total: number = 0;
@@ -123,6 +162,7 @@ export class SmartTableComponent implements OnInit {
 
   @Output() query = new EventEmitter<ParamSearch>
   @Output() action = new EventEmitter<SmartActionRow>();
+  @Input() user:any = {}
 
   //多选
   @Input() batch = false;

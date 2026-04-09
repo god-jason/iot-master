@@ -2,7 +2,7 @@
   @if (content.template == 'amap') {
     <nz-card [nzTitle]="content.title" [nzExtra]="extra">
       @if (content.toolbar) {
-        <smart-toolbar #toolbar [fields]="content.toolbar" [values]="toolbarValue" (action)="execute($event)"></smart-toolbar>
+        <smart-toolbar #toolbar [user]="user?.user" [fields]="content.toolbar" [values]="toolbarValue" (action)="execute($event)"></smart-toolbar>
       }
       <div class="mapContainer" #mapContainer [style.height]="mapHeight"></div>
     </nz-card>

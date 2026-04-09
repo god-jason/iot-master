@@ -1,13 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output, TemplateRef} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {
-    FormArray,
-    FormBuilder,
-    FormControl,
-    FormGroup,
-    FormsModule,
-    ReactiveFormsModule,
-    Validators
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
 } from "@angular/forms";
 import {NzFormModule} from "ng-zorro-antd/form";
 import {NzUploadChangeParam, NzUploadComponent} from "ng-zorro-antd/upload";
@@ -113,6 +113,11 @@ export interface SmartField {
 
   //显示的条件
   condition?: SmartFieldCondition
+
+  //仅限管理员
+  admin?: boolean
+  //仅限非管理员
+  not_admin?: boolean
 }
 
 export interface SmartFieldCondition {
@@ -249,11 +254,13 @@ export class SmartEditorComponent implements OnInit {
 
   empty: any = []
 
+  @Input() user: any = {}
 
   @Input() set fields(fs: SmartField[]) {
     //console.log("[SmartEditor] set fields", fs)
     if (fs && fs.length) {
       setTimeout(() => {
+
         this._fields = fs
         this.group = this.build(this._fields, this._values)
         this.group.valueChanges.subscribe(res => this.change.emit(res))
@@ -300,6 +307,16 @@ export class SmartEditorComponent implements OnInit {
     let fs: any = {}
     fields?.forEach(f => {
 
+      //管理员
+      if (f.admin)
+        if (!this.user?.admin)
+          return
+      //非管理员
+      if (f.not_admin)
+        if (this.user?.admin)
+          return;
+
+      //正常显示
       switch (f.type) {
         case 'object':
           fs[f.key] = this.build(f.children || [], values[f.key])
@@ -370,7 +387,7 @@ export class SmartEditorComponent implements OnInit {
   uploading = false
 
   handleUpload(control: FormControl, $event: NzUploadChangeParam) {
-    if ($event.type == 'uploading'){
+    if ($event.type == 'uploading') {
       this.uploading = true
     } else if ($event.type == 'success') {
       //this.group.patchValue({[key]: $event.file.response.data[0]})
@@ -451,14 +468,14 @@ export class SmartEditorComponent implements OnInit {
       case ">":
         return value > condition.value
       case "in":
-        for (let i=0; i<condition.value.length; i++) {
+        for (let i = 0; i < condition.value.length; i++) {
           if (value == condition.value[i]) {
             return true
           }
         }
         return false
       case "out":
-        for (let i=0; i<condition.value.length; i++) {
+        for (let i = 0; i < condition.value.length; i++) {
           if (value == condition.value[i]) {
             return false
           }

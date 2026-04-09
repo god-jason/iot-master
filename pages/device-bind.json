@@ -1,0 +1,13 @@
+{
+  "title": "绑定设备",
+  "template": "form",
+  "fields": [
+    {
+      "key": "id",
+      "label": "ID",
+      "type": "text",
+      "placeholder": "请输入设备ID"
+    }
+  ],
+  "submit": "this.request.get('device/'+data.id+'/bind').subscribe(res=>{this.modelRef.close()})"
+}
