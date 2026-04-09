@@ -8,6 +8,7 @@ import (
 
 type User struct {
 	Id        string    `json:"id" xorm:"pk"`
+	TenantId  string    `json:"tenant_id,omitempty"` //多租户
 	OpenId    string    `json:"openid,omitempty" xorm:"'openid'"`
 	UnionId   string    `json:"unionid,omitempty" xorm:"'unionid'"`
 	Name      string    `json:"name,omitempty"`

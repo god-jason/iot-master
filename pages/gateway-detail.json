@@ -88,7 +88,7 @@
     },
     {
       "title": "子设备",
-      "page":"device",
+      "page":"gateway-device",
       "params_func": "return {gateway_id: params.id}"
     },
     {

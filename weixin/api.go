@@ -43,6 +43,7 @@ func code2session(ctx *gin.Context) {
 		//user.Id = "wx_" + resp.OpenID
 		user.Id = xid.New().String()
 		user.Name = "微信用户"
+		user.TenantId = ctx.Query("tenant_id") //默认租户ID需要从小程序传
 		user.OpenId = resp.OpenID
 		user.UnionId = resp.UnionID
 		_, err = db.Engine().Insert(&user)

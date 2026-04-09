@@ -5,11 +5,11 @@ import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {Subscription} from 'rxjs';
 
 import {
-    NzTableCellDirective,
-    NzTableComponent,
-    NzTbodyComponent,
-    NzTheadComponent,
-    NzTrDirective
+  NzTableCellDirective,
+  NzTableComponent,
+  NzTbodyComponent,
+  NzTheadComponent,
+  NzTrDirective
 } from 'ng-zorro-antd/table';
 import {TemplateBase} from '../template-base.component';
 import {NzCardComponent} from 'ng-zorro-antd/card';
@@ -46,7 +46,7 @@ import dayjs from 'dayjs';
     NzStepComponent,
     NzProgressComponent,
     NzResultComponent
-],
+  ],
   templateUrl: './import.component.html',
   standalone: true,
   styleUrl: './import.component.scss'
@@ -100,14 +100,14 @@ export class ImportComponent extends TemplateBase {
       args.onSuccess?.(true, args.file, args)
 
 
-        let wb = read(reader.result)
-        let sheet = wb.Sheets[wb.SheetNames[0]]
-        let aoa = utils.sheet_to_json(sheet, {header: 1})
-        this.datum = aoa
+      let wb = read(reader.result)
+      let sheet = wb.Sheets[wb.SheetNames[0]]
+      let aoa = utils.sheet_to_json(sheet, {header: 1})
+      this.datum = aoa
 
-        this.buildForm()
-        this.findValues()
-        this.current = 1
+      this.buildForm()
+      this.findValues()
+      this.current = 1
 
       //this.buildForm()
       //this.findValues()
@@ -172,17 +172,17 @@ export class ImportComponent extends TemplateBase {
     })
 
 
-      const sheet = utils.aoa_to_sheet([aoa])
-      const wb = utils.book_new();
-      utils.book_append_sheet(wb, sheet)
+    const sheet = utils.aoa_to_sheet([aoa])
+    const wb = utils.book_new();
+    utils.book_append_sheet(wb, sheet)
 
-      // if(!wb.Props) wb.Props = {};
-      // wb.Props.Title = "Template";
-      // wb.Props.Author = "Boat";
+    // if(!wb.Props) wb.Props = {};
+    // wb.Props.Title = "Template";
+    // wb.Props.Author = "Boat";
 
-      //const filename = (this.app||'') + (this.page||'') + "-template.xlsx"
-      const filename = [this.page?.replaceAll(/\//g, "-"), "template.xlsx"].filter(i => i).join("-")
-      writeFile(wb, filename, {compression: true});
+    //const filename = (this.app||'') + (this.page||'') + "-template.xlsx"
+    const filename = [this.page?.replaceAll(/\//g, "-"), "template.xlsx"].filter(i => i).join("-")
+    writeFile(wb, filename, {compression: true});
   }
 
   back() {
@@ -199,10 +199,17 @@ export class ImportComponent extends TemplateBase {
       let obj: any = {}
       let row: any[] = this.datum[i]
       for (const k in fields) {
+        //从表中获取
         const index = fields[k]
         if (index > -1 && index < row.length) {
           obj[k] = row[index]
           //todo 处理日期格式
+        }
+        
+        //填充默认值
+        if (this.params.hasOwnProperty(k)) {
+          if (obj[k] == undefined || obj[k] == false)
+            obj[k] = this.params[k]
         }
       }
       this.values.push(obj)
@@ -303,18 +310,18 @@ export class ImportComponent extends TemplateBase {
   }
 
   downloadSucceed() {
-      const sheet = utils.json_to_sheet(this.succeed)
-      const wb = utils.book_new();
-      utils.book_append_sheet(wb, sheet)
-      const filename = [this.page?.replaceAll(/\//g, "-"), dayjs().format('YYYYMMDDHHmmss'), "succeed.xlsx"].filter(i => i).join("-")
-      writeFile(wb, filename, {compression: true});
+    const sheet = utils.json_to_sheet(this.succeed)
+    const wb = utils.book_new();
+    utils.book_append_sheet(wb, sheet)
+    const filename = [this.page?.replaceAll(/\//g, "-"), dayjs().format('YYYYMMDDHHmmss'), "succeed.xlsx"].filter(i => i).join("-")
+    writeFile(wb, filename, {compression: true});
   }
 
   downloadFailed() {
-      const sheet = utils.json_to_sheet(this.failed)
-      const wb = utils.book_new();
-      utils.book_append_sheet(wb, sheet)
-      const filename = [this.page?.replaceAll(/\//g, "-"), dayjs().format('YYYYMMDDHHmmss'), "failed.xlsx"].filter(i => i).join("-")
-      writeFile(wb, filename, {compression: true});
+    const sheet = utils.json_to_sheet(this.failed)
+    const wb = utils.book_new();
+    utils.book_append_sheet(wb, sheet)
+    const filename = [this.page?.replaceAll(/\//g, "-"), dayjs().format('YYYYMMDDHHmmss'), "failed.xlsx"].filter(i => i).join("-")
+    writeFile(wb, filename, {compression: true});
   }
 }
