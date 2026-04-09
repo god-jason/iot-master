@@ -98,7 +98,10 @@ export class AdminComponent {
   loadMenu() {
     this.request.get("menu").subscribe((res) => {
       if (res.error) return
-      this.menus = res
+      if (this.us.user.admin)
+        this.menus = res
+      else
+        this.menus = res.filter((m:any)=>!m.admin) //不显示管理员项
     })
   }
 

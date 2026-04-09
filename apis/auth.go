@@ -56,6 +56,11 @@ func auth(ctx *gin.Context) {
 		return
 	}
 
+	//非管理员，都是租户
+	if !user.Admin && user.TenantId == "" {
+		user.TenantId = user.Id
+	}
+
 	//生成Token
 	token, err := web.JwtGenerate(user.Id, user.Admin, user.TenantId)
 	if err != nil {

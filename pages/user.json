@@ -77,11 +77,6 @@
       "label": "手机号"
     },
     {
-      "key": "admin",
-      "label": "管理员",
-      "type": "boolean"
-    },
-    {
       "key": "disabled",
       "label": "禁用",
       "type": "boolean"

@@ -84,6 +84,11 @@ func login(ctx *gin.Context) {
 
 	//_, _ = db.Engine().InsertOne(&types.UserEvent{UserId: user.id, ModEvent: types.ModEvent{Type: "登录"}})
 
+	//非管理员，都是租户
+	if !user.Admin && user.TenantId == "" {
+		user.TenantId = user.Id
+	}
+
 	//存入session
 	session.Set("user", user.Id)
 	session.Set("admin", user.Admin)

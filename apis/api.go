@@ -1,6 +1,8 @@
 package apis
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/god-jason/iot-master/pkg/api"
 	"github.com/god-jason/iot-master/pkg/db"
@@ -38,6 +40,12 @@ func userMe(ctx *gin.Context) {
 	if !has {
 		api.Fail(ctx, "用户不存在")
 		return
+	}
+
+	//被禁用，则禁止登录
+	if user.Disabled {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "用户被禁用"})
+		ctx.Abort()
 	}
 
 	api.OK(ctx, &user)

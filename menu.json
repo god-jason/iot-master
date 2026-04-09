@@ -53,6 +53,7 @@
   {
     "name": "系统设置",
     "nz_icon": "setting",
+    "admin": true,
     "items": [
       {
         "name": "日志配置",

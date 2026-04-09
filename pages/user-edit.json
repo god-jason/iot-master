@@ -30,11 +30,6 @@
       "type": "text"
     },
     {
-      "key": "admin",
-      "label": "管理员",
-      "type": "switch"
-    },
-    {
       "key": "disabled",
       "label": "禁用",
       "type": "switch"

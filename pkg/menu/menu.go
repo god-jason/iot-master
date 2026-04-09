@@ -23,6 +23,7 @@ type Menu struct {
 	Items      []*Item  `json:"items,omitempty"`
 	Index      int      `json:"index,omitempty"`
 	Privileges []string `json:"privileges,omitempty"`
+	Admin      bool     `json:"admin,omitempty"` //管理员
 	//Domain     []string `json:"domain"` //域 admin project 或 dealer等
 }
 
