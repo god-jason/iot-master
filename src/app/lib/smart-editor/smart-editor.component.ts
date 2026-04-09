@@ -256,27 +256,11 @@ export class SmartEditorComponent implements OnInit {
 
   @Input() user: any = {}
 
-  private filterFields(fs:SmartField[]){
-    return fs.filter(f => {
-      //管理员
-      if (f.admin)
-        if (!this.user?.admin)
-          return false
-      //非管理员
-      if (f.not_admin)
-        if (this.user?.admin)
-          return false;
-      if (f.children)
-        f.children = this.filterFields(f.children)
-      return true
-    })
-  }
-
   @Input() set fields(fs: SmartField[]) {
     //console.log("[SmartEditor] set fields", fs)
     if (fs && fs.length) {
       setTimeout(() => {
-        this._fields = this.filterFields(fs)
+        this._fields = fs
         this.group = this.build(this._fields, this._values)
         this.group.valueChanges.subscribe(res => this.change.emit(res))
       }, 50)

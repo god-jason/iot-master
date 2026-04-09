@@ -41,25 +41,10 @@ export interface SmartInfoItem {
 })
 export class SmartInfoComponent {
   @Input() title: string = '';
-  _fields: SmartInfoItem[] = []
+  @Input() fields: SmartInfoItem[] = []
   @Input() value: any = {}
   @Output() action = new EventEmitter<SmartAction>();
   @Input() user:any = {}
-
-  @Input() set fields(fs: SmartInfoItem[]) {
-    this._fields = fs.filter(f=>{
-      //管理员
-      if (f.admin)
-        return this.user?.admin
-      //非管理员
-      if (f.not_admin)
-        return !(this.user?.admin)
-      return true
-    })
-  }
-  get fields() {
-    return this._fields
-  }
 
   constructor() {
   }

@@ -286,7 +286,9 @@
 <!-- 表单组模板 -->
 <ng-template #groupTpl let-fields="fields" let-group="group">
   @for (field of fields; track field) {
-    @if (field.hidden || field.condition && !calc_condition(group, field.condition)) {
+    @if (field.admin && !user?.admin) {
+    } @else if (field.not_admin && user?.admin) {
+    } @else if (field.hidden || field.condition && !calc_condition(group, field.condition)) {
       <!-- 什么也不用干 -->
     }
     @else{

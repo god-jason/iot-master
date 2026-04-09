@@ -17,7 +17,6 @@
       "label": "导入",
       "icon": "plus",
       "type": "button",
-      "admin": true,
       "action": {
         "type": "page",
         "page": "device-import"
@@ -27,6 +26,7 @@
       "label": "批量删除",
       "icon": "delete",
       "type": "button",
+      "admin": true,
       "confirm": "确认批量删除？",
       "action": {
         "type": "script",
@@ -72,6 +72,7 @@
       "icon": "delete",
       "title": "删除",
       "confirm": "确认删除？",
+      "admin": true,
       "action": {
         "type": "script",
         "script": "this.request.get('table/device/delete/'+data.id).subscribe(res=>{this.load()})"
@@ -127,18 +128,19 @@
   ],
   "search_api": "table/device/search",
   "mounts": [
-    "if(this.params.link_id)this.filter.link_id=this.params.link_id;",
-    "if(this.params.group_id)this.filter.group_id=this.params.group_id;",
-    "if(this.params.product_id)this.filter.product_id=this.params.product_id; ",
-    "if(this.params.gateway_id)this.filter.gateway_id=this.params.gateway_id;",
-    "this.get_extend_fields();",
-    "if(this.params.gateway_id) this.add_sync();",
-    "if(!this.params.gateway_id) this.add_bind() "
+    "if(this.params.link_id) this.filter.link_id=this.params.link_id;",
+    "if(this.params.group_id) this.filter.group_id=this.params.group_id;",
+    "if(this.params.product_id) this.filter.product_id=this.params.product_id; ",
+    "if(this.params.gateway_id) this.filter.gateway_id=this.params.gateway_id;",
+    "if(this.params.gateway_id) this.content.toolbar.push(this.content.sync)",
+    "if(!this.params.gateway_id && !this.params.group_id) this.content.toolbar.push(this.content.bind)",
+    "if(this.params.group_id) this.content.toolbar.push(this.content.bind_group)",
+    "if(this.params.group_id) this.content.toolbar.push(this.content.unbind_group)",
+    "if(this.params.group_id) this.content.operators.push(this.content.operator_unbind)",
+    "this.get_extend_fields();"
   ],
   "methods": {
-    "get_extend_fields": "this.request.get('device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.columns.push(f)) })",
-    "add_sync": "this.content.toolbar.push(this.content.sync)",
-    "add_bind": "this.content.toolbar.push(this.content.bind)"
+    "get_extend_fields": "this.request.get('device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.columns.push(f)) })"
   },
   "sync": {
     "label": "下载到网关",
@@ -152,13 +154,42 @@
   },
   "bind": {
     "type": "button",
-    "icon": "link",
-    "label": "绑定",
+    "icon": "plus",
+    "label": "添加",
     "not_admin": true,
     "action": {
       "type": "dialog",
       "page": "device-bind",
-      "after_close": "console.log(result)"
+      "after_close": "this.load()"
+    }
+  },
+  "bind_group": {
+    "type": "button",
+    "icon": "link",
+    "label": "绑定",
+    "action": {
+      "type": "dialog",
+      "page": "device-choose",
+      "after_close": "result && this.request.get('device/'+result.id+'/bind/'+this.params.group_id).subscribe(res=>this.load())"
+    }
+  },
+  "unbind_group": {
+    "label": "批量解绑",
+    "icon": "delete",
+    "type": "button",
+    "confirm": "确认批量解绑？",
+    "action": {
+      "type": "script",
+      "script": "this.table.selects.forEach(id=>this.request.get('device/'+id+'/unbind').subscribe(res=>{this.load()}))"
+    }
+  },
+  "operator_unbind": {
+    "icon": "delete",
+    "title": "解绑",
+    "confirm": "确认解绑？",
+    "action": {
+      "type": "script",
+      "script": "this.request.get('device/'+data.id+'/unbind').subscribe(res=>{this.load()})"
     }
   }
 }

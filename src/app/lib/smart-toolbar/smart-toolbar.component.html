@@ -1,5 +1,8 @@
 <div class="toolbar" nz-flex nzGap="small" nzWrap="wrap" [formGroup]="group">
   @for (field of fields; track field) {
+  @if (field.admin && !user?.admin) {
+  } @else if (field.not_admin && user?.admin) {
+  } @else {
     <span>
       @switch (field.type) {
         @case ('link') {
@@ -182,6 +185,7 @@
         }
       }
     </span>
+  }
   }
 </div>
 

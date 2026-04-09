@@ -1,6 +1,9 @@
 <nz-descriptions [nzTitle]="title" nzBordered nzSize="small"
   [nzColumn]="{ xs: 1, sm: 1, md: 2, lg:2, xl:3, xxl:3}">
   @for (f of fields; track f) {
+  @if (f.admin && !user?.admin) {
+  } @else if (f.not_admin && user?.admin) {
+  } @else {
     <nz-descriptions-item [nzTitle]="f.label" [nzSpan]="f.span || 1" (click)="action.emit(f.action)">
       @switch (f.type) {
         @case ("date") {
@@ -47,5 +50,6 @@
         }
       }
     </nz-descriptions-item>
+  }
   }
 </nz-descriptions>

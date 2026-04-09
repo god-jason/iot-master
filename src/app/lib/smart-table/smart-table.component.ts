@@ -121,38 +121,8 @@ export class SmartTableComponent implements OnInit {
   @Input() pageSize = parseInt(localStorage.getItem("table_page_size") || "10"); //默认10页
   @Input() pageIndex = 1;
 
-  _columns: SmartTableColumn[] = []
-  @Input() set columns(cols: SmartTableColumn[]){
-    this._columns = cols?.filter(f=>{
-      //管理员
-      if (f.admin)
-        return this.user?.admin
-      //非管理员
-      if (f.not_admin)
-        return !(this.user?.admin)
-      return true
-    })
-  }
-  get columns(){
-    return this._columns
-  }
-
-  _operators: SmartTableOperator[] = []
-  @Input() set operators(ops: SmartTableOperator[]){
-    this._operators = ops?.filter(f=>{
-      //管理员
-      if (f.admin)
-        return this.user?.admin
-      //非管理员
-      if (f.not_admin)
-        return !(this.user?.admin)
-      return true
-    })
-  }
-  get operators(){
-    return this._operators
-  }
-
+  @Input() columns: SmartTableColumn[] = []
+  @Input() operators: SmartTableOperator[] = []
 
   @Input() datum: any[] = [];
   @Input() total: number = 0;

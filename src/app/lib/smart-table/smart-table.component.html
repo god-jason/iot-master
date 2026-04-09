@@ -23,6 +23,9 @@
       </th>
     }
     @for (item of columns; track item) {
+      @if (item.admin && !user?.admin) {
+      } @else if (item.not_admin && user?.admin) {
+      } @else {
       <th
         [nzColumnKey]="item.key"
         [nzShowSort]="item.sortable"
@@ -32,6 +35,7 @@
         [nzFilters]="item.filter || []">
         {{ item.label }}
       </th>
+      }
     }
     @if (operators && operators.length) {
       <th>操作</th>
@@ -49,6 +53,9 @@
           ></td>
         }
         @for (item of columns; track item) {
+        @if (item.admin && !user?.admin) {
+        } @else if (item.not_admin && user?.admin) {
+        } @else {
           <td [nzEllipsis]="item.ellipsis" [nzBreakWord]="item.break">
             @switch (item.type) {
               @case ("date") {
@@ -96,9 +103,13 @@
             }
           </td>
         }
+        }
         @if (operators && operators.length) {
           <td>
             @for (o of operators; track o) {
+            @if (o.admin && !user?.admin) {
+            } @else if (o.not_admin && user?.admin) {
+            } @else {
               <span class="operator">
                 @if (o.confirm) {
                   <a [title]="o.title||''" nz-popconfirm [nzPopconfirmTitle]="o.confirm"
@@ -115,6 +126,7 @@
                       </a>
                 }
                   </span>
+            }
             }
           </td>
         }
