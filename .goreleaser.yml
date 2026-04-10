@@ -10,7 +10,7 @@ builds:
       ignore_dirty: true
       #临时加入
     id: "iot-master"
-    main: ./cmd
+    main: main.go
     binary: "iot-master"
     ldflags:
       - -s -w -X github.com/god-jason/iot-master/pkg/build.Version={{.Version}}
@@ -53,6 +53,10 @@ archives:
       - goos: windows
         format: zip
     files:
+      - menu.json
+      - pages
+      - tables
+      - protocols
       - README.md
       - LICENSE
 checksum:
