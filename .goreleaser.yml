@@ -6,9 +6,6 @@ before:
 builds:
   - env:
       - CGO_ENABLED=0
-    git:
-      ignore_dirty: true
-      #临时加入
     id: "iot-master"
     main: main.go
     binary: "iot-master"
