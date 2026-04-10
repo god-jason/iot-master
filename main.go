@@ -25,7 +25,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-//go:embed dist/browser
+//go:embed www/browser
 var www embed.FS
 
 func init() {
