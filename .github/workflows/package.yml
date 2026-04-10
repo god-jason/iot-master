@@ -1,4 +1,4 @@
-name: Releaser
+name: Package
 
 permissions:
   contents: write
