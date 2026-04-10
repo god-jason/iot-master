@@ -39,7 +39,7 @@ func init() {
 	iot.Protocols = store.Dir("protocols")
 
 	//前端页面
-	web.StaticFS(www, "/", "dist/browser", "index.html")
+	web.StaticFS(www, "/", "www/browser", "index.html")
 }
 
 func Startup() error {
