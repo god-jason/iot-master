@@ -1,6 +1,6 @@
 {
-  "name": "cjt188",
-  "description": "CJT 188",
+  "name": "dlt645",
+  "description": "DLT645",
   "device_extend_columns": [
     {
       "name": "address",
@@ -41,63 +41,18 @@
     }
   ],
   "property_extend_fields": [
-    {
-      "key": "company",
-      "label": "默认公司代码",
-      "type": "text"
-    },
-    {
-      "key": "type",
-      "label": "设备类型",
-      "type": "text"
-    },
+  ],
+  "point_extend_fields": [
     {
       "key": "di",
       "label": "数据标识",
       "type": "text"
     },
     {
-      "key": "code",
-      "label": "功能码",
-      "type": "text"
-    },
-    {
-      "key": "address_reverse",
-      "label": "逆序地址",
-      "type": "switch"
-    },
-    {
-      "key": "writable",
-      "label": "写指令",
-      "type": "switch"
-    }
-  ],
-  "point_extend_fields": [
-    {
-      "key": "address",
-      "label": "地址",
-      "type": "number",
-      "default": 0,
-      "min": 0,
-      "step": 1
-    },
-    {
-      "key": "hasUnit",
-      "label": "内置单位",
-      "type": "switch",
-      "default": false
-    },
-    {
       "key": "reverse",
       "label": "逆序数据",
       "type": "switch",
       "default": true
-    },
-    {
-      "key": "rate",
-      "label": "倍率",
-      "type": "number",
-      "default": 1
     }
   ],
   "point_extend_types": [
