@@ -63,9 +63,6 @@ func (d *Device) PutValues(values map[string]any) {
 
 	//TODO 过滤器实现
 
-	//入历史数据库
-	_ = history.Write(d.ProductId, d.Id, time.Now().UnixMilli(), values)
-
 	//保存的内存中
 	d.values.Put(values)
 
@@ -91,6 +88,10 @@ func (d *Device) PutValues(values map[string]any) {
 			mqtt.PublishEx(topics, alarm)
 		}
 	}
+
+	//入历史数据库
+	_ = history.Write(d.ProductId, d.Id, time.Now().UnixMilli(), values)
+	//TODO 以上代码出现异常，会停止进程操作
 }
 
 func (d *Device) GetValues() map[string]any {
