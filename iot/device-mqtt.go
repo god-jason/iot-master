@@ -134,8 +134,6 @@ func mqttSubscribeDevice() {
 			return
 		}
 
-		d.PutValues(values)
-
 		//有数据就恢复上线
 		if !d.Online {
 			d.Online = true
@@ -144,6 +142,9 @@ func mqttSubscribeDevice() {
 			dev.Online = true
 			_, _ = db.Engine().ID(id).Cols("online").Update(&dev)
 		}
+
+		//会被Influxdb堵死。。。。
+		d.PutValues(values)
 	})
 
 	mqtt.Subscribe("device/+/property", func(topic string, payload []byte) {
