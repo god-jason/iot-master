@@ -2,6 +2,7 @@ package table
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
 	"mime/multipart"
 
@@ -77,15 +78,24 @@ func ApiImport(ctx *gin.Context) {
 		}
 	}
 
+	var errs []error
+
 	//依次写入
 	var ids []any
 	for _, doc := range docs {
 		id, err := table.Insert(doc)
 		if err != nil {
-			Error(ctx, err)
-			return
+			errs = append(errs, err)
+			//不阻碍其他导入
+			//Error(ctx, err)
+			//return
 		}
 		ids = append(ids, id)
+	}
+
+	if len(errs) > 0 {
+		Error(ctx, errors.Join(errs...))
+		return
 	}
 
 	OK(ctx, ids)

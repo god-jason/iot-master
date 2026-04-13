@@ -85,6 +85,11 @@
       "title": "告警",
       "page":"alarm",
       "params_func": "return {device_id: params.id}"
+    },
+    {
+      "title": "数据修改（旧）",
+      "page":"device-values-setting",
+      "params_func": "return {id: params.id}"
     }
   ]
 }

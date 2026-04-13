@@ -69,6 +69,14 @@
       "value": "XXXXXX.XX"
     },
     {
+      "label": "XXX.X",
+      "value": "XXX.X"
+    },
+    {
+      "label": "XXX.XXX",
+      "value": "XXX.XXX"
+    },
+    {
       "label": "XXXX",
       "value": "XXXX"
     },
@@ -91,6 +99,10 @@
     {
       "label": "XX.XXXX",
       "value": "XX.XXXX"
+    },
+    {
+      "label": "X.XXX",
+      "value": "X.XXX"
     },
     {
       "label": "HH",

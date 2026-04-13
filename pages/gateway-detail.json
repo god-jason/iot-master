@@ -87,6 +87,11 @@
       "params_func": "return {id: params.id}"
     },
     {
+      "title": "设备操作",
+      "page":"device-actions",
+      "params_func": "return {id: params.id}"
+    },
+    {
       "title": "子设备",
       "page":"gateway-device",
       "params_func": "return {gateway_id: params.id}"
@@ -115,6 +120,11 @@
       "title": "数据绑定",
       "page":"binding",
       "params_func": "return {gateway_id: params.id}"
+    },
+    {
+      "title": "数据修改（旧）",
+      "page":"device-values-setting",
+      "params_func": "return {id: params.id}"
     }
   ]
 }

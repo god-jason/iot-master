@@ -43,7 +43,7 @@
   "property_extend_fields": [
     {
       "key": "company",
-      "label": "默认公司代码",
+      "label": "公司代码",
       "type": "text"
     },
     {
