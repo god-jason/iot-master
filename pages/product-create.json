@@ -45,6 +45,6 @@
   "submit_success": "this.navigate('/page/product-detail?id='+data)",
   "mount": "this.load_protocols()",
   "methods": {
-    "load_protocols": "this.request.get('protocol/list').subscribe(res=>{this.content.fields[5].options=res.data.map(d=>{return {value:d.name,label:d.description}}); })"
+    "load_protocols": "this.request.get('protocol/list').subscribe(res=>{this.content.fields[5].options=res.data.map(d=>{return {value:d.name,label:d.description}}); this.content.fields[5].options.unshift({value:'',label:'无'}); })"
   }
 }

@@ -72,7 +72,7 @@
       "params_func": "return {id: params.id}"
     },
     {
-      "title": "事件响应",
+      "title": "设备操作",
       "page":"product-setting-action",
       "params_func": "return {id: params.id}"
     },
