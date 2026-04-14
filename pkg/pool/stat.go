@@ -8,6 +8,9 @@ type Info struct {
 }
 
 func Stats() *Info {
+	if Pool == nil {
+		return nil
+	}
 	return &Info{
 		Cap:     Pool.Cap(),
 		Free:    Pool.Free(),

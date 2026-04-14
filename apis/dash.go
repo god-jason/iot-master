@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/god-jason/iot-master/pkg/api"
+	"github.com/god-jason/iot-master/pkg/pool"
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/disk"
 	"github.com/shirou/gopsutil/v4/mem"
@@ -20,6 +21,12 @@ func init() {
 	api.Register("GET", "dash/disk", diskStats)
 	api.Register("GET", "dash/net", netStats)
 	api.Register("GET", "dash/machine", machineInfo)
+	api.Register("GET", "dash/pool", poolStats)
+}
+
+func poolStats(ctx *gin.Context) {
+	stat := pool.Stats()
+	api.OK(ctx, stat)
 }
 
 type MemStat struct {
