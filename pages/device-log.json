@@ -22,7 +22,8 @@
   "columns": [
     {
       "key": "id",
-      "label": "ID"
+      "label": "ID",
+      "sortable": true
     },
     {
       "key": "device_id",
@@ -31,7 +32,8 @@
         "type": "page",
         "page":"device-detail",
         "params_func": "return {id: data.device_id}"
-      }
+      },
+      "sortable": true
     },
     {
       "key": "user",
@@ -44,7 +46,8 @@
     {
       "key": "created",
       "label": "日期",
-      "type": "date"
+      "type": "date",
+      "sortable": true
     }
   ],
   "joins": [

@@ -59,7 +59,8 @@
         "type": "page",
         "page": "version-detail",
         "params_func": "return {id: data.id}"
-      }
+      },
+      "sortable": true
     },
     {
       "key": "product_id",
@@ -72,7 +73,8 @@
     },
     {
       "key": "name",
-      "label": "名称"
+      "label": "名称",
+      "sortable": true
     },
     {
       "key": "description",
@@ -86,7 +88,8 @@
     {
       "key": "created",
       "label": "日期",
-      "type": "date"
+      "type": "date",
+      "sortable": true
     }
   ],
   "search_api": "table/version/search",

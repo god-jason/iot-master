@@ -65,11 +65,13 @@
         "type": "page",
         "page":"product-detail",
         "params_func": "return {id: data.id}"
-      }
+      },
+      "sortable": true
     },
     {
       "key": "name",
-      "label": "名称"
+      "label": "名称",
+      "sortable": true
     },
     {
       "key": "description",
@@ -85,7 +87,8 @@
     },
     {
       "key": "protocol",
-      "label": "协议"
+      "label": "协议",
+      "sortable": true
     },
     {
       "key": "disabled",
@@ -95,7 +98,8 @@
     {
       "key": "created",
       "label": "日期",
-      "type": "date"
+      "type": "date",
+      "sortable": true
     }
   ],
   "search_api": "table/product/search"

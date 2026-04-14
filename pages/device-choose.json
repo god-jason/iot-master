@@ -34,11 +34,13 @@
   "columns": [
     {
       "key": "id",
-      "label": "ID"
+      "label": "ID",
+      "sortable": true
     },
     {
       "key": "name",
-      "label": "名称"
+      "label": "名称",
+      "sortable": true
     },
     {
       "key": "description",
@@ -47,7 +49,12 @@
     {
       "key": "online",
       "label": "在线",
-      "type": "boolean"
+      "type": "boolean",
+      "sortable": true
+    },
+    {
+      "key": "error_string",
+      "label": "错误"
     },
     {
       "key": "disabled",
@@ -57,7 +64,8 @@
     {
       "key": "created",
       "label": "日期",
-      "type": "date"
+      "type": "date",
+      "sortable": true
     }
   ],
   "search_api": "table/device/search"

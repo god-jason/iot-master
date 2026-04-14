@@ -46,7 +46,8 @@
   "columns": [
     {
       "key": "id",
-      "label": "ID"
+      "label": "ID",
+      "sortable": true
     },
     {
       "key": "device_id",
@@ -81,7 +82,8 @@
     {
       "key": "created",
       "label": "日期",
-      "type": "date"
+      "type": "date",
+      "sortable": true
     }
   ],
   "search_api": "table/alarm/search",

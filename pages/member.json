@@ -27,11 +27,13 @@
   "columns": [
     {
       "key": "user_id",
-      "label": "用户ID"
+      "label": "用户ID",
+      "sortable": true
     },
     {
       "key": "user",
-      "label": "用户名"
+      "label": "用户名",
+      "sortable": true
     },
     {
       "key": "role",
@@ -40,7 +42,8 @@
     {
       "key": "created",
       "label": "日期",
-      "type": "date"
+      "type": "date",
+      "sortable": true
     }
   ],
   "search_api": "table/member/search",

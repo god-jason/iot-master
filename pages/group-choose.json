@@ -34,11 +34,13 @@
   "columns": [
     {
       "key": "id",
-      "label": "ID"
+      "label": "ID",
+      "sortable": true
     },
     {
       "key": "user_id",
-      "label": "管理员ID"
+      "label": "管理员ID",
+      "sortable": true
     },
     {
       "key": "user",
@@ -46,7 +48,8 @@
     },
     {
       "key": "name",
-      "label": "名称"
+      "label": "名称",
+      "sortable": true
     },
     {
       "key": "disabled",
@@ -56,7 +59,8 @@
     {
       "key": "created",
       "label": "日期",
-      "type": "date"
+      "type": "date",
+      "sortable": true
     }
   ],
   "search_api": "table/group/search",

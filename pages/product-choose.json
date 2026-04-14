@@ -34,11 +34,13 @@
   "columns": [
     {
       "key": "id",
-      "label": "ID"
+      "label": "ID",
+      "sortable": true
     },
     {
       "key": "name",
-      "label": "名称"
+      "label": "名称",
+      "sortable": true
     },
     {
       "key": "version",
