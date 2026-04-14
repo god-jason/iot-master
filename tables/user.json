@@ -41,6 +41,12 @@
       "length": 32
     },
     {
+      "name": "oem",
+      "comment": "OEM",
+      "type": "string",
+      "length": 128
+    },
+    {
       "name": "admin",
       "comment": "管理员",
       "type": "bool",

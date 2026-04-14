@@ -7,7 +7,7 @@
             [nzTrigger]="null">
     <div class="sidebar-logo">
       <img [src]="oem.logo" alt="logo">
-      <h1>{{ oem.name }}</h1>
+      <h1>{{ us.user && us.user.oem || oem.name || '物联大师' }}</h1>
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
       @for (menu of menus; track menu) {
