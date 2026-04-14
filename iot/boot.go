@@ -2,7 +2,6 @@ package iot
 
 import (
 	"github.com/god-jason/iot-master/pkg/boot"
-	"github.com/god-jason/iot-master/pkg/db"
 	_ "github.com/god-jason/iot-master/pkg/product"
 	_ "github.com/god-jason/iot-master/pkg/protocol"
 )
