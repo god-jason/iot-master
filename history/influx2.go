@@ -8,6 +8,7 @@ import (
 	"github.com/influxdata/influxdb-client-go/v2"
 	"github.com/influxdata/influxdb-client-go/v2/api"
 	"github.com/influxdata/influxdb-client-go/v2/api/write"
+	"github.com/spf13/cast"
 )
 
 var client influxdb2.Client
@@ -40,6 +41,20 @@ func Client() influxdb2.Client {
 }
 
 func Write(table, id string, timestamp int64, values map[string]any) error {
+	for k, v := range values {
+		//过滤无效字段名
+		if k == "" {
+			delete(values, k)
+			continue
+		}
+		//处理数据类型
+		val, err := cast.ToFloat64E(v)
+		if err == nil {
+			values[k] = val
+		} else {
+			delete(values, k)
+		}
+	}
 	writer.WritePoint(write.NewPoint(table, map[string]string{"id": id}, values, time.UnixMilli(timestamp)))
 	return nil
 }
