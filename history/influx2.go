@@ -14,7 +14,7 @@ import (
 )
 
 var client influxdb2.Client
-var writer api.WriteAPI
+var writer api.WriteAPIBlocking
 var reader api.QueryAPI
 
 type Point struct {
@@ -28,7 +28,7 @@ func Startup() error {
 	}
 
 	client = influxdb2.NewClient(config.GetString(MODULE, "url"), config.GetString(MODULE, "token"))
-	writer = client.WriteAPI(config.GetString(MODULE, "org"), config.GetString(MODULE, "bucket"))
+	writer = client.WriteAPIBlocking(config.GetString(MODULE, "org"), config.GetString(MODULE, "bucket"))
 	reader = client.QueryAPI(config.GetString(MODULE, "org"))
 
 	return nil
@@ -66,8 +66,7 @@ func Write(table, id string, timestamp int64, values map[string]any) error {
 		return nil
 	}
 
-	writer.WritePoint(write.NewPoint(table, map[string]string{"id": id}, vs, time.UnixMilli(timestamp)))
-	return nil
+	return writer.WritePoint(context.Background(), write.NewPoint(table, map[string]string{"id": id}, vs, time.UnixMilli(timestamp)))
 }
 
 func Query(table, id, name, start, end, window, method string) ([]*Point, error) {
