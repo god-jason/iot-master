@@ -7,7 +7,7 @@ import (
 func init() {
 	boot.Register("influxdb", &boot.Task{
 		Startup:  Startup,
-		Shutdown: nil,
+		Shutdown: Shutdown,
 		Depends:  []string{"log", "mqtt", "database"},
 	})
 }

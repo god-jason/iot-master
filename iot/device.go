@@ -90,7 +90,10 @@ func (d *Device) PutValues(values map[string]any) {
 	}
 
 	//入历史数据库
-	_ = history.Write(d.ProductId, d.Id, time.Now().UnixMilli(), values)
+	err := history.Write(d.ProductId, d.Id, time.Now().UnixMilli(), values)
+	if err != nil {
+		log.Error(err)
+	}
 	//TODO 以上代码出现异常，会停止进程操作
 }
 

@@ -31,6 +31,10 @@ func Startup() error {
 	writer = client.WriteAPIBlocking(config.GetString(MODULE, "org"), config.GetString(MODULE, "bucket"))
 	reader = client.QueryAPI(config.GetString(MODULE, "org"))
 
+	if config.GetBool(MODULE, "batch") {
+		writer.EnableBatching()
+	}
+
 	return nil
 }
 
