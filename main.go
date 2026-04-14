@@ -11,6 +11,7 @@ import (
 	"github.com/god-jason/iot-master/iot"
 	"github.com/god-jason/iot-master/pkg/boot"
 	_ "github.com/god-jason/iot-master/pkg/broker"
+	_ "github.com/god-jason/iot-master/pkg/debug"
 	"github.com/god-jason/iot-master/pkg/log"
 	"github.com/god-jason/iot-master/pkg/menu"
 	_ "github.com/god-jason/iot-master/pkg/oem"
