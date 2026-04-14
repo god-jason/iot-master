@@ -2,6 +2,8 @@ package history
 
 import (
 	"context"
+	"errors"
+	"strings"
 	"time"
 
 	"github.com/god-jason/iot-master/pkg/config"
@@ -21,12 +23,13 @@ type Point struct {
 }
 
 func Startup() error {
+	if !config.GetBool(MODULE, "enable") {
+		return nil
+	}
+
 	client = influxdb2.NewClient(config.GetString(MODULE, "url"), config.GetString(MODULE, "token"))
 	writer = client.WriteAPI(config.GetString(MODULE, "org"), config.GetString(MODULE, "bucket"))
 	reader = client.QueryAPI(config.GetString(MODULE, "org"))
-
-	//订阅消息
-	subscribe()
 
 	return nil
 }
@@ -41,25 +44,37 @@ func Client() influxdb2.Client {
 }
 
 func Write(table, id string, timestamp int64, values map[string]any) error {
+	if writer == nil {
+		return nil
+	}
+
+	vs := make(map[string]any)
 	for k, v := range values {
+		k = strings.TrimSpace(k)
+
 		//过滤无效字段名
 		if k == "" {
-			delete(values, k)
 			continue
 		}
 		//处理数据类型
 		val, err := cast.ToFloat64E(v)
 		if err == nil {
-			values[k] = val
-		} else {
-			delete(values, k)
+			vs[k] = val
 		}
 	}
-	writer.WritePoint(write.NewPoint(table, map[string]string{"id": id}, values, time.UnixMilli(timestamp)))
+	if len(vs) == 0 {
+		return nil
+	}
+
+	writer.WritePoint(write.NewPoint(table, map[string]string{"id": id}, vs, time.UnixMilli(timestamp)))
 	return nil
 }
 
 func Query(table, id, name, start, end, window, method string) ([]*Point, error) {
+	if reader == nil {
+		return nil, errors.New("influxdb未启用")
+	}
+
 	bucket := config.GetString(MODULE, "bucket")
 
 	flux := "from(bucket: \"" + bucket + "\")\n"

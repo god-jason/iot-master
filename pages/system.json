@@ -28,7 +28,8 @@
             "span": 6
           }
         ],
-        "load_api": "dash/pool"
+        "load_api": "dash/pool",
+        "auto_refresh": 5
       }
     },
     {
