@@ -24,6 +24,11 @@
       "type": "text"
     },
     {
+      "key": "oem",
+      "label": "OEM",
+      "type": "text"
+    },
+    {
       "key": "admin",
       "label": "管理员",
       "type": "switch",
