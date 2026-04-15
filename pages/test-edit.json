@@ -1,0 +1,33 @@
+{
+  "title": "测试编辑",
+  "template": "form",
+  "fields": [
+    {
+      "key": "text",
+      "label": "文本",
+      "type": "text",
+      "placeholder": "默认随机ID"
+    },
+    {
+      "key": "switch",
+      "label": "开关",
+      "type": "switch"
+    },
+    {
+      "key": "datetime",
+      "label": "日期和时间",
+      "type": "datetime"
+    },
+    {
+      "key": "date",
+      "label": "日期",
+      "type": "date"
+    },
+    {
+      "key": "time",
+      "label": "时间",
+      "type": "time"
+    }
+  ],
+  "submit_api": "test"
+}
