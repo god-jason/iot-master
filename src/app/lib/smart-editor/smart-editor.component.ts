@@ -16,12 +16,10 @@ import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray} from 
 import {NzInputDirective, NzInputGroupComponent, NzTextareaCountComponent} from "ng-zorro-antd/input";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzColorPickerModule} from "ng-zorro-antd/color-picker";
-import {NzDatePickerComponent} from "ng-zorro-antd/date-picker";
 import {NzInputNumberComponent} from "ng-zorro-antd/input-number";
 import {NzSelectComponent} from "ng-zorro-antd/select";
 import {NzSliderComponent} from "ng-zorro-antd/slider";
 import {NzSwitchComponent} from "ng-zorro-antd/switch";
-import {NzTimePickerComponent} from "ng-zorro-antd/time-picker";
 import {NzTreeSelectComponent} from "ng-zorro-antd/tree-select";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzSpaceModule} from "ng-zorro-antd/space";
@@ -30,6 +28,8 @@ import {NzCheckboxComponent} from "ng-zorro-antd/checkbox";
 import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzRateComponent} from "ng-zorro-antd/rate";
 import {SmartAction} from '../smart-table/smart-table.component';
+import {SmartDatePicker} from '../smart-date-picker/smart-date-picker';
+import dayjs from 'dayjs';
 
 
 export interface SmartAutoOption {
@@ -149,11 +149,11 @@ function getDefault(field: SmartField): any {
     case 'textarea':
       return ''
     case 'date':
-      return new Date()
+      return dayjs().format("YYYY-MM-DD")
     case 'time':
-      return new Date()
+      return dayjs().format("HH:mm:ss")
     case 'datetime':
-      return new Date()
+      return dayjs().format("YYYY-MM-DD HH:mm:ss")
     case 'file':
       return ''
     case 'image':
@@ -222,14 +222,12 @@ export function createControl(f: SmartField, value: any = undefined): FormContro
     NzInputDirective,
     NzButtonComponent,
     NzColorPickerModule,
-    NzDatePickerComponent,
     NzInputGroupComponent,
     NzInputNumberComponent,
     NzSelectComponent,
     NzSliderComponent,
     NzSwitchComponent,
     NzTextareaCountComponent,
-    NzTimePickerComponent,
     NzTreeSelectComponent,
     NzUploadComponent,
     CdkDragHandle,
@@ -239,6 +237,7 @@ export function createControl(f: SmartField, value: any = undefined): FormContro
     NzCheckboxComponent,
     NzRadioModule,
     NzRateComponent,
+    SmartDatePicker,
   ],
   templateUrl: './smart-editor.component.html',
   styleUrl: './smart-editor.component.scss',

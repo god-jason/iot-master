@@ -116,16 +116,15 @@
     }
     @case ('datetime') {
       <!--日期和时间-->
-      <nz-date-picker nzShowTime [formControl]="control" [nzAllowClear]="field.clear || false"
-      [nzPlaceHolder]="field.placeholder || ''"></nz-date-picker>
+      <smart-date-picker [formControl]="control" mode="datetime"></smart-date-picker>
     }
     @case ('date') {
       <!--日期-->
-      <nz-date-picker [formControl]="control" [nzAllowClear]="field.clear || false" [nzPlaceHolder]="field.placeholder || ''"></nz-date-picker>
+      <smart-date-picker [formControl]="control" mode="date"></smart-date-picker>
     }
     @case ('time') {
       <!--时间-->
-      <nz-time-picker [formControl]="control"  [nzPlaceHolder]="field.placeholder || ''"></nz-time-picker>
+      <smart-date-picker [formControl]="control" mode="time"></smart-date-picker>
     }
     @case ('file') {
       <!--文件-->

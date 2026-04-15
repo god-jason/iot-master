@@ -1,0 +1,17 @@
+@switch(mode){
+  @case ('datetime') {
+  <!--日期和时间-->
+  <nz-date-picker nzAllowClear nzShowTime [ngModel]="value" (ngModelChange)="onModelChange($event)" [nzDisabled]="disabled"></nz-date-picker>
+  }
+  @case ('date') {
+  <!--日期-->
+  <nz-date-picker nzAllowClear [ngModel]="value" (ngModelChange)="onModelChange($event)" [nzDisabled]="disabled"></nz-date-picker>
+  }
+  @case ('time') {
+  <!--时间-->
+  <nz-time-picker nzAllowClear [ngModel]="value" (ngModelChange)="onModelChange($event)" [nzDisabled]="disabled"></nz-time-picker>
+  }
+  @default {
+    <p>不支持的类型</p>
+  }
+}
