@@ -339,11 +339,8 @@ func mqttSubscribeDevice() {
 	})
 
 	mqtt.SubscribeStruct[SyncResponse]("device/+/sync/response", func(topic string, resp *SyncResponse) {
-		id := resp.DeviceId
-		if resp.DeviceId == "" {
-			ss := strings.Split(topic, "/")
-			id = ss[1]
-		}
+		ss := strings.Split(topic, "/")
+		id := ss[1]
 		dev := devices.Load(id)
 		if dev == nil {
 			return
@@ -352,11 +349,8 @@ func mqttSubscribeDevice() {
 	})
 
 	mqtt.SubscribeStruct[ReadResponse]("device/+/read/response", func(topic string, resp *ReadResponse) {
-		id := resp.DeviceId
-		if resp.DeviceId == "" {
-			ss := strings.Split(topic, "/")
-			id = ss[1]
-		}
+		ss := strings.Split(topic, "/")
+		id := ss[1]
 		dev := devices.Load(id)
 		if dev == nil {
 			return
@@ -365,11 +359,8 @@ func mqttSubscribeDevice() {
 	})
 
 	mqtt.SubscribeStruct[WriteResponse]("device/+/write/response", func(topic string, resp *WriteResponse) {
-		id := resp.DeviceId
-		if resp.DeviceId == "" {
-			ss := strings.Split(topic, "/")
-			id = ss[1]
-		}
+		ss := strings.Split(topic, "/")
+		id := ss[1]
 		dev := devices.Load(id)
 		if dev == nil {
 			return
@@ -378,11 +369,8 @@ func mqttSubscribeDevice() {
 	})
 
 	mqtt.SubscribeStruct[ActionResponse]("device/+/action/response", func(topic string, resp *ActionResponse) {
-		id := resp.DeviceId
-		if resp.DeviceId == "" {
-			ss := strings.Split(topic, "/")
-			id = ss[1]
-		}
+		ss := strings.Split(topic, "/")
+		id := ss[1]
 		dev := devices.Load(id)
 		if dev == nil {
 			return
