@@ -124,15 +124,17 @@ func (d *Device) waitResponse(msg_id string, timeout int) (any, error) {
 	}
 }
 
-func (d *Device) Sync(timeout int) (map[string]any, error) {
+func (d *Device) Sync(timeout int, child string) (map[string]any, error) {
 	req := SyncRequest{
 		MsgId:    strconv.FormatInt(rand.Int63(), 10),
-		DeviceId: d.Id,
+		DeviceId: child,
 	}
 
-	mqtt.Publish("device/"+d.Id+"/sync", req)
 	if d.GatewayId != "" {
+		req.DeviceId = d.Id
 		mqtt.Publish("device/"+d.GatewayId+"/sync", req)
+	} else {
+		mqtt.Publish("device/"+d.Id+"/sync", req)
 	}
 
 	resp, err := d.waitResponse(req.MsgId, timeout)
@@ -157,15 +159,18 @@ func (d *Device) onSyncResponse(resp *SyncResponse) {
 	}
 }
 
-func (d *Device) Read(points []string, timeout int) (map[string]any, error) {
+func (d *Device) Read(points []string, timeout int, child string) (map[string]any, error) {
 	req := ReadRequest{
 		MsgId:    strconv.FormatInt(rand.Int63(), 10),
-		DeviceId: d.Id,
+		DeviceId: child,
 		Points:   points,
 	}
-	mqtt.Publish("device/"+d.Id+"/read", req)
+
 	if d.GatewayId != "" {
+		req.DeviceId = d.Id
 		mqtt.Publish("device/"+d.GatewayId+"/read", req)
+	} else {
+		mqtt.Publish("device/"+d.Id+"/read", req)
 	}
 
 	resp, err := d.waitResponse(req.MsgId, timeout)
@@ -190,15 +195,17 @@ func (d *Device) onReadResponse(resp *ReadResponse) {
 	}
 }
 
-func (d *Device) Write(values map[string]any, timeout int) (map[string]bool, error) {
+func (d *Device) Write(values map[string]any, timeout int, child string) (map[string]bool, error) {
 	req := WriteRequest{
 		MsgId:    strconv.FormatInt(rand.Int63(), 10),
-		DeviceId: d.Id,
+		DeviceId: child,
 		Values:   values,
 	}
-	mqtt.Publish("device/"+d.Id+"/write", req)
 	if d.GatewayId != "" {
+		req.DeviceId = d.Id
 		mqtt.Publish("device/"+d.GatewayId+"/write", req)
+	} else {
+		mqtt.Publish("device/"+d.Id+"/write", req)
 	}
 
 	resp, err := d.waitResponse(req.MsgId, timeout)
@@ -235,9 +242,11 @@ func (d *Device) Action(action string, parameters map[string]any, timeout int) (
 	mqtt.Publish("device/"+d.Id+"/action/"+action, parameters)
 
 	//发送消息
-	mqtt.Publish("device/"+d.Id+"/action", req)
 	if d.GatewayId != "" {
+		req.DeviceId = d.Id
 		mqtt.Publish("device/"+d.GatewayId+"/action", req)
+	} else {
+		mqtt.Publish("device/"+d.Id+"/action", req)
 	}
 
 	resp, err := d.waitResponse(req.MsgId, timeout)

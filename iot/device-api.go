@@ -15,15 +15,22 @@ import (
 
 func init() {
 
-	//远程操作
+	//状态
 	api.Register("GET", "device/:id/values", deviceValues)
+
+	//远程操作
 	api.Register("GET", "device/:id/sync", deviceSync)
 	api.Register("GET", "device/:id/read", deviceRead)
 	api.Register("POST", "device/:id/write", deviceWrite)
 	api.Register("POST", "device/:id/action/:action", deviceAction)
 	api.Register("GET", "device/:id/error/clear", deviceErrorClear)
 
-	//参数
+	//子设备操作
+	api.Register("GET", "device/:id/sync/:child", deviceSync)
+	api.Register("GET", "device/:id/read/:child", deviceRead)
+	api.Register("POST", "device/:id/write/:child", deviceWrite)
+
+	//参数操作
 	api.Register("GET", "device/:id/setting/:name", deviceSetting)
 	api.Register("POST", "device/:id/setting/:name", deviceSettingUpdate)
 	api.Register("GET", "device/:id/setting/clear", deviceSettingClear) //清空云端配置
@@ -48,7 +55,7 @@ func deviceSync(ctx *gin.Context) {
 		return
 	}
 
-	values, err := d.Sync(60)
+	values, err := d.Sync(60, ctx.Param("child"))
 	if err != nil {
 		api.Error(ctx, err)
 		return
@@ -65,7 +72,7 @@ func deviceRead(ctx *gin.Context) {
 	}
 
 	points := ctx.QueryArray("point")
-	values, err := d.Read(points, 30)
+	values, err := d.Read(points, 30, ctx.Param("child"))
 	if err != nil {
 		api.Error(ctx, err)
 		return
@@ -88,7 +95,7 @@ func deviceWrite(ctx *gin.Context) {
 		return
 	}
 
-	result, err := d.Write(values, 30)
+	result, err := d.Write(values, 30, ctx.Param("child"))
 	if err != nil {
 		api.Error(ctx, err)
 		return

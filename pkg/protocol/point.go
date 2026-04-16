@@ -364,7 +364,7 @@ func (p *PointWord) Parse(address uint16, buf []byte) (any, error) {
 			ret = bin.ParseFloat32(buf[offset:])
 		}
 	case "double", "float64":
-		if len(buf[offset:]) < 4 {
+		if len(buf[offset:]) < 8 {
 			return nil, fmt.Errorf("float64长度不足8:%d", l)
 		}
 		if p.LittleEndian {
