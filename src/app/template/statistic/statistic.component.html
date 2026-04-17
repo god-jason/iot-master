@@ -9,7 +9,7 @@
           <nz-col [nzSpan]="12" [nzMd]="item.span || 8" [nzXs]="24">
             <nz-card>
               <nz-statistic
-                [nzValue]="(data?.[item.key] | number: item.format || '1.0-2')||'-'"
+                [nzValue]="(typeof data?.[item.key] == 'number') ? (data?.[item.key] | number: item.format || '1.0-2') : (data?.[item.key] || '-')"
                 [nzTitle]="item.label"
                 [nzPrefix]="item.prefix"
                 [nzSuffix]="item.suffix"
