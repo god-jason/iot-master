@@ -31,18 +31,13 @@
     ],
     "render_properties": [
       "properties",
-      "properties && properties.map(p=>{ this.content.children.push({span: 24, content:{title:p.name,template:'statistic',  items: this.render_points(p.points)} }) })"
+      "properties && properties.map(p=>{ this.content.children.push({span: 24, content:{title:p.name,template:'info', items: this.render_points(p.points)} }) })"
     ],
     "render_points": [
       "points",
-      "return points && points.map(p=>{return{key:p.name,label:p.label,suffix:p.unit,span:6,action:this.content.value_action}}) "
+      "return points && points.map(p=>{return {key:p.name,label:p.label,suffix:p.unit,action:{type:'dialog',page:'device-history', params:{id:this.params.id, point:p.name} }}}) "
     ],
     "render_values": "this.pageComponent.children.map(p=>{p.componentRef.setInput('data', this.data) })"
-  },
-  "value_action": {
-    "type": "dialog",
-    "page": "device-history",
-    "params_func": "return {id:this.params.id, point:data.key}"
   },
   "children": [
   ]
