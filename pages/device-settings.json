@@ -5,13 +5,23 @@
   "methods": {
     "load_device": "this.request.get('table/device/detail/'+this.params.id).subscribe(res=>{if(res.error)return; this.load_model(res.data.product_id)})",
     "load_model": ["pid","this.request.get('product/'+pid+'/setting/setting').subscribe(res=>{if(res.error)return; res.data.content && this.render_settings(res.data.content); })"],
-    "render_settings": ["settings", "settings && settings.map(p=>{ this.content.children.push({span: 24, params:{id:this.params.id, name:p.name}, content:Object.assign({title:p.label, fields: p.fields}, this.content.setting_content) }) })"]
+    "render_settings": ["settings", "settings && settings.map(p=>{ this.content.children.push({span: 24, params:{id:this.params.id, name:p.name}, content:Object.assign({},this.content.setting_content,{title:p.label,fields: p.fields}) }) })"]
   },
   "children": [],
   "setting_content": {
-    "title": "配置",
+    "title": "配置项",
     "template":"form",
     "load_api": "device/:id/setting/:name",
-    "submit_api": "device/:id/setting/:name"
+    "submit_api": "device/:id/setting/:name",
+    "toolbar": [
+      {
+        "type": "button",
+        "label": "读取",
+        "action": {
+          "type": "script",
+          "script": "this.request.post('device/'+this.params.id+'/action/settings', {operator:'read', name:this.params.name}).subscribe(res=>{if(res.error)return; this.data = res.data})"
+        }
+      }
+    ]
   }
 }
