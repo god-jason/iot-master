@@ -342,49 +342,72 @@ func mqttSubscribeDevice() {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)
-		if dev == nil {
-			return
+		if dev != nil {
+			dev.onSyncResponse(resp)
 		}
-		dev.onSyncResponse(resp)
+
+		if resp.DeviceId != "" && resp.DeviceId != id {
+			dev = devices.Load(resp.DeviceId)
+			if dev != nil {
+				dev.onSyncResponse(resp)
+			}
+		}
 	})
 
 	mqtt.SubscribeStruct[ReadResponse]("device/+/read/response", func(topic string, resp *ReadResponse) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)
-		if dev == nil {
-			return
+		if dev != nil {
+			dev.onReadResponse(resp)
 		}
-		dev.onReadResponse(resp)
+
+		if resp.DeviceId != "" && resp.DeviceId != id {
+			dev = devices.Load(resp.DeviceId)
+			if dev != nil {
+				dev.onReadResponse(resp)
+			}
+		}
 	})
 
 	mqtt.SubscribeStruct[WriteResponse]("device/+/write/response", func(topic string, resp *WriteResponse) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)
-		if dev == nil {
-			return
+		if dev != nil {
+			dev.onWriteResponse(resp)
 		}
-		dev.onWriteResponse(resp)
+
+		if resp.DeviceId != "" && resp.DeviceId != id {
+			dev = devices.Load(resp.DeviceId)
+			if dev != nil {
+				dev.onWriteResponse(resp)
+			}
+		}
 	})
 
 	mqtt.SubscribeStruct[ActionResponse]("device/+/action/response", func(topic string, resp *ActionResponse) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)
-		if dev == nil {
-			return
+		if dev != nil {
+			dev.onActionResponse(resp)
 		}
-		dev.onActionResponse(resp)
+
+		if resp.DeviceId != "" && resp.DeviceId != id {
+			dev = devices.Load(resp.DeviceId)
+			if dev != nil {
+				dev.onActionResponse(resp)
+			}
+		}
 	})
 
 	mqtt.SubscribeStruct[SettingResponse]("device/+/setting/response", func(topic string, resp *SettingResponse) {
 		ss := strings.Split(topic, "/")
 		id := ss[1]
 		dev := devices.Load(id)
-		if dev == nil {
-			return
+		if dev != nil {
+			dev.onSettingResponse(resp)
 		}
-		dev.onSettingResponse(resp)
 	})
 }

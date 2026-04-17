@@ -4,7 +4,7 @@
   "toolbar": [
     {
       "type": "button",
-      "label": "更新数据",
+      "label": "采集数据",
       "action": {
         "type": "script",
         "script": "if(this.device.gateway_id) this.refresh_child_values(); else this.refresh_values();"
@@ -18,8 +18,9 @@
   "mount": "this.load_device(); this.value_action={type:'dialog',page:'device-history',params_func:'return {id:this.params.id, point:data.key}'}",
   "methods": {
     "load_values": "this.request.get('device/'+this.params.id+'/values').subscribe(res=>{if(res.error)return; this.data=res.data; })",
-    "refresh_values": "this.request.get('device/'+this.params.id+'/sync').subscribe(res=>{if(res.error)return; this.load_values()})",
-    "refresh_child_values": "this.request.get('device/'+this.device.gateway_id+'/sync/'+this.params.id).subscribe(res=>{if(res.error)return; this.load_values()})",
+    "load_values_delay": ["delay", "setTimeout(()=>this.load_values(), delay || 1000)"],
+    "refresh_values": "this.request.get('device/'+this.params.id+'/sync').subscribe(res=>{if(res.error)return; this.load_values_delay();})",
+    "refresh_child_values": "this.request.get('device/'+this.device.gateway_id+'/sync/'+this.params.id).subscribe(res=>{if(res.error)return; this.load_values_delay()})",
     "load_device": "this.request.get('table/device/detail/'+this.params.id).subscribe(res=>{if(res.error)return; this.device=res.data; this.load_model(res.data.product_id)})",
     "load_model": ["pid","this.request.get('product/'+pid+'/setting/model').subscribe(res=>{if(res.error)return; res.data.content && this.render_properties(res.data.content); setTimeout(()=>this.render_values(),100); })"],
     "render_properties": ["properties", "properties && properties.map(p=>{ this.content.children.push({span: 24, content:{title:p.name,template:'statistic',  items: this.render_points(p.points)} }) })"],
