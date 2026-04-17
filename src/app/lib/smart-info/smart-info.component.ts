@@ -12,6 +12,7 @@ import {NzAvatarComponent} from 'ng-zorro-antd/avatar';
 export interface SmartInfoItem {
   key: string
   label: string
+  suffix?: string
   type?: string
   format?: string
   span?: number

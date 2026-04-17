@@ -116,6 +116,8 @@ export class SmartToolbarComponent {
       //订阅变化
       if (f.change)
         fs[f.key].valueChanges.subscribe((res: any) => f.change?.(res))
+      if (f.change_action)
+        fs[f.key].valueChanges.subscribe((res: any) => this.action.emit(f.change_action))
     })
     this.group = this.fb.group(fs)
     this.group.valueChanges.subscribe((res: any) => this.change.emit(res))

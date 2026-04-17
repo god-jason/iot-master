@@ -36,6 +36,42 @@
       }
     },
     {
+      "key": "online",
+      "type": "select",
+      "label": "状态",
+      "options": [
+        {
+          "label": "不过滤"
+        },
+        {
+          "label": "在线",
+          "value": 1
+        },
+        {
+          "label": "离线",
+          "value": 0
+        }
+      ],
+      "change_action": {
+        "type": "script",
+        "script": "setTimeout(()=>{this.filter.online=this.toolbar.value.online; this.load()},100)"
+      }
+    },
+    {
+      "key": "product_id",
+      "type": "select",
+      "label": "产品",
+      "options": [
+        {
+          "label": "不过滤"
+        }
+      ],
+      "change_action": {
+        "type": "script",
+        "script": "setTimeout(()=>{this.filter.product_id=this.toolbar.value.product_id; this.load()},100)"
+      }
+    },
+    {
       "key": "keyword",
       "type": "text",
       "placeholder": "请输入关键字"
@@ -143,10 +179,12 @@
     "if(this.params.group_id) this.content.toolbar.push(this.content.bind_group)",
     "if(this.params.group_id) this.content.toolbar.push(this.content.unbind_group)",
     "if(this.params.group_id) this.content.operators.push(this.content.operator_unbind)",
-    "this.get_extend_fields();"
+    "this.get_extend_fields();",
+    "if(!this.params.product_id) this.request.post('table/product/search',{limit:999}).subscribe(res=>{if(res.error)return; this.put_products(res.data) })"
   ],
   "methods": {
-    "get_extend_fields": "this.request.get('device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.columns.push(f)) })"
+    "get_extend_fields": "this.request.get('device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.columns.push(f)) })",
+    "put_products": ["products", "this.content.toolbar[4].options = [{label:'不过滤'}].concat(products.map(p=>{return {value:p.id,label:p.name}}))"]
   },
   "bind": {
     "type": "button",
