@@ -7,18 +7,36 @@
       "type": "select",
       "label": "属性",
       "options": []
-    },{
+    },
+    {
       "key": "value",
       "type": "number",
       "label": "值"
     }
   ],
   "mount": "this.load_device()",
-  "submit": "this.request.post('device/'+this.params.id+'/write', {[data.key]:data.value}).subscribe(res=>{if(res.error)return; })",
+  "submit": "if (this.device.gateway_id) this.set_child_value(data); else this.set_value(data);",
   "methods": {
-    "load_device": "this.request.get('table/device/detail/'+this.params.id).subscribe(res=>{if(res.error)return; this.load_model(res.data.product_id)})",
-    "load_model": ["pid","this.request.get('product/'+pid+'/setting/model').subscribe(res=>{if(res.error)return; this.render_properties(res.data.content) })"],
-    "render_properties": ["properties", "console.log(properties); this.content.fields[0].options=[]; properties.map(p=>this.render_points(p.points) )"],
-    "render_points": ["points", "console.log(points); points.map(p=>{this.content.fields[0].options.push({value:p.name,label:p.label}) }); console.log(this.content.fields[0].options);"]
+    "load_device": "this.request.get('table/device/detail/'+this.params.id).subscribe(res=>{if(res.error)return; this.device=res.data; this.load_model(res.data.product_id)})",
+    "load_model": [
+      "pid",
+      "this.request.get('product/'+pid+'/setting/model').subscribe(res=>{if(res.error)return; this.render_properties(res.data.content) })"
+    ],
+    "render_properties": [
+      "properties",
+      "console.log(properties); this.content.fields[0].options=[]; properties.map(p=>this.render_points(p.points) )"
+    ],
+    "render_points": [
+      "points",
+      "console.log(points); points.map(p=>{this.content.fields[0].options.push({value:p.name,label:p.label}) }); console.log(this.content.fields[0].options);"
+    ],
+    "set_value": [
+      "data",
+      "this.request.post('device/'+this.params.id+'/write', {[data.key]:data.value}).subscribe(res=>{if(res.error)return; })"
+    ],
+    "set_child_value": [
+      "data",
+      "this.request.post('device/'+this.device.gateway_id+'/write/'+this.params.id, {[data.key]:data.value}).subscribe(res=>{if(res.error)return; })"
+    ]
   }
 }

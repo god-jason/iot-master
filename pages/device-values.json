@@ -37,7 +37,7 @@
       "points",
       "return points && points.map(p=>{return {key:p.name,label:p.label,suffix:p.unit,action:{type:'dialog',page:'device-history', params:{id:this.params.id, point:p.name} }}}) "
     ],
-    "render_values": "this.pageComponent.children.map(p=>{p.componentRef.setInput('data', this.data) })"
+    "render_values": "this.pageComponent.children.map(p=>{p.componentRef.setInput('data', this.data || {}) })"
   },
   "children": [
   ]

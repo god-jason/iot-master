@@ -48,7 +48,11 @@
     {
       "key": "gateway_id",
       "label": "网关ID",
-      "type": "text"
+      "action": {
+        "type": "page",
+        "page":"gateway-detail",
+        "params_func": "return {id: data.gateway_id}"
+      }
     },
     {
       "key": "link_id",
