@@ -60,7 +60,6 @@
   ],
   "load_api": "table/inline/detail/:id/:gateway_id",
   "submit_api": "table/inline/update/:id/:gateway_id",
-  "submit_success": "this.navigate('/page/gateway-detail?id='+this.params.gateway_id)",
   "mount": "this.get_extend_fields()",
   "methods": {
     "get_extend_fields": "this.request.get('device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.fields.push(f)) })"

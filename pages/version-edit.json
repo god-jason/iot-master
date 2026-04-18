@@ -42,6 +42,5 @@
   ],
   "load_api": "table/version/detail/:id",
   "submit_api": "table/version/update/:id",
-  "submit_success": "this.navigate('/page/product-detail?id='+this.data.product_id)",
   "methods": {}
 }

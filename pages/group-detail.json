@@ -7,9 +7,10 @@
       "type": "button",
       "label": "编辑",
       "action": {
-        "type": "page",
+        "type": "dialog",
         "page":"group-edit",
-        "params_func": "return {id: data.id}"
+        "params_func": "return {id: data.id}",
+        "after_close": "this.load()"
       }
     },
     {

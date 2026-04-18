@@ -60,7 +60,6 @@
     }
   ],
   "submit_api": "table/inline/create",
-  "submit_success": "this.navigate('/page/gateway-detail?id='+this.params.gateway_id)",
   "mounts": [
     "this.data.product_id=this.params.product_id;",
     "this.data.gateway_id=this.params.gateway_id;",

@@ -8,9 +8,10 @@
       "type": "button",
       "admin": true,
       "action": {
-        "type": "page",
+        "type": "dialog",
         "page": "device-create",
-        "params_func": "return {product_id: this.params.product_id, group_id: this.params.group_id, gateway_id: this.params.gateway_id}"
+        "params_func": "return {product_id: this.params.product_id, group_id: this.params.group_id, gateway_id: this.params.gateway_id}",
+        "after_close": "this.load()"
       }
     },
     {
@@ -101,9 +102,10 @@
     {
       "icon": "edit",
       "action": {
-        "type": "page",
+        "type": "dialog",
         "page": "device-edit",
-        "params_func": "return {id: data.id}"
+        "params_func": "return {id: data.id}",
+        "after_close": "this.load()"
       }
     },
     {

@@ -40,6 +40,5 @@
     }
   ],
   "submit_api": "table/binding/create",
-  "submit_success": "this.navigate('/page/gateway-detail?id='+this.data.gateway_id)",
   "mount": "this.data.gateway_id=this.params.gateway_id;"
 }

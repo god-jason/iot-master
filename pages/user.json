@@ -7,8 +7,9 @@
       "icon": "plus",
       "type": "button",
       "action": {
-        "type": "page",
-        "page":"user-create"
+        "type": "dialog",
+        "page":"user-create",
+        "after_close": "this.load()"
       }
     },
     {
@@ -35,9 +36,10 @@
       "icon": "edit",
       "title": "编辑",
       "action": {
-        "type": "page",
+        "type": "dialog",
         "page":"user-edit",
-        "params_func": "return {id: data.id}"
+        "params_func": "return {id: data.id}",
+        "after_close": "this.load()"
       }
     },
     {

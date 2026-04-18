@@ -255,6 +255,5 @@
     }
   ],
   "load_api": "table/scene/detail/:id",
-  "submit_api": "table/scene/update/:id",
-  "submit_success": "this.navigate('/page/gateway-detail?id='+this.data.gateway_id)"
+  "submit_api": "table/scene/update/:id"
 }

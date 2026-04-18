@@ -145,7 +145,6 @@
   ],
   "load_api": "table/serial/detail/:id/:gateway_id",
   "submit_api": "table/serial/update/:id/:gateway_id",
-  "submit_success": "this.navigate('/page/gateway-detail?id='+this.params.gateway_id)",
   "mount": "this.load_protocols();",
   "methods": {
     "load_protocols": "this.request.get('protocol/list').subscribe(res=>{this.content.fields[9].options=[{value:'',label:'无'}].concat(res.data.map(d=>{return {value:d.name,label:d.description}})); setTimeout(()=>this.load_protocol_option(), 1000);  })",

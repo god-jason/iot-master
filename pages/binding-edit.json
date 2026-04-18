@@ -40,6 +40,5 @@
     }
   ],
   "load_api": "table/binding/detail/:id",
-  "submit_api": "table/binding/update/:id",
-  "submit_success": "this.navigate('/page/gateway-detail?id='+this.data.gateway_id)"
+  "submit_api": "table/binding/update/:id"
 }

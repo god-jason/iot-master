@@ -47,7 +47,6 @@
     }
   ],
   "submit_api": "table/version/create",
-  "submit_success": "this.navigate('/page/product-detail?id='+this.data.product_id)",
   "mount": "this.data.product_id=this.params.product_id; ",
   "methods": {
   }

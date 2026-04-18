@@ -47,7 +47,6 @@
     }
   ],
   "submit_api": "table/user/create",
-  "submit_success": "this.navigate('/page/user')",
   "methods": {
    }
 }
