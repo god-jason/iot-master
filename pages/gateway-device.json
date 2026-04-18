@@ -68,8 +68,9 @@
     {
       "icon": "eye",
       "action": {
-        "type": "script",
-        "script": "this.navigate('/page/'+(data.gateway_id?'device':'gateway')+'-detail?id='+data.id)"
+        "type": "dialog",
+        "page": "device-detail",
+        "params_func": "return {id: data.id}"
       }
     },
     {
