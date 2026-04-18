@@ -99,8 +99,9 @@
       "label": "ID",
       "action": {
         "type": "script",
-        "script": "this.navigate('/page/'+(data.gateway_id?'device':'gateway')+'-detail?id='+data.id)"
-      }
+        "script": "this.navigate('/page/device-detail?id='+data.id)"
+      },
+      "sortable": true
     },
     {
       "key": "product_id",
@@ -109,11 +110,13 @@
         "type": "page",
         "page": "product-detail",
         "params_func": "return {id: data.product_id}"
-      }
+      },
+      "sortable": true
     },
     {
       "key": "name",
-      "label": "名称"
+      "label": "名称",
+      "sortable": true
     },
     {
       "key": "description",
@@ -122,7 +125,8 @@
     {
       "key": "online",
       "label": "在线",
-      "type": "boolean"
+      "type": "boolean",
+      "sortable": true
     },
     {
       "key": "error_string",
@@ -136,7 +140,8 @@
     {
       "key": "created",
       "label": "日期",
-      "type": "date"
+      "type": "date",
+      "sortable": true
     }
   ],
   "search_api": "table/device/search",
