@@ -23,8 +23,9 @@ func init() {
 			return
 		}
 
-		//兼容uni-app uni-select组件
+		//兼容uni-app uni-select nz-select组件
 		for _, row := range rows {
+			row["label"] = row["name"]
 			row["text"] = row["name"]
 			row["value"] = row["url"]
 		}

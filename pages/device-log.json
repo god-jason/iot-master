@@ -23,7 +23,8 @@
     {
       "key": "id",
       "label": "ID",
-      "sortable": true
+      "sortable": true,
+      "sort": -1
     },
     {
       "key": "device_id",

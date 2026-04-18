@@ -40,6 +40,7 @@ export interface SmartTableColumn {
   format?: string
   keyword?: boolean
   sortable?: boolean
+  sort?: 1|-1
   filter?: NzTableFilterList
   date?: boolean
   ellipsis?: boolean

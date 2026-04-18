@@ -29,6 +29,7 @@
       <th
         [nzColumnKey]="item.key"
         [nzShowSort]="item.sortable"
+        [nzSortOrder]="(item.sort==1)&&'ascend' || (item.sort==-1)&&'descend' || null"
         [nzSortFn]="true"
         [nzShowFilter]="!!item.filter"
         [nzFilterFn]="true"

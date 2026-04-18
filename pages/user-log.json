@@ -4,7 +4,9 @@
   "columns": [
     {
       "key": "id",
-      "label": "ID"
+      "label": "ID",
+      "sortable": true,
+      "sort": -1
     },
     {
       "key": "name",

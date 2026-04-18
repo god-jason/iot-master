@@ -57,12 +57,8 @@
     {
       "key": "id",
       "label": "ID",
-      "action": {
-        "type": "page",
-        "page": "version-detail",
-        "params_func": "return {id: data.id}"
-      },
-      "sortable": true
+      "sortable": true,
+      "sort": -1
     },
     {
       "key": "product_id",
