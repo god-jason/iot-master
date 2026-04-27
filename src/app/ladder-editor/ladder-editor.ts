@@ -17,6 +17,12 @@ import {genLua} from '../lib/plc/lua';
 })
 export class LadderEditor {
   st = `
+(*
+ 这是
+ 多行
+ 注释2
+*)
+
  VAR
     a : INT;
     b : INT;
@@ -25,10 +31,12 @@ export class LadderEditor {
     counter : INT;
 END_VAR
 
+
 a := 10;
 b := 20;
 c := a + b * 2;
 
+// 这是注释3
 flag := TRUE;
 
 IF a > b THEN

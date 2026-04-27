@@ -6,7 +6,8 @@ import {
   WhileNode,
   ForNode,
   Call,
-  Expr
+  Expr,
+  CommentNode
 } from "./ast";
 
 /**
@@ -77,6 +78,20 @@ function genStmt(node: AST, level: number): string {
   const pad = indent(level);
 
   switch (node.type) {
+
+    case "Comment": {
+      const n = node as CommentNode;
+
+      // IEC / ST 注释风格 → Lua 注释
+      const v = String(n.value || "").trim();
+
+      if (n.kind == "line")
+        return `${pad}-- ${v}`;
+      if (n.kind == "block")
+        return `--[[\n${v}\n--]]`;
+
+      return `${pad}-- ${v}`;
+    }
 
     case "Assign": {
       const n = node as Assign;
@@ -200,12 +215,5 @@ function genStmt(node: AST, level: number): string {
  * =========================================================
  */
 export function genLua(ast: AST): string {
-  return `-- ======================================
--- IEC 61131-3 -> Lua (Generated)
--- ======================================
-
-function PLC(env)
-${genStmt(ast, 1)}
-end
-`;
+  return genStmt(ast, 0)
 }

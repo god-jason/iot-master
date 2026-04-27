@@ -1,7 +1,6 @@
-export type Token = {
-  type: "id" | "num" | "str" | "kw" | "op" | "time";
-  value: string | number;
-};
+export type Token =
+  | { type: "id" | "num" | "str" | "kw" | "op" | "time"; value: string | number }
+  | { type: "comment"; value: string, kind: "line" | "block" };
 
 export function lexer(input: string): Token[] {
   const tokens: Token[] = [];
@@ -24,6 +23,38 @@ export function lexer(input: string): Token[] {
 
   while (i < input.length) {
     let c = input[i];
+
+    // =========================
+    // 1. 单行注释 //
+    // =========================
+    if (c === "/" && input[i + 1] === "/") {
+      i += 2;
+      let v = "";
+      while (i < input.length && input[i] !== "\n") {
+        v += input[i++];
+      }
+      tokens.push({type: "comment", value: v.trim(), kind: "line"});
+      continue;
+    }
+
+    // =========================
+    // 2. 多行注释 (* *)
+    // =========================
+    if (c === "(" && input[i + 1] === "*") {
+      i += 2;
+      let v = "";
+
+      while (i < input.length) {
+        if (input[i] === "*" && input[i + 1] === ")") {
+          i += 2;
+          break;
+        }
+        v += input[i++];
+      }
+
+      tokens.push({type: "comment", value: v.trim(), kind: "block"});
+      continue;
+    }
 
     // =====================
     // space
@@ -88,7 +119,7 @@ export function lexer(input: string): Token[] {
     }
 
     // =====================
-    // time (T#10s)
+    // time
     // =====================
     if (c === "T" && input[i + 1] === "#") {
       let v = "";
@@ -119,7 +150,7 @@ export function lexer(input: string): Token[] {
     }
 
     // =====================
-    // OPERATORS (IMPORTANT FIX)
+    // operators
     // =====================
     const twoCharOps = ["<=", ">=", "<>", ":="];
     const oneCharOps = ["+", "-", "*", "/", "=", "<", ">", "(", ")", ",", ";", ":"];
@@ -133,13 +164,12 @@ export function lexer(input: string): Token[] {
     }
 
     if (oneCharOps.includes(c)) {
-      if (c == "=") c = "=="
+      if (c === "=") c = "==";
       tokens.push({type: "op", value: c});
       i++;
       continue;
     }
 
-    // fallback
     i++;
   }
 

@@ -336,6 +336,16 @@ export function parser(tokens: Token[]): Program {
     const t = peek();
     if (!t) return undefined;
 
+    //注释节点
+    if (t.type === "comment") {
+      next();
+      return {
+        type: "Comment",
+        value: t.value as string,
+        kind: t.kind
+      };
+    }
+
     if (is(t, "IF")) return parseIf();
     if (is(t, "CASE")) return parseCase();
     if (is(t, "WHILE")) return parseWhile();

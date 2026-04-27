@@ -1,9 +1,27 @@
-
 /**
  * =========================================================
  * IEC 61131-3 AST (Industrial IR Layer)
  * =========================================================
  */
+
+/**
+ * =========================
+ * Comment Node (NEW)
+ * =========================
+ */
+export type CommentNode = {
+  type: "Comment";
+
+  /**
+   * 注释内容（不含 // 或 (* *))
+   */
+  value: string;
+
+  /**
+   * 注释类型
+   */
+  kind?: "line" | "block";
+};
 
 /**
  * =========================
@@ -19,7 +37,6 @@ export type Expr =
   | BinExpr
   | CallExpr
   | UnaryExpr;
-
 
 export type NumExpr = {
   type: "num";
@@ -41,7 +58,7 @@ export type StringExpr = {
  */
 export type TimeExpr = {
   type: "time";
-  value: string; // raw IEC format
+  value: string;
 };
 
 export type VarExpr = {
@@ -51,7 +68,6 @@ export type VarExpr = {
 
 /**
  * Binary expressions (IEC核心)
- * + - * / = <> > < >= <= AND OR
  */
 export type BinExpr = {
   type: "bin";
@@ -69,6 +85,9 @@ export type UnaryExpr = {
   value: Expr;
 };
 
+/**
+ * Function call expression
+ */
 export type CallExpr = {
   type: "call";
   name: string;
@@ -77,7 +96,7 @@ export type CallExpr = {
 
 /**
  * =========================
- * Statements
+ * Statements (AST)
  * =========================
  */
 export type AST =
@@ -89,7 +108,8 @@ export type AST =
   | ForNode
   | Call
   | FunctionDecl
-  | FunctionBlockDecl;
+  | FunctionBlockDecl
+  | CommentNode;
 
 /**
  * =========================
@@ -134,7 +154,7 @@ export type IfNode = {
 
 /**
  * =========================
- * CASE (IEC-style)
+ * CASE
  * =========================
  */
 export type CaseNode = {
@@ -143,7 +163,7 @@ export type CaseNode = {
   expr: Expr;
 
   branches: {
-    value: Expr; // IEC supports expressions, not only string
+    value: Expr;
     body: AST[];
   }[];
 
@@ -182,7 +202,7 @@ export type ForNode = {
 
 /**
  * =========================
- * FUNCTION CALL
+ * FUNCTION CALL (statement)
  * =========================
  */
 export type Call = {
@@ -199,9 +219,7 @@ export type Call = {
 export type Variable = {
   name: string;
   dataType?: string;
-
   init?: any;
-
   retain?: boolean;
 };
 
@@ -224,7 +242,7 @@ export type FunctionDecl = {
 
 /**
  * =========================
- * FUNCTION_BLOCK (核心)
+ * FUNCTION_BLOCK
  * =========================
  */
 export type FunctionBlockDecl = {
