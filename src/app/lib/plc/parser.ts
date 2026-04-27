@@ -7,12 +7,22 @@ import {
   Expr,
   Call,
   WhileNode,
-  ForNode
+  ForNode,
+  CommentNode,
+  VarDecl,
+  FunctionDecl,
+  FunctionBlockDecl
 } from "./ast";
 
 import { Token } from "./lexer";
 
+/**
+ * =========================================================
+ * Parser (Final IEC 61131-3 ST Parser)
+ * =========================================================
+ */
 export function parser(tokens: Token[]): Program {
+
   const iRef = { i: 0 };
 
   const peek = () => tokens[iRef.i];
@@ -33,40 +43,31 @@ export function parser(tokens: Token[]): Program {
     "/": 5,
   };
 
+  /**
+   * =========================================================
+   * Expression Parser
+   * =========================================================
+   */
   function parseExpr(minPrec = 0): Expr {
 
-    function parsePrimary(): Expr {
+    function primary(): Expr {
       const t = next();
       if (!t) return { type: "num", value: 0 };
 
-      // number
-      if (t.type === "num") {
-        return { type: "num", value: t.value as number };
-      }
+      if (t.type === "num") return { type: "num", value: t.value as number };
+      if (t.type === "str") return { type: "str", value: t.value as string };
 
-      // string
-      if (t.type === "str") {
-        return { type: "str", value: t.value as string };
-      }
-
-      // keyword
       if (t.type === "kw") {
-        const name = t.value as string;
-        // TRUE / FALSE
-        if (name === "TRUE") return { type: "bool", value: true };
-        if (name === "FALSE") return { type: "bool", value: false };
+        if (t.value === "TRUE") return { type: "bool", value: true };
+        if (t.value === "FALSE") return { type: "bool", value: false };
       }
 
-      // variable or function call
       if (t.type === "id") {
-
         const name = t.value as string;
 
-        // 🔥 LOOKAHEAD: function call
+        // function call
         if (peek()?.value === "(") {
-
-          next(); // consume "("
-
+          next(); // (
           const args: Expr[] = [];
 
           while (peek() && peek().value !== ")") {
@@ -74,13 +75,8 @@ export function parser(tokens: Token[]): Program {
             if (peek()?.value === ",") next();
           }
 
-          next(); // ")"
-
-          return {
-            type: "call",
-            name,
-            args
-          };
+          next(); // )
+          return { type: "call", name, args };
         }
 
         return { type: "var", name };
@@ -89,7 +85,7 @@ export function parser(tokens: Token[]): Program {
       return { type: "num", value: 0 };
     }
 
-    let left = parsePrimary();
+    let left = primary();
 
     while (true) {
       const t = peek();
@@ -108,16 +104,18 @@ export function parser(tokens: Token[]): Program {
         type: "bin",
         op,
         left,
-        right,
+        right
       } as any;
     }
 
     return left;
   }
 
-  // =========================
-  // assign
-  // =========================
+  /**
+   * =========================================================
+   * Assignment
+   * =========================================================
+   */
   function parseAssign(): Assign {
     const left = next().value as string;
     next(); // :=
@@ -125,22 +123,24 @@ export function parser(tokens: Token[]): Program {
     return {
       type: "Assign",
       left,
-      right: parseExpr(),
+      right: parseExpr()
     };
   }
 
-  // =========================
-  // call
-  // =========================
+  /**
+   * =========================================================
+   * Call statement
+   * =========================================================
+   */
   function parseCall(): Call {
     const name = next().value as string;
     next(); // (
 
     const args: Expr[] = [];
 
-    while (peek() && !is(peek(), ")")) {
+    while (peek() && peek().value !== ")") {
       args.push(parseExpr());
-      if (is(peek(), ",")) next();
+      if (peek()?.value === ",") next();
     }
 
     next(); // )
@@ -148,9 +148,27 @@ export function parser(tokens: Token[]): Program {
     return { type: "Call", name, args };
   }
 
-  // =========================
-  // IF
-  // =========================
+  /**
+   * =========================================================
+   * COMMENT
+   * =========================================================
+   */
+  function parseComment(): CommentNode|undefined {
+    const t = next();
+    if (t.type == "comment")
+      return {
+        type: "Comment",
+        kind: t.kind,
+        value: t.value
+      };
+    return undefined
+  }
+
+  /**
+   * =========================================================
+   * IF
+   * =========================================================
+   */
   function parseIf(): IfNode {
     next(); // IF
     const cond = parseExpr();
@@ -168,6 +186,7 @@ export function parser(tokens: Token[]): Program {
         next(); // THEN
 
         const body: AST[] = [];
+
         while (peek() && !["ELSIF", "ELSE", "END_IF"].includes(peek().value as string)) {
           const s = parseStmt();
           if (s) body.push(s);
@@ -199,16 +218,17 @@ export function parser(tokens: Token[]): Program {
       cond,
       then,
       elseif: elseif.length ? elseif : undefined,
-      else: elseBody,
+      else: elseBody
     };
   }
 
-  // =========================
-  // WHILE  🔥新增
-  // =========================
+  /**
+   * =========================================================
+   * WHILE
+   * =========================================================
+   */
   function parseWhile(): WhileNode {
-    next(); // WHILE
-
+    next();
     const cond = parseExpr();
     next(); // DO
 
@@ -219,24 +239,23 @@ export function parser(tokens: Token[]): Program {
       if (s) body.push(s);
     }
 
-    next(); // END_WHILE
-
+    next();
     return { type: "While", cond, body };
   }
 
-  // =========================
-  // FOR 🔥新增
-  // =========================
+  /**
+   * =========================================================
+   * FOR
+   * =========================================================
+   */
   function parseFor(): ForNode {
-    next(); // FOR
+    next();
 
     const v = next().value as string;
     next(); // :=
 
     const from = parseExpr();
-
     next(); // TO
-
     const to = parseExpr();
 
     let step: Expr | undefined;
@@ -257,61 +276,42 @@ export function parser(tokens: Token[]): Program {
 
     next();
 
-    return {
-      type: "For",
-      v,
-      from,
-      to,
-      step,
-      body,
-    };
+    return { type: "For", v, from, to, step, body };
   }
 
-
+  /**
+   * =========================================================
+   * CASE (FIXED multi-branch)
+   * =========================================================
+   */
   function parseCase(): CaseNode {
     next(); // CASE
 
     const expr = parseExpr();
-
     next(); // OF
 
-    const branches: { value: Expr; body: AST[] }[] = [];
+    const branches: any[] = [];
 
     while (peek() && peek().value !== "END_CASE") {
 
-      // =========================
-      // 1. CASE VALUE
-      // =========================
       const value = parseExpr();
 
-      // skip ':'
       if (peek()?.value === ":") next();
 
       const body: AST[] = [];
 
-      // =========================
-      // 2. BODY
-      // stop when:
-      // - next case value
-      // - END_CASE
-      // =========================
       while (peek()) {
 
         const t = peek();
-
         if (!t) break;
 
-        // END_CASE
         if (t.value === "END_CASE") break;
 
-        // 🔥 new case branch start detection
-        // (num/str/id + next ':')
+        // new branch detection
         if (
           (t.type === "num" || t.type === "str" || t.type === "id") &&
           tokens[iRef.i + 1]?.value === ":"
-        ) {
-          break;
-        }
+        ) break;
 
         const s = parseStmt();
         if (s) body.push(s);
@@ -322,34 +322,124 @@ export function parser(tokens: Token[]): Program {
 
     next(); // END_CASE
 
+    return { type: "Case", expr, branches };
+  }
+
+  /**
+   * =========================================================
+   * VAR DECL (minimal)
+   * =========================================================
+   */
+  function parseVarDecl(scope: any): VarDecl {
+    next(); // VAR_xxx
+
+    const vars: any[] = [];
+
+    while (peek() && peek().value !== "END_VAR") {
+
+      const name = next().value as string;
+      next(); // :
+
+      const dataType = next().value as string;
+
+      let init;
+
+      if (peek()?.value === ":=") {
+        next();
+        init = parseExpr();
+      }
+
+      if (peek()?.value === ";") next();
+
+      vars.push({ name, dataType, init });
+    }
+
+    next(); // END_VAR
+
     return {
-      type: "Case",
-      expr,
-      branches,
+      type: "VarDecl",
+      scope,
+      vars
     };
   }
 
-  // =========================
-  // stmt dispatcher（关键修复点）
-  // =========================
+  /**
+   * =========================================================
+   * FUNCTION / FB (minimal skeleton)
+   * =========================================================
+   */
+  function parseFunction(): FunctionDecl {
+    next();
+    const name = next().value as string;
+
+    const body: AST[] = [];
+
+    while (peek() && peek().value !== "END_FUNCTION") {
+      const s = parseStmt();
+      if (s) body.push(s);
+    }
+
+    next();
+
+    return {
+      type: "Function",
+      name,
+      params: [],
+      body
+    };
+  }
+
+  function parseFB(): FunctionBlockDecl {
+    next();
+    const name = next().value as string;
+
+    const vars = {
+      input: [],
+      output: [],
+      inout: [],
+      local: [],
+      temp: []
+    };
+
+    const body: AST[] = [];
+
+    while (peek() && peek().value !== "END_FUNCTION_BLOCK") {
+      const s = parseStmt();
+      if (s) body.push(s);
+    }
+
+    next();
+
+    return {
+      type: "FunctionBlock",
+      name,
+      vars,
+      body
+    };
+  }
+
+  /**
+   * =========================================================
+   * STMT DISPATCHER (CORE FIX POINT)
+   * =========================================================
+   */
   function parseStmt(): AST | undefined {
     const t = peek();
-    if (!t) return undefined;
+    if (!t) return;
 
-    //注释节点
-    if (t.type === "comment") {
-      next();
-      return {
-        type: "Comment",
-        value: t.value as string,
-        kind: t.kind
-      };
-    }
+    if (t.type === "comment") return parseComment();
 
     if (is(t, "IF")) return parseIf();
     if (is(t, "CASE")) return parseCase();
     if (is(t, "WHILE")) return parseWhile();
     if (is(t, "FOR")) return parseFor();
+
+    if (is(t, "FUNCTION")) return parseFunction();
+    if (is(t, "FUNCTION_BLOCK")) return parseFB();
+
+    if (t.type === "kw" && (t.value as string).startsWith("VAR")) {
+      return parseVarDecl(t.value);
+    }
 
     if (t.type === "id" && tokens[iRef.i + 1]?.value === ":=") {
       return parseAssign();
@@ -359,14 +449,15 @@ export function parser(tokens: Token[]): Program {
       return parseCall();
     }
 
-    // ⚠️必须 consume，否则死循环
-    next();
-    return undefined;
+    next(); // prevent infinite loop
+    return;
   }
 
-  // =========================
-  // program
-  // =========================
+  /**
+   * =========================================================
+   * PROGRAM
+   * =========================================================
+   */
   const body: AST[] = [];
 
   while (iRef.i < tokens.length) {
