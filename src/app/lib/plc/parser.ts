@@ -5,15 +5,12 @@ import {
   IfNode,
   CaseNode,
   Expr,
-  Call
+  Call,
+  WhileNode,
+  ForNode
 } from "./ast";
-import { Token } from './lexer';
 
-/**
- * =========================================================
- * 工业级 IEC 61131-3 Parser
- * =========================================================
- */
+import { Token } from "./lexer";
 
 export function parser(tokens: Token[]): Program {
   const iRef = { i: 0 };
@@ -23,11 +20,6 @@ export function parser(tokens: Token[]): Program {
 
   const is = (t: any, v: string) => t && t.value === v;
 
-  /**
-   * =========================================================
-   * 运算符优先级（IEC标准）
-   * =========================================================
-   */
   const PREC: Record<string, number> = {
     OR: 1,
     AND: 2,
@@ -41,27 +33,16 @@ export function parser(tokens: Token[]): Program {
     "/": 5,
   };
 
-  /**
-   * =========================================================
-   * 表达式解析（核心）
-   * =========================================================
-   */
+  // =========================
+  // expr
+  // =========================
   function parseExpr(minPrec = 0): Expr {
-    function parsePrimary(): Expr {
+    function primary(): Expr {
       const t = next();
-
       if (!t) return { type: "num", value: 0 };
 
-      /**
-       * number
-       */
-      if (t.type === "num") {
-        return { type: "num", value: t.value as number };
-      }
+      if (t.type === "num") return { type: "num", value: t.value as number };
 
-      /**
-       * identifier
-       */
       if (t.type === "id") {
         const v = t.value as string;
         if (v === "TRUE") return { type: "bool", value: true };
@@ -72,7 +53,7 @@ export function parser(tokens: Token[]): Program {
       return { type: "num", value: 0 };
     }
 
-    let left = parsePrimary();
+    let left = primary();
 
     while (true) {
       const t = peek();
@@ -83,7 +64,7 @@ export function parser(tokens: Token[]): Program {
 
       if (prec === undefined || prec < minPrec) break;
 
-      next(); // consume op
+      next();
 
       const right = parseExpr(prec + 1);
 
@@ -92,104 +73,87 @@ export function parser(tokens: Token[]): Program {
         op,
         left,
         right,
-      };
+      } as any;
     }
 
     return left;
   }
 
-  /**
-   * =========================================================
-   * CASE 解析
-   * =========================================================
-   */
-  function parseCase(): CaseNode {
-    next(); // Skip "CASE"
-
-    const expr = parseExpr(); // Parse the expression after CASE
-
-    next(); // Skip "OF"
-
-    const branches: { value: Expr; body: AST[] }[] = [];
-
-    while (peek() && (peek().type !== "kw" || peek().value !== "END_CASE")) {
-      const value = parseExpr(); // Parse the branch value
-
-      next(); // Skip ":"
-
-      const body: AST[] = [];
-      while (peek() && peek().value !== "OF" && peek().value !== "END_CASE") {
-        let st = parseStmt()
-        st && body.push(st);
-      }
-
-      branches.push({
-        value,
-        body,
-      });
-
-      if (peek() && peek().value === "OF") {
-        next(); // Skip the next `OF`
-      }
-    }
-
-    next(); // Skip END_CASE
+  // =========================
+  // assign
+  // =========================
+  function parseAssign(): Assign {
+    const left = next().value as string;
+    next(); // :=
 
     return {
-      type: "Case",
-      expr,
-      branches,
+      type: "Assign",
+      left,
+      right: parseExpr(),
     };
   }
 
-  /**
-   * =========================================================
-   * IF / ELSIF / ELSE
-   * =========================================================
-   */
+  // =========================
+  // call
+  // =========================
+  function parseCall(): Call {
+    const name = next().value as string;
+    next(); // (
+
+    const args: Expr[] = [];
+
+    while (peek() && !is(peek(), ")")) {
+      args.push(parseExpr());
+      if (is(peek(), ",")) next();
+    }
+
+    next(); // )
+
+    return { type: "Call", name, args };
+  }
+
+  // =========================
+  // IF
+  // =========================
   function parseIf(): IfNode {
     next(); // IF
-
     const cond = parseExpr();
-
     next(); // THEN
 
     const then: AST[] = [];
     const elseif: any[] = [];
     let elseBody: AST[] | undefined;
 
-    while (peek() && peek().value !== "END_IF") {
-      /**
-       * ELSIF
-       */
+    while (peek() && !is(peek(), "END_IF")) {
+
       if (is(peek(), "ELSIF")) {
         next();
         const c = parseExpr();
         next(); // THEN
+
         const body: AST[] = [];
-        while (peek() && peek().value !== "ELSIF" && peek().value !== "ELSE" && peek().value !== "END_IF") {
-          let st = parseStmt()
-          st && body.push(st);
+        while (peek() && !["ELSIF", "ELSE", "END_IF"].includes(peek().value as string)) {
+          const s = parseStmt();
+          if (s) body.push(s);
         }
+
         elseif.push({ cond: c, body });
         continue;
       }
 
-      /**
-       * ELSE
-       */
       if (is(peek(), "ELSE")) {
         next();
         elseBody = [];
-        while (peek() && peek().value !== "END_IF") {
-          let st = parseStmt()
-          st && elseBody.push(st);
+
+        while (peek() && !is(peek(), "END_IF")) {
+          const s = parseStmt();
+          if (s) elseBody.push(s);
         }
         break;
       }
 
-      let st = parseStmt()
-      st && then.push(st);
+      const s = parseStmt();
+      if (s) then.push(s);
     }
 
     next(); // END_IF
@@ -203,99 +167,133 @@ export function parser(tokens: Token[]): Program {
     };
   }
 
-  /**
-   * =========================================================
-   * 语句解析
-   * =========================================================
-   */
-  function parseStmt(): AST|undefined {
+  // =========================
+  // WHILE  🔥新增
+  // =========================
+  function parseWhile(): WhileNode {
+    next(); // WHILE
+
+    const cond = parseExpr();
+    next(); // DO
+
+    const body: AST[] = [];
+
+    while (peek() && !is(peek(), "END_WHILE")) {
+      const s = parseStmt();
+      if (s) body.push(s);
+    }
+
+    next(); // END_WHILE
+
+    return { type: "While", cond, body };
+  }
+
+  // =========================
+  // FOR 🔥新增
+  // =========================
+  function parseFor(): ForNode {
+    next(); // FOR
+
+    const v = next().value as string;
+    next(); // :=
+
+    const from = parseExpr();
+
+    next(); // TO
+
+    const to = parseExpr();
+
+    let step: Expr | undefined;
+
+    if (is(peek(), "BY")) {
+      next();
+      step = parseExpr();
+    }
+
+    next(); // DO
+
+    const body: AST[] = [];
+
+    while (peek() && !is(peek(), "END_FOR")) {
+      const s = parseStmt();
+      if (s) body.push(s);
+    }
+
+    next();
+
+    return {
+      type: "For",
+      v,
+      from,
+      to,
+      step,
+      body,
+    };
+  }
+
+  // =========================
+  // CASE（简化稳定版）
+  // =========================
+  function parseCase(): CaseNode {
+    next(); // CASE
+    const expr = parseExpr();
+    next(); // OF
+
+    const branches: any[] = [];
+
+    while (peek() && !is(peek(), "END_CASE")) {
+      const value = parseExpr();
+      next(); // :
+
+      const body: AST[] = [];
+
+      while (peek() && !["END_CASE"].includes(peek().value as string)) {
+        const s = parseStmt();
+        if (s) body.push(s);
+      }
+
+      branches.push({ value, body });
+    }
+
+    next(); // END_CASE
+
+    return { type: "Case", expr, branches };
+  }
+
+  // =========================
+  // stmt dispatcher（关键修复点）
+  // =========================
+  function parseStmt(): AST | undefined {
     const t = peek();
-    if (!t) return { type: "Program", body: [] };
+    if (!t) return undefined;
 
-    /**
-     * IF
-     */
     if (is(t, "IF")) return parseIf();
-
-    /**
-     * CASE
-     */
     if (is(t, "CASE")) return parseCase();
+    if (is(t, "WHILE")) return parseWhile();
+    if (is(t, "FOR")) return parseFor();
 
-    /**
-     * ASSIGN
-     */
-    if (t.type === "id" && tokens[iRef.i + 1]?.value === ":" && tokens[iRef.i + 2]?.value === "=") {
+    if (t.type === "id" && tokens[iRef.i + 1]?.value === ":=") {
       return parseAssign();
     }
 
-    /**
-     * CALL
-     */
     if (t.type === "id" && tokens[iRef.i + 1]?.value === "(") {
       return parseCall();
     }
 
-    /**
-     * fallback
-     */
+    // ⚠️必须 consume，否则死循环
     next();
-
-    return undefined
+    return undefined;
   }
 
-  /**
-   * =========================================================
-   * ASSIGN 解析
-   * =========================================================
-   */
-  function parseAssign(): Assign {
-    const left = next().value as string; // Left side (variable)
-    next(); // Skip ":="
-
-    return {
-      type: "Assign",
-      left,
-      right: parseExpr(), // Right side (expression)
-    };
-  }
-
-  /**
-   * =========================================================
-   * FUNCTION CALL 解析
-   * =========================================================
-   */
-  function parseCall(): Call {
-    const name = next().value as string; // Function name
-    next(); // Skip "("
-
-    const args: Expr[] = [];
-    while (!is(peek(), ")")) {
-      args.push(parseExpr()); // Parse each argument
-      if (is(peek(), ",")) next(); // Skip the comma if exists
-    }
-    next(); // Skip ")"
-
-    return {
-      type: "Call",
-      name,
-      args,
-    };
-  }
-
-  /**
-   * =========================================================
-   * PROGRAM 解析
-   * =========================================================
-   */
+  // =========================
+  // program
+  // =========================
   const body: AST[] = [];
+
   while (iRef.i < tokens.length) {
-    let st = parseStmt()
-    st && body.push(st);
+    const s = parseStmt();
+    if (s) body.push(s);
   }
 
-  return {
-    type: "Program",
-    body,
-  };
+  return { type: "Program", body };
 }

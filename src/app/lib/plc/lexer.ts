@@ -5,107 +5,133 @@ export type Token = {
 
 export function lexer(input: string): Token[] {
   const tokens: Token[] = [];
-  let current = 0;
+  let i = 0;
 
   const keywords = new Set([
-    "IF", "THEN", "ELSIF", "ELSE", "END_IF",
-    "FOR", "TO", "DO", "END_FOR",
-    "WHILE", "END_WHILE",
-    "REPEAT", "UNTIL",
-    "CASE", "OF", "END_CASE",
-    "FUNCTION", "END_FUNCTION",
-    "FUNCTION_BLOCK", "END_FUNCTION_BLOCK",
-    "VAR", "VAR_INPUT", "VAR_OUTPUT", "VAR_IN_OUT", "VAR_TEMP",
-    "RETURN", "TRUE", "FALSE"
+    "IF","THEN","ELSIF","ELSE","END_IF",
+    "FOR","TO","BY","DO","END_FOR",
+    "WHILE","END_WHILE",
+    "REPEAT","UNTIL",
+    "CASE","OF","END_CASE",
+    "FUNCTION","END_FUNCTION",
+    "FUNCTION_BLOCK","END_FUNCTION_BLOCK",
+    "VAR","VAR_INPUT","VAR_OUTPUT","VAR_IN_OUT","VAR_TEMP",
+    "RETURN","TRUE","FALSE"
   ]);
 
-  while (current < input.length) {
-    let char = input[current];
+  const isAlpha = (c: string) => /[A-Za-z_]/.test(c);
+  const isNum = (c: string) => /[0-9]/.test(c);
 
-    // Skip whitespaces
-    if (/\s/.test(char)) {
-      current++;
+  while (i < input.length) {
+    let c = input[i];
+
+    // =====================
+    // space
+    // =====================
+    if (/\s/.test(c)) {
+      i++;
       continue;
     }
 
-    // Handle numbers (integers and floats)
-    if (/\d/.test(char)) {
-      let value = "";
-      while (/\d/.test(char) || char === '.') {
-        value += char;
-        char = input[++current];
+    // =====================
+    // number
+    // =====================
+    if (isNum(c)) {
+      let v = "";
+      while (isNum(input[i]) || input[i] === ".") {
+        v += input[i++];
       }
-      tokens.push({ type: "num", value: parseFloat(value) });
+      tokens.push({ type: "num", value: parseFloat(v) });
       continue;
     }
 
-    // Handle time literals (T#5s, T#100ms, etc.)
-    if (char === 'T' && input[current + 1] === '#') {
-      let value = "T#";
-      current += 2; // Skip T#
-      while (/\d/.test(input[current]) || /[ms|s|m|h]/.test(input[current])) {
-        value += input[current++];
-      }
-      tokens.push({ type: "time", value });
-      continue;
-    }
+    // =====================
+    // string
+    // =====================
+    if (c === "'" || c === '"') {
+      const quote = c;
+      i++;
+      let v = "";
 
-    // Handle strings (with escape sequences)
-    if (char === "'" || char === "\"") {
-      let value = "";
-      current++; // Skip the opening quote
-      while (current < input.length) {
-        char = input[current];
-        if (char === '\\') {
-          current++; // Skip the backslash
-          char = input[current];
-          switch (char) {
-            case 'n': value += '\n'; break;
-            case 't': value += '\t'; break;
-            case 'r': value += '\r'; break;
-            case '\\': value += '\\'; break;
-            case "'": value += "'"; break;
-            case '"': value += '"'; break;
-            default: value += '\\' + char; break;
+      while (i < input.length) {
+        c = input[i];
+
+        if (c === "\\") {
+          i++;
+          const n = input[i];
+          switch (n) {
+            case "n": v += "\n"; break;
+            case "t": v += "\t"; break;
+            case "r": v += "\r"; break;
+            default: v += n; break;
           }
-        } else if (char === "'" || char === "\"") {
-          current++; // Skip the closing quote
+        } else if (c === quote) {
+          i++;
           break;
         } else {
-          value += char;
+          v += c;
         }
-        current++;
+
+        i++;
       }
-      tokens.push({ type: "str", value });
+
+      tokens.push({ type: "str", value: v });
       continue;
     }
 
-    // Handle identifiers or keywords
-    if (/[A-Za-z_]/.test(char)) {
-      let value = "";
-      while (/[A-Za-z0-9_]/.test(char)) {
-        value += char;
-        char = input[++current];
+    // =====================
+    // time (T#10s)
+    // =====================
+    if (c === "T" && input[i + 1] === "#") {
+      let v = "";
+      while (i < input.length && /[A-Za-z0-9#]/.test(input[i])) {
+        v += input[i++];
       }
-      const upperValue = value.toUpperCase();
-      if (keywords.has(upperValue)) {
-        tokens.push({ type: "kw", value: upperValue });
-      } else {
-        tokens.push({ type: "id", value });
-      }
+      tokens.push({ type: "time", value: v });
       continue;
     }
 
-    // Handle operators and punctuation
-    if (/[+\-*/=<>;:(),.]/.test(char)) {
-      let value = char;
-      current++;
-      tokens.push({ type: "op", value });
+    // =====================
+    // identifier / keyword
+    // =====================
+    if (isAlpha(c)) {
+      let v = "";
+      while (/[A-Za-z0-9_]/.test(input[i])) {
+        v += input[i++];
+      }
+
+      const up = v.toUpperCase();
+
+      tokens.push({
+        type: keywords.has(up) ? "kw" : "id",
+        value: keywords.has(up) ? up : v
+      });
+
       continue;
     }
 
-    // Unknown character, advance and log error
-    current++;
+    // =====================
+    // OPERATORS (IMPORTANT FIX)
+    // =====================
+    const twoCharOps = ["<=", ">=", "<>", ":="];
+    const oneCharOps = ["+", "-", "*", "/", "=", "<", ">", "(", ")", ",", ";", ":"];
+
+    const two = input.slice(i, i + 2);
+
+    if (twoCharOps.includes(two)) {
+      tokens.push({ type: "op", value: two });
+      i += 2;
+      continue;
+    }
+
+    if (oneCharOps.includes(c)) {
+      tokens.push({ type: "op", value: c });
+      i++;
+      continue;
+    }
+
+    // fallback
+    i++;
   }
 
   return tokens;
