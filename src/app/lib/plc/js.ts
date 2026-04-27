@@ -186,7 +186,24 @@ function genStmt(node: AST, level: number): string {
 
     case "Comment": {
       const n = node as CommentNode;
-      return `${pad}// ${n.value}`;
+
+      const v = String(n.value || "");
+
+      if (n.kind === "line") {
+        return `${pad}// ${v.trim()}`;
+      }
+
+      if (n.kind === "block") {
+        const lines = v.split(/\r?\n/);
+
+        return (
+          `${pad}/*\n` +
+          lines.map(l => `${pad} * ${l.trim()}`).join("\n") +
+          `\n${pad} */`
+        );
+      }
+
+      return `${pad}// ${v}`;
     }
 
     case "Assign": {
