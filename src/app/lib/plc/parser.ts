@@ -33,27 +33,59 @@ export function parser(tokens: Token[]): Program {
     "/": 5,
   };
 
-  // =========================
-  // expr
-  // =========================
   function parseExpr(minPrec = 0): Expr {
-    function primary(): Expr {
+
+    function parsePrimary(): Expr {
       const t = next();
       if (!t) return { type: "num", value: 0 };
 
-      if (t.type === "num") return { type: "num", value: t.value as number };
+      // number
+      if (t.type === "num") {
+        return { type: "num", value: t.value as number };
+      }
 
+      // string
+      if (t.type === "str") {
+        return { type: "str", value: t.value as string };
+      }
+
+      // variable or function call
       if (t.type === "id") {
-        const v = t.value as string;
-        if (v === "TRUE") return { type: "bool", value: true };
-        if (v === "FALSE") return { type: "bool", value: false };
-        return { type: "var", name: v };
+
+        const name = t.value as string;
+
+        // TRUE / FALSE
+        if (name === "TRUE") return { type: "bool", value: true };
+        if (name === "FALSE") return { type: "bool", value: false };
+
+        // 🔥 LOOKAHEAD: function call
+        if (peek()?.value === "(") {
+
+          next(); // consume "("
+
+          const args: Expr[] = [];
+
+          while (peek() && peek().value !== ")") {
+            args.push(parseExpr());
+            if (peek()?.value === ",") next();
+          }
+
+          next(); // ")"
+
+          return {
+            type: "call",
+            name,
+            args
+          } as any;
+        }
+
+        return { type: "var", name };
       }
 
       return { type: "num", value: 0 };
     }
 
-    let left = primary();
+    let left = parsePrimary();
 
     while (true) {
       const t = peek();
