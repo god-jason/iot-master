@@ -5,6 +5,7 @@ import {NzInputModule} from 'ng-zorro-antd/input';
 import {lexer} from '../lib/plc/lexer';
 import {parser} from '../lib/plc/parser';
 import {genLua} from '../lib/plc/lua';
+import {genJs} from '../lib/plc/js';
 
 @Component({
   standalone: true,
@@ -73,11 +74,18 @@ TP1(IN := flag, PT := T#1s);
   lua = ""
 
   convert() {
-    this.lua = st2lua(this.st, true)
     let ts = lexer(this.st)
     console.log("tokens", ts)
     let ast = parser(ts)
     console.log("AST", ast)
     this.lua = genLua(ast)
+  }
+
+  convertJS() {
+    let ts = lexer(this.st)
+    console.log("tokens", ts)
+    let ast = parser(ts)
+    console.log("AST", ast)
+    this.lua = genJs(ast)
   }
 }

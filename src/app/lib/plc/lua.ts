@@ -32,8 +32,6 @@ function mapOp(op: string): string {
       return "not";
     case "<>":
       return "~=";
-    case "==":
-      return "==";
     default:
       return op;
   }
