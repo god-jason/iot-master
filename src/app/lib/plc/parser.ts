@@ -23,7 +23,7 @@ export function parser(tokens: Token[]): Program {
   const PREC: Record<string, number> = {
     OR: 1,
     AND: 2,
-    "=": 3,
+    "==": 3,
     "<>": 3,
     "<": 3,
     ">": 3,
@@ -49,14 +49,18 @@ export function parser(tokens: Token[]): Program {
         return { type: "str", value: t.value as string };
       }
 
+      // keyword
+      if (t.type === "kw") {
+        const name = t.value as string;
+        // TRUE / FALSE
+        if (name === "TRUE") return { type: "bool", value: true };
+        if (name === "FALSE") return { type: "bool", value: false };
+      }
+
       // variable or function call
       if (t.type === "id") {
 
         const name = t.value as string;
-
-        // TRUE / FALSE
-        if (name === "TRUE") return { type: "bool", value: true };
-        if (name === "FALSE") return { type: "bool", value: false };
 
         // 🔥 LOOKAHEAD: function call
         if (peek()?.value === "(") {
@@ -76,7 +80,7 @@ export function parser(tokens: Token[]): Program {
             type: "call",
             name,
             args
-          } as any;
+          };
         }
 
         return { type: "var", name };
@@ -263,23 +267,52 @@ export function parser(tokens: Token[]): Program {
     };
   }
 
-  // =========================
-  // CASE（简化稳定版）
-  // =========================
+
   function parseCase(): CaseNode {
     next(); // CASE
+
     const expr = parseExpr();
+
     next(); // OF
 
-    const branches: any[] = [];
+    const branches: { value: Expr; body: AST[] }[] = [];
 
-    while (peek() && !is(peek(), "END_CASE")) {
+    while (peek() && peek().value !== "END_CASE") {
+
+      // =========================
+      // 1. CASE VALUE
+      // =========================
       const value = parseExpr();
-      next(); // :
+
+      // skip ':'
+      if (peek()?.value === ":") next();
 
       const body: AST[] = [];
 
-      while (peek() && !["END_CASE"].includes(peek().value as string)) {
+      // =========================
+      // 2. BODY
+      // stop when:
+      // - next case value
+      // - END_CASE
+      // =========================
+      while (peek()) {
+
+        const t = peek();
+
+        if (!t) break;
+
+        // END_CASE
+        if (t.value === "END_CASE") break;
+
+        // 🔥 new case branch start detection
+        // (num/str/id + next ':')
+        if (
+          (t.type === "num" || t.type === "str" || t.type === "id") &&
+          tokens[iRef.i + 1]?.value === ":"
+        ) {
+          break;
+        }
+
         const s = parseStmt();
         if (s) body.push(s);
       }
@@ -289,7 +322,11 @@ export function parser(tokens: Token[]): Program {
 
     next(); // END_CASE
 
-    return { type: "Case", expr, branches };
+    return {
+      type: "Case",
+      expr,
+      branches,
+    };
   }
 
   // =========================

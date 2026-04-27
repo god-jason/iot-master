@@ -9,9 +9,24 @@ import {
   Expr
 } from "./ast";
 
-function genExpr(e: any): string {
-  switch (e.type) {
+/**
+ * =========================================================
+ * Indent helper
+ * =========================================================
+ */
+function indent(level: number): string {
+  return "  ".repeat(level);
+}
 
+/**
+ * =========================================================
+ * Expression Generator
+ * =========================================================
+ */
+function genExpr(e: any): string {
+  if (!e) return "nil";
+
+  switch (e.type) {
     case "num":
       return String(e.value);
 
@@ -42,120 +57,137 @@ function genExpr(e: any): string {
 }
 
 /**
- * =========================
+ * =========================================================
  * Call
- * =========================
+ * =========================================================
  */
 function genCall(node: Call): string {
-  const args = node.args.map(genExpr).join(", ");
-
-  // IEC function mapping
+  const args = (node.args || []).map(genExpr).join(", ");
   return `env.func.${node.name}(${args})`;
 }
 
 /**
- * =========================
- * Statement generator
- * =========================
+ * =========================================================
+ * Statement generator (CORE)
+ * =========================================================
  */
-function genStmt(node: AST): string {
+function genStmt(node: AST, level: number): string {
+  if (!node) return "";
+
+  const pad = indent(level);
 
   switch (node.type) {
 
-    // -------------------------
-    // ASSIGN
-    // -------------------------
     case "Assign": {
       const n = node as Assign;
-      return `env.memory.${n.left} = ${genExpr(n.right)}`;
+      return `${pad}env.memory.${n.left} = ${genExpr(n.right)}`;
     }
 
-    // -------------------------
-    // CALL
-    // -------------------------
     case "Call": {
-      return genCall(node as Call);
+      const n = node as Call;
+      return `${pad}${genCall(n)}`;
     }
 
-    // -------------------------
-    // IF
-    // -------------------------
     case "If": {
       const n = node as IfNode;
 
-      let code = `if ${genExpr(n.cond)} then\n`;
+      let code = `${pad}if ${genExpr(n.cond)} then\n`;
 
-      code += n.then.map(genStmt).join("\n") + "\n";
+      code += (n.then || [])
+        .map(s => genStmt(s, level + 1))
+        .join("\n") + "\n";
 
       if (n.elseif) {
         for (const e of n.elseif) {
-          code += `elseif ${genExpr(e.cond)} then\n`;
-          code += e.body.map(genStmt).join("\n") + "\n";
+          code += `${pad}elseif ${genExpr(e.cond)} then\n`;
+          code += (e.body || [])
+            .map(s => genStmt(s, level + 1))
+            .join("\n") + "\n";
         }
       }
 
-      if (n.else) {
-        code += `else\n`;
-        code += n.else.map(genStmt).join("\n") + "\n";
+      if (n.else && n.else.length > 0) {
+        code += `${pad}else\n`;
+        code += n.else
+          .map(s => genStmt(s, level + 1))
+          .join("\n") + "\n";
       }
 
-      code += `end`;
+      code += `${pad}end`;
 
       return code;
     }
 
-    // -------------------------
-    // CASE
-    // -------------------------
     case "Case": {
       const n = node as CaseNode;
 
-      let code = `do\n  local __v = ${genExpr(n.expr)}\n`;
+      let code = `${pad}do\n`;
+      code += `${indent(level + 1)}local __v = ${genExpr(n.expr)}\n`;
 
-      for (const b of n.branches) {
-        code += `  if __v == ${genExpr(b.value)} then\n`;
-        code += b.body.map(genStmt).map(l => "    " + l).join("\n") + "\n";
-        code += `  end\n`;
+      const branches = n.branches || [];
+
+      for (let i = 0; i < branches.length; i++) {
+        const b = branches[i];
+
+        const cond = genExpr(b.value);
+
+        if (i === 0) {
+          code += `${indent(level + 1)}if __v == ${cond} then\n`;
+        } else {
+          code += `${indent(level + 1)}elseif __v == ${cond} then\n`;
+        }
+
+        code += (b.body || [])
+          .map(s => genStmt(s, level + 2))
+          .join("\n") + "\n";
       }
 
-      code += `end`;
+      if (n.else && n.else.length > 0) {
+        code += `${indent(level + 1)}else\n`;
+        code += n.else
+          .map(s => genStmt(s, level + 2))
+          .join("\n") + "\n";
+      }
+
+      code += `${indent(level + 1)}end\n`;
+      code += `${pad}end`;
 
       return code;
     }
 
-    // -------------------------
-    // WHILE
-    // -------------------------
     case "While": {
       const n = node as WhileNode;
 
-      return `
-while ${genExpr(n.cond)} do
-${n.body.map(genStmt).map(l => "  " + l).join("\n")}
-end
-`.trim();
+      let code = `${pad}while ${genExpr(n.cond)} do\n`;
+
+      code += (n.body || [])
+        .map(s => genStmt(s, level + 1))
+        .join("\n");
+
+      code += `\n${pad}end`;
+
+      return code;
     }
 
-    // -------------------------
-    // FOR
-    // -------------------------
     case "For": {
       const n = node as ForNode;
-
       const step = n.step ? genExpr(n.step) : "1";
 
-      return `
-for ${n.v} = ${genExpr(n.from)}, ${genExpr(n.to)}, ${step} do
-${n.body.map(genStmt).map(l => "  " + l).join("\n")}
-end
-`.trim();
+      let code = `${pad}for ${n.v} = ${genExpr(n.from)}, ${genExpr(n.to)}, ${step} do\n`;
+
+      code += (n.body || [])
+        .map(s => genStmt(s, level + 1))
+        .join("\n");
+
+      code += `\n${pad}end`;
+
+      return code;
     }
 
-    // -------------------------
-    // PROGRAM wrapper
-    // -------------------------
     case "Program":
-      return node.body.map(genStmt).join("\n");
+      return (node.body || [])
+        .map(s => genStmt(s, level))
+        .join("\n");
 
     default:
       return "";
@@ -163,18 +195,17 @@ end
 }
 
 /**
- * =========================
+ * =========================================================
  * ENTRY
- * =========================
+ * =========================================================
  */
 export function genLua(ast: AST): string {
-  return `
--- ======================================
+  return `-- ======================================
 -- IEC 61131-3 -> Lua (Generated)
 -- ======================================
 
 function PLC(env)
-${genStmt(ast)}
+${genStmt(ast, 1)}
 end
 `;
 }

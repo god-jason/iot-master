@@ -8,15 +8,15 @@ export function lexer(input: string): Token[] {
   let i = 0;
 
   const keywords = new Set([
-    "IF","THEN","ELSIF","ELSE","END_IF",
-    "FOR","TO","BY","DO","END_FOR",
-    "WHILE","END_WHILE",
-    "REPEAT","UNTIL",
-    "CASE","OF","END_CASE",
-    "FUNCTION","END_FUNCTION",
-    "FUNCTION_BLOCK","END_FUNCTION_BLOCK",
-    "VAR","VAR_INPUT","VAR_OUTPUT","VAR_IN_OUT","VAR_TEMP",
-    "RETURN","TRUE","FALSE"
+    "IF", "THEN", "ELSIF", "ELSE", "END_IF",
+    "FOR", "TO", "BY", "DO", "END_FOR",
+    "WHILE", "END_WHILE",
+    "REPEAT", "UNTIL",
+    "CASE", "OF", "END_CASE",
+    "FUNCTION", "END_FUNCTION",
+    "FUNCTION_BLOCK", "END_FUNCTION_BLOCK",
+    "VAR", "VAR_INPUT", "VAR_OUTPUT", "VAR_IN_OUT", "VAR_TEMP",
+    "RETURN", "TRUE", "FALSE"
   ]);
 
   const isAlpha = (c: string) => /[A-Za-z_]/.test(c);
@@ -41,7 +41,7 @@ export function lexer(input: string): Token[] {
       while (isNum(input[i]) || input[i] === ".") {
         v += input[i++];
       }
-      tokens.push({ type: "num", value: parseFloat(v) });
+      tokens.push({type: "num", value: parseFloat(v)});
       continue;
     }
 
@@ -60,10 +60,18 @@ export function lexer(input: string): Token[] {
           i++;
           const n = input[i];
           switch (n) {
-            case "n": v += "\n"; break;
-            case "t": v += "\t"; break;
-            case "r": v += "\r"; break;
-            default: v += n; break;
+            case "n":
+              v += "\n";
+              break;
+            case "t":
+              v += "\t";
+              break;
+            case "r":
+              v += "\r";
+              break;
+            default:
+              v += n;
+              break;
           }
         } else if (c === quote) {
           i++;
@@ -75,7 +83,7 @@ export function lexer(input: string): Token[] {
         i++;
       }
 
-      tokens.push({ type: "str", value: v });
+      tokens.push({type: "str", value: v});
       continue;
     }
 
@@ -87,7 +95,7 @@ export function lexer(input: string): Token[] {
       while (i < input.length && /[A-Za-z0-9#]/.test(input[i])) {
         v += input[i++];
       }
-      tokens.push({ type: "time", value: v });
+      tokens.push({type: "time", value: v});
       continue;
     }
 
@@ -119,13 +127,14 @@ export function lexer(input: string): Token[] {
     const two = input.slice(i, i + 2);
 
     if (twoCharOps.includes(two)) {
-      tokens.push({ type: "op", value: two });
+      tokens.push({type: "op", value: two});
       i += 2;
       continue;
     }
 
     if (oneCharOps.includes(c)) {
-      tokens.push({ type: "op", value: c });
+      if (c == "=") c = "=="
+      tokens.push({type: "op", value: c});
       i++;
       continue;
     }

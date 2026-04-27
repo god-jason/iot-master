@@ -17,7 +17,9 @@ export type Expr =
   | StringExpr
   | TimeExpr
   | BinExpr
+  | CallExpr
   | UnaryExpr;
+
 
 export type NumExpr = {
   type: "num";
@@ -65,6 +67,12 @@ export type UnaryExpr = {
   type: "unary";
   op: string;
   value: Expr;
+};
+
+export type CallExpr = {
+  type: "call";
+  name: string;
+  args: Expr[];
 };
 
 /**
