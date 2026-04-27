@@ -22,6 +22,23 @@ function indent(level: number): string {
   return "  ".repeat(level);
 }
 
+function mapOp(op: string): string {
+  switch (op) {
+    case "AND":
+      return "and";
+    case "OR":
+      return "or";
+    case "NOT":
+      return "not";
+    case "<>":
+      return "~=";
+    case "==":
+      return "==";
+    default:
+      return op;
+  }
+}
+
 /**
  * =========================================================
  * Expression Generator
@@ -47,10 +64,10 @@ function genExpr(e: any): string {
       return `env.memory.${e.name}`;
 
     case "bin":
-      return `(${genExpr(e.left)} ${e.op} ${genExpr(e.right)})`;
+      return `(${genExpr(e.left)} ${mapOp(e.op)} ${genExpr(e.right)})`;
 
     case "unary":
-      return `(${e.op}${genExpr(e.value)})`;
+      return `(${mapOp(e.op)} ${genExpr(e.value)})`;
 
     case "call":
       return genCall(e);

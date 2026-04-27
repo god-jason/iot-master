@@ -1,6 +1,6 @@
 export type Token =
   | { type: "id" | "num" | "str" | "kw" | "op" | "time"; value: string | number }
-  | { type: "comment"; value: string, kind: "line" | "block" };
+  | { type: "comment"; value: string; kind: "line" | "block" };
 
 export function lexer(input: string): Token[] {
   const tokens: Token[] = [];
@@ -15,7 +15,10 @@ export function lexer(input: string): Token[] {
     "FUNCTION", "END_FUNCTION",
     "FUNCTION_BLOCK", "END_FUNCTION_BLOCK",
     "VAR", "VAR_INPUT", "VAR_OUTPUT", "VAR_IN_OUT", "VAR_TEMP",
-    "RETURN", "TRUE", "FALSE"
+    "RETURN", "TRUE", "FALSE",
+
+    // 🔥 logic keywords
+    "AND", "OR", "NOT"
   ]);
 
   const isAlpha = (c: string) => /[A-Za-z_]/.test(c);
@@ -33,7 +36,7 @@ export function lexer(input: string): Token[] {
       while (i < input.length && input[i] !== "\n") {
         v += input[i++];
       }
-      tokens.push({type: "comment", value: v.trim(), kind: "line"});
+      tokens.push({ type: "comment", value: v.trim(), kind: "line" });
       continue;
     }
 
@@ -52,7 +55,7 @@ export function lexer(input: string): Token[] {
         v += input[i++];
       }
 
-      tokens.push({type: "comment", value: v.trim(), kind: "block"});
+      tokens.push({ type: "comment", value: v.trim(), kind: "block" });
       continue;
     }
 
@@ -72,7 +75,7 @@ export function lexer(input: string): Token[] {
       while (isNum(input[i]) || input[i] === ".") {
         v += input[i++];
       }
-      tokens.push({type: "num", value: parseFloat(v)});
+      tokens.push({ type: "num", value: parseFloat(v) });
       continue;
     }
 
@@ -114,19 +117,19 @@ export function lexer(input: string): Token[] {
         i++;
       }
 
-      tokens.push({type: "str", value: v});
+      tokens.push({ type: "str", value: v });
       continue;
     }
 
     // =====================
-    // time
+    // time (T#5s)
     // =====================
     if (c === "T" && input[i + 1] === "#") {
       let v = "";
       while (i < input.length && /[A-Za-z0-9#]/.test(input[i])) {
         v += input[i++];
       }
-      tokens.push({type: "time", value: v});
+      tokens.push({ type: "time", value: v });
       continue;
     }
 
@@ -150,22 +153,35 @@ export function lexer(input: string): Token[] {
     }
 
     // =====================
-    // operators
+    // 2-char operators
     // =====================
     const twoCharOps = ["<=", ">=", "<>", ":="];
-    const oneCharOps = ["+", "-", "*", "/", "=", "<", ">", "(", ")", ",", ";", ":"];
-
     const two = input.slice(i, i + 2);
 
     if (twoCharOps.includes(two)) {
-      tokens.push({type: "op", value: two});
+      tokens.push({ type: "op", value: two });
       i += 2;
       continue;
     }
 
+    // =====================
+    // 1-char operators
+    // =====================
+    const oneCharOps = [
+      "+", "-", "*", "/", "=", "<", ">", "(", ")", ",", ";", ":"
+    ];
+
     if (oneCharOps.includes(c)) {
-      if (c === "=") c = "==";
-      tokens.push({type: "op", value: c});
+
+      // =========================
+      // ⚠️ ST FIX: "=" -> "=="
+      // =========================
+      if (c === "=") {
+        tokens.push({ type: "op", value: "==" });
+      } else {
+        tokens.push({ type: "op", value: c });
+      }
+
       i++;
       continue;
     }
