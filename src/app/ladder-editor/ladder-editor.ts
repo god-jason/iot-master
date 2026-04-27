@@ -24,10 +24,10 @@ export class LadderEditor {
 *)
 
  VAR
-    a : INT;
-    b : INT;
-    c : INT;
-    flag : BOOL;
+    a : INT := 0;
+    b : INT := 0;
+    c : INT := 0;
+    flag : BOOL := FALSE;
     counter : INT;
 END_VAR
 

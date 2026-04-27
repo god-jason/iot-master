@@ -1,20 +1,20 @@
 import {
-  AST,
-  Program,
   Assign,
-  IfNode,
-  CaseNode,
-  Expr,
+  AST,
   Call,
-  WhileNode,
-  ForNode,
+  CaseNode,
   CommentNode,
-  VarDecl,
+  Expr,
+  ForNode,
+  FunctionBlockDecl,
   FunctionDecl,
-  FunctionBlockDecl
+  IfNode,
+  Program,
+  VarDecl,
+  WhileNode
 } from "./ast";
 
-import { Token } from "./lexer";
+import {Token} from "./lexer";
 
 /**
  * =========================================================
@@ -23,7 +23,7 @@ import { Token } from "./lexer";
  */
 export function parser(tokens: Token[]): Program {
 
-  const iRef = { i: 0 };
+  const iRef = {i: 0};
 
   const peek = () => tokens[iRef.i];
   const next = () => tokens[iRef.i++];
@@ -52,14 +52,14 @@ export function parser(tokens: Token[]): Program {
 
     function primary(): Expr {
       const t = next();
-      if (!t) return { type: "num", value: 0 };
+      if (!t) return {type: "num", value: 0};
 
-      if (t.type === "num") return { type: "num", value: t.value as number };
-      if (t.type === "str") return { type: "str", value: t.value as string };
+      if (t.type === "num") return {type: "num", value: t.value as number};
+      if (t.type === "str") return {type: "str", value: t.value as string};
 
       if (t.type === "kw") {
-        if (t.value === "TRUE") return { type: "bool", value: true };
-        if (t.value === "FALSE") return { type: "bool", value: false };
+        if (t.value === "TRUE") return {type: "bool", value: true};
+        if (t.value === "FALSE") return {type: "bool", value: false};
       }
 
       if (t.type === "id") {
@@ -67,7 +67,7 @@ export function parser(tokens: Token[]): Program {
 
         // function call
         if (peek()?.value === "(") {
-          next(); // (
+          next();
           const args: Expr[] = [];
 
           while (peek() && peek().value !== ")") {
@@ -75,14 +75,14 @@ export function parser(tokens: Token[]): Program {
             if (peek()?.value === ",") next();
           }
 
-          next(); // )
-          return { type: "call", name, args };
+          next();
+          return {type: "call", name, args};
         }
 
-        return { type: "var", name };
+        return {type: "var", name};
       }
 
-      return { type: "num", value: 0 };
+      return {type: "num", value: 0};
     }
 
     let left = primary();
@@ -100,12 +100,7 @@ export function parser(tokens: Token[]): Program {
 
       const right = parseExpr(prec + 1);
 
-      left = {
-        type: "bin",
-        op,
-        left,
-        right
-      } as any;
+      left = {type: "bin", op, left, right} as any;
     }
 
     return left;
@@ -129,12 +124,12 @@ export function parser(tokens: Token[]): Program {
 
   /**
    * =========================================================
-   * Call statement
+   * Call
    * =========================================================
    */
   function parseCall(): Call {
     const name = next().value as string;
-    next(); // (
+    next();
 
     const args: Expr[] = [];
 
@@ -143,9 +138,9 @@ export function parser(tokens: Token[]): Program {
       if (peek()?.value === ",") next();
     }
 
-    next(); // )
+    next();
 
-    return { type: "Call", name, args };
+    return {type: "Call", name, args};
   }
 
   /**
@@ -153,8 +148,10 @@ export function parser(tokens: Token[]): Program {
    * COMMENT
    * =========================================================
    */
-  function parseComment(): CommentNode|undefined {
+  function parseComment(): CommentNode | undefined {
     const t = next();
+    if (!t) return;
+
     if (t.type == "comment")
       return {
         type: "Comment",
@@ -170,9 +167,9 @@ export function parser(tokens: Token[]): Program {
    * =========================================================
    */
   function parseIf(): IfNode {
-    next(); // IF
+    next();
     const cond = parseExpr();
-    next(); // THEN
+    next();
 
     const then: AST[] = [];
     const elseif: any[] = [];
@@ -183,7 +180,7 @@ export function parser(tokens: Token[]): Program {
       if (is(peek(), "ELSIF")) {
         next();
         const c = parseExpr();
-        next(); // THEN
+        next();
 
         const body: AST[] = [];
 
@@ -192,7 +189,7 @@ export function parser(tokens: Token[]): Program {
           if (s) body.push(s);
         }
 
-        elseif.push({ cond: c, body });
+        elseif.push({cond: c, body});
         continue;
       }
 
@@ -211,15 +208,9 @@ export function parser(tokens: Token[]): Program {
       if (s) then.push(s);
     }
 
-    next(); // END_IF
+    next();
 
-    return {
-      type: "If",
-      cond,
-      then,
-      elseif: elseif.length ? elseif : undefined,
-      else: elseBody
-    };
+    return {type: "If", cond, then, elseif, else: elseBody};
   }
 
   /**
@@ -230,7 +221,7 @@ export function parser(tokens: Token[]): Program {
   function parseWhile(): WhileNode {
     next();
     const cond = parseExpr();
-    next(); // DO
+    next();
 
     const body: AST[] = [];
 
@@ -240,7 +231,8 @@ export function parser(tokens: Token[]): Program {
     }
 
     next();
-    return { type: "While", cond, body };
+
+    return {type: "While", cond, body};
   }
 
   /**
@@ -252,10 +244,11 @@ export function parser(tokens: Token[]): Program {
     next();
 
     const v = next().value as string;
-    next(); // :=
+    next();
 
     const from = parseExpr();
-    next(); // TO
+    next();
+
     const to = parseExpr();
 
     let step: Expr | undefined;
@@ -265,7 +258,7 @@ export function parser(tokens: Token[]): Program {
       step = parseExpr();
     }
 
-    next(); // DO
+    next();
 
     const body: AST[] = [];
 
@@ -276,19 +269,19 @@ export function parser(tokens: Token[]): Program {
 
     next();
 
-    return { type: "For", v, from, to, step, body };
+    return {type: "For", v, from, to, step, body};
   }
 
   /**
    * =========================================================
-   * CASE (FIXED multi-branch)
+   * CASE (multi branch fixed)
    * =========================================================
    */
   function parseCase(): CaseNode {
-    next(); // CASE
+    next();
 
     const expr = parseExpr();
-    next(); // OF
+    next();
 
     const branches: any[] = [];
 
@@ -307,7 +300,6 @@ export function parser(tokens: Token[]): Program {
 
         if (t.value === "END_CASE") break;
 
-        // new branch detection
         if (
           (t.type === "num" || t.type === "str" || t.type === "id") &&
           tokens[iRef.i + 1]?.value === ":"
@@ -317,32 +309,35 @@ export function parser(tokens: Token[]): Program {
         if (s) body.push(s);
       }
 
-      branches.push({ value, body });
+      branches.push({value, body});
     }
 
-    next(); // END_CASE
+    next();
 
-    return { type: "Case", expr, branches };
+    return {type: "Case", expr, branches};
   }
 
   /**
    * =========================================================
-   * VAR DECL (minimal)
+   * VAR DECL
    * =========================================================
    */
   function parseVarDecl(scope: any): VarDecl {
-    next(); // VAR_xxx
+    next();
 
     const vars: any[] = [];
 
     while (peek() && peek().value !== "END_VAR") {
 
       const name = next().value as string;
-      next(); // :
 
-      const dataType = next().value as string;
-
+      let dataType: string | undefined;
       let init;
+
+      if (peek()?.value === ":") {
+        next();
+        dataType = next().value as string;
+      }
 
       if (peek()?.value === ":=") {
         next();
@@ -351,25 +346,22 @@ export function parser(tokens: Token[]): Program {
 
       if (peek()?.value === ";") next();
 
-      vars.push({ name, dataType, init });
+      vars.push({name, dataType, init});
     }
 
-    next(); // END_VAR
+    next();
 
-    return {
-      type: "VarDecl",
-      scope,
-      vars
-    };
+    return {type: "VarDecl", scope, vars};
   }
 
   /**
    * =========================================================
-   * FUNCTION / FB (minimal skeleton)
+   * FUNCTION
    * =========================================================
    */
   function parseFunction(): FunctionDecl {
     next();
+
     const name = next().value as string;
 
     const body: AST[] = [];
@@ -389,8 +381,14 @@ export function parser(tokens: Token[]): Program {
     };
   }
 
+  /**
+   * =========================================================
+   * FUNCTION BLOCK
+   * =========================================================
+   */
   function parseFB(): FunctionBlockDecl {
     next();
+
     const name = next().value as string;
 
     const vars = {
@@ -420,10 +418,11 @@ export function parser(tokens: Token[]): Program {
 
   /**
    * =========================================================
-   * STMT DISPATCHER (CORE FIX POINT)
+   * DISPATCHER (CORE FIXED)
    * =========================================================
    */
   function parseStmt(): AST | undefined {
+
     const t = peek();
     if (!t) return;
 
@@ -449,7 +448,7 @@ export function parser(tokens: Token[]): Program {
       return parseCall();
     }
 
-    next(); // prevent infinite loop
+    next();
     return;
   }
 
@@ -465,5 +464,5 @@ export function parser(tokens: Token[]): Program {
     if (s) body.push(s);
   }
 
-  return { type: "Program", body };
+  return {type: "Program", body};
 }

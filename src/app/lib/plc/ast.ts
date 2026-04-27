@@ -1,23 +1,23 @@
 /**
  * =========================================================
- * IEC 61131-3 AST (Final Industrial IR)
+ * IEC 61131-3 AST (Industrial IR Layer)
  * =========================================================
  */
 
 /**
- * =========================================================
- * EXPRESSIONS
- * =========================================================
+ * =========================
+ * Expressions
+ * =========================
  */
 export type Expr =
   | NumExpr
   | BoolExpr
+  | VarExpr
   | StringExpr
   | TimeExpr
-  | VarExpr
   | BinExpr
-  | UnaryExpr
-  | CallExpr;
+  | CallExpr
+  | UnaryExpr;
 
 export type NumExpr = {
   type: "num";
@@ -34,9 +34,6 @@ export type StringExpr = {
   value: string;
 };
 
-/**
- * IEC TIME: T#5s / T#100ms
- */
 export type TimeExpr = {
   type: "time";
   value: string;
@@ -47,9 +44,6 @@ export type VarExpr = {
   name: string;
 };
 
-/**
- * Binary expression
- */
 export type BinExpr = {
   type: "bin";
   op: string;
@@ -57,18 +51,12 @@ export type BinExpr = {
   right: Expr;
 };
 
-/**
- * Unary expression (NOT, -)
- */
 export type UnaryExpr = {
   type: "unary";
   op: string;
   value: Expr;
 };
 
-/**
- * Function call expression
- */
 export type CallExpr = {
   type: "call";
   name: string;
@@ -76,9 +64,9 @@ export type CallExpr = {
 };
 
 /**
- * =========================================================
- * STATEMENTS
- * =========================================================
+ * =========================
+ * Statements
+ * =========================
  */
 export type AST =
   | Program
@@ -88,15 +76,15 @@ export type AST =
   | WhileNode
   | ForNode
   | Call
-  | CommentNode
   | VarDecl
   | FunctionDecl
-  | FunctionBlockDecl;
+  | FunctionBlockDecl
+  | CommentNode;
 
 /**
- * =========================================================
- * PROGRAM ROOT
- * =========================================================
+ * =========================
+ * Program
+ * =========================
  */
 export type Program = {
   type: "Program";
@@ -104,20 +92,9 @@ export type Program = {
 };
 
 /**
- * =========================================================
- * COMMENT NODE ⭐
- * =========================================================
- */
-export type CommentNode = {
-  type: "Comment";
-  kind: "line" | "inline" | "block";
-  value: string;
-};
-
-/**
- * =========================================================
- * ASSIGNMENT
- * =========================================================
+ * =========================
+ * Assignment
+ * =========================
  */
 export type Assign = {
   type: "Assign";
@@ -126,92 +103,41 @@ export type Assign = {
 };
 
 /**
- * =========================================================
- * IF / ELSIF / ELSE
- * =========================================================
+ * =========================
+ * COMMENT NODE ⭐新增
+ * =========================
  */
-export type IfNode = {
-  type: "If";
-  cond: Expr;
-  then: AST[];
-  elseif?: {
-    cond: Expr;
-    body: AST[];
-  }[];
-  else?: AST[];
+export type CommentNode = {
+  type: "Comment";
+  kind: "line" | "block";
+  value: string;
 };
 
 /**
- * =========================================================
- * CASE (IEC-style)
- * =========================================================
- */
-export type CaseNode = {
-  type: "Case";
-  expr: Expr;
-  branches: {
-    value: Expr;
-    body: AST[];
-  }[];
-  else?: AST[];
-};
-
-/**
- * =========================================================
- * WHILE
- * =========================================================
- */
-export type WhileNode = {
-  type: "While";
-  cond: Expr;
-  body: AST[];
-};
-
-/**
- * =========================================================
- * FOR
- * =========================================================
- */
-export type ForNode = {
-  type: "For";
-  v: string;
-  from: Expr;
-  to: Expr;
-  step?: Expr;
-  body: AST[];
-};
-
-/**
- * =========================================================
- * CALL (statement)
- * =========================================================
- */
-export type Call = {
-  type: "Call";
-  name: string;
-  args: Expr[];
-};
-
-/**
- * =========================================================
- * VARIABLE DECLARATION
- * =========================================================
+ * =========================
+ * VAR DECL ⭐新增
+ * =========================
  */
 export type VarDecl = {
   type: "VarDecl";
-  scope: "VAR" | "VAR_INPUT" | "VAR_OUTPUT" | "VAR_IN_OUT" | "VAR_TEMP";
+  scope:
+    | "VAR"
+    | "VAR_INPUT"
+    | "VAR_OUTPUT"
+    | "VAR_IN_OUT"
+    | "VAR_TEMP";
+
   vars: {
     name: string;
     dataType?: string;
     init?: Expr;
-    retain?: boolean;
   }[];
 };
 
 /**
- * =========================================================
+ * =========================
  * FUNCTION
- * =========================================================
+ * =========================
  */
 export type FunctionDecl = {
   type: "Function";
@@ -222,9 +148,9 @@ export type FunctionDecl = {
 };
 
 /**
- * =========================================================
- * FUNCTION BLOCK (PLC CORE)
- * =========================================================
+ * =========================
+ * FUNCTION_BLOCK
+ * =========================
  */
 export type FunctionBlockDecl = {
   type: "FunctionBlock";
@@ -239,4 +165,65 @@ export type FunctionBlockDecl = {
   };
 
   body: AST[];
+};
+
+/**
+ * =========================
+ * IF
+ * =========================
+ */
+export type IfNode = {
+  type: "If";
+  cond: Expr;
+  then: AST[];
+  elseif?: { cond: Expr; body: AST[] }[];
+  else?: AST[];
+};
+
+/**
+ * =========================
+ * CASE
+ * =========================
+ */
+export type CaseNode = {
+  type: "Case";
+  expr: Expr;
+  branches: { value: Expr; body: AST[] }[];
+  else?: AST[];
+};
+
+/**
+ * =========================
+ * WHILE
+ * =========================
+ */
+export type WhileNode = {
+  type: "While";
+  cond: Expr;
+  body: AST[];
+};
+
+/**
+ * =========================
+ * FOR
+ * =========================
+ */
+export type ForNode = {
+  type: "For";
+  v: string;
+  from: Expr;
+  to: Expr;
+  step?: Expr;
+  body: AST[];
+};
+
+/**
+ * =========================
+ * CALL STATEMENT
+ * =========================
+ */
+export type Call = {
+  type: "Call";
+  name: string;
+  args: Expr[];
 };

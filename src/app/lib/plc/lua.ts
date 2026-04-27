@@ -7,7 +7,10 @@ import {
   ForNode,
   Call,
   Expr,
-  CommentNode
+  CommentNode,
+  VarDecl,
+  FunctionDecl,
+  FunctionBlockDecl
 } from "./ast";
 
 /**
@@ -69,7 +72,81 @@ function genCall(node: Call): string {
 
 /**
  * =========================================================
- * Statement generator (CORE)
+ * VAR DECL (🔥新增)
+ * =========================================================
+ */
+function genVarDecl(node: VarDecl, level: number): string {
+  const pad = indent(level);
+
+  let code = `${pad}-- VAR DECL (${node.scope})\n`;
+
+  for (const v of node.vars) {
+    const init = v.init ? `${genExpr(v.init)}` : "nil";
+    code += `${pad}env.memory.${v.name} = ${init}\n`;
+  }
+
+  return code;
+}
+
+/**
+ * =========================================================
+ * FUNCTION DECL
+ * =========================================================
+ */
+function genFunction(node: FunctionDecl, level: number): string {
+  const pad = indent(level);
+
+  let code = `${pad}-- FUNCTION ${node.name}\n`;
+  code += `${pad}function env.func.${node.name}()\n`;
+
+  code += (node.body || [])
+    .map(s => genStmt(s, level + 1))
+    .join("\n");
+
+  code += `\n${pad}end\n`;
+
+  return code;
+}
+
+/**
+ * =========================================================
+ * FUNCTION BLOCK
+ * =========================================================
+ */
+function genFB(node: FunctionBlockDecl, level: number): string {
+  const pad = indent(level);
+
+  let code = `${pad}-- FUNCTION_BLOCK ${node.name}\n`;
+  code += `${pad}env.func.${node.name} = {}\n`;
+
+  // inputs/outputs
+  const allVars = [
+    ...node.vars.input,
+    ...node.vars.output,
+    ...node.vars.inout,
+    ...node.vars.local,
+    ...node.vars.temp
+  ];
+
+  for (const v of allVars) {
+    for (const vv of v.vars)
+      code += `${pad}env.func.${node.name}.${vv.name} = nil\n`;
+  }
+
+  code += `\n${pad}function env.func.${node.name}:exec()\n`;
+
+  code += (node.body || [])
+    .map(s => genStmt(s, level + 1))
+    .join("\n");
+
+  code += `\n${pad}end\n`;
+
+  return code;
+}
+
+/**
+ * =========================================================
+ * Statement generator
  * =========================================================
  */
 function genStmt(node: AST, level: number): string {
@@ -81,14 +158,10 @@ function genStmt(node: AST, level: number): string {
 
     case "Comment": {
       const n = node as CommentNode;
-
-      // IEC / ST 注释风格 → Lua 注释
       const v = String(n.value || "").trim();
 
-      if (n.kind == "line")
-        return `${pad}-- ${v}`;
-      if (n.kind == "block")
-        return `--[[\n${v}\n--]]`;
+      if (n.kind === "line") return `${pad}-- ${v}`;
+      if (n.kind === "block") return `${pad}--[[ ${v} ]]`;
 
       return `${pad}-- ${v}`;
     }
@@ -129,7 +202,6 @@ function genStmt(node: AST, level: number): string {
       }
 
       code += `${pad}end`;
-
       return code;
     }
 
@@ -143,7 +215,6 @@ function genStmt(node: AST, level: number): string {
 
       for (let i = 0; i < branches.length; i++) {
         const b = branches[i];
-
         const cond = genExpr(b.value);
 
         if (i === 0) {
@@ -166,7 +237,6 @@ function genStmt(node: AST, level: number): string {
 
       code += `${indent(level + 1)}end\n`;
       code += `${pad}end`;
-
       return code;
     }
 
@@ -180,7 +250,6 @@ function genStmt(node: AST, level: number): string {
         .join("\n");
 
       code += `\n${pad}end`;
-
       return code;
     }
 
@@ -195,9 +264,17 @@ function genStmt(node: AST, level: number): string {
         .join("\n");
 
       code += `\n${pad}end`;
-
       return code;
     }
+
+    case "VarDecl":
+      return genVarDecl(node as VarDecl, level);
+
+    case "Function":
+      return genFunction(node as FunctionDecl, level);
+
+    case "FunctionBlock":
+      return genFB(node as FunctionBlockDecl, level);
 
     case "Program":
       return (node.body || [])
@@ -215,5 +292,5 @@ function genStmt(node: AST, level: number): string {
  * =========================================================
  */
 export function genLua(ast: AST): string {
-  return genStmt(ast, 0)
+  return genStmt(ast, 0);
 }
