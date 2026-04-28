@@ -1,13 +1,13 @@
 /**
  * =========================================================
- * IEC 61131-3 AST (Industrial IR Layer) - FULL VERSION
+ * IEC 61131-3 AST (Industrial IR Layer - FULL)
  * =========================================================
  */
 
 /**
- * =========================
- * Expressions
- * =========================
+ * =========================================================
+ * EXPRESSIONS
+ * =========================================================
  */
 export type Expr =
   | NumExpr
@@ -15,15 +15,12 @@ export type Expr =
   | StringExpr
   | TimeExpr
   | VarExpr
-  | MemberExpr        // 🔥 struct.a
-  | IndexExpr         // 🔥 arr[i]
+  | MemberExpr
+  | IndexExpr
   | BinExpr
   | UnaryExpr
   | CallExpr;
 
-/**
- * -------- 基础类型 --------
- */
 export type NumExpr = {
   type: "num";
   value: number;
@@ -40,8 +37,8 @@ export type StringExpr = {
 };
 
 export type TimeExpr = {
-  type: "time";       // T#5s
-  value: string;
+  type: "time"; // already normalized (ms or raw string)
+  value: string | number;
 };
 
 export type VarExpr = {
@@ -50,22 +47,25 @@ export type VarExpr = {
 };
 
 /**
- * -------- 复合访问 --------
+ * a.b
  */
 export type MemberExpr = {
-  type: "member";     // a.b
+  type: "member";
   object: Expr;
   property: string;
 };
 
+/**
+ * a[i]
+ */
 export type IndexExpr = {
-  type: "index";      // a[i]
+  type: "index";
   array: Expr;
   index: Expr;
 };
 
 /**
- * -------- 运算 --------
+ * binary op
  */
 export type BinExpr = {
   type: "bin";
@@ -74,6 +74,9 @@ export type BinExpr = {
   right: Expr;
 };
 
+/**
+ * unary op
+ */
 export type UnaryExpr = {
   type: "unary";
   op: string;
@@ -81,7 +84,7 @@ export type UnaryExpr = {
 };
 
 /**
- * -------- 调用 --------
+ * function call
  */
 export type CallExpr = {
   type: "call";
@@ -90,9 +93,9 @@ export type CallExpr = {
 };
 
 /**
- * =========================
- * Statements
- * =========================
+ * =========================================================
+ * STATEMENTS
+ * =========================================================
  */
 export type AST =
   | Program
@@ -103,38 +106,49 @@ export type AST =
   | ForNode
   | Call
   | FBCall
-  | ReturnStmt        // 🔥
+  | ReturnStmt
   | VarDecl
-  | TypeDecl          // 🔥 TYPE
+  | TypeDecl
   | FunctionDecl
   | FunctionBlockDecl
   | CommentNode;
 
 /**
- * =========================
- * Program
- * =========================
+ * =========================================================
+ * PROGRAM
+ * =========================================================
  */
 export type Program = {
   type: "Program";
+
+  /**
+   * module / file name
+   */
+  name?: string;
+
   body: AST[];
 };
 
 /**
- * =========================
- * Assignment
- * =========================
+ * =========================================================
+ * ASSIGN
+ * =========================================================
  */
 export type Assign = {
   type: "Assign";
-  left: string;   // 👉 后续可升级成 Expr（支持 a.b / arr[i]）
+
+  /**
+   * TODO: upgrade to Expr (member/index)
+   */
+  left: string;
+
   right: Expr;
 };
 
 /**
- * =========================
- * RETURN ⭐新增
- * =========================
+ * =========================================================
+ * RETURN
+ * =========================================================
  */
 export type ReturnStmt = {
   type: "Return";
@@ -142,23 +156,29 @@ export type ReturnStmt = {
 };
 
 /**
- * =========================
+ * =========================================================
  * COMMENT
- * =========================
+ * =========================================================
  */
 export type CommentNode = {
   type: "Comment";
   kind: "line" | "block";
   value: string;
+
+  /**
+   * optional compiler tag
+   */
+  tag?: "debug" | "todo" | "optimize";
 };
 
 /**
- * =========================
- * VAR DECL
- * =========================
+ * =========================================================
+ * VARIABLE DECL
+ * =========================================================
  */
 export type VarDecl = {
   type: "VarDecl";
+
   scope:
     | "VAR"
     | "VAR_INPUT"
@@ -168,20 +188,17 @@ export type VarDecl = {
 
   vars: {
     name: string;
-    dataType?: TypeRef;   // 🔥 升级
+    dataType?: TypeRef;
     init?: Expr;
   }[];
 };
 
 /**
- * =========================
- * TYPE SYSTEM ⭐⭐⭐核心新增
- * =========================
+ * =========================================================
+ * TYPE SYSTEM
+ * =========================================================
  */
 
-/**
- * 类型引用（变量使用）
- */
 export type TypeRef =
   | BasicType
   | ArrayType
@@ -189,15 +206,15 @@ export type TypeRef =
   | CustomTypeRef;
 
 /**
- * 基础类型
+ * primitive type
  */
 export type BasicType = {
   kind: "basic";
-  name: string; // INT BOOL REAL
+  name: string; // INT BOOL REAL STRING
 };
 
 /**
- * 自定义类型引用
+ * user-defined type
  */
 export type CustomTypeRef = {
   kind: "custom";
@@ -205,7 +222,7 @@ export type CustomTypeRef = {
 };
 
 /**
- * STRUCT 引用
+ * struct reference
  */
 export type StructTypeRef = {
   kind: "struct_ref";
@@ -213,29 +230,36 @@ export type StructTypeRef = {
 };
 
 /**
- * ARRAY 类型
  * ARRAY[0..10] OF INT
  */
 export type ArrayType = {
   kind: "array";
-  ranges: { from: number; to: number }[];
+
+  ranges: {
+    from: number;
+    to: number;
+  }[];
+
   elementType: TypeRef;
 };
 
 /**
- * TYPE 声明 ⭐⭐⭐
+ * TYPE declaration
  */
 export type TypeDecl = {
   type: "TypeDecl";
+
   name: string;
+
   def: StructType | ArrayType | BasicType;
 };
 
 /**
- * STRUCT 定义
+ * STRUCT definition
  */
 export type StructType = {
   kind: "struct";
+
   fields: {
     name: string;
     type: TypeRef;
@@ -243,25 +267,41 @@ export type StructType = {
 };
 
 /**
- * =========================
+ * OPTIONAL: function type (future runtime use)
+ */
+export type FunctionType = {
+  kind: "function";
+
+  params: TypeRef[];
+
+  returnType?: TypeRef;
+};
+
+/**
+ * =========================================================
  * FUNCTION
- * =========================
+ * =========================================================
  */
 export type FunctionDecl = {
   type: "Function";
+
   name: string;
+
   params: VarDecl[];
+
   returnType?: TypeRef;
+
   body: AST[];
 };
 
 /**
- * =========================
- * FUNCTION_BLOCK
- * =========================
+ * =========================================================
+ * FUNCTION BLOCK (FB)
+ * =========================================================
  */
 export type FunctionBlockDecl = {
   type: "FunctionBlock";
+
   name: string;
 
   vars: {
@@ -276,74 +316,96 @@ export type FunctionBlockDecl = {
 };
 
 /**
- * =========================
+ * =========================================================
  * IF
- * =========================
+ * =========================================================
  */
 export type IfNode = {
   type: "If";
+
   cond: Expr;
+
   then: AST[];
-  elseif?: { cond: Expr; body: AST[] }[];
+
+  elseif?: {
+    cond: Expr;
+    body: AST[];
+  }[];
+
   else?: AST[];
 };
 
 /**
- * =========================
+ * =========================================================
  * CASE
- * =========================
+ * =========================================================
  */
 export type CaseNode = {
   type: "Case";
+
   expr: Expr;
-  branches: { value: Expr; body: AST[] }[];
+
+  branches: {
+    value: Expr;
+    body: AST[];
+  }[];
+
   else?: AST[];
 };
 
 /**
- * =========================
+ * =========================================================
  * WHILE
- * =========================
+ * =========================================================
  */
 export type WhileNode = {
   type: "While";
+
   cond: Expr;
+
   body: AST[];
 };
 
 /**
- * =========================
+ * =========================================================
  * FOR
- * =========================
+ * =========================================================
  */
 export type ForNode = {
   type: "For";
+
   v: string;
+
   from: Expr;
+
   to: Expr;
+
   step?: Expr;
+
   body: AST[];
 };
 
 /**
- * =========================
- * CALL STATEMENT
- * =========================
+ * =========================================================
+ * CALL (normal function)
+ * =========================================================
  */
 export type Call = {
   type: "Call";
+
   name: string;
+
   args: Expr[];
 };
 
 /**
- * =========================
- * FUNCTION BLOCK CALL ⭐
- * TON1(IN := TRUE)
- * =========================
+ * =========================================================
+ * FB CALL (TON1(IN := TRUE))
+ * =========================================================
  */
 export type FBCall = {
   type: "FBCall";
+
   name: string;
 
   args: {

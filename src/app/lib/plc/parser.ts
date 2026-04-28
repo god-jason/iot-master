@@ -14,24 +14,30 @@ import {
   WhileNode
 } from "./ast";
 
-import { Token } from "./lexer";
+import {Token} from "./lexer";
 
 /**
  * =========================================================
- * Parser (Final IEC 61131-3 ST Parser)
+ * IEC 61131-3 ST PARSER (FULL TYPE + ARRAY + STRUCT)
  * =========================================================
  */
 export function parser(tokens: Token[]): Program {
 
-  const iRef = { i: 0 };
+  const iRef = {i: 0};
 
   const peek = () => tokens[iRef.i];
   const next = () => tokens[iRef.i++];
 
   const is = (t: any, v: string) => t && t.value === v;
 
+  /**
+   * =========================================================
+   * OP PREC
+   * =========================================================
+   */
   const PREC: Record<string, number> = {
     OR: 1,
+    XOR: 1,
     AND: 2,
     "==": 3,
     "<>": 3,
@@ -41,62 +47,31 @@ export function parser(tokens: Token[]): Program {
     "-": 4,
     "*": 5,
     "/": 5,
+    MOD: 5
   };
 
-  function parseTimeLiteral(v: string): number {
-    v = v.toUpperCase().replace(/^T#/, "");
-
-    const regex = /(\d+)(MS|S|M|H)/g;
-
-    let total = 0;
-    let match;
-
-    while ((match = regex.exec(v))) {
-      const num = parseInt(match[1], 10);
-      const unit = match[2];
-
-      switch (unit) {
-        case "MS": total += num; break;
-        case "S": total += num * 1000; break;
-        case "M": total += num * 60 * 1000; break;
-        case "H": total += num * 3600 * 1000; break;
-      }
-    }
-
-    return total;
-  }
-
-  // =========================================================
-  // Expression
-  // =========================================================
+  /**
+   * =========================================================
+   * Expression
+   * =========================================================
+   */
   function parseExpr(minPrec = 0): Expr {
 
     function primary(): Expr {
       const t = next();
-      if (!t) return { type: "num", value: 0 };
+      if (!t) return {type: "num", value: 0};
 
-      // NOT unary
-      if (t.type === "kw" && t.value === "NOT") {
-        return {
-          type: "unary",
-          op: "not",
-          value: parseExpr(6)
-        };
-      }
-
-      if (t.type === "num") return { type: "num", value: t.value as number };
-      if (t.type === "str") return { type: "str", value: t.value as string };
+      if (t.type === "num") return {type: "num", value: t.value as number};
+      if (t.type === "str") return {type: "str", value: t.value as string};
 
       if (t.type === "time") {
-        return {
-          type: "num",
-          value: parseTimeLiteral(t.value as string)
-        };
+        return {type: "num", value: t.value as number};
       }
 
       if (t.type === "kw") {
-        if (t.value === "TRUE") return { type: "bool", value: true };
-        if (t.value === "FALSE") return { type: "bool", value: false };
+        if (t.value === "TRUE") return {type: "bool", value: true};
+        if (t.value === "FALSE") return {type: "bool", value: false};
+        if (t.value === "NOT") return {type: "unary", op: "not", value: parseExpr(6)};
       }
 
       if (t.type === "id") {
@@ -113,13 +88,13 @@ export function parser(tokens: Token[]): Program {
           }
 
           next();
-          return { type: "call", name, args };
+          return {type: "call", name, args};
         }
 
-        return { type: "var", name };
+        return {type: "var", name};
       }
 
-      return { type: "num", value: 0 };
+      return {type: "num", value: 0};
     }
 
     let left = primary();
@@ -130,9 +105,8 @@ export function parser(tokens: Token[]): Program {
 
       let op = t.value as string;
 
-      // normalize AND / OR
       if (t.type === "kw") {
-        if (op !== "AND" && op !== "OR") break;
+        if (!["AND", "OR", "XOR", "MOD"].includes(op)) break;
       }
 
       const prec = PREC[op];
@@ -142,31 +116,109 @@ export function parser(tokens: Token[]): Program {
 
       const right = parseExpr(prec + 1);
 
-      left = {
-        type: "bin",
-        op: op,
-        left,
-        right
-      } as any;
+      left = {type: "bin", op, left, right} as any;
     }
 
     return left;
   }
 
-  // =========================================================
-  // Assign
-  // =========================================================
+  /**
+   * =========================================================
+   * TYPE SYSTEM ⭐ NEW
+   * =========================================================
+   */
+
+  type TypeNode =
+    | { kind: "basic"; name: string }
+    | { kind: "array"; base: TypeNode; from: number; to: number }
+    | { kind: "struct"; members: Record<string, TypeNode> }
+    | { kind: "alias"; name: string };
+
+  function parseType(): TypeNode {
+
+    // ARRAY [0..10] OF INT
+    if (peek()?.value === "ARRAY") {
+      next();
+      next(); // [
+
+      const from = Number(next().value);
+      next(); // ..
+
+      const to = Number(next().value);
+      next(); // ]
+
+      next(); // OF
+
+      const base = parseType();
+
+      return {
+        kind: "array",
+        from,
+        to,
+        base
+      };
+    }
+
+    // STRUCT
+    if (peek()?.value === "STRUCT") {
+      next();
+
+      const members: Record<string, TypeNode> = {};
+
+      while (peek() && peek().value !== "END_STRUCT") {
+        const name = next().value as string;
+
+        next(); // :
+
+        const t = parseType();
+
+        if (peek()?.value === ";") next();
+
+        members[name] = t;
+      }
+
+      next();
+
+      return {
+        kind: "struct",
+        members
+      };
+    }
+
+    // basic / alias
+    const name = next().value as string;
+
+    return {
+      kind: "basic",
+      name
+    };
+  }
+
+  /**
+   * =========================================================
+   * ASSIGN
+   * =========================================================
+   */
   function parseAssign(): Assign {
     const left = next().value as string;
     next(); // :=
 
+    const right = parseExpr();
+
+    if (peek()?.value === ";") next();
+
     return {
       type: "Assign",
       left,
-      right: parseExpr()
+      right
     };
   }
 
+  /**
+   * =========================================================
+   * CALL / FB CALL
+   * =========================================================
+   */
   function parseCall(): Call | any {
     const name = next().value as string;
     next(); // (
@@ -175,44 +227,64 @@ export function parser(tokens: Token[]): Program {
 
     while (peek() && peek().value !== ")") {
 
-      // 🔥 命名参数 IN := xxx
-      if (
-        peek()?.type === "id" &&
-        tokens[iRef.i + 1]?.value === ":="
-      ) {
+      if (peek()?.type === "id" && tokens[iRef.i + 1]?.value === ":=") {
         const argName = next().value as string;
-        next(); // :=
-
+        next();
         const value = parseExpr();
-
-        args.push({ name: argName, value });
-
+        args.push({name: argName, value});
       } else {
-        // 普通函数参数
         args.push(parseExpr());
       }
 
       if (peek()?.value === ",") next();
     }
 
-    next(); // )
+    next();
 
-    // 🔥 判断是否 FBCall（是否包含命名参数）
-    const hasNamed = args.some(a => typeof a === "object" && a.name);
+    const hasNamed = args.some(a => a.name);
 
     if (hasNamed) {
-      return {
-        type: "FBCall",
-        name,
-        args
-      };
+      return {type: "FBCall", name, args};
     }
 
-    return {
-      type: "Call",
-      name,
-      args
-    };
+    return {type: "Call", name, args};
+  }
+
+  /**
+   * =========================================================
+   * VAR DECL ⭐ UPDATED (TYPE SUPPORT)
+   * =========================================================
+   */
+  function parseVarDecl(scope: any): VarDecl {
+    next();
+
+    const vars: any[] = [];
+
+    while (peek() && peek().value !== "END_VAR") {
+
+      const name = next().value as string;
+
+      let dataType: any;
+      let init;
+
+      if (peek()?.value === ":") {
+        next();
+        dataType = parseType(); // ⭐ NEW TYPE SYSTEM
+      }
+
+      if (peek()?.value === ":=") {
+        next();
+        init = parseExpr();
+      }
+
+      if (peek()?.value === ";") next();
+
+      vars.push({name, dataType, init});
+    }
+
+    next();
+
+    return {type: "VarDecl", scope, vars};
   }
 
   // =========================================================
@@ -223,17 +295,19 @@ export function parser(tokens: Token[]): Program {
     if (!t) return;
 
     if (t.type == "comment")
-    return {
-      type: "Comment",
-      kind: t.kind,
-      value: t.value
-    };
+      return {
+        type: "Comment",
+        kind: t.kind,
+        value: t.value
+      };
     return undefined
   }
 
-  // =========================================================
-  // IF
-  // =========================================================
+  /**
+   * =========================================================
+   * IF
+   * =========================================================
+   */
   function parseIf(): IfNode {
     next();
     const cond = parseExpr();
@@ -256,7 +330,7 @@ export function parser(tokens: Token[]): Program {
           if (s) body.push(s);
         }
 
-        elseif.push({ cond: c, body });
+        elseif.push({cond: c, body});
         continue;
       }
 
@@ -277,16 +351,18 @@ export function parser(tokens: Token[]): Program {
 
     next();
 
-    return { type: "If", cond, then, elseif, else: elseBody };
+    return {type: "If", cond, then, elseif, else: elseBody};
   }
 
-  // =========================================================
-  // WHILE
-  // =========================================================
+  /**
+   * =========================================================
+   * WHILE
+   * =========================================================
+   */
   function parseWhile(): WhileNode {
     next();
     const cond = parseExpr();
-    next(); // DO
+    next();
 
     const body: AST[] = [];
 
@@ -297,17 +373,19 @@ export function parser(tokens: Token[]): Program {
 
     next();
 
-    return { type: "While", cond, body };
+    return {type: "While", cond, body};
   }
 
-  // =========================================================
-  // FOR
-  // =========================================================
+  /**
+   * =========================================================
+   * FOR
+   * =========================================================
+   */
   function parseFor(): ForNode {
     next();
 
     const v = next().value as string;
-    next(); // :=
+    next();
 
     const from = parseExpr();
     next(); // TO
@@ -332,21 +410,35 @@ export function parser(tokens: Token[]): Program {
 
     next();
 
-    return { type: "For", v, from, to, step, body };
+    return {type: "For", v, from, to, step, body};
   }
 
-  // =========================================================
-  // CASE
-  // =========================================================
+  /**
+   * =========================================================
+   * CASE
+   * =========================================================
+   */
   function parseCase(): CaseNode {
     next();
 
     const expr = parseExpr();
-    next(); // OF
+    next();
 
     const branches: any[] = [];
+    let elseBody: AST[] | undefined;
 
     while (peek() && peek().value !== "END_CASE") {
+
+      if (is(peek(), "ELSE")) {
+        next();
+        elseBody = [];
+
+        while (peek() && peek().value !== "END_CASE") {
+          const s = parseStmt();
+          if (s) elseBody.push(s);
+        }
+        break;
+      }
 
       const value = parseExpr();
 
@@ -354,70 +446,27 @@ export function parser(tokens: Token[]): Program {
 
       const body: AST[] = [];
 
-      while (peek()) {
-        const t = peek();
-        if (!t) break;
-
-        if (t.value === "END_CASE") break;
-
-        if (
-          (t.type === "num" || t.type === "str" || t.type === "id") &&
-          tokens[iRef.i + 1]?.value === ":"
-        ) break;
-
+      while (peek() && peek().value !== "END_CASE") {
+        if (peek()?.value === "ELSE") break;
         const s = parseStmt();
         if (s) body.push(s);
       }
 
-      branches.push({ value, body });
+      branches.push({value, body});
     }
 
     next();
 
-    return { type: "Case", expr, branches };
+    return {type: "Case", expr, branches, else: elseBody};
   }
 
-  // =========================================================
-  // VAR DECL
-  // =========================================================
-  function parseVarDecl(scope: any): VarDecl {
-    next();
-
-    const vars: any[] = [];
-
-    while (peek() && peek().value !== "END_VAR") {
-
-      const name = next().value as string;
-
-      let dataType: string | undefined;
-      let init;
-
-      if (peek()?.value === ":") {
-        next();
-        dataType = next().value as string;
-      }
-
-      if (peek()?.value === ":=") {
-        next();
-        init = parseExpr();
-      }
-
-      if (peek()?.value === ";") next();
-
-      vars.push({ name, dataType, init });
-    }
-
-    next();
-
-    return { type: "VarDecl", scope, vars };
-  }
-
-  // =========================================================
-  // FUNCTION
-  // =========================================================
+  /**
+   * =========================================================
+   * FUNCTION / FB
+   * =========================================================
+   */
   function parseFunction(): FunctionDecl {
     next();
-
     const name = next().value as string;
 
     const body: AST[] = [];
@@ -429,20 +478,11 @@ export function parser(tokens: Token[]): Program {
 
     next();
 
-    return {
-      type: "Function",
-      name,
-      params: [],
-      body
-    };
+    return {type: "Function", name, params: [], body};
   }
 
-  // =========================================================
-  // FUNCTION BLOCK
-  // =========================================================
   function parseFB(): FunctionBlockDecl {
     next();
-
     const name = next().value as string;
 
     const vars = {
@@ -462,17 +502,14 @@ export function parser(tokens: Token[]): Program {
 
     next();
 
-    return {
-      type: "FunctionBlock",
-      name,
-      vars,
-      body
-    };
+    return {type: "FunctionBlock", name, vars, body};
   }
 
-  // =========================================================
-  // DISPATCHER
-  // =========================================================
+  /**
+   * =========================================================
+   * DISPATCHER
+   * =========================================================
+   */
   function parseStmt(): AST | undefined {
 
     const t = peek();
@@ -488,7 +525,7 @@ export function parser(tokens: Token[]): Program {
     if (is(t, "FUNCTION")) return parseFunction();
     if (is(t, "FUNCTION_BLOCK")) return parseFB();
 
-    if (t.type === "kw" && (t.value as string).startsWith("VAR")) {
+    if (t.type === "kw" && t.value.startsWith("VAR")) {
       return parseVarDecl(t.value);
     }
 
@@ -504,9 +541,11 @@ export function parser(tokens: Token[]): Program {
     return;
   }
 
-  // =========================================================
-  // PROGRAM
-  // =========================================================
+  /**
+   * =========================================================
+   * PROGRAM
+   * =========================================================
+   */
   const body: AST[] = [];
 
   while (iRef.i < tokens.length) {
@@ -514,5 +553,5 @@ export function parser(tokens: Token[]): Program {
     if (s) body.push(s);
   }
 
-  return { type: "Program", body };
+  return {type: "Program", body};
 }
