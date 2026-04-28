@@ -7,11 +7,13 @@ import {PageComponent} from './page/page.component';
 import {SettingComponent} from './setting/setting.component';
 import {AdminComponent} from './admin/admin.component';
 import {PasswordComponent} from './password/password';
+import {LadderEditor} from './ladder-editor/ladder-editor';
 
 export const adminRoutes: Routes = [
   //{path: '', pathMatch: 'full', redirectTo: ''},
   {path: 'login', component: LoginComponent},
   {path: 'password', component: PasswordComponent},
+  {path: 'lad', component: LadderEditor},
   {
     path: '',
     canActivate: [loginGuard],

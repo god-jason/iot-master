@@ -43,6 +43,29 @@ export function parser(tokens: Token[]): Program {
     "/": 5,
   };
 
+  function parseTimeLiteral(v: string): number {
+    v = v.toUpperCase().replace(/^T#/, "");
+
+    const regex = /(\d+)(MS|S|M|H)/g;
+
+    let total = 0;
+    let match;
+
+    while ((match = regex.exec(v))) {
+      const num = parseInt(match[1], 10);
+      const unit = match[2];
+
+      switch (unit) {
+        case "MS": total += num; break;
+        case "S": total += num * 1000; break;
+        case "M": total += num * 60 * 1000; break;
+        case "H": total += num * 3600 * 1000; break;
+      }
+    }
+
+    return total;
+  }
+
   // =========================================================
   // Expression
   // =========================================================
@@ -63,6 +86,13 @@ export function parser(tokens: Token[]): Program {
 
       if (t.type === "num") return { type: "num", value: t.value as number };
       if (t.type === "str") return { type: "str", value: t.value as string };
+
+      if (t.type === "time") {
+        return {
+          type: "num",
+          value: parseTimeLiteral(t.value as string)
+        };
+      }
 
       if (t.type === "kw") {
         if (t.value === "TRUE") return { type: "bool", value: true };
