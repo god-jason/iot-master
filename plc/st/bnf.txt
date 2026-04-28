@@ -1,0 +1,350 @@
+(* =========================================================
+   IEC 61131-3 Structured Text (ST) 完整BNF
+   ========================================================= *)
+
+(* =========================================================
+   1. 程序结构
+   ========================================================= *)
+
+<program> ::=
+    { <declaration_block> }      (* 全局/局部声明 *)
+    <program_body>               (* 主程序 *)
+
+<program_body> ::=
+    "PROGRAM" <identifier>
+        { <program_item> }
+    "END_PROGRAM"
+
+
+<program_item> ::=
+      <statement>               (* 普通语句 *)
+    | <function_block_instance> (* FB实例调用 *)
+
+
+(* =========================================================
+   2. 变量声明系统
+   ========================================================= *)
+
+<declaration_block> ::=
+      "VAR" { <var_decl> } "END_VAR"                 (* 普通变量 *)
+    | "VAR_INPUT" { <var_decl> } "END_VAR"           (* 输入变量 *)
+    | "VAR_OUTPUT" { <var_decl> } "END_VAR"          (* 输出变量 *)
+    | "VAR_IN_OUT" { <var_decl> } "END_VAR"          (* 引用变量 *)
+    | "VAR_GLOBAL" { <var_decl> } "END_VAR"          (* 全局变量 *)
+
+<var_decl> ::=
+    <identifier_list> ":" <type> [ ":=" <expression> ] ";"
+
+<identifier_list> ::=
+    <identifier> { "," <identifier> }
+
+
+(* =========================================================
+   3. 类型系统（工业扩展）
+   ========================================================= *)
+
+<type> ::=
+      <basic_type>
+    | <array_type>
+    | <struct_type>
+    | <enum_type>
+    | <pointer_type>
+    | <identifier>   (* 自定义类型 *)
+
+<basic_type> ::=
+      "BOOL" | "BYTE" | "WORD" | "DWORD"
+    | "SINT" | "INT" | "DINT"
+    | "USINT" | "UINT" | "UDINT"
+    | "LINT" | "ULINT"
+    | "REAL" | "LREAL"
+    | "STRING" | "TIME"
+
+
+(* =========================================================
+   4. STRUCT（结构体）
+   ========================================================= *)
+
+<struct_type> ::=
+    "STRUCT"
+        { <struct_member> }
+    "END_STRUCT"
+
+<struct_member> ::=
+    <identifier> ":" <type> [ ":=" <expression> ] ";"
+
+
+(* =========================================================
+   5. ENUM（枚举）
+   ========================================================= *)
+
+<enum_type> ::=
+    "ENUM"
+        <identifier_list>
+    "END_ENUM"
+
+
+(* =========================================================
+   6. ARRAY（数组）
+   ========================================================= *)
+
+<array_type> ::=
+    "ARRAY" "[" <range_list> "]" "OF" <type>
+
+<range_list> ::=
+    <range> { "," <range> }
+
+<range> ::=
+    <integer> ".." <integer>
+
+
+(* =========================================================
+   7. POINTER（指针/地址）
+   ========================================================= *)
+
+<pointer_type> ::=
+    "POINTER" "TO" <type>
+
+<pointer_deref> ::=
+    "^" <variable>        (* 解引用 *)
+
+<address_of> ::=
+    "ADR" "(" <variable> ")"   (* 取地址 *)
+
+
+(* =========================================================
+   8. FUNCTION / FUNCTION_BLOCK
+   ========================================================= *)
+
+<function_decl> ::=
+    "FUNCTION" <identifier> ":" <type>
+        [ <declaration_block> ]
+        <statement_list>
+    "END_FUNCTION"
+
+
+<function_block_decl> ::=
+    "FUNCTION_BLOCK" <identifier>
+
+        [ <declaration_block> ]
+
+        [ <fb_init_block> ]   (* FB初始化 *)
+
+        <statement_list>
+
+    "END_FUNCTION_BLOCK"
+
+
+(* FB实例：带状态的对象 *)
+<function_block_instance> ::=
+    <identifier> ":" <identifier> ";"
+
+
+(* FB调用（执行） *)
+<fb_call> ::=
+    <identifier> "(" [ <fb_param_list> ] ")" ";"
+
+
+<fb_param_list> ::=
+    <fb_param> { "," <fb_param> }
+
+<fb_param> ::=
+    <identifier> ":=" <expression>
+
+
+(* FB初始化块（工业关键：状态初始化） *)
+<fb_init_block> ::=
+    "INITIALIZATION"
+        <statement_list>
+    "END_INITIALIZATION"
+
+
+(* =========================================================
+   9. TASK（PLC调度系统）
+   ========================================================= *)
+
+<task_configuration> ::=
+    "TASK" <identifier>
+        "INTERVAL" <time_literal>   (* 执行周期 *)
+        "PRIORITY" <integer>        (* 优先级 *)
+        "PROGRAM" <identifier>      (* 绑定程序 *)
+    ";"
+
+
+(* =========================================================
+   10. 语句系统
+   ========================================================= *)
+
+<statement_list> ::= { <statement> }
+
+<statement> ::=
+      <assignment>
+    | <if_statement>
+    | <for_statement>
+    | <while_statement>
+    | <case_statement>
+    | <function_call>
+    | <fb_call>
+    | <return_statement>
+
+
+(* 赋值 *)
+<assignment> ::=
+    <variable> ":=" <expression> ";"
+
+
+(* IF语句 *)
+<if_statement> ::=
+    "IF" <expression> "THEN"
+        <statement_list>
+    { "ELSIF" <expression> "THEN" <statement_list> }
+    [ "ELSE" <statement_list> ]
+    "END_IF" ";"
+
+
+(* FOR循环 *)
+<for_statement> ::=
+    "FOR" <identifier> ":=" <expression> "TO" <expression>
+    [ "BY" <expression> ]
+    "DO"
+        <statement_list>
+    "END_FOR" ";"
+
+
+(* WHILE循环 *)
+<while_statement> ::=
+    "WHILE" <expression> "DO"
+        <statement_list>
+    "END_WHILE" ";"
+
+
+(* CASE分支 *)
+<case_statement> ::=
+    "CASE" <expression> "OF"
+        { <case_branch> }
+    [ "ELSE" <statement_list> ]
+    "END_CASE" ";"
+
+
+<case_branch> ::=
+    <constant_list> ":" <statement_list>
+
+
+<constant_list> ::=
+    <constant> { "," <constant> }
+
+
+(* 函数调用 *)
+<function_call> ::=
+    <identifier> "(" [ <param_list> ] ")" ";"
+
+
+<param_list> ::=
+    <param> { "," <param> }
+
+<param> ::=
+    <identifier> ":=" <expression>
+
+
+(* 返回 *)
+<return_statement> ::=
+    "RETURN" [ <expression> ] ";"
+
+
+(* =========================================================
+   11. 表达式系统（优先级完整）
+   ========================================================= *)
+
+<expression> ::= <logical_or>
+
+<logical_or> ::= <logical_and> { "OR" <logical_and> }
+
+<logical_and> ::= <equality> { "AND" <equality> }
+
+<equality> ::= <relational> { ("=" | "<>") <relational> }
+
+<relational> ::= <additive> { ("<" | "<=" | ">" | ">=") <additive> }
+
+<additive> ::= <multiplicative> { ("+" | "-") <multiplicative> }
+
+<multiplicative> ::= <unary> { ("*" | "/") <unary> }
+
+<unary> ::= [ "NOT" | "-" ] <primary>
+
+
+<primary> ::=
+      <number>
+    | <boolean>
+    | <string>
+    | <variable>
+    | <function_call>
+    | <fb_call>
+    | "(" <expression> ")"
+
+
+(* =========================================================
+   12. 变量访问
+   ========================================================= *)
+
+<variable> ::=
+    <identifier> { "." <identifier> }   (* 支持结构体访问 *)
+
+
+(* =========================================================
+   13. 字面量
+   ========================================================= *)
+
+<number> ::= <integer> | <real>
+
+<boolean> ::= "TRUE" | "FALSE"
+
+<string> ::= "'" { any_char } "'"
+
+<time_literal> ::=
+    "T#" <number> ("ms" | "s" | "m" | "h")
+
+
+<constant> ::= <number> | <string> | <boolean>
+
+
+(* =========================================================
+   14. IO映射（工业PLC关键）
+   ========================================================= *)
+
+<memory_var> ::=
+    <identifier> "AT" <memory_address> ":" <type> ";"
+
+<memory_address> ::=
+      "%I" <address>   (* 输入 *)
+    | "%Q" <address>   (* 输出 *)
+    | "%M" <address>   (* 内存 *)
+
+
+(* =========================================================
+   15. 系统函数（标准库）
+   ========================================================= *)
+
+<system_function_call> ::=
+      "SIN" "(" <expression> ")"
+    | "COS" "(" <expression> ")"
+    | "SQRT" "(" <expression> ")"
+    | "ABS" "(" <expression> ")"
+    | "CONCAT" "(" <param_list> ")"
+    | "LEN" "(" <expression> ")"
+
+
+(* =========================================================
+   16. 编译指令（属性系统）
+   ========================================================= *)
+
+<directive> ::=
+    "{" <identifier> [ <directive_param> ] "}"
+
+<directive_param> ::= <string> | <identifier> | <number>
+
+
+(* =========================================================
+   17. 标识符规则
+   ========================================================= *)
+
+<identifier> ::=
+    letter { letter | digit | "_" }
