@@ -13,7 +13,7 @@ func gen(src string) string {
 	p := NewParser(NewLexer(src))
 	prog := p.ParseProgram()
 
-	g := NewLuaGen()
+	g := NewLuaGenerator()
 	return g.Write(prog)
 }
 
