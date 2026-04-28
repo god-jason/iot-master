@@ -143,6 +143,8 @@ type FunctionBlock struct {
 
 func (f *FunctionBlock) Pos() int { return f.PosVal }
 
+func (f *FunctionBlock) declNode() {}
+
 // =========================================================
 // TASK
 // =========================================================
@@ -331,7 +333,12 @@ type Function struct {
 	ReturnType Type
 	Vars       []VarDecl
 	Body       []Stmt
+	PosVal     int
 }
+
+func (f *Function) Pos() int { return f.PosVal }
+
+func (f *Function) declNode() {}
 
 // =========================================================
 // RUNTIME STRUCT
