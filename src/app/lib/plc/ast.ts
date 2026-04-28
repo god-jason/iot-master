@@ -76,6 +76,7 @@ export type AST =
   | WhileNode
   | ForNode
   | Call
+  | FBCall
   | VarDecl
   | FunctionDecl
   | FunctionBlockDecl
@@ -226,4 +227,14 @@ export type Call = {
   type: "Call";
   name: string;
   args: Expr[];
+};
+
+
+export type FBCall = {
+  type: "FBCall";
+  name: string; // TON1
+  args: {
+    name: string; // IN / PT
+    value: Expr;
+  }[];
 };

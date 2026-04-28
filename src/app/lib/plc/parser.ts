@@ -137,23 +137,52 @@ export function parser(tokens: Token[]): Program {
     };
   }
 
-  // =========================================================
-  // Call
-  // =========================================================
-  function parseCall(): Call {
+  function parseCall(): Call | any {
     const name = next().value as string;
-    next();
+    next(); // (
 
-    const args: Expr[] = [];
+    const args: any[] = [];
 
     while (peek() && peek().value !== ")") {
-      args.push(parseExpr());
+
+      // 🔥 命名参数 IN := xxx
+      if (
+        peek()?.type === "id" &&
+        tokens[iRef.i + 1]?.value === ":="
+      ) {
+        const argName = next().value as string;
+        next(); // :=
+
+        const value = parseExpr();
+
+        args.push({ name: argName, value });
+
+      } else {
+        // 普通函数参数
+        args.push(parseExpr());
+      }
+
       if (peek()?.value === ",") next();
     }
 
-    next();
+    next(); // )
 
-    return { type: "Call", name, args };
+    // 🔥 判断是否 FBCall（是否包含命名参数）
+    const hasNamed = args.some(a => typeof a === "object" && a.name);
+
+    if (hasNamed) {
+      return {
+        type: "FBCall",
+        name,
+        args
+      };
+    }
+
+    return {
+      type: "Call",
+      name,
+      args
+    };
   }
 
   // =========================================================

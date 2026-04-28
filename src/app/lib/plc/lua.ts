@@ -1,16 +1,15 @@
 import {
-  AST,
   Assign,
-  IfNode,
-  CaseNode,
-  WhileNode,
-  ForNode,
+  AST,
   Call,
-  Expr,
-  CommentNode,
-  VarDecl,
+  CaseNode,
+  CommentNode, FBCall,
+  ForNode,
+  FunctionBlockDecl,
   FunctionDecl,
-  FunctionBlockDecl
+  IfNode,
+  VarDecl,
+  WhileNode
 } from "./ast";
 
 /**
@@ -83,6 +82,24 @@ function genExpr(e: any): string {
 function genCall(node: Call): string {
   const args = (node.args || []).map(genExpr).join(", ");
   return `env.func.${node.name}(${args})`;
+}
+
+/**
+ * =========================================================
+ * FB Call（🔥新增）
+ * =========================================================
+ */
+function genFBCall(node: any, level: number): string {
+  const pad = indent(level);
+
+  let code = "";
+  code += `${pad}env.func.${node.name}:exec({\n`
+  for (const a of node.args || []) {
+    code += `${pad}  ${a.name} = ${genExpr(a.value)}\n`;
+  }
+  code += `${pad}})\n`;
+
+  return code;
 }
 
 /**
@@ -189,6 +206,11 @@ function genStmt(node: AST, level: number): string {
     case "Call": {
       const n = node as Call;
       return `${pad}${genCall(n)}`;
+    }
+
+    case "FBCall": {
+      const n = node as FBCall;
+      return `${genFBCall(n, level)}`;
     }
 
     case "If": {

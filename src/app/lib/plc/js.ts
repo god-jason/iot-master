@@ -51,7 +51,7 @@ function mapOp(op: string): string {
  * =========================================================
  */
 function genExpr(e: any): string {
-  if (!e) return "null";
+  if (!e) return "undefined";
 
   switch (e.type) {
 
@@ -80,7 +80,7 @@ function genExpr(e: any): string {
       return genCall(e);
 
     default:
-      return "null";
+      return "undefined";
   }
 }
 
