@@ -234,6 +234,7 @@ export type StructTypeRef = {
  */
 export type ArrayType = {
   kind: "array";
+  name: string;
 
   ranges: {
     from: number;

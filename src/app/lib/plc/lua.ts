@@ -1,322 +1,389 @@
 import {
-  AST,
   Assign,
+  AST,
   Call,
   CaseNode,
-  CommentNode,
-  FBCall,
   ForNode,
   FunctionBlockDecl,
   FunctionDecl,
   IfNode,
   Program,
+  ReturnStmt,
   VarDecl,
   WhileNode
 } from "./ast";
 
 /**
  * =========================================================
- * Utils
+ * ST → LUA OPERATOR MAP
+ * =========================================================
+ */
+const OP_MAP: Record<string, string> = {
+  AND: "and",
+  OR: "or",
+  XOR: "~",
+  NOT: "not",
+  MOD: "%",
+  "==": "==",
+  "<>": "~=",
+  "<": "<",
+  ">": ">",
+  "<=": "<=",
+  ">=": ">=",
+  "+": "+",
+  "-": "-",
+  "*": "*",
+  "/": "/"
+};
+
+/**
+ * =========================================================
+ * INDENT
  * =========================================================
  */
 function indent(n: number) {
   return "  ".repeat(n);
 }
 
-function mapOp(op: string): string {
-  switch (op) {
-    case "AND": return "and";
-    case "OR": return "or";
-    case "NOT": return "not";
-    case "<>": return "~=";
-    case "XOR": return "~="; // Lua 没 xor（可扩展）
-    case "MOD": return "%";
-    default: return op;
-  }
-}
-
 /**
  * =========================================================
- * Expr
+ * DEFAULT VALUE BY TYPE
  * =========================================================
  */
-function genExpr(e: any): string {
-  if (!e) return "nil";
+function defaultValue(type?: string): string {
+  if (!type) return "nil";
 
-  switch (e.type) {
-    case "num": return String(e.value);
-    case "bool": return e.value ? "true" : "false";
-    case "str": return `"${e.value}"`;
-    case "time": return String(e.value);
-
-    case "var":
-      return `ctx.${e.name}`;
-
-    case "bin":
-      return `(${genExpr(e.left)} ${mapOp(e.op)} ${genExpr(e.right)})`;
-
-    case "unary":
-      return `(not ${genExpr(e.value)})`;
-
-    case "call":
-      return `st.${e.name}(${(e.args || []).map(genExpr).join(", ")})`;
-
+  switch (type.toUpperCase()) {
+    case "BOOL":
+      return "false";
+    case "INT":
+    case "DINT":
+    case "REAL":
+    case "LREAL":
+    case "UINT":
+      return "0";
+    case "STRING":
+      return '""';
     default:
-      return "nil";
+      return `types.${type}:new()`;
   }
 }
 
 /**
  * =========================================================
- * INIT (ONLY top-level VAR)
+ * MAIN
  * =========================================================
  */
-function genInit(ast: AST): string {
-  if (ast.type !== "Program") return "";
+export function genLua(ast: Program): string {
 
-  let code = "";
+  type StmtWithComment = {
+    stmt: AST;
+    comment?: string;
+  };
 
-  for (const node of ast.body || []) {
-    if (node.type !== "VarDecl") continue;
+  const buffer: StmtWithComment[] = [];
 
-    const v = node as VarDecl;
-
-    for (const item of v.vars) {
-      const init = item.init ? genExpr(item.init) : "nil";
-      code += `  ctx.${item.name} = ${init}\n`;
-    }
+  function push(stmt: AST, comment?: string) {
+    buffer.push({stmt, comment});
   }
 
-  return code;
-}
+  /**
+   * =========================================================
+   * EXPR
+   * =========================================================
+   */
+  function expr(e: any): string {
+    if (!e) return "nil";
 
-/**
- * =========================================================
- * FUNCTION BLOCK → st.xxx(obj, params)
- * =========================================================
- */
-function genFB(node: FunctionBlockDecl): string {
-  let code = `function st.${node.name}(obj, params)\n`;
-  code += `  obj = obj or {}\n`;
-  code += `  params = params or {}\n\n`;
+    switch (e.type) {
 
-  const groups = [
-    ...node.vars.input,
-    ...node.vars.inout,
-    ...node.vars.output
-  ];
+      case "num":
+        return String(e.value);
+      case "bool":
+        return e.value ? "true" : "false";
+      case "str":
+        return `"${e.value}"`;
 
-  for (const g of groups) {
-    for (const v of g.vars) {
-      code += `  obj.${v.name} = params.${v.name}\n`;
+      case "var":
+        return `ctx.${e.name}`;
+
+      case "member":
+        return `${expr(e.object)}.${e.property}`;
+
+      case "index":
+        return `${expr(e.array)}[${expr(e.index)}]`;
+
+      case "bin": {
+        const op = OP_MAP[e.op] || e.op;
+        return `(${expr(e.left)} ${op} ${expr(e.right)})`;
+      }
+
+      case "unary": {
+        const op = OP_MAP[e.op] || e.op;
+        return `(${op} ${expr(e.value)})`;
+      }
+
+      case "call":
+        return `st.${e.name}(${(e.args || []).map(expr).join(", ")})`;
     }
+
+    return "nil";
   }
 
-  code += "\n";
+  /**
+   * =========================================================
+   * COMMENT ATTACH
+   * =========================================================
+   */
+  function emit(stmt: AST, comment?: string, depth = 1): string {
+    const c = comment ? `${indent(depth)}-- ${comment}\n` : "";
 
-  code += (node.body || [])
-    .map(s => genStmt(s, 1))
-    .join("\n");
+    switch (stmt.type) {
 
-  code += `\n  return obj\nend\n\n`;
+      case "Assign": {
+        const s = stmt as Assign;
+        return c + `${indent(depth)}ctx.${s.left} = ${expr(s.right)}`;
+      }
 
-  return code;
-}
+      case "Call": {
+        const s = stmt as Call;
+        return c + `${indent(depth)}st.${s.name}(${(s.args || []).map(expr).join(", ")})`;
+      }
 
-/**
- * =========================================================
- * FUNCTION
- * =========================================================
- */
-function genFunction(node: FunctionDecl): string {
-  let code = `function st.${node.name}(ctx)\n`;
+      case "FBCall": {
+        const s = stmt as any;
 
-  code += (node.body || [])
-    .map(s => genStmt(s, 1))
-    .join("\n");
+        const args = (s.args || [])
+          .map((a: any) => `${a.name} = ${expr(a.value)}`)
+          .join(", ");
 
-  code += `\nend\n\n`;
+        return c + `${indent(depth)}ctx.${s.name}:exec({${args}})`;
+      }
 
-  return code;
-}
+      case "Return": {
+        const s = stmt as ReturnStmt;
+        return c + `${indent(depth)}return ${s.value ? expr(s.value) : ""}`;
+      }
 
-/**
- * =========================================================
- * FB CALL (table param)
- * =========================================================
- */
-function genFBCall(node: FBCall, level: number): string {
-  const pad = indent(level);
+      case "If": {
+        const s = stmt as IfNode;
 
-  const params: string[] = [];
+        let code = c + `${indent(depth)}if ${expr(s.cond)} then\n`;
 
-  for (const a of node.args || []) {
-    params.push(`${a.name} = ${genExpr(a.value)}`);
-  }
+        code += s.then.map(x => emit(x, undefined, depth + 1)).join("\n");
 
-  const paramStr = params.length ? `{${params.join(", ")}}` : "{}";
-
-  return `${pad}ctx.${node.name} = st.${node.name}(ctx.${node.name}, ${paramStr})`;
-}
-
-/**
- * =========================================================
- * STATEMENT
- * =========================================================
- */
-function genStmt(node: AST, level: number): string {
-  const pad = indent(level);
-
-  switch (node.type) {
-
-    case "Assign": {
-      const n = node as Assign;
-      return `${pad}ctx.${n.left} = ${genExpr(n.right)}`;
-    }
-
-    case "Call": {
-      const n = node as Call;
-      return `${pad}st.${n.name}(${(n.args || []).map(genExpr).join(", ")})`;
-    }
-
-    case "FBCall":
-      return genFBCall(node as FBCall, level);
-
-    case "If": {
-      const n = node as IfNode;
-
-      let code = `${pad}if ${genExpr(n.cond)} then\n`;
-
-      code += (n.then || []).map(s => genStmt(s, level + 1)).join("\n");
-
-      if (n.elseif) {
-        for (const e of n.elseif) {
-          code += `\n${pad}elseif ${genExpr(e.cond)} then\n`;
-          code += e.body.map(s => genStmt(s, level + 1)).join("\n");
+        for (const e of s.elseif || []) {
+          code += `\n${indent(depth)}elseif ${expr(e.cond)} then\n`;
+          code += e.body.map(x => emit(x, undefined, depth + 1)).join("\n");
         }
+
+        if (s.else) {
+          code += `\n${indent(depth)}else\n`;
+          code += s.else.map(x => emit(x, undefined, depth + 1)).join("\n");
+        }
+
+        return code + `\n${indent(depth)}end`;
       }
 
-      if (n.else) {
-        code += `\n${pad}else\n`;
-        code += n.else.map(s => genStmt(s, level + 1)).join("\n");
+      case "While": {
+        const s = stmt as WhileNode;
+        return c +
+          `${indent(depth)}while ${expr(s.cond)} do\n` +
+          s.body.map(x => emit(x, undefined, depth + 1)).join("\n") +
+          `\n${indent(depth)}end`;
       }
 
-      code += `\n${pad}end`;
-      return code;
-    }
-
-    case "While": {
-      const n = node as WhileNode;
-
-      let code = `${pad}while ${genExpr(n.cond)} do\n`;
-      code += (n.body || []).map(s => genStmt(s, level + 1)).join("\n");
-      code += `\n${pad}end`;
-
-      return code;
-    }
-
-    case "For": {
-      const n = node as ForNode;
-
-      const step = n.step ? genExpr(n.step) : "1";
-
-      let code = `${pad}for ${n.v} = ${genExpr(n.from)}, ${genExpr(n.to)}, ${step} do\n`;
-      code += (n.body || []).map(s => genStmt(s, level + 1)).join("\n");
-      code += `\n${pad}end`;
-
-      return code;
-    }
-
-    case "Case": {
-      const n = node as CaseNode;
-
-      let code = `${pad}do\n`;
-      code += `${pad}  local v = ${genExpr(n.expr)}\n`;
-
-      n.branches.forEach((b, i) => {
-        code += `${pad}  ${i === 0 ? "if" : "elseif"} v == ${genExpr(b.value)} then\n`;
-        code += b.body.map(s => genStmt(s, level + 2)).join("\n") + "\n";
-      });
-
-      if (n.else) {
-        code += `${pad}  else\n`;
-        code += n.else.map(s => genStmt(s, level + 2)).join("\n") + "\n";
+      case "For": {
+        const s = stmt as ForNode;
+        return c +
+          `${indent(depth)}for ${s.v} = ${expr(s.from)}, ${expr(s.to)}, ${s.step ? expr(s.step) : "1"} do\n` +
+          s.body.map(x => emit(x, undefined, depth + 1)).join("\n") +
+          `\n${indent(depth)}end`;
       }
 
-      code += `${pad}end`;
-      return code;
+      case "Case": {
+        const s = stmt as CaseNode;
+
+        let code = c + `${indent(depth)}do\n`;
+        code += `${indent(depth + 1)}local v = ${expr(s.expr)}\n`;
+
+        const b = s.branches || [];
+
+        for (let i = 0; i < b.length; i++) {
+          const br = b[i];
+          const head = i === 0 ? "if" : "elseif";
+
+          code += `${indent(depth + 1)}${head} v == ${expr(br.value)} then\n`;
+
+          code += br.body
+            .map(x => emit(x, undefined, depth + 2))
+            .join("\n") + "\n";
+        }
+
+        if (s.else?.length) {
+          code += `${indent(depth + 1)}else\n`;
+          code += s.else
+            .map(x => emit(x, undefined, depth + 2))
+            .join("\n") + "\n";
+        }
+
+        code += `${indent(depth + 1)}end\n`;
+        code += `${indent(depth)}end`;
+
+        return code;
+      }
+
+      default:
+        return "";
     }
-
-    case "Comment":
-      return `${pad}-- ${(node as CommentNode).value}`;
-
-    default:
-      return "";
   }
-}
 
-/**
- * =========================================================
- * EXECUTE (main program logic)
- * =========================================================
- */
-function genExecute(ast: AST): string {
-  if (ast.type !== "Program") return "";
+  /**
+   * =========================================================
+   * TYPES
+   * =========================================================
+   */
+  function genTypes(ast: Program): string {
+    let code = `local types = {}\n\n`;
 
+    for (const n of ast.body) {
+      if (n.type !== "TypeDecl") continue;
+
+      const t: any = n;
+
+      if (t.def.kind === "struct") {
+        code += `types.${t.name} = {}\n`;
+        code += `function types.${t.name}:new()\n`;
+        code += `  local obj = {}\n`;
+
+        for (const f of t.def.fields || []) {
+          code += `  obj.${f.name} = nil\n`;
+        }
+
+        code += `  return obj\nend\n\n`;
+      }
+
+      if (t.def.kind === "basic") {
+        code += `types.${t.name} = { new = function() return nil end }\n\n`;
+      }
+    }
+
+    return code;
+  }
+
+  /**
+   * =========================================================
+   * INIT (VAR → ctx + default value)
+   * =========================================================
+   */
+  function genInit(ast: Program): string {
+    let code = `function program.init(ctx)\n`;
+
+    for (const n of ast.body) {
+      if (n.type !== "VarDecl") continue;
+
+      const v = n as VarDecl;
+
+      for (const item of v.vars) {
+
+        const init =
+          item.init
+            ? expr(item.init)
+            : defaultValue(item.dataType?.name);
+
+        code += `  ctx.${item.name} = ${init}\n`;
+      }
+    }
+
+    code += `end\n\n`;
+    return code;
+  }
+
+  /**
+   * =========================================================
+   * FUNCTION
+   * =========================================================
+   */
+  function genFunction(ast: FunctionDecl): string {
+    let code = `function program.${ast.name}(ctx)\n`;
+
+    for (const s of ast.body) {
+      code += emit(s) + "\n";
+    }
+
+    return code + `end\n\n`;
+  }
+
+  /**
+   * =========================================================
+   * FB
+   * =========================================================
+   */
+  function genFB(ast: FunctionBlockDecl): string {
+    let code = `function st.${ast.name}(self, params)\n`;
+
+    code += `  self = self or {}\n`;
+
+    const vars = [
+      ...ast.vars.input,
+      ...ast.vars.output,
+      ...ast.vars.inout,
+      ...ast.vars.local,
+      ...ast.vars.temp
+    ];
+
+    for (const v of vars) {
+      for (const item of v.vars) {
+        const init = item.init ? expr(item.init) : defaultValue(item.dataType?.name);
+        code += `  self.${item.name} = ${init}\n`;
+      }
+    }
+
+    for (const s of ast.body) {
+      code += emit(s) + "\n";
+    }
+
+    return code + `\n  return self\nend\n\n`;
+  }
+
+  /**
+   * =========================================================
+   * EXECUTE
+   * =========================================================
+   */
+  function genExecute(ast: Program): string {
+    let code = `function program.execute(ctx)\n`;
+
+    for (const s of ast.body) {
+      if (["VarDecl", "Function", "FunctionBlock", "TypeDecl"].includes(s.type))
+        continue;
+
+      code += emit(s) + "\n";
+    }
+
+    return code + `end\n\n`;
+  }
+
+  /**
+   * =========================================================
+   * ENTRY
+   * =========================================================
+   */
   let code = "";
 
-  for (const node of ast.body || []) {
+  code += `local program = {}\n\n`;
 
-    if (
-      node.type === "VarDecl" ||
-      node.type === "Function" ||
-      node.type === "FunctionBlock"
-    ) continue;
-
-    code += genStmt(node, 1) + "\n";
-  }
-
-  return code;
-}
-
-/**
- * =========================================================
- * ENTRY
- * =========================================================
- */
-export function genLua(ast: AST): string {
-
-  let code = `local st = {}\n\n`;
-
-  // =========================
-  // INIT
-  // =========================
-  code += `function st.init(ctx)\n`;
+  code += genTypes(ast);
   code += genInit(ast);
-  code += `end\n\n`;
 
-  // =========================
-  // FUNCTION + FB
-  // =========================
-  if (ast.type === "Program") {
-    for (const node of ast.body || []) {
-      if (node.type === "FunctionBlock") {
-        code += genFB(node);
-      }
-      if (node.type === "Function") {
-        code += genFunction(node);
-      }
-    }
+  for (const n of ast.body) {
+    if (n.type === "Function") code += genFunction(n);
+    if (n.type === "FunctionBlock") code += genFB(n);
   }
 
-  // =========================
-  // EXECUTE
-  // =========================
-  code += `function st.execute(ctx)\n`;
   code += genExecute(ast);
-  code += `end\n\n`;
 
-  code += `return st\n`;
+  code += `return program\n`;
 
   return code;
 }
