@@ -251,7 +251,10 @@ func (g *LuaGen) genWhile(n *WhileStmt) {
 // =========================================================
 
 func (g *LuaGen) genCase(n *CaseStmt) {
-	g.wl("local __case = " + g.expr(n.Expr))
+	g.w("do")
+	g.push()
+
+	g.wl("local __v = " + g.expr(n.Expr))
 
 	first := true
 
@@ -259,7 +262,7 @@ func (g *LuaGen) genCase(n *CaseStmt) {
 
 		conds := []string{}
 		for _, v := range br.Values {
-			conds = append(conds, fmt.Sprintf("__case == %s", g.expr(v)))
+			conds = append(conds, fmt.Sprintf("__v == %s", g.expr(v)))
 		}
 
 		cond := strings.Join(conds, " or ")
@@ -287,6 +290,9 @@ func (g *LuaGen) genCase(n *CaseStmt) {
 		g.pop()
 	}
 
+	g.wl("end")
+
+	g.pop()
 	g.wl("end")
 }
 
@@ -332,11 +338,30 @@ func (g *LuaGen) expr(e Expr) string {
 	case *BinaryExpr:
 		return fmt.Sprintf("(%s %s %s)",
 			g.expr(v.Left),
-			v.Op,
+			g.luaOp(v.Op),
 			g.expr(v.Right),
 		)
 
 	default:
 		panic(fmt.Sprintf("unknown expr type=%T", e))
+	}
+}
+
+// =========================================================
+// operator mapping (ST -> Lua)
+// =========================================================
+
+func (g *LuaGen) luaOp(op string) string {
+	switch op {
+	case "AND":
+		return "and"
+	case "OR":
+		return "or"
+	case "NOT":
+		return "not"
+	case "<>":
+		return "~="
+	default:
+		return op
 	}
 }

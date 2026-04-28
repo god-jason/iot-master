@@ -114,7 +114,6 @@ func (p *Parser) parseFunction() DeclBlock {
 
 	p.inFunction = false
 	p.expect(END_FUNCTION)
-
 	return fn
 }
 
@@ -220,7 +219,7 @@ func (p *Parser) parseType() Type {
 }
 
 // =========================================================
-// STATEMENT
+// STATEMENTS
 // =========================================================
 
 func (p *Parser) parseStatement() Stmt {
@@ -243,35 +242,14 @@ func (p *Parser) parseStatement() Stmt {
 
 	case IDENT:
 		return p.parseAssignOrCall()
-	}
 
-	panic(fmt.Sprintf("unknown stmt %v (%s)", p.curToken.Type, p.curToken.Lit))
-}
-
-// =========================================================
-// ASSIGN / CALL
-// =========================================================
-
-func (p *Parser) parseAssignOrCall() Stmt {
-	expr := p.parseLValue()
-
-	if p.curToken.Type == ASSIGN {
+	case SEMI:
 		p.next()
-		right := p.parseExpression()
-		p.expect(SEMI)
-
-		return &AssignStmt{
-			Left:  expr,
-			Right: right,
-		}
+		return nil
 	}
 
-	if call, ok := expr.(*CallExpr); ok {
-		p.expect(SEMI)
-		return &CallStmt{Call: call}
-	}
-
-	panic("invalid statement")
+	panic(fmt.Sprintf("unknown stmt %v (%s)",
+		p.curToken.Type, p.curToken.Lit))
 }
 
 // =========================================================
@@ -283,8 +261,8 @@ func (p *Parser) parseIf() *IfStmt {
 
 	p.expect(IF)
 	stmt.Cond = p.parseExpression()
-
 	p.expect(THEN)
+
 	stmt.Then = p.parseBlock()
 
 	for p.curToken.Type == ELSIF {
@@ -315,7 +293,6 @@ func (p *Parser) parseFor() *ForStmt {
 	stmt := &ForStmt{}
 
 	p.expect(FOR)
-
 	stmt.Var = p.curToken.Lit
 	p.expect(IDENT)
 
@@ -372,7 +349,7 @@ func (p *Parser) parseReturn() *ReturnStmt {
 }
 
 // =========================================================
-// CASE（最终稳定版）
+// CASE (FINAL MERGED VERSION)
 // =========================================================
 
 func (p *Parser) parseCase() *CaseStmt {
@@ -382,66 +359,51 @@ func (p *Parser) parseCase() *CaseStmt {
 	c.Expr = p.parseExpression()
 	p.expect(OF)
 
+	var branch CaseBranch
+	var isElse bool
+
 	for p.curToken.Type != END_CASE && p.curToken.Type != EOF {
 
 		if p.curToken.Type == ELSE {
 			p.next()
-			c.Else = p.parseBlock()
+			isElse = true
 			continue
 		}
 
-		values := []Expr{p.parseExpression()}
+		//识别Label
+		if p.curToken.Type == NUMBER {
+			//保存上一个
+			if len(branch.Values) > 0 {
+				c.Branches = append(c.Branches, branch)
+			}
 
-		for p.curToken.Type == COMMA {
-			p.next()
-			values = append(values, p.parseExpression())
+			branch = CaseBranch{}
+			branch.Values = append(branch.Values, p.parseExpression())
+
+			for p.curToken.Type == COMMA {
+				p.next()
+				branch.Values = append(branch.Values, p.parseExpression())
+			}
+
+			p.expect(COLON)
+			continue
 		}
 
-		p.expect(COLON)
+		//逐行识别
+		if isElse {
+			c.Else = append(c.Else, p.parseStatement())
+		} else {
+			branch.Body = append(branch.Body, p.parseStatement())
+		}
+	}
 
-		body := p.parseBlock()
-
-		c.Branches = append(c.Branches, CaseBranch{
-			Values: values,
-			Body:   body,
-		})
+	//保存上一个
+	if len(branch.Values) > 0 {
+		c.Branches = append(c.Branches, branch)
 	}
 
 	p.expect(END_CASE)
 	return c
-}
-
-// =========================================================
-// BLOCK（关键修复点）
-// =========================================================
-
-func (p *Parser) parseBlock() []Stmt {
-	var stmts []Stmt
-
-	for !isBlockEnd(p.curToken.Type) {
-
-		if p.curToken.Type == SEMI {
-			p.next()
-			continue
-		}
-
-		stmts = append(stmts, p.parseStatement())
-	}
-
-	return stmts
-}
-
-func isBlockEnd(t TokenType) bool {
-	return t == END_IF ||
-		t == END_FOR ||
-		t == END_WHILE ||
-		t == ELSE ||
-		t == ELSIF ||
-		t == END_PROGRAM ||
-		t == END_CASE ||
-		t == END_FUNCTION ||
-		t == END_FUNCTION_BLOCK ||
-		t == EOF
 }
 
 // =========================================================
@@ -466,7 +428,9 @@ func (p *Parser) parseLValue() Expr {
 		return call
 	}
 
-	return &VarExpr{Path: parts}
+	return &VarExpr{
+		Path: parts,
+	}
 }
 
 // =========================================================
@@ -499,7 +463,66 @@ func (p *Parser) parseArgs() []Param {
 }
 
 // =========================================================
-// EXPRESSIONS
+// ASSIGN / CALL
+// =========================================================
+
+func (p *Parser) parseAssignOrCall() Stmt {
+	expr := p.parseLValue()
+
+	if p.curToken.Type == ASSIGN {
+		p.next()
+		right := p.parseExpression()
+		p.expect(SEMI)
+
+		return &AssignStmt{
+			Left:  expr,
+			Right: right,
+		}
+	}
+
+	if call, ok := expr.(*CallExpr); ok {
+		p.expect(SEMI)
+		return &CallStmt{Call: call}
+	}
+
+	panic("invalid statement")
+}
+
+// =========================================================
+// BLOCK
+// =========================================================
+
+func (p *Parser) parseBlock() []Stmt {
+	var stmts []Stmt
+
+	for !isBlockEnd(p.curToken.Type) {
+
+		if p.curToken.Type == SEMI {
+			p.next()
+			continue
+		}
+
+		stmts = append(stmts, p.parseStatement())
+	}
+
+	return stmts
+}
+
+func isBlockEnd(t TokenType) bool {
+	return t == END_IF ||
+		t == END_FOR ||
+		t == END_WHILE ||
+		t == END_PROGRAM ||
+		t == END_FUNCTION ||
+		t == END_FUNCTION_BLOCK ||
+		t == END_CASE ||
+		t == ELSE ||
+		t == ELSIF ||
+		t == EOF
+}
+
+// =========================================================
+// EXPRESSIONS (PRATT)
 // =========================================================
 
 func (p *Parser) parseExpression() Expr {
@@ -545,10 +568,6 @@ func (p *Parser) parseBinary(min int) Expr {
 	return left
 }
 
-// =========================================================
-// PRIMARY
-// =========================================================
-
 func (p *Parser) parsePrimary() Expr {
 	switch p.curToken.Type {
 
@@ -579,11 +598,12 @@ func (p *Parser) parsePrimary() Expr {
 		return e
 	}
 
-	panic(fmt.Sprintf("bad expr %v (%s)", p.curToken.Type, p.curToken.Lit))
+	panic(fmt.Sprintf("bad expr %v (%s)",
+		p.curToken.Type, p.curToken.Lit))
 }
 
 // =========================================================
-// helper
+// HELPERS
 // =========================================================
 
 func atof(s string) float64 {

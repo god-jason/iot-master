@@ -137,8 +137,8 @@ END_PROGRAM
 
 	out := gen(src)
 
-	assertContains(t, out, "if a == 1 then")
-	assertContains(t, out, "elseif a == 2 then")
+	assertContains(t, out, "if __v == 1 then")
+	assertContains(t, out, "elseif __v == 2 then")
 	assertContains(t, out, "else")
 }
 
