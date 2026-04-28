@@ -7,28 +7,76 @@ export function lexer(input: string): Token[] {
   let i = 0;
 
   const keywords = new Set([
+    // =========================
+    // 控制流
+    // =========================
     "IF", "THEN", "ELSIF", "ELSE", "END_IF",
     "FOR", "TO", "BY", "DO", "END_FOR",
     "WHILE", "END_WHILE",
     "REPEAT", "UNTIL",
     "CASE", "OF", "END_CASE",
+
+    // =========================
+    // 类型系统 🔥新增
+    // =========================
+    "TYPE", "END_TYPE",
+    "ARRAY", "OF",
+
+    // =========================
+    // POU
+    // =========================
     "FUNCTION", "END_FUNCTION",
     "FUNCTION_BLOCK", "END_FUNCTION_BLOCK",
+
+    // =========================
+    // 变量
+    // =========================
     "VAR", "VAR_INPUT", "VAR_OUTPUT", "VAR_IN_OUT", "VAR_TEMP",
+
+    // =========================
+    // 其他
+    // =========================
     "RETURN", "TRUE", "FALSE",
 
-    // 🔥 logic keywords
-    "AND", "OR", "NOT"
+    // =========================
+    // 运算
+    // =========================
+    "AND", "OR", "NOT", "XOR", "MOD"
   ]);
 
   const isAlpha = (c: string) => /[A-Za-z_]/.test(c);
   const isNum = (c: string) => /[0-9]/.test(c);
 
+  // =========================================================
+  // TIME 解析 → 毫秒
+  // =========================================================
+  function parseTimeLiteral(raw: string): number {
+    const body = raw.slice(2).toLowerCase();
+
+    const unitMap: Record<string, number> = {
+      ms: 1,
+      s: 1000,
+      m: 60000,
+      h: 3600000,
+      d: 86400000
+    };
+
+    let total = 0;
+    const re = /(\d+)(ms|s|m|h|d)/g;
+
+    let m;
+    while ((m = re.exec(body))) {
+      total += parseInt(m[1]) * unitMap[m[2]];
+    }
+
+    return total;
+  }
+
   while (i < input.length) {
     let c = input[i];
 
     // =========================
-    // 1. 单行注释 //
+    // 单行注释 //
     // =========================
     if (c === "/" && input[i + 1] === "/") {
       i += 2;
@@ -41,7 +89,7 @@ export function lexer(input: string): Token[] {
     }
 
     // =========================
-    // 2. 多行注释 (* *)
+    // 多行注释 (* *)
     // =========================
     if (c === "(" && input[i + 1] === "*") {
       i += 2;
@@ -60,10 +108,26 @@ export function lexer(input: string): Token[] {
     }
 
     // =====================
-    // space
+    // 空白
     // =====================
     if (/\s/.test(c)) {
       i++;
+      continue;
+    }
+
+    // =====================
+    // TIME (T#...)
+    // =====================
+    if (c === "T" && input[i + 1] === "#") {
+      let v = "";
+      while (i < input.length && /[A-Za-z0-9#]/.test(input[i])) {
+        v += input[i++];
+      }
+
+      tokens.push({
+        type: "time",
+        value: parseTimeLiteral(v)
+      });
       continue;
     }
 
@@ -94,18 +158,10 @@ export function lexer(input: string): Token[] {
           i++;
           const n = input[i];
           switch (n) {
-            case "n":
-              v += "\n";
-              break;
-            case "t":
-              v += "\t";
-              break;
-            case "r":
-              v += "\r";
-              break;
-            default:
-              v += n;
-              break;
+            case "n": v += "\n"; break;
+            case "t": v += "\t"; break;
+            case "r": v += "\r"; break;
+            default: v += n; break;
           }
         } else if (c === quote) {
           i++;
@@ -118,18 +174,6 @@ export function lexer(input: string): Token[] {
       }
 
       tokens.push({ type: "str", value: v });
-      continue;
-    }
-
-    // =====================
-    // time (T#5s)
-    // =====================
-    if (c === "T" && input[i + 1] === "#") {
-      let v = "";
-      while (i < input.length && /[A-Za-z0-9#]/.test(input[i])) {
-        v += input[i++];
-      }
-      tokens.push({ type: "time", value: v });
       continue;
     }
 
@@ -153,9 +197,20 @@ export function lexer(input: string): Token[] {
     }
 
     // =====================
+    // 3-char operators
+    // =====================
+    const three = input.slice(i, i + 3);
+
+    if (three === "...") {
+      tokens.push({ type: "op", value: "..." });
+      i += 3;
+      continue;
+    }
+
+    // =====================
     // 2-char operators
     // =====================
-    const twoCharOps = ["<=", ">=", "<>", ":="];
+    const twoCharOps = ["<=", ">=", "<>", ":=", ".."];
     const two = input.slice(i, i + 2);
 
     if (twoCharOps.includes(two)) {
@@ -168,14 +223,12 @@ export function lexer(input: string): Token[] {
     // 1-char operators
     // =====================
     const oneCharOps = [
-      "+", "-", "*", "/", "=", "<", ">", "(", ")", ",", ";", ":"
+      "+", "-", "*", "/", "=", "<", ">",
+      "(", ")", ",", ";", ":", ".", "[", "]"
     ];
 
     if (oneCharOps.includes(c)) {
 
-      // =========================
-      // ⚠️ ST FIX: "=" -> "=="
-      // =========================
       if (c === "=") {
         tokens.push({ type: "op", value: "==" });
       } else {
@@ -186,6 +239,9 @@ export function lexer(input: string): Token[] {
       continue;
     }
 
+    // =====================
+    // unknown
+    // =====================
     i++;
   }
 

@@ -1,6 +1,6 @@
 /**
  * =========================================================
- * IEC 61131-3 AST (Industrial IR Layer)
+ * IEC 61131-3 AST (Industrial IR Layer) - FULL VERSION
  * =========================================================
  */
 
@@ -12,13 +12,18 @@
 export type Expr =
   | NumExpr
   | BoolExpr
-  | VarExpr
   | StringExpr
   | TimeExpr
+  | VarExpr
+  | MemberExpr        // 🔥 struct.a
+  | IndexExpr         // 🔥 arr[i]
   | BinExpr
-  | CallExpr
-  | UnaryExpr;
+  | UnaryExpr
+  | CallExpr;
 
+/**
+ * -------- 基础类型 --------
+ */
 export type NumExpr = {
   type: "num";
   value: number;
@@ -35,7 +40,7 @@ export type StringExpr = {
 };
 
 export type TimeExpr = {
-  type: "time";
+  type: "time";       // T#5s
   value: string;
 };
 
@@ -44,6 +49,24 @@ export type VarExpr = {
   name: string;
 };
 
+/**
+ * -------- 复合访问 --------
+ */
+export type MemberExpr = {
+  type: "member";     // a.b
+  object: Expr;
+  property: string;
+};
+
+export type IndexExpr = {
+  type: "index";      // a[i]
+  array: Expr;
+  index: Expr;
+};
+
+/**
+ * -------- 运算 --------
+ */
 export type BinExpr = {
   type: "bin";
   op: string;
@@ -57,6 +80,9 @@ export type UnaryExpr = {
   value: Expr;
 };
 
+/**
+ * -------- 调用 --------
+ */
 export type CallExpr = {
   type: "call";
   name: string;
@@ -77,7 +103,9 @@ export type AST =
   | ForNode
   | Call
   | FBCall
+  | ReturnStmt        // 🔥
   | VarDecl
+  | TypeDecl          // 🔥 TYPE
   | FunctionDecl
   | FunctionBlockDecl
   | CommentNode;
@@ -99,13 +127,23 @@ export type Program = {
  */
 export type Assign = {
   type: "Assign";
-  left: string;
+  left: string;   // 👉 后续可升级成 Expr（支持 a.b / arr[i]）
   right: Expr;
 };
 
 /**
  * =========================
- * COMMENT NODE ⭐新增
+ * RETURN ⭐新增
+ * =========================
+ */
+export type ReturnStmt = {
+  type: "Return";
+  value?: Expr;
+};
+
+/**
+ * =========================
+ * COMMENT
  * =========================
  */
 export type CommentNode = {
@@ -116,7 +154,7 @@ export type CommentNode = {
 
 /**
  * =========================
- * VAR DECL ⭐新增
+ * VAR DECL
  * =========================
  */
 export type VarDecl = {
@@ -130,8 +168,77 @@ export type VarDecl = {
 
   vars: {
     name: string;
-    dataType?: string;
+    dataType?: TypeRef;   // 🔥 升级
     init?: Expr;
+  }[];
+};
+
+/**
+ * =========================
+ * TYPE SYSTEM ⭐⭐⭐核心新增
+ * =========================
+ */
+
+/**
+ * 类型引用（变量使用）
+ */
+export type TypeRef =
+  | BasicType
+  | ArrayType
+  | StructTypeRef
+  | CustomTypeRef;
+
+/**
+ * 基础类型
+ */
+export type BasicType = {
+  kind: "basic";
+  name: string; // INT BOOL REAL
+};
+
+/**
+ * 自定义类型引用
+ */
+export type CustomTypeRef = {
+  kind: "custom";
+  name: string;
+};
+
+/**
+ * STRUCT 引用
+ */
+export type StructTypeRef = {
+  kind: "struct_ref";
+  name: string;
+};
+
+/**
+ * ARRAY 类型
+ * ARRAY[0..10] OF INT
+ */
+export type ArrayType = {
+  kind: "array";
+  ranges: { from: number; to: number }[];
+  elementType: TypeRef;
+};
+
+/**
+ * TYPE 声明 ⭐⭐⭐
+ */
+export type TypeDecl = {
+  type: "TypeDecl";
+  name: string;
+  def: StructType | ArrayType | BasicType;
+};
+
+/**
+ * STRUCT 定义
+ */
+export type StructType = {
+  kind: "struct";
+  fields: {
+    name: string;
+    type: TypeRef;
   }[];
 };
 
@@ -144,7 +251,7 @@ export type FunctionDecl = {
   type: "Function";
   name: string;
   params: VarDecl[];
-  returnType?: string;
+  returnType?: TypeRef;
   body: AST[];
 };
 
@@ -229,12 +336,18 @@ export type Call = {
   args: Expr[];
 };
 
-
+/**
+ * =========================
+ * FUNCTION BLOCK CALL ⭐
+ * TON1(IN := TRUE)
+ * =========================
+ */
 export type FBCall = {
   type: "FBCall";
-  name: string; // TON1
+  name: string;
+
   args: {
-    name: string; // IN / PT
+    name: string;
     value: Expr;
   }[];
 };
