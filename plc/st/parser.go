@@ -12,6 +12,9 @@ type Parser struct {
 	l         *Lexer
 	curToken  Token
 	peekToken Token
+
+	inFunction bool
+	fnName     string
 }
 
 func NewParser(l *Lexer) *Parser {
@@ -51,17 +54,20 @@ func (p *Parser) ParseProgram() *Program {
 
 	for p.curToken.Type != END_PROGRAM && p.curToken.Type != EOF {
 
-		if isVarBlock(p.curToken.Type) {
+		switch p.curToken.Type {
+
+		case VAR, VAR_INPUT, VAR_OUTPUT, VAR_IN_OUT, VAR_GLOBAL:
 			prog.Blocks = append(prog.Blocks, p.parseVarBlock())
-			continue
-		}
 
-		if p.curToken.Type == FUNCTION_BLOCK {
-			prog.Blocks = append(prog.Blocks, p.parseFB())
-			continue
-		}
+		case FUNCTION_BLOCK:
+			prog.Blocks = append(prog.Blocks, p.parseFunctionBlock())
 
-		prog.Body = append(prog.Body, p.parseStatement())
+		case FUNCTION:
+			prog.Blocks = append(prog.Blocks, p.parseFunction())
+
+		default:
+			prog.Body = append(prog.Body, p.parseStatement())
+		}
 	}
 
 	p.expect(END_PROGRAM)
@@ -69,10 +75,46 @@ func (p *Parser) ParseProgram() *Program {
 }
 
 // =========================================================
+// FUNCTION
+// =========================================================
+
+func (p *Parser) parseFunction() DeclBlock {
+	fn := &Function{}
+
+	p.expect(FUNCTION)
+	fn.Name = p.curToken.Lit
+	p.expect(IDENT)
+
+	// return type
+	if p.curToken.Type == COLON {
+		p.next()
+		fn.ReturnType = p.parseType()
+	}
+
+	p.inFunction = true
+	p.fnName = fn.Name
+
+	for p.curToken.Type != END_FUNCTION && p.curToken.Type != EOF {
+
+		if isVarBlock(p.curToken.Type) {
+			p.parseVarBlock()
+			continue
+		}
+
+		fn.Body = append(fn.Body, p.parseStatement())
+	}
+
+	p.inFunction = false
+	p.expect(END_FUNCTION)
+
+	return fn
+}
+
+// =========================================================
 // FUNCTION_BLOCK
 // =========================================================
 
-func (p *Parser) parseFB() DeclBlock {
+func (p *Parser) parseFunctionBlock() DeclBlock {
 	fb := &FunctionBlock{}
 
 	p.expect(FUNCTION_BLOCK)
@@ -183,19 +225,55 @@ func (p *Parser) parseStatement() Stmt {
 	case RETURN:
 		return p.parseReturn()
 
-	case CASE:
-		return p.parseCase()
-
 	case IDENT:
 		return p.parseAssignOrCall()
+
+	case CASE:
+		return p.parseCase()
 	}
 
 	panic(fmt.Sprintf("unknown stmt %v %s", p.curToken.Type, p.curToken.Lit))
 }
 
 // =========================================================
-// IF
+// ASSIGN / CALL（关键修复）
 // =========================================================
+
+func (p *Parser) parseAssignOrCall() Stmt {
+	expr := p.parseLValue()
+
+	// assignment
+	if p.curToken.Type == ASSIGN {
+		p.next()
+		right := p.parseExpression()
+		p.expect(SEMI)
+
+		return &AssignStmt{
+			Left:  expr,
+			Right: right,
+		}
+	}
+
+	// function call statement
+	if call, ok := expr.(*CallExpr); ok {
+		p.expect(SEMI)
+		return &CallStmt{Call: call}
+	}
+
+	panic("invalid statement")
+}
+
+// =========================================================
+// CALL STATEMENT（新增核心）
+// =========================================================
+
+type CallStmt struct {
+	Call   *CallExpr
+	PosVal int
+}
+
+func (c *CallStmt) Pos() int  { return c.PosVal }
+func (c *CallStmt) stmtNode() {}
 
 func (p *Parser) parseIf() *IfStmt {
 	stmt := &IfStmt{}
@@ -226,14 +304,11 @@ func (p *Parser) parseIf() *IfStmt {
 	return stmt
 }
 
-// =========================================================
-// FOR / WHILE / RETURN
-// =========================================================
-
 func (p *Parser) parseFor() *ForStmt {
 	stmt := &ForStmt{}
 
 	p.expect(FOR)
+
 	stmt.Var = p.curToken.Lit
 	p.expect(IDENT)
 
@@ -268,45 +343,24 @@ func (p *Parser) parseWhile() *WhileStmt {
 	return stmt
 }
 
+// =========================================================
+// FUNCTION RETURN 语义修复
+// =========================================================
+
 func (p *Parser) parseReturn() *ReturnStmt {
 	r := &ReturnStmt{}
 
 	p.expect(RETURN)
 
-	if p.curToken.Type != SEMI {
+	// FUNCTION 返回值支持：Add := expr;
+	if p.inFunction && p.curToken.Type != SEMI {
+		r.Value = p.parseExpression()
+	} else if !p.inFunction && p.curToken.Type != SEMI {
 		r.Value = p.parseExpression()
 	}
 
 	p.expect(SEMI)
 	return r
-}
-
-// =========================================================
-// ASSIGN / CALL（修复核心）
-// =========================================================
-
-func (p *Parser) parseAssignOrCall() Stmt {
-	expr := p.parseLValue()
-
-	// assignment
-	if p.curToken.Type == ASSIGN {
-		p.next()
-		right := p.parseExpression()
-		p.expect(SEMI)
-
-		return &AssignStmt{
-			Left:  expr,
-			Right: right,
-		}
-	}
-
-	// function call statement
-	if call, ok := expr.(*CallExpr); ok {
-		p.expect(SEMI)
-		return call
-	}
-
-	panic("invalid stmt")
 }
 
 // =========================================================
@@ -320,6 +374,7 @@ func (p *Parser) parseCase() *CaseStmt {
 
 	p.expect(CASE)
 	c.Expr = p.parseExpression()
+
 	p.expect(OF)
 
 	for p.curToken.Type != END_CASE && p.curToken.Type != EOF {
@@ -342,13 +397,13 @@ func (p *Parser) parseCase() *CaseStmt {
 }
 
 // =========================================================
-// BLOCK（修复死循环风险）
+// BLOCK
 // =========================================================
 
 func (p *Parser) parseBlock() []Stmt {
 	var stmts []Stmt
 
-	for !isBlockEnd(p.curToken.Type) && p.curToken.Type != EOF {
+	for !isBlockEnd(p.curToken.Type) {
 		stmts = append(stmts, p.parseStatement())
 	}
 
@@ -362,11 +417,14 @@ func isBlockEnd(t TokenType) bool {
 		t == ELSE ||
 		t == ELSIF ||
 		t == END_PROGRAM ||
-		t == END_CASE
+		t == END_CASE ||
+		t == END_FUNCTION ||
+		t == END_FUNCTION_BLOCK ||
+		t == EOF
 }
 
 // =========================================================
-// LVALUE（修复 CALL + DOT）
+// LVALUE（修复 call + dot）
 // =========================================================
 
 func (p *Parser) parseLValue() Expr {
@@ -381,11 +439,9 @@ func (p *Parser) parseLValue() Expr {
 		p.expect(IDENT)
 	}
 
-	// CALL: a.b.c()
+	// function call
 	if p.curToken.Type == LPAREN {
-		call := &CallExpr{
-			Name: parts[len(parts)-1],
-		}
+		call := &CallExpr{Name: parts[len(parts)-1]}
 		call.Args = p.parseArgs()
 		return call
 	}
@@ -406,6 +462,7 @@ func (p *Parser) parseArgs() []Param {
 	p.expect(LPAREN)
 
 	for p.curToken.Type != RPAREN {
+
 		arg := Param{}
 		arg.Name = p.curToken.Lit
 		p.expect(IDENT)
@@ -425,7 +482,7 @@ func (p *Parser) parseArgs() []Param {
 }
 
 // =========================================================
-// EXPRESSIONS (Pratt)
+// EXPRESSIONS
 // =========================================================
 
 func (p *Parser) parseExpression() Expr {
