@@ -8,15 +8,15 @@ import (
 type TokenType int
 
 // =========================================================
-// Token Types
+// Token 类型定义
 // =========================================================
 
 const (
-	ILLEGAL TokenType = iota
-	EOF
+	ILLEGAL TokenType = iota // 非法字符
+	EOF                      // 文件结束
 
 	// =========================
-	// keywords
+	// 关键字
 	// =========================
 	IF
 	THEN
@@ -58,20 +58,22 @@ const (
 
 	RETURN
 
-	// logic
+	// =========================
+	// 逻辑运算符
+	// =========================
 	AND
 	OR
 	NOT
 
 	// =========================
-	// literals
+	// 字面量
 	// =========================
-	IDENT
-	NUMBER
-	STRING
-	BOOL
-	TIME
-	IOADDR
+	IDENT  // 标识符
+	NUMBER // 数字
+	STRING // 字符串
+	BOOL   // 布尔
+	TIME   // 时间类型
+	IOADDR // IO地址（如 %IX0.0）
 
 	REAL
 	INT
@@ -79,32 +81,36 @@ const (
 	LREAL
 
 	// =========================
-	// operators
+	// 运算符
 	// =========================
-	ASSIGN // :=
+	ASSIGN // := 赋值
 
-	PLUS
-	MINUS
-	MUL
-	DIV
+	PLUS  // +
+	MINUS // -
+	MUL   // *
+	DIV   // /
 
-	EQ
-	NEQ
-	LT
-	LTE
-	GT
-	GTE
+	EQ  // =
+	NEQ // <>
+	LT  // <
+	LTE // <=
+	GT  // >
+	GTE // >=
 
 	// =========================
-	// punctuation
+	// 符号
 	// =========================
-	LPAREN
-	RPAREN
-	SEMI
-	COLON
-	COMMA
-	DOT
+	LPAREN // (
+	RPAREN // )
+	SEMI   // ;
+	COLON  // :
+	COMMA  // ,
+	DOT    // .
 )
+
+// =========================================================
+// Token 转字符串（调试用）
+// =========================================================
 
 func (t TokenType) String() string {
 	switch t {
@@ -114,7 +120,7 @@ func (t TokenType) String() string {
 	case EOF:
 		return "EOF"
 
-	// keywords
+	// ===== 关键字 =====
 	case IF:
 		return "IF"
 	case THEN:
@@ -185,7 +191,7 @@ func (t TokenType) String() string {
 	case RETURN:
 		return "RETURN"
 
-	// logic
+	// ===== 逻辑运算 =====
 	case AND:
 		return "AND"
 	case OR:
@@ -193,7 +199,7 @@ func (t TokenType) String() string {
 	case NOT:
 		return "NOT"
 
-	// literals
+	// ===== 字面量 =====
 	case IDENT:
 		return "IDENT"
 	case NUMBER:
@@ -216,7 +222,7 @@ func (t TokenType) String() string {
 	case LREAL:
 		return "LREAL"
 
-	// operators
+	// ===== 运算符 =====
 	case ASSIGN:
 		return ":="
 
@@ -242,7 +248,7 @@ func (t TokenType) String() string {
 	case GTE:
 		return ">="
 
-	// punctuation
+	// ===== 符号 =====
 	case LPAREN:
 		return "("
 	case RPAREN:
@@ -262,24 +268,25 @@ func (t TokenType) String() string {
 }
 
 // =========================================================
-// Token
+// Token 结构
 // =========================================================
 
 type Token struct {
-	Type TokenType
-	Lit  string
-	Pos  int
+	Type TokenType // Token 类型
+	Lit  string    // 原始字面量
+	Pos  int       // 位置（可用于报错）
 }
 
 // =========================================================
-// Lexer
+// 词法分析器
 // =========================================================
 
 type Lexer struct {
-	input []rune
-	pos   int
+	input []rune // 输入源代码
+	pos   int    // 当前扫描位置
 }
 
+// 创建 lexer
 func NewLexer(input string) *Lexer {
 	return &Lexer{
 		input: []rune(input),
@@ -287,64 +294,71 @@ func NewLexer(input string) *Lexer {
 }
 
 // =========================================================
-// NextToken
+// 获取下一个 Token
 // =========================================================
 
 func (l *Lexer) NextToken() Token {
+
+	// 跳过空白和注释
 	l.skipSpaceAndComments()
 
+	// 文件结束
 	if l.isEOF() {
 		return Token{Type: EOF}
 	}
 
 	ch := l.peek()
 
-	// =========================
-	// identifier / keyword
-	// =========================
+	// =====================================================
+	// 标识符 / 关键字
+	// =====================================================
 	if unicode.IsLetter(ch) || ch == '_' {
 		word := l.readIdent()
 		upper := strings.ToUpper(word)
 
+		// 布尔值
 		if upper == "TRUE" || upper == "FALSE" {
 			return Token{Type: BOOL, Lit: upper}
 		}
 
+		// 时间类型（T#100ms）
 		if strings.HasPrefix(upper, "T#") {
 			return Token{Type: TIME, Lit: word}
 		}
 
+		// 关键字匹配
 		if kw, ok := keywords[upper]; ok {
 			return Token{Type: kw, Lit: upper}
 		}
 
+		// 普通标识符
 		return Token{Type: IDENT, Lit: word}
 	}
 
-	// =========================
-	// number
-	// =========================
+	// =====================================================
+	// 数字
+	// =====================================================
 	if unicode.IsDigit(ch) {
 		return Token{Type: NUMBER, Lit: l.readNumber()}
 	}
 
-	// =========================
-	// string
-	// =========================
+	// =====================================================
+	// 字符串
+	// =====================================================
 	if ch == '\'' {
 		return Token{Type: STRING, Lit: l.readString()}
 	}
 
-	// =========================
-	// IO address
-	// =========================
+	// =====================================================
+	// IO 地址（%IX0.0）
+	// =====================================================
 	if ch == '%' {
 		return Token{Type: IOADDR, Lit: l.readIOAddr()}
 	}
 
-	// =========================
-	// operators / symbols
-	// =========================
+	// =====================================================
+	// 运算符与符号
+	// =====================================================
 	switch ch {
 
 	case ':':
@@ -372,6 +386,7 @@ func (l *Lexer) NextToken() Token {
 		return Token{Type: DIV, Lit: "/"}
 
 	case '(':
+		// 注释 (* *)
 		if l.peekNext() == '*' {
 			l.skipComment()
 			return l.NextToken()
@@ -395,9 +410,9 @@ func (l *Lexer) NextToken() Token {
 		l.advance(1)
 		return Token{Type: DOT, Lit: "."}
 
-	// =========================
-	// comparisons
-	// =========================
+	// =====================================================
+	// 比较运算符
+	// =====================================================
 	case '=':
 		l.advance(1)
 		return Token{Type: EQ, Lit: "="}
@@ -427,7 +442,7 @@ func (l *Lexer) NextToken() Token {
 }
 
 // =========================================================
-// helpers
+// 工具函数
 // =========================================================
 
 func (l *Lexer) peek() rune {
@@ -453,17 +468,19 @@ func (l *Lexer) isEOF() bool {
 }
 
 // =========================================================
-// comments & whitespace
+// 空白 & 注释
 // =========================================================
 
 func (l *Lexer) skipSpaceAndComments() {
 	for !l.isEOF() {
 
+		// 跳过空白
 		if unicode.IsSpace(l.peek()) {
 			l.pos++
 			continue
 		}
 
+		// 注释 (* ... *)
 		if l.peek() == '(' && l.peekNext() == '*' {
 			l.skipComment()
 			continue
@@ -485,7 +502,7 @@ func (l *Lexer) skipComment() {
 }
 
 // =========================================================
-// ident
+// 标识符
 // =========================================================
 
 func (l *Lexer) readIdent() string {
@@ -504,7 +521,7 @@ func (l *Lexer) readIdent() string {
 }
 
 // =========================================================
-// number
+// 数字
 // =========================================================
 
 func (l *Lexer) readNumber() string {
@@ -528,11 +545,11 @@ func (l *Lexer) readNumber() string {
 }
 
 // =========================================================
-// STRING (修复：更安全)
+// 字符串
 // =========================================================
 
 func (l *Lexer) readString() string {
-	l.advance(1) // skip '
+	l.advance(1) // 跳过 '
 
 	start := l.pos
 
@@ -546,14 +563,14 @@ func (l *Lexer) readString() string {
 	val := string(l.input[start:l.pos])
 
 	if !l.isEOF() {
-		l.advance(1) // skip closing '
+		l.advance(1) // 跳过结束 '
 	}
 
 	return val
 }
 
 // =========================================================
-// IO address
+// IO 地址
 // =========================================================
 
 func (l *Lexer) readIOAddr() string {
@@ -578,7 +595,7 @@ func (l *Lexer) readIOAddr() string {
 }
 
 // =========================================================
-// keywords
+// 关键字表
 // =========================================================
 
 var keywords = map[string]TokenType{
