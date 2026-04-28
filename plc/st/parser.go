@@ -2,6 +2,9 @@ package st
 
 import (
 	"fmt"
+	"regexp"
+	"strconv"
+	"strings"
 )
 
 // =========================================================
@@ -666,9 +669,9 @@ func (p *Parser) parsePrimary() Expr {
 		return e
 
 	case TIME:
+		v := timeToMs(p.curToken.Lit)
 		p.next()
-		//TODO 解析
-		return &NumberLit{Value: 0}
+		return &TimeLit{Value: v}
 	}
 
 	panic(fmt.Sprintf("bad expr %v (%s)",
@@ -683,4 +686,31 @@ func atof(s string) float64 {
 	var f float64
 	fmt.Sscanf(s, "%f", &f)
 	return f
+}
+
+// =========================================================
+// TIME → ms（如果你 AST 支持 TimeLit）
+// =========================================================
+
+func timeToMs(v string) int64 {
+	re := regexp.MustCompile(`t#(\d+)(ms|s|m|h)`)
+	m := re.FindStringSubmatch(strings.ToLower(v))
+	if len(m) == 0 {
+		return 0
+	}
+
+	n, _ := strconv.Atoi(m[1])
+
+	switch m[2] {
+	case "ms":
+		return int64(n)
+	case "s":
+		return int64(n * 1000)
+	case "m":
+		return int64(n * 60000)
+	case "h":
+		return int64(n * 3600000)
+	}
+
+	return 0
 }

@@ -316,6 +316,14 @@ type NumberLit struct {
 func (n *NumberLit) Pos() int  { return n.PosVal }
 func (n *NumberLit) exprNode() {}
 
+type TimeLit struct {
+	Value  int64
+	PosVal int
+}
+
+func (n *TimeLit) Pos() int  { return n.PosVal }
+func (n *TimeLit) exprNode() {}
+
 // 布尔值
 type BoolLit struct {
 	Value  bool

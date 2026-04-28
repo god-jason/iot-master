@@ -6,114 +6,145 @@ import (
 )
 
 // =========================================================
-// Lua 代码生成器（最终稳定版）
-// 用于将 ST（结构化文本）AST 转换为 Lua 代码
+// Lua 代码生成器（最终 PLC Runtime 版本）
 // =========================================================
 
 type LuaGenerator struct {
-	sb     strings.Builder // 用于拼接生成的 Lua 代码
-	indent int             // 当前缩进层级
+	sb      strings.Builder
+	indent  int
+	modName string
 }
 
-// 创建 Lua 生成器实例
+// 创建
 func NewLuaGenerator() *LuaGenerator {
 	return &LuaGenerator{}
 }
 
-// 入口函数：生成 Lua 代码
+// =========================================================
+// 入口
+// =========================================================
+
 func (g *LuaGenerator) Write(p *Program) string {
-	g.genProgram(p)
+	g.modName = g.moduleName(p)
+
+	g.genHeader()
+	g.genInit(p)
+	g.genDeclFunctions(p)
+	g.genExecute(p)
+
+	g.wl("")
+	g.wl(fmt.Sprintf("return %s", g.modName))
+
 	return g.sb.String()
 }
 
 // =========================================================
-// 缩进控制（代码格式化用）
+// module 名称
 // =========================================================
 
-// 写入字符串（不换行）
+func (g *LuaGenerator) moduleName(p *Program) string {
+	if p.Name != "" {
+		return p.Name
+	}
+	return "Program"
+}
+
+// =========================================================
+// 基础输出
+// =========================================================
+
 func (g *LuaGenerator) w(s string) {
 	g.sb.WriteString(s)
 }
 
-// 写入一行（自动加缩进 + 换行）
 func (g *LuaGenerator) wl(s string) {
 	g.writeIndent()
 	g.sb.WriteString(s)
 	g.sb.WriteString("\n")
 }
 
-// 输出当前缩进
 func (g *LuaGenerator) writeIndent() {
 	for i := 0; i < g.indent; i++ {
 		g.sb.WriteString("    ")
 	}
 }
 
-// 缩进 +1
 func (g *LuaGenerator) push() { g.indent++ }
-
-// 缩进 -1
-func (g *LuaGenerator) pop() { g.indent-- }
+func (g *LuaGenerator) pop()  { g.indent-- }
 
 // =========================================================
-// PROGRAM（程序入口）
+// HEADER
 // =========================================================
 
-// 生成整个程序
-func (g *LuaGenerator) genProgram(p *Program) {
-	g.wl("-- ST -> Lua (final)")
-	g.wl("local M = {}") // Lua 模块表
+func (g *LuaGenerator) genHeader() {
+	g.wl("-- ST -> Lua PLC Runtime")
+	g.wl(fmt.Sprintf("local %s = {}", g.modName))
 	g.wl("")
+}
 
-	// 生成所有声明块（变量/函数/功能块）
+// =========================================================
+// VAR → init(ctx)
+// =========================================================
+
+func (g *LuaGenerator) genInit(p *Program) {
+	g.wl(fmt.Sprintf("function %s.init(ctx)", g.modName))
+	g.push()
+
 	for _, b := range p.Blocks {
-		g.genDecl(b)
+		if v, ok := b.(*VarBlock); ok {
+			for _, vd := range v.Vars {
+				for _, name := range vd.Names {
+
+					val := "nil"
+					if vd.Init != nil {
+						val = g.expr(vd.Init)
+					}
+
+					g.wl(fmt.Sprintf("ctx.%s = %s", name, val))
+				}
+			}
+		}
 	}
 
-	// 生成程序主体语句
-	for _, s := range p.Body {
+	g.pop()
+	g.wl("end")
+	g.wl("")
+}
+
+// =========================================================
+// FUNCTION / FB
+// =========================================================
+
+func (g *LuaGenerator) genDeclFunctions(p *Program) {
+	for _, b := range p.Blocks {
+		switch v := b.(type) {
+
+		case *Function:
+			g.genFunction(v)
+
+		case *FunctionBlock:
+			g.genFunctionBlock(v)
+		}
+	}
+}
+
+// FUNCTION
+func (g *LuaGenerator) genFunction(fn *Function) {
+	g.wl(fmt.Sprintf("function %s.%s(ctx)", g.modName, fn.Name))
+	g.push()
+
+	for _, s := range fn.Body {
 		g.genStmt(s)
 	}
 
+	g.pop()
+	g.wl("end")
 	g.wl("")
-	g.wl("return M")
 }
 
-// =========================================================
-// DECL（声明处理）
-// =========================================================
-
-// 处理所有声明类型
-func (g *LuaGenerator) genDecl(d DeclBlock) {
-	switch v := d.(type) {
-
-	// 变量声明
-	case *VarBlock:
-		g.wl("-- VAR: " + v.Kind)
-		for _, vd := range v.Vars {
-			for _, name := range vd.Names {
-				g.wl(fmt.Sprintf("local %s = nil", name))
-			}
-		}
-		g.wl("")
-
-	// 功能块（类似 FB）
-	case *FunctionBlock:
-		g.genFunctionBlock(v)
-
-	// 函数（纯函数）
-	case *Function:
-		g.genFunction(v)
-	}
-}
-
-// =========================================================
-// FUNCTION_BLOCK（功能块）
-// =========================================================
-
-// 生成 Function Block（类似 PLC FB）
+// FUNCTION_BLOCK
 func (g *LuaGenerator) genFunctionBlock(fb *FunctionBlock) {
-	g.wl(fmt.Sprintf("M.%s = function()", fb.Name))
+	g.wl(fmt.Sprintf("function %s.%s(ctx)", g.modName, fb.Name))
 	g.push()
 
 	for _, s := range fb.Body {
@@ -126,15 +157,14 @@ func (g *LuaGenerator) genFunctionBlock(fb *FunctionBlock) {
 }
 
 // =========================================================
-// FUNCTION（函数）
+// execute（主循环）
 // =========================================================
 
-// 生成函数（无状态纯函数）
-func (g *LuaGenerator) genFunction(fn *Function) {
-	g.wl(fmt.Sprintf("M.%s = function()", fn.Name))
+func (g *LuaGenerator) genExecute(p *Program) {
+	g.wl(fmt.Sprintf("function %s.execute(ctx)", g.modName))
 	g.push()
 
-	for _, s := range fn.Body {
+	for _, s := range p.Body {
 		g.genStmt(s)
 	}
 
@@ -144,37 +174,30 @@ func (g *LuaGenerator) genFunction(fn *Function) {
 }
 
 // =========================================================
-// STATEMENT（语句生成）
+// STATEMENT
 // =========================================================
 
-// 生成所有语句类型
 func (g *LuaGenerator) genStmt(s Stmt) {
 	switch v := s.(type) {
 
-	// 赋值语句
 	case *AssignStmt:
 		g.wl(fmt.Sprintf("%s = %s",
 			g.expr(v.Left),
 			g.expr(v.Right),
 		))
 
-	// 函数调用语句
 	case *CallStmt:
-		g.wl(g.genCall(v.Call))
+		g.wl(g.expr(v.Call))
 
-	// IF 语句
 	case *IfStmt:
 		g.genIf(v)
 
-	// FOR 循环
 	case *ForStmt:
 		g.genFor(v)
 
-	// WHILE 循环
 	case *WhileStmt:
 		g.genWhile(v)
 
-	// RETURN 返回
 	case *ReturnStmt:
 		if v.Value != nil {
 			g.wl("return " + g.expr(v.Value))
@@ -182,17 +205,13 @@ func (g *LuaGenerator) genStmt(s Stmt) {
 			g.wl("return")
 		}
 
-	// CASE 语句
 	case *CaseStmt:
 		g.genCase(v)
-
-	default:
-		panic(fmt.Sprintf("unknown stmt type=%T value=%#v", s, s))
 	}
 }
 
 // =========================================================
-// IF 语句
+// IF
 // =========================================================
 
 func (g *LuaGenerator) genIf(n *IfStmt) {
@@ -205,27 +224,21 @@ func (g *LuaGenerator) genIf(n *IfStmt) {
 
 	g.pop()
 
-	// ELSEIF 分支
 	for _, e := range n.ElseIf {
 		g.wl("elseif " + g.expr(e.Cond) + " then")
 		g.push()
-
 		for _, s := range e.Body {
 			g.genStmt(s)
 		}
-
 		g.pop()
 	}
 
-	// ELSE 分支
 	if len(n.Else) > 0 {
 		g.wl("else")
 		g.push()
-
 		for _, s := range n.Else {
 			g.genStmt(s)
 		}
-
 		g.pop()
 	}
 
@@ -233,7 +246,7 @@ func (g *LuaGenerator) genIf(n *IfStmt) {
 }
 
 // =========================================================
-// FOR 循环
+// FOR
 // =========================================================
 
 func (g *LuaGenerator) genFor(n *ForStmt) {
@@ -259,7 +272,7 @@ func (g *LuaGenerator) genFor(n *ForStmt) {
 }
 
 // =========================================================
-// WHILE 循环
+// WHILE
 // =========================================================
 
 func (g *LuaGenerator) genWhile(n *WhileStmt) {
@@ -275,12 +288,11 @@ func (g *LuaGenerator) genWhile(n *WhileStmt) {
 }
 
 // =========================================================
-// CASE 语句（最终版本）
+// CASE
 // =========================================================
 
-// CASE 转 Lua if-elseif 结构
 func (g *LuaGenerator) genCase(n *CaseStmt) {
-	g.w("do")
+	g.wl("do")
 	g.push()
 
 	g.wl("local __v = " + g.expr(n.Expr))
@@ -289,9 +301,9 @@ func (g *LuaGenerator) genCase(n *CaseStmt) {
 
 	for _, br := range n.Branches {
 
-		conds := []string{}
+		var conds []string
 		for _, v := range br.Values {
-			conds = append(conds, fmt.Sprintf("__v == %s", g.expr(v)))
+			conds = append(conds, "__v == "+g.expr(v))
 		}
 
 		cond := strings.Join(conds, " or ")
@@ -310,7 +322,6 @@ func (g *LuaGenerator) genCase(n *CaseStmt) {
 		g.pop()
 	}
 
-	// ELSE 分支
 	if len(n.Else) > 0 {
 		g.wl("else")
 		g.push()
@@ -321,39 +332,22 @@ func (g *LuaGenerator) genCase(n *CaseStmt) {
 	}
 
 	g.wl("end")
-
 	g.pop()
 	g.wl("end")
 }
 
 // =========================================================
-// CALL（函数调用）
+// EXPRESSIONS
 // =========================================================
 
-// 生成函数调用表达式
-func (g *LuaGenerator) genCall(c *CallExpr) string {
-	var args []string
-
-	for _, a := range c.Args {
-		args = append(args, g.expr(a.Value))
-	}
-
-	return fmt.Sprintf("%s(%s)",
-		c.Name,
-		strings.Join(args, ", "),
-	)
-}
-
-// =========================================================
-// EXPRESSIONS（表达式）
-// =========================================================
-
-// 表达式生成
 func (g *LuaGenerator) expr(e Expr) string {
 	switch v := e.(type) {
 
 	case *NumberLit:
 		return fmt.Sprintf("%v", v.Value)
+
+	case *TimeLit:
+		return fmt.Sprintf("%d", v.Value)
 
 	case *BoolLit:
 		if v.Value {
@@ -375,10 +369,9 @@ func (g *LuaGenerator) expr(e Expr) string {
 		)
 
 	case *CallExpr:
-		args := make([]string, 0, len(v.Args))
+		var args []string
 
 		for _, a := range v.Args {
-			// named parameter
 			if a.Name != "" {
 				args = append(args,
 					fmt.Sprintf("%s = %s",
@@ -387,38 +380,24 @@ func (g *LuaGenerator) expr(e Expr) string {
 					),
 				)
 			} else {
-				// positional parameter
 				args = append(args, g.expr(a.Value))
 			}
 		}
 
-		argStr := strings.Join(args, ", ")
-
-		//if len(v.Receiver) > 0 {
-		//	// a.b.c.Method(...)
-		//	obj := strings.Join(v.Receiver, ".")
-		//	return fmt.Sprintf("%s:%s({%s})",
-		//		obj,
-		//		v.Name,
-		//		argStr,
-		//	)
-		//}
-
 		return fmt.Sprintf("%s(%s)",
 			v.Name,
-			argStr,
+			strings.Join(args, ", "),
 		)
 
 	default:
-		panic(fmt.Sprintf("unknown expr type=%T", e))
+		panic(fmt.Sprintf("unknown expr %T", e))
 	}
 }
 
 // =========================================================
-// 操作符映射（ST -> Lua）
+// OPERATOR
 // =========================================================
 
-// 将 ST 操作符转换为 Lua 操作符
 func (g *LuaGenerator) luaOp(op string) string {
 	switch op {
 	case "AND":
