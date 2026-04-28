@@ -6,7 +6,7 @@ import (
 )
 
 // =========================================================
-// Lua Generator
+// Lua Generator (FINAL STABLE)
 // =========================================================
 
 type LuaGen struct {
@@ -24,8 +24,12 @@ func (g *LuaGen) Write(p *Program) string {
 }
 
 // =========================================================
-// indent helpers
+// indent
 // =========================================================
+
+func (g *LuaGen) w(s string) {
+	g.sb.WriteString(s)
+}
 
 func (g *LuaGen) wl(s string) {
 	g.writeIndent()
@@ -47,7 +51,7 @@ func (g *LuaGen) pop()  { g.indent-- }
 // =========================================================
 
 func (g *LuaGen) genProgram(p *Program) {
-	g.wl("-- generated ST -> Lua")
+	g.wl("-- ST -> Lua (final)")
 	g.wl("local M = {}")
 	g.wl("")
 
@@ -81,11 +85,14 @@ func (g *LuaGen) genDecl(d DeclBlock) {
 
 	case *FunctionBlock:
 		g.genFunctionBlock(v)
+
+	case *Function:
+		g.genFunction(v)
 	}
 }
 
 // =========================================================
-// FUNCTION BLOCK
+// FUNCTION_BLOCK
 // =========================================================
 
 func (g *LuaGen) genFunctionBlock(fb *FunctionBlock) {
@@ -93,6 +100,23 @@ func (g *LuaGen) genFunctionBlock(fb *FunctionBlock) {
 	g.push()
 
 	for _, s := range fb.Body {
+		g.genStmt(s)
+	}
+
+	g.pop()
+	g.wl("end")
+	g.wl("")
+}
+
+// =========================================================
+// FUNCTION (pure function -> Lua function)
+// =========================================================
+
+func (g *LuaGen) genFunction(fn *Function) {
+	g.wl(fmt.Sprintf("M.%s = function()", fn.Name))
+	g.push()
+
+	for _, s := range fn.Body {
 		g.genStmt(s)
 	}
 
@@ -137,7 +161,7 @@ func (g *LuaGen) genStmt(s Stmt) {
 		g.genCase(v)
 
 	default:
-		panic(fmt.Sprintf("unknown stmt %T", s))
+		panic(fmt.Sprintf("unknown stmt type=%T value=%#v", s, s))
 	}
 }
 
@@ -223,24 +247,21 @@ func (g *LuaGen) genWhile(n *WhileStmt) {
 }
 
 // =========================================================
-// CASE（稳定版本：不使用 map 逻辑顺序问题）
+// CASE (FINAL FIXED)
 // =========================================================
 
 func (g *LuaGen) genCase(n *CaseStmt) {
-
-	tmp := "_v"
-
-	g.wl(fmt.Sprintf("local %s = %s", tmp, g.expr(n.Expr)))
+	g.wl("local __case = " + g.expr(n.Expr))
 
 	first := true
 
-	for _, branch := range n.Branches {
+	for _, br := range n.Branches {
 
-		var conds []string
-		for _, v := range branch.Values {
-			c := fmt.Sprintf("%s == %s", tmp, g.expr(v))
-			conds = append(conds, c)
+		conds := []string{}
+		for _, v := range br.Values {
+			conds = append(conds, fmt.Sprintf("__case == %s", g.expr(v)))
 		}
+
 		cond := strings.Join(conds, " or ")
 
 		if first {
@@ -251,7 +272,7 @@ func (g *LuaGen) genCase(n *CaseStmt) {
 		}
 
 		g.push()
-		for _, s := range branch.Body {
+		for _, s := range br.Body {
 			g.genStmt(s)
 		}
 		g.pop()
@@ -266,11 +287,7 @@ func (g *LuaGen) genCase(n *CaseStmt) {
 		g.pop()
 	}
 
-	if first {
-		g.wl("if true then end")
-	} else {
-		g.wl("end")
-	}
+	g.wl("end")
 }
 
 // =========================================================
@@ -320,6 +337,6 @@ func (g *LuaGen) expr(e Expr) string {
 		)
 
 	default:
-		panic(fmt.Sprintf("unknown expr %T", e))
+		panic(fmt.Sprintf("unknown expr type=%T", e))
 	}
 }

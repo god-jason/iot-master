@@ -66,6 +66,10 @@ func (p *Parser) ParseProgram() *Program {
 			prog.Blocks = append(prog.Blocks, p.parseFunction())
 
 		default:
+			if p.curToken.Type == SEMI {
+				p.next()
+				continue
+			}
 			prog.Body = append(prog.Body, p.parseStatement())
 		}
 	}
@@ -100,11 +104,17 @@ func (p *Parser) parseFunction() DeclBlock {
 			continue
 		}
 
+		if p.curToken.Type == SEMI {
+			p.next()
+			continue
+		}
+
 		fn.Body = append(fn.Body, p.parseStatement())
 	}
 
 	p.inFunction = false
 	p.expect(END_FUNCTION)
+
 	return fn
 }
 
@@ -123,6 +133,11 @@ func (p *Parser) parseFunctionBlock() DeclBlock {
 
 		if isVarBlock(p.curToken.Type) {
 			p.parseVarBlock()
+			continue
+		}
+
+		if p.curToken.Type == SEMI {
+			p.next()
 			continue
 		}
 
@@ -151,7 +166,7 @@ func (p *Parser) parseVarBlock() DeclBlock {
 	v.Kind = p.curToken.Lit
 	p.next()
 
-	for p.curToken.Type != END_VAR {
+	for p.curToken.Type != END_VAR && p.curToken.Type != EOF {
 		v.Vars = append(v.Vars, p.parseVarDecl())
 	}
 
@@ -230,7 +245,7 @@ func (p *Parser) parseStatement() Stmt {
 		return p.parseAssignOrCall()
 	}
 
-	panic(fmt.Sprintf("unknown stmt %v %s", p.curToken.Type, p.curToken.Lit))
+	panic(fmt.Sprintf("unknown stmt %v (%s)", p.curToken.Type, p.curToken.Lit))
 }
 
 // =========================================================
@@ -238,7 +253,7 @@ func (p *Parser) parseStatement() Stmt {
 // =========================================================
 
 func (p *Parser) parseAssignOrCall() Stmt {
-	left := p.parseLValue()
+	expr := p.parseLValue()
 
 	if p.curToken.Type == ASSIGN {
 		p.next()
@@ -246,12 +261,12 @@ func (p *Parser) parseAssignOrCall() Stmt {
 		p.expect(SEMI)
 
 		return &AssignStmt{
-			Left:  left,
+			Left:  expr,
 			Right: right,
 		}
 	}
 
-	if call, ok := left.(*CallExpr); ok {
+	if call, ok := expr.(*CallExpr); ok {
 		p.expect(SEMI)
 		return &CallStmt{Call: call}
 	}
@@ -375,8 +390,7 @@ func (p *Parser) parseCase() *CaseStmt {
 			continue
 		}
 
-		var values []Expr
-		values = append(values, p.parseExpression())
+		values := []Expr{p.parseExpression()}
 
 		for p.curToken.Type == COMMA {
 			p.next()
@@ -398,13 +412,19 @@ func (p *Parser) parseCase() *CaseStmt {
 }
 
 // =========================================================
-// BLOCK
+// BLOCK（关键修复点）
 // =========================================================
 
 func (p *Parser) parseBlock() []Stmt {
 	var stmts []Stmt
 
 	for !isBlockEnd(p.curToken.Type) {
+
+		if p.curToken.Type == SEMI {
+			p.next()
+			continue
+		}
+
 		stmts = append(stmts, p.parseStatement())
 	}
 
@@ -446,9 +466,7 @@ func (p *Parser) parseLValue() Expr {
 		return call
 	}
 
-	return &VarExpr{
-		Path: parts,
-	}
+	return &VarExpr{Path: parts}
 }
 
 // =========================================================
@@ -561,7 +579,7 @@ func (p *Parser) parsePrimary() Expr {
 		return e
 	}
 
-	panic(fmt.Sprintf("bad expr %v", p.curToken))
+	panic(fmt.Sprintf("bad expr %v (%s)", p.curToken.Type, p.curToken.Lit))
 }
 
 // =========================================================
