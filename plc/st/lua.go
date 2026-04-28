@@ -27,10 +27,6 @@ func (g *LuaGen) Write(p *Program) string {
 // indent helpers
 // =========================================================
 
-func (g *LuaGen) w(s string) {
-	g.sb.WriteString(s)
-}
-
 func (g *LuaGen) wl(s string) {
 	g.writeIndent()
 	g.sb.WriteString(s)
@@ -59,19 +55,11 @@ func (g *LuaGen) genProgram(p *Program) {
 		g.genDecl(b)
 	}
 
-	// 主程序 body（可选：你也可以包进 M.run）
-	if len(p.Body) > 0 {
-		g.wl("-- program body")
-		g.wl("function M.__main__()")
-		g.push()
-		for _, s := range p.Body {
-			g.genStmt(s)
-		}
-		g.pop()
-		g.wl("end")
-		g.wl("")
+	for _, s := range p.Body {
+		g.genStmt(s)
 	}
 
+	g.wl("")
 	g.wl("return M")
 }
 
@@ -83,54 +71,17 @@ func (g *LuaGen) genDecl(d DeclBlock) {
 	switch v := d.(type) {
 
 	case *VarBlock:
-		g.genVarBlock(v)
-
-	case *Function:
-		g.genFunction(v)
-
-	case *FunctionBlock:
-		g.genFunctionBlock(v)
-
-	default:
-		panic(fmt.Sprintf("unknown decl %T", d))
-	}
-}
-
-// =========================================================
-// VAR BLOCK
-// =========================================================
-
-func (g *LuaGen) genVarBlock(v *VarBlock) {
-	g.wl("-- VAR BLOCK: " + v.Kind)
-
-	for _, vd := range v.Vars {
-		for _, name := range vd.Names {
-
-			if vd.Init != nil {
-				g.wl(fmt.Sprintf("local %s = %s", name, g.expr(vd.Init)))
-			} else {
+		g.wl("-- VAR: " + v.Kind)
+		for _, vd := range v.Vars {
+			for _, name := range vd.Names {
 				g.wl(fmt.Sprintf("local %s = nil", name))
 			}
 		}
+		g.wl("")
+
+	case *FunctionBlock:
+		g.genFunctionBlock(v)
 	}
-	g.wl("")
-}
-
-// =========================================================
-// FUNCTION
-// =========================================================
-
-func (g *LuaGen) genFunction(fn *Function) {
-	g.wl(fmt.Sprintf("M.%s = function(...)", fn.Name))
-	g.push()
-
-	for _, s := range fn.Body {
-		g.genStmt(s)
-	}
-
-	g.pop()
-	g.wl("end")
-	g.wl("")
 }
 
 // =========================================================
@@ -163,6 +114,9 @@ func (g *LuaGen) genStmt(s Stmt) {
 			g.expr(v.Right),
 		))
 
+	case *CallStmt:
+		g.wl(g.genCall(v.Call))
+
 	case *IfStmt:
 		g.genIf(v)
 
@@ -178,9 +132,6 @@ func (g *LuaGen) genStmt(s Stmt) {
 		} else {
 			g.wl("return")
 		}
-
-	case *CallStmt: // ✅ 正确
-		g.wl(g.genCall(v.Call))
 
 	case *CaseStmt:
 		g.genCase(v)
@@ -207,18 +158,22 @@ func (g *LuaGen) genIf(n *IfStmt) {
 	for _, e := range n.ElseIf {
 		g.wl("elseif " + g.expr(e.Cond) + " then")
 		g.push()
+
 		for _, s := range e.Body {
 			g.genStmt(s)
 		}
+
 		g.pop()
 	}
 
 	if len(n.Else) > 0 {
 		g.wl("else")
 		g.push()
+
 		for _, s := range n.Else {
 			g.genStmt(s)
 		}
+
 		g.pop()
 	}
 
@@ -268,18 +223,25 @@ func (g *LuaGen) genWhile(n *WhileStmt) {
 }
 
 // =========================================================
-// CASE
+// CASE（稳定版本：不使用 map 逻辑顺序问题）
 // =========================================================
 
 func (g *LuaGen) genCase(n *CaseStmt) {
-	g.wl("do")
-	g.push()
+
+	tmp := "_v"
+
+	g.wl(fmt.Sprintf("local %s = %s", tmp, g.expr(n.Expr)))
 
 	first := true
 
-	for k, body := range n.Branches {
+	for _, branch := range n.Branches {
 
-		cond := fmt.Sprintf("%s == %s", g.expr(n.Expr), k)
+		var conds []string
+		for _, v := range branch.Values {
+			c := fmt.Sprintf("%s == %s", tmp, g.expr(v))
+			conds = append(conds, c)
+		}
+		cond := strings.Join(conds, " or ")
 
 		if first {
 			g.wl("if " + cond + " then")
@@ -289,7 +251,7 @@ func (g *LuaGen) genCase(n *CaseStmt) {
 		}
 
 		g.push()
-		for _, s := range body {
+		for _, s := range branch.Body {
 			g.genStmt(s)
 		}
 		g.pop()
@@ -304,9 +266,11 @@ func (g *LuaGen) genCase(n *CaseStmt) {
 		g.pop()
 	}
 
-	g.wl("end")
-	g.pop()
-	g.wl("end")
+	if first {
+		g.wl("if true then end")
+	} else {
+		g.wl("end")
+	}
 }
 
 // =========================================================
@@ -346,41 +310,16 @@ func (g *LuaGen) expr(e Expr) string {
 		return fmt.Sprintf("\"%s\"", v.Value)
 
 	case *VarExpr:
-		if len(v.Path) > 0 {
-			return strings.Join(v.Path, ".")
-		}
-		return v.Name
+		return strings.Join(v.Path, ".")
 
 	case *BinaryExpr:
 		return fmt.Sprintf("(%s %s %s)",
 			g.expr(v.Left),
-			g.luaOp(v.Op),
+			v.Op,
 			g.expr(v.Right),
 		)
 
-	case *CallExpr:
-		return g.genCall(v)
-
 	default:
 		panic(fmt.Sprintf("unknown expr %T", e))
-	}
-}
-
-// =========================================================
-// operator mapping (ST -> Lua)
-// =========================================================
-
-func (g *LuaGen) luaOp(op string) string {
-	switch op {
-	case "AND":
-		return "and"
-	case "OR":
-		return "or"
-	case "NOT":
-		return "not"
-	case "<>":
-		return "~="
-	default:
-		return op
 	}
 }

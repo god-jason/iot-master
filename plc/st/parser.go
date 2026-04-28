@@ -85,7 +85,6 @@ func (p *Parser) parseFunction() DeclBlock {
 	fn.Name = p.curToken.Lit
 	p.expect(IDENT)
 
-	// return type
 	if p.curToken.Type == COLON {
 		p.next()
 		fn.ReturnType = p.parseType()
@@ -106,7 +105,6 @@ func (p *Parser) parseFunction() DeclBlock {
 
 	p.inFunction = false
 	p.expect(END_FUNCTION)
-
 	return fn
 }
 
@@ -207,7 +205,7 @@ func (p *Parser) parseType() Type {
 }
 
 // =========================================================
-// STATEMENTS
+// STATEMENT
 // =========================================================
 
 func (p *Parser) parseStatement() Stmt {
@@ -225,37 +223,35 @@ func (p *Parser) parseStatement() Stmt {
 	case RETURN:
 		return p.parseReturn()
 
-	case IDENT:
-		return p.parseAssignOrCall()
-
 	case CASE:
 		return p.parseCase()
+
+	case IDENT:
+		return p.parseAssignOrCall()
 	}
 
 	panic(fmt.Sprintf("unknown stmt %v %s", p.curToken.Type, p.curToken.Lit))
 }
 
 // =========================================================
-// ASSIGN / CALL（关键修复）
+// ASSIGN / CALL
 // =========================================================
 
 func (p *Parser) parseAssignOrCall() Stmt {
-	expr := p.parseLValue()
+	left := p.parseLValue()
 
-	// assignment
 	if p.curToken.Type == ASSIGN {
 		p.next()
 		right := p.parseExpression()
 		p.expect(SEMI)
 
 		return &AssignStmt{
-			Left:  expr,
+			Left:  left,
 			Right: right,
 		}
 	}
 
-	// function call statement
-	if call, ok := expr.(*CallExpr); ok {
+	if call, ok := left.(*CallExpr); ok {
 		p.expect(SEMI)
 		return &CallStmt{Call: call}
 	}
@@ -264,16 +260,8 @@ func (p *Parser) parseAssignOrCall() Stmt {
 }
 
 // =========================================================
-// CALL STATEMENT（新增核心）
+// IF
 // =========================================================
-
-type CallStmt struct {
-	Call   *CallExpr
-	PosVal int
-}
-
-func (c *CallStmt) Pos() int  { return c.PosVal }
-func (c *CallStmt) stmtNode() {}
 
 func (p *Parser) parseIf() *IfStmt {
 	stmt := &IfStmt{}
@@ -304,6 +292,10 @@ func (p *Parser) parseIf() *IfStmt {
 	return stmt
 }
 
+// =========================================================
+// FOR
+// =========================================================
+
 func (p *Parser) parseFor() *ForStmt {
 	stmt := &ForStmt{}
 
@@ -330,6 +322,10 @@ func (p *Parser) parseFor() *ForStmt {
 	return stmt
 }
 
+// =========================================================
+// WHILE
+// =========================================================
+
 func (p *Parser) parseWhile() *WhileStmt {
 	stmt := &WhileStmt{}
 
@@ -344,7 +340,7 @@ func (p *Parser) parseWhile() *WhileStmt {
 }
 
 // =========================================================
-// FUNCTION RETURN 语义修复
+// RETURN
 // =========================================================
 
 func (p *Parser) parseReturn() *ReturnStmt {
@@ -352,10 +348,7 @@ func (p *Parser) parseReturn() *ReturnStmt {
 
 	p.expect(RETURN)
 
-	// FUNCTION 返回值支持：Add := expr;
-	if p.inFunction && p.curToken.Type != SEMI {
-		r.Value = p.parseExpression()
-	} else if !p.inFunction && p.curToken.Type != SEMI {
+	if p.curToken.Type != SEMI {
 		r.Value = p.parseExpression()
 	}
 
@@ -364,17 +357,14 @@ func (p *Parser) parseReturn() *ReturnStmt {
 }
 
 // =========================================================
-// CASE
+// CASE（最终稳定版）
 // =========================================================
 
 func (p *Parser) parseCase() *CaseStmt {
-	c := &CaseStmt{
-		Branches: map[string][]Stmt{},
-	}
+	c := &CaseStmt{}
 
 	p.expect(CASE)
 	c.Expr = p.parseExpression()
-
 	p.expect(OF)
 
 	for p.curToken.Type != END_CASE && p.curToken.Type != EOF {
@@ -385,11 +375,22 @@ func (p *Parser) parseCase() *CaseStmt {
 			continue
 		}
 
-		key := p.curToken.Lit
-		p.next()
+		var values []Expr
+		values = append(values, p.parseExpression())
+
+		for p.curToken.Type == COMMA {
+			p.next()
+			values = append(values, p.parseExpression())
+		}
+
 		p.expect(COLON)
 
-		c.Branches[key] = p.parseBlock()
+		body := p.parseBlock()
+
+		c.Branches = append(c.Branches, CaseBranch{
+			Values: values,
+			Body:   body,
+		})
 	}
 
 	p.expect(END_CASE)
@@ -424,7 +425,7 @@ func isBlockEnd(t TokenType) bool {
 }
 
 // =========================================================
-// LVALUE（修复 call + dot）
+// LVALUE
 // =========================================================
 
 func (p *Parser) parseLValue() Expr {
@@ -439,7 +440,6 @@ func (p *Parser) parseLValue() Expr {
 		p.expect(IDENT)
 	}
 
-	// function call
 	if p.curToken.Type == LPAREN {
 		call := &CallExpr{Name: parts[len(parts)-1]}
 		call.Args = p.parseArgs()
@@ -447,7 +447,6 @@ func (p *Parser) parseLValue() Expr {
 	}
 
 	return &VarExpr{
-		Name: name,
 		Path: parts,
 	}
 }
@@ -553,7 +552,7 @@ func (p *Parser) parsePrimary() Expr {
 	case IDENT:
 		name := p.curToken.Lit
 		p.next()
-		return &VarExpr{Name: name}
+		return &VarExpr{Path: []string{name}}
 
 	case LPAREN:
 		p.next()

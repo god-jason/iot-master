@@ -1,12 +1,7 @@
 package st
 
-import (
-	"fmt"
-	"strings"
-)
-
 // =========================================================
-// 基础节点接口
+// Node 基础接口
 // =========================================================
 
 type Node interface {
@@ -47,7 +42,7 @@ type Program struct {
 func (p *Program) Pos() int { return p.PosVal }
 
 // =========================================================
-// Declaration Block
+// DeclBlock
 // =========================================================
 
 type DeclBlock interface {
@@ -60,7 +55,7 @@ type DeclBlock interface {
 // =========================================================
 
 type VarBlock struct {
-	Kind   string // VAR / VAR_INPUT / VAR_OUTPUT / VAR_GLOBAL
+	Kind   string
 	Vars   []VarDecl
 	PosVal int
 }
@@ -69,7 +64,38 @@ func (v *VarBlock) Pos() int  { return v.PosVal }
 func (v *VarBlock) declNode() {}
 
 // =========================================================
-// Variable Declaration
+// FUNCTION
+// =========================================================
+
+type Function struct {
+	Name       string
+	ReturnType Type
+	Vars       []VarDecl
+	Body       []Stmt
+	PosVal     int
+}
+
+func (f *Function) Pos() int  { return f.PosVal }
+func (f *Function) declNode() {}
+
+// =========================================================
+// FUNCTION_BLOCK
+// =========================================================
+
+type FunctionBlock struct {
+	Name   string
+	Vars   []VarDecl
+	Init   []Stmt
+	Body   []Stmt
+	State  map[string]interface{}
+	PosVal int
+}
+
+func (f *FunctionBlock) Pos() int  { return f.PosVal }
+func (f *FunctionBlock) declNode() {}
+
+// =========================================================
+// VAR DECL
 // =========================================================
 
 type VarDecl struct {
@@ -127,23 +153,6 @@ type Range struct {
 	Start int
 	End   int
 }
-
-// =========================================================
-// FUNCTION BLOCK
-// =========================================================
-
-type FunctionBlock struct {
-	Name   string
-	Vars   []VarDecl
-	Init   []Stmt
-	Body   []Stmt
-	State  map[string]interface{}
-	PosVal int
-}
-
-func (f *FunctionBlock) Pos() int { return f.PosVal }
-
-func (f *FunctionBlock) declNode() {}
 
 // =========================================================
 // TASK
@@ -209,16 +218,6 @@ type WhileStmt struct {
 func (w *WhileStmt) Pos() int  { return w.PosVal }
 func (w *WhileStmt) stmtNode() {}
 
-type CaseStmt struct {
-	Expr     Expr
-	Branches map[string][]Stmt
-	Else     []Stmt
-	PosVal   int
-}
-
-func (c *CaseStmt) Pos() int  { return c.PosVal }
-func (c *CaseStmt) stmtNode() {}
-
 type ReturnStmt struct {
 	Value  Expr
 	PosVal int
@@ -227,15 +226,46 @@ type ReturnStmt struct {
 func (r *ReturnStmt) Pos() int  { return r.PosVal }
 func (r *ReturnStmt) stmtNode() {}
 
-// FB Call
-type FBCall struct {
+// =========================================================
+// CALL
+// =========================================================
+
+type CallExpr struct {
 	Name   string
 	Args   []Param
 	PosVal int
 }
 
-func (f *FBCall) Pos() int  { return f.PosVal }
-func (f *FBCall) stmtNode() {}
+func (c *CallExpr) Pos() int  { return c.PosVal }
+func (c *CallExpr) exprNode() {}
+
+// CallStmt（关键：修复 CallExpr 不能当 stmt）
+type CallStmt struct {
+	Call   *CallExpr
+	PosVal int
+}
+
+func (c *CallStmt) Pos() int  { return c.PosVal }
+func (c *CallStmt) stmtNode() {}
+
+// =========================================================
+// CASE（已升级：支持多值）
+// =========================================================
+
+type CaseStmt struct {
+	Expr     Expr
+	Branches []CaseBranch
+	Else     []Stmt
+	PosVal   int
+}
+
+func (c *CaseStmt) Pos() int  { return c.PosVal }
+func (c *CaseStmt) stmtNode() {}
+
+type CaseBranch struct {
+	Values []Expr
+	Body   []Stmt
+}
 
 // =========================================================
 // EXPRESSIONS
@@ -285,22 +315,12 @@ func (s *StringLit) Pos() int  { return s.PosVal }
 func (s *StringLit) exprNode() {}
 
 type VarExpr struct {
-	Name   string
 	Path   []string
 	PosVal int
 }
 
 func (v *VarExpr) Pos() int  { return v.PosVal }
 func (v *VarExpr) exprNode() {}
-
-type CallExpr struct {
-	Name   string
-	Args   []Param
-	PosVal int
-}
-
-func (c *CallExpr) Pos() int  { return c.PosVal }
-func (c *CallExpr) exprNode() {}
 
 // =========================================================
 // PARAM
@@ -325,23 +345,7 @@ type IOVar struct {
 func (i *IOVar) Pos() int { return i.PosVal }
 
 // =========================================================
-// FUNCTION
-// =========================================================
-
-type Function struct {
-	Name       string
-	ReturnType Type
-	Vars       []VarDecl
-	Body       []Stmt
-	PosVal     int
-}
-
-func (f *Function) Pos() int { return f.PosVal }
-
-func (f *Function) declNode() {}
-
-// =========================================================
-// RUNTIME STRUCT
+// RUNTIME
 // =========================================================
 
 type StructValue struct {
@@ -350,63 +354,4 @@ type StructValue struct {
 
 type Pointer struct {
 	Ref interface{}
-}
-
-// =========================================================
-// DEBUG TOOL (非常重要)
-// =========================================================
-
-func NodeString(n Node) string {
-	switch v := n.(type) {
-
-	case *NumberLit:
-		return fmt.Sprintf("Number(%v)", v.Value)
-
-	case *BoolLit:
-		return fmt.Sprintf("Bool(%v)", v.Value)
-
-	case *StringLit:
-		return fmt.Sprintf("String(%s)", v.Value)
-
-	case *VarExpr:
-		return "Var(" + v.Name + ")"
-
-	case *BinaryExpr:
-		return fmt.Sprintf("(%s %s %s)",
-			NodeString(v.Left),
-			v.Op,
-			NodeString(v.Right))
-
-	case *CallExpr:
-		return "Call(" + v.Name + ")"
-
-	case *AssignStmt:
-		return "Assign"
-
-	case *IfStmt:
-		return "If"
-
-	case *ForStmt:
-		return "For"
-
-	case *WhileStmt:
-		return "While"
-
-	case *CaseStmt:
-		return "Case"
-
-	case *ReturnStmt:
-		return "Return"
-
-	default:
-		return fmt.Sprintf("Unknown(%T)", n)
-	}
-}
-
-// =========================================================
-// helper
-// =========================================================
-
-func JoinNames(names []string) string {
-	return strings.Join(names, ",")
 }
