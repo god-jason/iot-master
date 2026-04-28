@@ -374,6 +374,41 @@ func (g *LuaGenerator) expr(e Expr) string {
 			g.expr(v.Right),
 		)
 
+	case *CallExpr:
+		args := make([]string, 0, len(v.Args))
+
+		for _, a := range v.Args {
+			// named parameter
+			if a.Name != "" {
+				args = append(args,
+					fmt.Sprintf("%s = %s",
+						a.Name,
+						g.expr(a.Value),
+					),
+				)
+			} else {
+				// positional parameter
+				args = append(args, g.expr(a.Value))
+			}
+		}
+
+		argStr := strings.Join(args, ", ")
+
+		//if len(v.Receiver) > 0 {
+		//	// a.b.c.Method(...)
+		//	obj := strings.Join(v.Receiver, ".")
+		//	return fmt.Sprintf("%s:%s({%s})",
+		//		obj,
+		//		v.Name,
+		//		argStr,
+		//	)
+		//}
+
+		return fmt.Sprintf("%s(%s)",
+			v.Name,
+			argStr,
+		)
+
 	default:
 		panic(fmt.Sprintf("unknown expr type=%T", e))
 	}

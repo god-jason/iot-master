@@ -1,6 +1,7 @@
 package st
 
 import (
+	_ "embed"
 	"strings"
 	"testing"
 )
@@ -246,4 +247,12 @@ END_PROGRAM
 	out := gen(src)
 
 	assertContains(t, out, "motor.speed = 100")
+}
+
+//go:embed test.st
+var luaSrc string
+
+func TestGenLua(t *testing.T) {
+	out := gen(string(luaSrc))
+	t.Log(out)
 }

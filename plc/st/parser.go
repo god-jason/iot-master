@@ -488,14 +488,16 @@ func (p *Parser) parseArgs() []Param {
 	for p.curToken.Type != RPAREN {
 
 		arg := Param{}
-		arg.Name = p.curToken.Lit
-		p.expect(IDENT)
+		if p.curToken.Type == IDENT && p.peekToken.Type == ASSIGN {
+			arg.Name = p.curToken.Lit
+			p.next() //跳过标识符
+			p.next() //跳过赋值
+		}
 
-		p.expect(ASSIGN)
 		arg.Value = p.parseExpression()
-
 		args = append(args, arg)
 
+		//跳过逗号
 		if p.curToken.Type == COMMA {
 			p.next()
 		}
@@ -642,6 +644,19 @@ func (p *Parser) parsePrimary() Expr {
 	case IDENT:
 		name := p.curToken.Lit
 		p.next()
+
+		// ============================
+		// 函数调用（核心）
+		// ============================
+		if p.curToken.Type == LPAREN {
+			call := &CallExpr{
+				Name: name,
+				Args: p.parseArgs(),
+			}
+			return call
+		}
+
+		// 普通变量
 		return &VarExpr{Path: []string{name}}
 
 	case LPAREN:
@@ -649,6 +664,11 @@ func (p *Parser) parsePrimary() Expr {
 		e := p.parseExpression()
 		p.expect(RPAREN)
 		return e
+
+	case TIME:
+		p.next()
+		//TODO 解析
+		return &NumberLit{Value: 0}
 	}
 
 	panic(fmt.Sprintf("bad expr %v (%s)",
