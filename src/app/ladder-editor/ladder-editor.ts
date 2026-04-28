@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {st2lua} from './st2lua'
 import {FormsModule} from '@angular/forms';
 import {NzInputModule} from 'ng-zorro-antd/input';
 import {lexer} from '../lib/plc/lexer';
@@ -30,6 +29,10 @@ export class LadderEditor {
     c : INT := 0;
     flag : BOOL := FALSE;
     counter : INT;
+
+    TON1 : TON;
+    TOF1  : TOF
+    TP1 : TP
 END_VAR
 
 

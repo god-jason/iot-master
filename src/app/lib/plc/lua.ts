@@ -58,7 +58,7 @@ function genExpr(e: any): string {
       return `"${e.value}"`;
 
     case "var":
-      return `env.memory.${e.name}`;
+      return `ctx.${e.name}`;
 
     case "bin":
       return `(${genExpr(e.left)} ${mapOp(e.op)} ${genExpr(e.right)})`;
@@ -81,7 +81,7 @@ function genExpr(e: any): string {
  */
 function genCall(node: Call): string {
   const args = (node.args || []).map(genExpr).join(", ");
-  return `env.func.${node.name}(${args})`;
+  return `ctx.${node.name}(${args})`;
 }
 
 /**
@@ -93,7 +93,7 @@ function genFBCall(node: any, level: number): string {
   const pad = indent(level);
 
   let code = "";
-  code += `${pad}env.func.${node.name}:exec({\n`
+  code += `${pad}ctx.${node.name}:exec({\n`
   for (const a of node.args || []) {
     code += `${pad}  ${a.name} = ${genExpr(a.value)}\n`;
   }
@@ -102,19 +102,50 @@ function genFBCall(node: any, level: number): string {
   return code;
 }
 
-/**
- * =========================================================
- * VAR DECL (🔥新增)
- * =========================================================
- */
+function isBuiltinType(t?: string): boolean {
+  if (!t) return false;
+
+  const base = t.toUpperCase();
+
+  return [
+    "INT", "DINT", "REAL", "BOOL", "STRING",
+    "BYTE", "WORD", "DWORD", "LREAL"
+  ].includes(base);
+}
+
+function defaultValue(t?: string): string {
+  if (!t) return "nil";
+
+  switch (t.toUpperCase()) {
+    case "BOOL":
+      return "false";
+    case "STRING":
+      return `""`;
+    default:
+      return "0";
+  }
+}
+
 function genVarDecl(node: VarDecl, level: number): string {
   const pad = indent(level);
 
   let code = `${pad}-- VAR DECL (${node.scope})\n`;
 
   for (const v of node.vars) {
-    const init = v.init ? `${genExpr(v.init)}` : "nil";
-    code += `${pad}env.memory.${v.name} = ${init}\n`;
+
+    let value: string;
+
+    if (v.init) {
+      value = genExpr(v.init);
+    } else if (v.dataType && !isBuiltinType(v.dataType)) {
+      // 🔥 自定义类型 → 实例化
+      value = `types.${v.dataType}:new()`;
+    } else {
+      // 基础类型默认值
+      value = defaultValue(v.dataType);
+    }
+
+    code += `${pad}ctx.${v.name} = ${value}\n`;
   }
 
   return code;
@@ -129,7 +160,7 @@ function genFunction(node: FunctionDecl, level: number): string {
   const pad = indent(level);
 
   let code = `${pad}-- FUNCTION ${node.name}\n`;
-  code += `${pad}function env.func.${node.name}()\n`;
+  code += `${pad}function ctx.${node.name}()\n`;
 
   code += (node.body || [])
     .map(s => genStmt(s, level + 1))
@@ -149,7 +180,7 @@ function genFB(node: FunctionBlockDecl, level: number): string {
   const pad = indent(level);
 
   let code = `${pad}-- FUNCTION_BLOCK ${node.name}\n`;
-  code += `${pad}env.func.${node.name} = {}\n`;
+  code += `${pad}ctx.${node.name} = {}\n`;
 
   // inputs/outputs
   const allVars = [
@@ -162,10 +193,10 @@ function genFB(node: FunctionBlockDecl, level: number): string {
 
   for (const v of allVars) {
     for (const vv of v.vars)
-      code += `${pad}env.func.${node.name}.${vv.name} = nil\n`;
+      code += `${pad}ctx.${node.name}.${vv.name} = nil\n`;
   }
 
-  code += `\n${pad}function env.func.${node.name}:exec()\n`;
+  code += `\n${pad}function ctx.${node.name}:exec()\n`;
 
   code += (node.body || [])
     .map(s => genStmt(s, level + 1))
@@ -200,7 +231,7 @@ function genStmt(node: AST, level: number): string {
 
     case "Assign": {
       const n = node as Assign;
-      return `${pad}env.memory.${n.left} = ${genExpr(n.right)}`;
+      return `${pad}ctx.${n.left} = ${genExpr(n.right)}`;
     }
 
     case "Call": {
