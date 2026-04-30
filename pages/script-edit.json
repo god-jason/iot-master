@@ -1,0 +1,36 @@
+{
+  "title": "编辑脚本",
+  "template": "form",
+  "fields": [
+    {
+      "key": "id",
+      "label": "ID",
+      "type": "text",
+      "placeholder": "默认随机ID"
+    },
+    {
+      "key": "gateway_id",
+      "label": "网关ID",
+      "type": "text"
+    },
+    {
+      "key": "name",
+      "label": "名称",
+      "type": "text"
+    },
+    {
+      "key": "content",
+      "label": "脚本",
+      "type": "code",
+      "language": "lua",
+      "theme": "dark"
+    },
+    {
+      "key": "disabled",
+      "label": "禁用",
+      "type": "switch"
+    }
+  ],
+  "load_api": "table/script/detail/:id/:gateway_id",
+  "submit_api": "table/script/update/:id/:gateway_id"
+}

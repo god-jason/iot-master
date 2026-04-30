@@ -9,6 +9,7 @@ import {
     SmartTableColumn,
     SmartTableOperator
 } from '../lib/smart-table/smart-table.component';
+import {Theme} from '@acrodata/code-editor';
 
 export type PageContent = Content & (
   BlankContent |
@@ -55,7 +56,7 @@ export interface Content {
   //挂载
   mount?: string | Function | (() => void)
   mounts?: string[]
-  
+
   //卸载
   unmount?: string | Function | (() => void)
 
@@ -96,6 +97,7 @@ export interface AmapContent {
   zoom?: number
   city?: number
 }
+
 
 export interface ChartContent {
   template: 'chart'

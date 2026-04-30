@@ -240,6 +240,14 @@
       <ng-container *ngTemplateOutlet="field.template; context: { field: field, control:control }">
       </ng-container>
     }
+    @case ('code') {
+      <code-editor
+         [languages]="languages"
+         [language]="field.language"
+         [readonly]="field.readonly"
+         [disabled]="field.disabled"
+         [theme]="field.theme" />
+    }
     @default {
       <!--默认 用文本-->
       <span>不支持的控件类型：{{ field.type }}</span>

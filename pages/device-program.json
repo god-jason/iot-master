@@ -1,3 +1,19 @@
 {
-
+  "tabs": [
+    {
+      "title": "Lua脚本",
+      "page":"script",
+      "params_func": "return {gateway_id: params.id}"
+    },
+    {
+      "title": "Blockly",
+      "page":"blockly",
+      "params_func": "return {gateway_id: params.id}"
+    },
+    {
+      "title": "ST脚本",
+      "page":"st",
+      "params_func": "return {gateway_id: params.id}"
+    }
+  ]
 }

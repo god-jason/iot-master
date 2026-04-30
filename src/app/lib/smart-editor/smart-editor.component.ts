@@ -32,6 +32,9 @@ import {SmartDatePicker} from '../smart-date-picker/smart-date-picker';
 import dayjs from 'dayjs';
 
 
+import {Theme, CodeEditor} from '@acrodata/code-editor';
+import { languages } from '@codemirror/language-data';
+
 export interface SmartAutoOption {
   label: string
   value: any
@@ -118,6 +121,12 @@ export interface SmartField {
   admin?: boolean
   //仅限非管理员
   not_admin?: boolean
+
+
+  //代码
+  theme?: Theme
+  language?: string
+  readonly?: boolean
 }
 
 export interface SmartFieldCondition {
@@ -238,6 +247,7 @@ export function createControl(f: SmartField, value: any = undefined): FormContro
     NzRadioModule,
     NzRateComponent,
     SmartDatePicker,
+    CodeEditor,
   ],
   templateUrl: './smart-editor.component.html',
   styleUrl: './smart-editor.component.scss',
@@ -245,6 +255,9 @@ export function createControl(f: SmartField, value: any = undefined): FormContro
 export class SmartEditorComponent implements OnInit {
   @Output() change = new EventEmitter<any>();
   @Output() action = new EventEmitter<SmartAction>();
+
+
+  languages = languages
 
   group: FormGroup = new FormGroup({})
 
