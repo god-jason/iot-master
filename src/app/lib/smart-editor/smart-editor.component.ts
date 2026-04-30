@@ -326,24 +326,10 @@ export class SmartEditorComponent implements OnInit {
       }
     }),
     LanguageDescription.of({
-      name: "LESS",
-      extensions: ["less"],
-      load() {
-        return import("@codemirror/lang-less").then(m => m.less())
-      }
-    }),
-    LanguageDescription.of({
       name: "Markdown",
       extensions: ["md", "markdown", "mkd"],
       load() {
         return import("@codemirror/lang-markdown").then(m => m.markdown())
-      }
-    }),
-    LanguageDescription.of({
-      name: "PHP",
-      extensions: ["php", "php3", "php4", "php5", "php7", "phtml"],
-      load() {
-        return import("@codemirror/lang-php").then(m => m.php())
       }
     }),
     LanguageDescription.of({
@@ -355,31 +341,9 @@ export class SmartEditorComponent implements OnInit {
       }
     }),
     LanguageDescription.of({
-      name: "Sass",
-      extensions: ["sass"],
-      load() {
-        return import("@codemirror/lang-sass").then(m => m.sass({indented: true}))
-      }
-    }),
-    LanguageDescription.of({
-      name: "SCSS",
-      extensions: ["scss"],
-      load() {
-        return import("@codemirror/lang-sass").then(m => m.sass())
-      }
-    }),
-    LanguageDescription.of({
       name: "SQL",
       extensions: ["sql"],
       load() { return sql("StandardSQL") }
-    }),
-    LanguageDescription.of({
-      name: "TypeScript",
-      alias: ["ts"],
-      extensions: ["ts","mts","cts"],
-      load() {
-        return import("@codemirror/lang-javascript").then(m => m.javascript({typescript: true}))
-      }
     }),
     LanguageDescription.of({
       name: "XML",
