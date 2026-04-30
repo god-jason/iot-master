@@ -1,0 +1,20 @@
+{
+  "title": "编程",
+  "template": "form",
+  "toolbar": [
+    {
+      "label": "创建",
+      "icon": "plus",
+      "type": "button"
+    }
+  ],
+  "fields": [
+    {
+      "key": "id",
+      "label": "脚本",
+      "type": "code",
+      "language": "lua",
+      "theme": "dark"
+    }
+  ]
+}

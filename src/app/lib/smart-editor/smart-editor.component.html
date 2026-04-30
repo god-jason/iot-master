@@ -241,7 +241,7 @@
       </ng-container>
     }
     @case ('code') {
-      <code-editor
+      <code-editor [formControl]="control"
          [languages]="languages"
          [language]="field.language"
          [readonly]="field.readonly"
