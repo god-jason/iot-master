@@ -1,13 +1,24 @@
 {
-  "title": "实时状态",
+  "title": "实时数据",
   "template": "statistic",
   "toolbar": [
     {
       "type": "button",
       "label": "采集数据",
+      "icon": "reload",
       "action": {
         "type": "script",
         "script": "if(this.device.gateway_id) this.refresh_child_values(); else this.refresh_values();"
+      }
+    },
+    {
+      "type": "button",
+      "label": "修改数据",
+      "icon": "edit",
+      "action": {
+        "type": "dialog",
+        "page":"device-values-setting",
+        "params_func": "return {id: this.params.id}"
       }
     }
   ],

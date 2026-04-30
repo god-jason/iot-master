@@ -1,6 +1,4 @@
 {
-  "title": "参数修改",
-  "template": "info",
   "mount": "this.load_device()",
   "methods": {
     "load_device": "this.request.get('table/device/detail/'+this.params.id).subscribe(res=>{if(res.error)return; this.load_model(res.data.product_id)})",

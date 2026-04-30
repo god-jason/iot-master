@@ -47,6 +47,30 @@
       "length": 256
     },
     {
+      "name": "gateway",
+      "comment": "网关",
+      "type": "bool",
+      "default": "false"
+    },
+    {
+      "name": "smart",
+      "comment": "智能",
+      "type": "bool",
+      "default": "false"
+    },
+    {
+      "name": "programmable",
+      "comment": "可编程",
+      "type": "bool",
+      "default": "false"
+    },
+    {
+      "name": "locatable",
+      "comment": "支持定位",
+      "type": "bool",
+      "default": "false"
+    },
+    {
       "name": "disabled",
       "comment": "禁用",
       "type": "bool",

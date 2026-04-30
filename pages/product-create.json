@@ -36,6 +36,26 @@
       "options": []
     },
     {
+      "key": "gateway",
+      "label": "网关",
+      "type": "switch"
+    },
+    {
+      "key": "smart",
+      "label": "智能",
+      "type": "switch"
+    },
+    {
+      "key": "programmable",
+      "label": "可编程",
+      "type": "switch"
+    },
+    {
+      "key": "locatable",
+      "label": "支持定位",
+      "type": "switch"
+    },
+    {
       "key": "disabled",
       "label": "禁用",
       "type": "switch"

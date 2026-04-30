@@ -1,0 +1,19 @@
+{
+  "tabs": [
+    {
+      "title": "子设备",
+      "page":"gateway-device",
+      "params_func": "return {gateway_id: params.id}"
+    },
+    {
+      "title": "串口管理",
+      "page":"serial",
+      "params_func": "return {gateway_id: params.id}"
+    },
+    {
+      "title": "内联设备",
+      "page":"inline",
+      "params_func": "return {gateway_id: params.id}"
+    }
+  ]
+}

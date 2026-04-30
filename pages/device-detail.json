@@ -9,7 +9,8 @@
       "action": {
         "type": "dialog",
         "page":"device-edit",
-        "params_func": "return {id: data.id}"
+        "params_func": "return {id: data.id}",
+        "after_close": "this.load()"
       }
     },
     {
@@ -50,7 +51,7 @@
       "label": "网关ID",
       "action": {
         "type": "page",
-        "page":"gateway-detail",
+        "page":"device-detail",
         "params_func": "return {id: data.gateway_id}"
       }
     },
@@ -74,10 +75,23 @@
     }
   ],
   "load_api": "table/device/detail/:id",
+  "load_success": "this.request.get('table/product/detail/'+this.data.product_id).subscribe(res=>{this.add_tabs(res.data)})",
+  "methods": {
+    "add_tabs": ["data", "data.gateway && this.add_gateway_tabs(); data.smart && this.add_smart_tabs(); data.programmable && this.add_program_tabs(); data.locatable && this.add_locate_tabs()"],
+    "add_gateway_tabs": "this.content.tabs.push({title:'网关', page:'device-gateway', params:{id: this.params.id}})",
+    "add_smart_tabs": "this.content.tabs.push({title:'智能', page:'device-smart', params:{id: this.params.id}})",
+    "add_program_tabs": "this.content.tabs.push({title:'编程', page:'device-program', params:{id: this.params.id}})",
+    "add_locate_tabs": "this.content.tabs.push({title:'定位', page:'device-track', params:{id: this.params.id}})"
+  },
   "tabs": [
     {
       "title": "数据",
       "page":"device-values",
+      "params_func": "return {id: params.id}"
+    },
+    {
+      "title": "操作",
+      "page":"device-actions",
       "params_func": "return {id: params.id}"
     },
     {
@@ -89,11 +103,6 @@
       "title": "告警",
       "page":"alarm",
       "params_func": "return {device_id: params.id}"
-    },
-    {
-      "title": "数据修改（旧）",
-      "page":"device-values-setting",
-      "params_func": "return {id: params.id}"
     }
   ]
 }

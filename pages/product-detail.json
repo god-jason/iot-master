@@ -50,6 +50,26 @@
       "label": "协议"
     },
     {
+      "key": "gateway",
+      "label": "网关",
+      "type": "boolean"
+    },
+    {
+      "key": "smart",
+      "label": "智能",
+      "type": "boolean"
+    },
+    {
+      "key": "programmable",
+      "label": "可编程",
+      "type": "boolean"
+    },
+    {
+      "key": "locatable",
+      "label": "支持定位",
+      "type": "boolean"
+    },
+    {
       "key": "disabled",
       "label": "禁用",
       "type": "boolean"
