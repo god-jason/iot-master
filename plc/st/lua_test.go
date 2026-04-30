@@ -160,7 +160,7 @@ END_PROGRAM
 
 	out := gen(src)
 
-	assertContains(t, out, "M.Add = function")
+	assertContains(t, out, "function Main.Add")
 	assertContains(t, out, "return 1")
 }
 
@@ -181,7 +181,7 @@ END_PROGRAM
 
 	out := gen(src)
 
-	assertContains(t, out, "M.Motor = function")
+	assertContains(t, out, "function Main.Motor")
 	assertContains(t, out, "speed = 10")
 }
 
@@ -198,7 +198,7 @@ END_PROGRAM
 
 	out := gen(src)
 
-	assertContains(t, out, "Foo(1, 2)")
+	assertContains(t, out, "Foo({a = 1, b = 2})")
 }
 
 // =========================================================

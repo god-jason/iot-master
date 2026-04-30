@@ -371,8 +371,10 @@ func (g *LuaGenerator) expr(e Expr) string {
 	case *CallExpr:
 		var args []string
 
+		var hasName = false
 		for _, a := range v.Args {
 			if a.Name != "" {
+				hasName = true
 				args = append(args,
 					fmt.Sprintf("%s = %s",
 						a.Name,
@@ -384,10 +386,17 @@ func (g *LuaGenerator) expr(e Expr) string {
 			}
 		}
 
-		return fmt.Sprintf("%s(%s)",
-			v.Name,
-			strings.Join(args, ", "),
-		)
+		if hasName {
+			return fmt.Sprintf("%s({%s})",
+				v.Name,
+				strings.Join(args, ", "),
+			)
+		} else {
+			return fmt.Sprintf("%s(%s)",
+				v.Name,
+				strings.Join(args, ", "),
+			)
+		}
 
 	default:
 		panic(fmt.Sprintf("unknown expr %T", e))
