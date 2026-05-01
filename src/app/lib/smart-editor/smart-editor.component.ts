@@ -33,6 +33,9 @@ import dayjs from 'dayjs';
 
 
 import {Theme, CodeEditor} from '@acrodata/code-editor';
+
+//CodeMirror默认语言太多，以下仅支持部分
+//https://github.com/codemirror/language-data/blob/main/src/language-data.ts
 import {LanguageSupport, LanguageDescription, StreamParser, StreamLanguage} from "@codemirror/language"
 function legacy(parser: StreamParser<unknown>): LanguageSupport {
   return new LanguageSupport(StreamLanguage.define(parser))
