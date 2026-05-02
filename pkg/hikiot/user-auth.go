@@ -5,8 +5,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -60,62 +60,29 @@ func (c *Client) GetAuthCode(ctx context.Context) (string, error) {
 }
 
 type UserResp struct {
-	Code int    `json:"code"`
-	Msg  string `json:"msg"`
-	Data struct {
-		AppKey           string `json:"appKey"`
-		UserAccessToken  string `json:"userAccessToken"`
-		RefreshUserToken string `json:"refreshUserToken"`
-		ExpiresIn        int64  `json:"expiresIn"`
-		TeamNo           string `json:"teamNo"`
-		PersonNo         string `json:"personNo"`
-		AccountNo        string `json:"accountNo"`
-	} `json:"data"`
+	AppKey           string `json:"appKey"`
+	UserAccessToken  string `json:"userAccessToken"`
+	RefreshUserToken string `json:"refreshUserToken"`
+	ExpiresIn        int64  `json:"expiresIn"`
+	TeamNo           string `json:"teamNo"`
+	PersonNo         string `json:"personNo"`
+	AccountNo        string `json:"accountNo"`
 }
 
 func (c *Client) GetUserAccessToken(ctx context.Context, code string) (string, error) {
 	c.userLock.Lock()
 	defer c.userLock.Unlock()
 
-	qs, err := EncryptByPrivateKey("code="+code, c.AppSecret)
+	us := make(url.Values)
+	us.Set("code", code)
+
+	resp, err := c.Request(ctx, "GET", "/auth/third/code2Token", us, nil)
 	if err != nil {
 		return "", err
 	}
 
-	req, _ := http.NewRequestWithContext(ctx, "GET",
-		c.BaseURL+"/auth/third/code2Token?querySecret="+qs, nil)
-
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("App-Access-Token", c.token)
-
-	resp, err := c.httpClient.Do(req)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-
-	buf, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return "", err
-	}
-
-	//str, err := DecryptByPrivateKey(string(buf), c.AppSecret)
-	//if err != nil {
-	//	return "", err
-	//}
-
-	var res UserResp
-	err = json.Unmarshal(buf, &res)
-	if err != nil {
-		return "", err
-	}
-
-	if res.Code != 0 {
-		return "", fmt.Errorf("GetUserAccessToken error code %d %s", res.Code, res.Msg)
-	}
-
-	c.userToken = res.Data.UserAccessToken
-	c.userTokenExp = time.Now().Unix() + res.Data.ExpiresIn*3600
+	c.userToken = resp["userAccessToken"].(string)
+	c.userTokenExp = time.Now().Unix() + resp["ExpiresIn"].(int64)*3600*12
 
 	return c.userToken, nil
 }

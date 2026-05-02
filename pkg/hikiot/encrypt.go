@@ -1,195 +1,179 @@
 package hikvideo
 
 import (
-	"bytes"
+	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/base64"
-	"fmt"
+	"errors"
 	"math/big"
 	"net/url"
 )
 
-// 常量（完全对齐 Java）
 const (
 	MaxEncryptBlock = 117
 	MaxDecryptBlock = 128
 )
 
-// ============================
-// 私钥解析（PKCS8）
-// ============================
-func parsePrivateKey(privateKey string) (*rsa.PrivateKey, error) {
-	keyBytes, err := base64.StdEncoding.DecodeString(privateKey)
-	if err != nil {
-		return nil, err
-	}
-
-	keyInterface, err := x509.ParsePKCS8PrivateKey(keyBytes)
-	if err != nil {
-		return nil, err
-	}
-
-	priv, ok := keyInterface.(*rsa.PrivateKey)
-	if !ok {
-		return nil, fmt.Errorf("not RSA private key")
-	}
-
-	return priv, nil
-}
-
-// ============================
-// 私钥加密（模拟 Java Cipher ENCRYPT_MODE）
-// ============================
-func privateEncrypt(priv *rsa.PrivateKey, data []byte) ([]byte, error) {
-	k := (priv.N.BitLen() + 7) / 8
-
-	if len(data) > k-11 {
-		return nil, fmt.Errorf("data too long")
-	}
-
-	// PKCS1Padding（和 Java 一致）
-	em := make([]byte, k)
-	em[0] = 0
-	em[1] = 1
-
-	psLen := k - len(data) - 3
-	for i := 0; i < psLen; i++ {
-		em[2+i] = 0xff
-	}
-
-	em[2+psLen] = 0
-	copy(em[3+psLen:], data)
-
-	// m^d mod n
-	m := new(big.Int).SetBytes(em)
-	c := new(big.Int).Exp(m, priv.D, priv.N)
-
-	out := c.Bytes()
-	if len(out) < k {
-		tmp := make([]byte, k)
-		copy(tmp[k-len(out):], out)
-		out = tmp
-	}
-
-	return out, nil
-}
-
-// ============================
-// 私钥解密（模拟 Java Cipher DECRYPT_MODE）
-// ============================
-func privateDecrypt(priv *rsa.PrivateKey, data []byte) ([]byte, error) {
-	k := (priv.N.BitLen() + 7) / 8
-
-	if len(data) != k {
-		return nil, fmt.Errorf("invalid block size")
-	}
-
-	// c^d mod n
-	c := new(big.Int).SetBytes(data)
-	m := new(big.Int).Exp(c, priv.D, priv.N)
-
-	out := m.Bytes()
-	if len(out) < k {
-		tmp := make([]byte, k)
-		copy(tmp[k-len(out):], out)
-		out = tmp
-	}
-
-	// 去掉 PKCS1Padding
-	if out[0] != 0 || out[1] != 1 {
-		return nil, fmt.Errorf("invalid padding")
-	}
-
-	i := 2
-	for ; i < len(out); i++ {
-		if out[i] == 0 {
-			break
-		}
-	}
-
-	return out[i+1:], nil
-}
-
-// ============================
-// 加密接口（完全对齐 Java encryptByPrivateKey）
-// ============================
-func EncryptByPrivateKey(data string, secret string) (string, error) {
-
-	// 1️⃣ URL Encode
-	encoded := url.QueryEscape(data)
-
-	// 2️⃣ 私钥
-	priv, err := parsePrivateKey(secret)
+// EncryptByPrivateKey 使用RSA私钥加密数据
+func EncryptByPrivateKey(data, privateKeyPEM string) (string, error) {
+	// 获取私钥
+	privateKey, err := parsePrivateKey(privateKeyPEM)
 	if err != nil {
 		return "", err
 	}
-	
-	dataBytes := []byte(encoded)
 
-	var buffer bytes.Buffer
+	// URL编码数据
+	encodedData := url.QueryEscape(data)
 
-	// 3️⃣ 分段加密
-	for i := 0; i < len(dataBytes); i += MaxEncryptBlock {
+	// 分块加密
+	var encryptedData []byte
+	for i := 0; i < len(encodedData); i += MaxEncryptBlock {
 		end := i + MaxEncryptBlock
-		if end > len(dataBytes) {
-			end = len(dataBytes)
+		if end > len(encodedData) {
+			end = len(encodedData)
 		}
 
-		block := dataBytes[i:end]
-
-		enc, err := privateEncrypt(priv, block)
+		chunk := []byte(encodedData[i:end])
+		encryptedChunk, err := rsa.EncryptPKCS1v15(rand.Reader, &privateKey.PublicKey, chunk)
 		if err != nil {
 			return "", err
 		}
 
-		buffer.Write(enc)
+		encryptedData = append(encryptedData, encryptedChunk...)
 	}
 
-	// 4️⃣ Base64
-	return base64.StdEncoding.EncodeToString(buffer.Bytes()), nil
+	// Base64编码
+	return base64.StdEncoding.EncodeToString(encryptedData), nil
 }
 
-// ============================
-// 解密接口（完全对齐 Java decryptByPrivateKey）
-// ============================
-func DecryptByPrivateKey(data string, secret string) (string, error) {
-
-	priv, err := parsePrivateKey(secret)
+// 私钥加密（模拟 RSA_private_encrypt）
+func RsaPrivateEncrypt(privateKeyStr string, data string) (string, error) {
+	// 获取私钥
+	privateKey, err := parsePrivateKey(privateKeyStr)
 	if err != nil {
 		return "", err
 	}
+	// URL encode（和你C++一致）
+	encodedData := url.QueryEscape(data)
+	dataBytes := []byte(encodedData)
 
-	// 1️⃣ Base64 解码
-	dataBytes, err := base64.StdEncoding.DecodeString(data)
-	if err != nil {
-		return "", err
-	}
+	keySize := privateKey.Size()
+	maxBlock := keySize - 11 // PKCS1 padding
 
-	var buffer bytes.Buffer
+	var encrypted []byte
 
-	// 2️⃣ 分段解密
-	for i := 0; i < len(dataBytes); i += MaxDecryptBlock {
-		end := i + MaxDecryptBlock
+	for i := 0; i < len(dataBytes); i += maxBlock {
+		end := i + maxBlock
 		if end > len(dataBytes) {
 			end = len(dataBytes)
 		}
 
-		block := dataBytes[i:end]
+		blockData := dataBytes[i:end]
 
-		dec, err := privateDecrypt(priv, block)
-		if err != nil {
-			return "", err
+		// === 核心：手动做“私钥加密” ===
+		m := new(big.Int).SetBytes(blockData)
+
+		// c = m^d mod n
+		c := new(big.Int).Exp(m, privateKey.D, privateKey.N)
+
+		// 补齐长度
+		out := c.Bytes()
+		if len(out) < keySize {
+			padding := make([]byte, keySize-len(out))
+			out = append(padding, out...)
 		}
 
-		buffer.Write(dec)
+		encrypted = append(encrypted, out...)
 	}
 
-	// 3️⃣ URL Decode
-	result, err := url.QueryUnescape(buffer.String())
+	return base64.StdEncoding.EncodeToString(encrypted), nil
+}
+
+// DecryptByPrivateKey 使用RSA私钥解密数据
+func DecryptByPrivateKey(encryptedData, privateKeyPEM string) (string, error) {
+	// 获取私钥
+	privateKey, err := parsePrivateKey(privateKeyPEM)
 	if err != nil {
 		return "", err
 	}
 
-	return result, nil
+	// Base64解码
+	ciphertext, err := base64.StdEncoding.DecodeString(encryptedData)
+	if err != nil {
+		return "", err
+	}
+
+	// 分块解密
+	var decryptedData []byte
+	for i := 0; i < len(ciphertext); i += MaxDecryptBlock {
+		end := i + MaxDecryptBlock
+		if end > len(ciphertext) {
+			end = len(ciphertext)
+		}
+
+		chunk := ciphertext[i:end]
+		decryptedChunk, err := rsa.DecryptPKCS1v15(rand.Reader, privateKey, chunk)
+		if err != nil {
+			return "", err
+		}
+
+		decryptedData = append(decryptedData, decryptedChunk...)
+	}
+
+	// URL解码
+	decodedData, err := url.QueryUnescape(string(decryptedData))
+	if err != nil {
+		return "", err
+	}
+
+	return decodedData, nil
+}
+
+// parsePrivateKey 解析PEM格式的私钥
+func parsePrivateKey(privateKeyPEM string) (*rsa.PrivateKey, error) {
+	// 解码Base64格式的私钥
+	keyBytes, err := base64.StdEncoding.DecodeString(privateKeyPEM)
+	if err != nil {
+		return nil, err
+	}
+
+	// 解析PKCS#8格式的私钥
+	privateKey, err := x509.ParsePKCS8PrivateKey(keyBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	// 类型断言
+	rsaPrivateKey, ok := privateKey.(*rsa.PrivateKey)
+	if !ok {
+		return nil, errors.New("private key is not RSA private key")
+	}
+
+	return rsaPrivateKey, nil
+}
+
+// GenerateRSAKeyPair 生成RSA密钥对（辅助函数）
+func GenerateRSAKeyPair(bits int) (string, string, error) {
+	privateKey, err := rsa.GenerateKey(rand.Reader, bits)
+	if err != nil {
+		return "", "", err
+	}
+
+	// 生成私钥的PKCS#8格式
+	privateKeyBytes, err := x509.MarshalPKCS8PrivateKey(privateKey)
+	if err != nil {
+		return "", "", err
+	}
+
+	// 生成公钥
+	publicKeyBytes, err := x509.MarshalPKIXPublicKey(&privateKey.PublicKey)
+	if err != nil {
+		return "", "", err
+	}
+
+	privateKeyPEM := base64.StdEncoding.EncodeToString(privateKeyBytes)
+	publicKeyPEM := base64.StdEncoding.EncodeToString(publicKeyBytes)
+
+	return privateKeyPEM, publicKeyPEM, nil
 }
