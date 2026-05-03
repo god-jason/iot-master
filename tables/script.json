@@ -28,6 +28,22 @@
       "type": "text"
     },
     {
+      "name": "repeat",
+      "comment": "重复执行",
+      "type": "bool",
+      "default": "false"
+    },
+    {
+      "name": "interval",
+      "comment": "执行间隔ms",
+      "type": "int"
+    },
+    {
+      "name": "delay",
+      "comment": "延迟执行s",
+      "type": "int"
+    },
+    {
       "name": "disabled",
       "comment": "禁用",
       "type": "bool",

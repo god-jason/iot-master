@@ -14,11 +14,6 @@
       "title": "场景管理",
       "page":"scene",
       "params_func": "return {gateway_id: params.id}"
-    },
-    {
-      "title": "数据绑定",
-      "page":"binding",
-      "params_func": "return {gateway_id: params.id}"
     }
   ]
 }

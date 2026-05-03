@@ -26,6 +26,22 @@
       "theme": "dark"
     },
     {
+      "name": "repeat",
+      "label": "重复执行",
+      "type": "switch",
+      "default": "false"
+    },
+    {
+      "name": "interval",
+      "label": "执行间隔ms",
+      "type": "number"
+    },
+    {
+      "name": "delay",
+      "label": "延迟执行s",
+      "type": "number"
+    },
+    {
       "key": "disabled",
       "label": "禁用",
       "type": "switch"

@@ -14,6 +14,11 @@
       "title": "内联设备",
       "page":"inline",
       "params_func": "return {gateway_id: params.id}"
+    },
+    {
+      "title": "数据绑定",
+      "page":"binding",
+      "params_func": "return {gateway_id: params.id}"
     }
   ]
 }
