@@ -1,0 +1,20 @@
+
+.steps-action {
+  padding: 25px 0;
+
+  .progress{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & > * {
+      margin: 0 10px;
+    }
+  }
+}

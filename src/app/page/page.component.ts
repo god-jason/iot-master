@@ -253,6 +253,9 @@ export class PageComponent implements AfterViewInit, OnDestroy{
       case "import":
         import("../template/import/import.component").then(m => this.render_component(m.ImportComponent))
         break
+      case "export":
+        import("../template/export/export.component").then(m => this.render_component(m.ExportComponent))
+        break
       default:
         break
     }

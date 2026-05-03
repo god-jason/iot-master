@@ -16,13 +16,24 @@
     },
     {
       "label": "导入",
-      "icon": "plus",
+      "icon": "upload",
       "type": "button",
       "admin": true,
       "action": {
         "type": "page",
         "page": "device-import",
         "params_func": "return {product_id: this.params.product_id, group_id: this.params.group_id, gateway_id: this.params.gateway_id}"
+      }
+    },
+    {
+      "label": "导出",
+      "icon": "download",
+      "type": "button",
+      "admin": true,
+      "action": {
+        "type": "page",
+        "page": "device-export",
+        "params_func": "return {filter: JSON.stringify(this.$event.filter)}"
       }
     },
     {

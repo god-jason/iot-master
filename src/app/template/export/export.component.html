@@ -1,19 +1,71 @@
 @if (content) {
-  @if (content.template == 'export') {
-    <nz-card [nzTitle]="content.title" [nzExtra]="extra">
+@if (content.template == 'export') {
+<nz-card [nzTitle]="content.title">
 
 
-    </nz-card>
-    <ng-template #extra>
-      <button nz-button nzType="primary" (click)="export()">
-        <span nz-icon nzType="save" [nzSpin]="exporting"></span>
-        开始导出
-      </button>
-    </ng-template>
-  } @else {
-    模板类型应该是export
-  }
+  <nz-steps [nzCurrent]="current">
+    <nz-step nzTitle="字段选择"></nz-step>
+    <nz-step nzTitle="数据下载"></nz-step>
+    <nz-step nzTitle="完成"></nz-step>
+  </nz-steps>
+
+  <div class="steps-action">
+
+    <!--表头选择-->
+    @if (current == 0) {
+    <form [formGroup]="group">
+      <nz-table #header nzSize="small" [nzData]="content.columns" nzShowPagination="false">
+        <thead>
+        <tr>
+          <th>字段</th>
+          <th>名称</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for (col of header.data; track col) {
+        <tr>
+          <td>
+            <label nz-checkbox [formControlName]="col.key">{{ col.key }}</label>
+          </td>
+          <td>
+            {{ col.label }}
+          </td>
+        </tr>
+        }
+        </tbody>
+      </nz-table>
+    </form>
+
+    <div class="footer">
+      <button nz-button nzType="primary" (click)="download()"><i nz-icon nzType="right"></i>下载</button>
+    </div>
+    }
+
+    <!--数据上传-->
+    @if (current === 1) {
+    <div class="progress">
+      <nz-progress [nzPercent]="percent" nzType="circle"></nz-progress>
+    </div>
+    <div class="footer">
+      <div>
+        总计{{ total }}条
+      </div>
+    </div>
+    }
+
+    <!--完成-->
+    @if (current === 2) {
+    <div class="footer">
+      <button nz-button nzType="primary" (click)="finish()">结束</button>
+    </div>
+    }
+  </div>
+
+</nz-card>
 } @else {
-  <nz-spin nzSimple></nz-spin>
+模板类型应该是export
+}
+} @else {
+<nz-spin nzSimple></nz-spin>
 }
 
