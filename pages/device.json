@@ -199,7 +199,7 @@
   ],
   "methods": {
     "get_extend_fields": "this.request.get('device/extend/fields').subscribe(res=>{if(res.error)return; res.data.map(f=>this.content.columns.push(f)) })",
-    "put_products": ["products", "this.content.toolbar[4].options = [{label:'不过滤'}].concat(products.map(p=>{return {value:p.id,label:p.name}}))"]
+    "put_products": ["products", "this.content.toolbar[5].options = [{label:'不过滤'}].concat(products.map(p=>{return {value:p.id,label:p.name}}))"]
   },
   "bind": {
     "type": "button",
