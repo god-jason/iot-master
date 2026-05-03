@@ -5,7 +5,6 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
 import {NzMenuModule} from 'ng-zorro-antd/menu';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ThemeService} from './theme.service';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +21,6 @@ import {ThemeService} from './theme.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(private ts: ThemeService) {
+  constructor() {
   }
 }

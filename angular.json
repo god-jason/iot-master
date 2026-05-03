@@ -60,21 +60,11 @@
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "src/styles/themes"
               ]
             },
             "styles": [
               "src/styles.scss",
-              {
-                "input": "src/styles/default.less",
-                "bundleName": "default",
-                "inject": false
-              },
-              {
-                "input": "src/styles/dark.less",
-                "bundleName": "dark",
-                "inject": false
-              }
+              "src/theme.less"
             ],
             "scripts": []
           },

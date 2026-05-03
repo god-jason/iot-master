@@ -8,7 +8,6 @@ import {UserService} from '../user.service';
 import {SmartRequestService} from '../lib/smart-request.service';
 import {NzConfigService} from 'ng-zorro-antd/core/config';
 import {Location} from '@angular/common';
-import {ThemeService} from '../theme.service';
 
 @Component({
   selector: 'app-admin',
@@ -68,7 +67,6 @@ export class AdminComponent {
               private request: SmartRequestService,
               private nzConfigService: NzConfigService,
               private router: Router,
-              protected ts: ThemeService,
               protected location: Location,
   ) {
     this.loadOem()
@@ -114,10 +112,6 @@ export class AdminComponent {
     this.primaryColor = color
     localStorage.setItem("primaryColor", this.primaryColor)
     this.nzConfigService.set('theme', {primaryColor: this.primaryColor})
-  }
-
-  onChangeTheme(theme: string) {
-    this.ts.changeTheme(theme)
   }
 
   logout() {

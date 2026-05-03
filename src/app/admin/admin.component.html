@@ -54,13 +54,6 @@
             <li nz-menu-item (click)="logout()">退出</li>
           </ul>
         </nz-dropdown-menu>
-        <span class="theme">
-          @if (ts.theme == "dark") {
-            <nz-icon nzType="sun" nzTheme="outline" title="亮色主题" (click)="onChangeTheme('default')"/>
-          } @else if (ts.theme == "default") {
-            <nz-icon nzType="moon" nzTheme="outline" title="暗色主题" (click)="onChangeTheme('dark')"/>
-          }
-        </span>
       </div>
     </nz-header>
     <nz-content>
