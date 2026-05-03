@@ -133,6 +133,7 @@ export class ExportComponent extends TemplateBase {
 
     while (true) {
       let data: any = await this.requestBatch(filter, skip, limit)
+      skip += limit
 
       if (data && data.length) {
         datum = datum.concat(data)
@@ -142,7 +143,7 @@ export class ExportComponent extends TemplateBase {
         break
 
       this.downloaded += data.length
-      this.percent = this.downloaded / this.total * 100
+      this.percent = Math.floor(this.downloaded / this.total * 100)
     }
 
     this.percent = 100
