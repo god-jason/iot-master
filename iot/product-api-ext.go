@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/god-jason/iot-master/pkg/api"
 	"github.com/god-jason/iot-master/pkg/db"
+	"github.com/spf13/viper"
 	"xorm.io/xorm/schemas"
 )
 
@@ -16,11 +17,12 @@ func init() {
 }
 
 type ProductSetting struct {
-	Id      string           `json:"id" xorm:"pk"`
-	Name    string           `json:"name" xorm:"pk"`
-	Version int              `json:"version,omitempty" xorm:"version"`
-	Content []map[string]any `json:"content,omitempty" xorm:"json"`
-	Created time.Time        `json:"created,omitempty" xorm:"created"`
+	Id       string           `json:"id" xorm:"pk"`
+	Name     string           `json:"name" xorm:"pk"`
+	TenantId string           `json:"tenant_id,omitempty" xorm:"index"`
+	Version  int              `json:"version,omitempty" xorm:"version"`
+	Content  []map[string]any `json:"content,omitempty" xorm:"json"`
+	Created  time.Time        `json:"created,omitempty" xorm:"created"`
 }
 
 func productSetting(ctx *gin.Context) {
@@ -57,6 +59,17 @@ func productSettingUpdate(ctx *gin.Context) {
 	if err != nil {
 		api.Error(ctx, err)
 		return
+	}
+
+	//禁止租户账号修改公共产品库
+	if viper.GetBool("tenant") {
+		tid := ctx.GetString("tenant")
+		if tid != "" {
+			if tid != setting.TenantId {
+				api.Fail(ctx, "禁止修改")
+				return
+			}
+		}
 	}
 
 	//修改为新内容

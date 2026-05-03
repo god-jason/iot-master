@@ -26,6 +26,13 @@
       "indexed": true
     },
     {
+      "name": "tenant_id",
+      "comment": "租户ID",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
       "name": "name",
       "comment": "名称",
       "type": "string",
