@@ -1,11 +1,6 @@
 {
   "tabs": [
     {
-      "title": "配置",
-      "page":"device-settings",
-      "params_func": "return {id: params.id}"
-    },
-    {
       "title": "定时任务",
       "page":"job",
       "params_func": "return {gateway_id: params.id}"

@@ -51,6 +51,11 @@
       "type": "switch"
     },
     {
+      "key": "configurable",
+      "label": "可配置",
+      "type": "switch"
+    },
+    {
       "key": "locatable",
       "label": "支持定位",
       "type": "switch"

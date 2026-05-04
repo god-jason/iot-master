@@ -225,21 +225,22 @@ export class PageComponent implements AfterViewInit, OnDestroy{
 
   load_component(tpl?: string) {
     switch (tpl) {
+      case undefined:
+      case "":
+      case "blank":
+        import("../template/blank/blank.component").then(m => this.render_component(m.BlankComponent))
+        break;
       case "table":
         import("../template/table/table.component").then(m => this.render_component(m.TableComponent))
-        //this.render_component(TableComponent)
         break
       case "info":
         import("../template/info/info.component").then(m => this.render_component(m.InfoComponent))
-        //this.render_component(InfoComponent)
         break
       case "form":
         import("../template/form/form.component").then(m => this.render_component(m.FormComponent))
-        //this.render_component(FormComponent)
         break
       case "statistic":
         import("../template/statistic/statistic.component").then(m => this.render_component(m.StatisticComponent))
-        //this.render_component(StatisticComponent)
         break
       case "chart":
         import("../template/chart/chart.component").then(m => this.render_component(m.ChartComponent))

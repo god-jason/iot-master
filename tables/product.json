@@ -65,6 +65,12 @@
       "default": "false"
     },
     {
+      "name": "configurable",
+      "comment": "可配置",
+      "type": "bool",
+      "default": "false"
+    },
+    {
       "name": "locatable",
       "comment": "支持定位",
       "type": "bool",
