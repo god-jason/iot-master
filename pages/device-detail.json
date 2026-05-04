@@ -75,9 +75,10 @@
     }
   ],
   "load_api": "table/device/detail/:id",
-  "load_success": "this.request.get('table/product/detail/'+this.data.product_id).subscribe(res=>{this.add_tabs(res.data)})",
+  "load_success": "this.load_product()",
   "methods": {
-    "add_tabs": ["data", "this.product=data; data.gateway && this.add_gateway_tabs(); data.smart && this.add_smart_tabs(); data.programmable && this.add_program_tabs(); data.configurable && this.add_settings_tabs(); data.locatable && this.add_locate_tabs()"],
+    "load_product": "if(!this.product) this.request.get('table/product/detail/'+this.data.product_id).subscribe(res=>{this.product=res.data; this.add_tabs(res.data)})",
+    "add_tabs": ["data", " data.gateway && this.add_gateway_tabs(); data.smart && this.add_smart_tabs(); data.programmable && this.add_program_tabs(); data.configurable && this.add_settings_tabs(); data.locatable && this.add_locate_tabs()"],
     "add_gateway_tabs": "this.content.tabs.push({title:'网关', page:'device-gateway', params:{id: this.params.id}})",
     "add_smart_tabs": "this.content.tabs.push({title:'智能', page:'device-smart', params:{id: this.params.id}})",
     "add_program_tabs": "this.content.tabs.push({title:'编程', page:'device-program', params:{id: this.params.id}})",
