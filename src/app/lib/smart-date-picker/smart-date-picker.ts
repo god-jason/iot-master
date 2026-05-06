@@ -1,9 +1,14 @@
-import {Component, forwardRef, Input} from '@angular/core';
-import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
-import {NzTimePickerComponent} from 'ng-zorro-antd/time-picker';
-import {NzDatePickerComponent} from 'ng-zorro-antd/date-picker';
-import dayjs from 'dayjs';
-import {CommonModule} from '@angular/common';
+import { Component, forwardRef, Input } from '@angular/core';
+import {
+  ControlValueAccessor,
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule
+} from '@angular/forms';
+import { NzTimePickerComponent } from 'ng-zorro-antd/time-picker';
+import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
+import dayjs, { Dayjs } from 'dayjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'smart-date-picker',
@@ -13,7 +18,7 @@ import {CommonModule} from '@angular/common';
     FormsModule,
     ReactiveFormsModule,
     NzDatePickerComponent,
-    NzTimePickerComponent,
+    NzTimePickerComponent
   ],
   templateUrl: './smart-date-picker.html',
   styleUrl: './smart-date-picker.scss',
@@ -26,47 +31,67 @@ import {CommonModule} from '@angular/common';
   ]
 })
 export class SmartDatePicker implements ControlValueAccessor {
-  @Input() mode = "datetime"
+  @Input() mode: 'datetime' | 'date' | 'time' = 'datetime';
+  @Input() placeholder = '请选择';
+  @Input() allowClear = true;
 
-  formats: any = {
+  formats = {
     datetime: 'YYYY-MM-DD HH:mm:ss',
     date: 'YYYY-MM-DD',
-    time: 'HH:mm:ss',
-  }
+    time: 'HH:mm:ss'
+  };
 
-  value: Date = new Date()
-  disabled = false
+  value: Date | null = null;
+  disabled = false;
 
+  // ===== 写入值（外部 -> 内部）=====
   writeValue(obj: any): void {
-    if (obj) {
-      if (this.mode == "time")
-        this.value = dayjs("2000-01-01 " + obj).toDate();
-      else
-        this.value = dayjs(obj).toDate();
+    if (!obj) {
+      this.value = null;
+      return;
+    }
+
+    try {
+      if (this.mode === 'time') {
+        const d = dayjs(`2000-01-01 ${obj}`);
+        this.value = d.isValid() ? d.toDate() : null;
+      } else {
+        const d = dayjs(obj);
+        this.value = d.isValid() ? d.toDate() : null;
+      }
+    } catch {
+      this.value = null;
     }
   }
 
-  onChange = (val: string) => {
-  };
-  onTouched = () => {
-  };
+  // ===== 注册 =====
+  onChange: (val: any) => void = () => {};
+  onTouched: () => void = () => {};
 
   registerOnChange(fn: any): void {
-    this.onChange = fn
+    this.onChange = fn;
   }
 
   registerOnTouched(fn: any): void {
-    this.onTouched = fn
+    this.onTouched = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 
-  onModelChange($event: any) {
-    let fmt = this.formats[this.mode]
-    this.onChange(dayjs($event).format(fmt))
-    this.onTouched()
-  }
+  // ===== 内部变化（内部 -> 外部）=====
+  onModelChange(value: Date | null) {
+    if (!value) {
+      this.onChange(null);
+      this.onTouched();
+      return;
+    }
 
+    const fmt = this.formats[this.mode];
+    const result = dayjs(value).format(fmt);
+
+    this.onChange(result);
+    this.onTouched();
+  }
 }
