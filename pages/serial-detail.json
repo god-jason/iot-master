@@ -87,12 +87,12 @@
     {
       "title": "调试",
       "page":"serial-debug",
-      "params_func": "return {gateway_id: params.gateway_id, link_id: params.id}"
+      "params_func": "return {gateway_id: params.gateway_id, id: params.id}"
     },
     {
       "title": "透传",
       "page":"serial-transport",
-      "params_func": "return {gateway_id: params.gateway_id, link_id: params.id}"
+      "params_func": "return {gateway_id: params.gateway_id, id: params.id}"
     }
   ]
 }

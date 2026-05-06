@@ -13,6 +13,7 @@ import {Theme} from '@acrodata/code-editor';
 
 export type PageContent = Content & (
   BlankContent |
+  LogContent |
   TableContent |
   ImportContent |
   ExportContent |
@@ -131,6 +132,11 @@ export interface InfoContent {
 export interface MarkdownContent {
   template: 'markdown'
   src?: string
+}
+
+export interface LogContent {
+  template: 'log'
+
 }
 
 export interface TableContent {

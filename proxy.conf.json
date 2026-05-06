@@ -17,7 +17,7 @@
     "logLevel": "debug",
     "changeOrigin": true
   },
-  "/mqtt/": {
+  "/mqtt": {
     "target": "http://localhost:8888",
     "secure": false,
     "logLevel": "debug",

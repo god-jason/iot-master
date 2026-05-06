@@ -21,6 +21,7 @@ import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {NzResultComponent} from 'ng-zorro-antd/result';
 import {NzTabsModule} from 'ng-zorro-antd/tabs';
 import {Subscription} from "rxjs";
+import {MqttService} from '../mqtt.service';
 
 @Component({
   selector: 'app-page',
@@ -52,7 +53,7 @@ export class PageComponent implements AfterViewInit, OnDestroy{
 
   @ViewChildren(PageComponent) children!: PageComponent[]
 
-  private sub?: Subscription;
+  private routerSub?: Subscription;
 
   constructor(protected request: SmartRequestService,
               protected route: ActivatedRoute,
@@ -68,12 +69,12 @@ export class PageComponent implements AfterViewInit, OnDestroy{
       this.page = location.pathname.substring(6)
       this.params = route.snapshot.queryParams;
     }
-    console.log("page constructor", this.page, this.params)
+    //console.log("page constructor", this.page, this.params)
   }
 
   ngOnDestroy() {
     //取消路由事件订阅
-    this.sub?.unsubscribe()
+    this.routerSub?.unsubscribe()
   }
 
   ngAfterViewInit(): void {
@@ -85,12 +86,12 @@ export class PageComponent implements AfterViewInit, OnDestroy{
 
       //弹窗之外，需要监听路由参数
       if (!this.nzModalData && !this.isChild) {
-        this.sub = this.router.events.subscribe(event=>{
+        this.routerSub = this.router.events.subscribe(event=>{
           if (event instanceof NavigationEnd) {
             const page = location.pathname.substring(6)
             //console.log("[page] NavigationEnd:", page);
             if (this.page == page) return
-            console.log("[page] page change:", page);
+            //console.log("[page] page change:", page);
             this.page = page
             this.load_page()
           }
@@ -117,7 +118,7 @@ export class PageComponent implements AfterViewInit, OnDestroy{
         // })
         this.route.queryParams.subscribe(params => {
           if (ObjectDeepCompare(params, this.params)) return
-          console.log("[page] query change")
+          //console.log("[page] query change")
           this.params = params;
           //this.load()
           //this.load_page() //重新加载
@@ -127,7 +128,7 @@ export class PageComponent implements AfterViewInit, OnDestroy{
   }
 
   load_page() {
-    console.log("[page] loadPage", this.page)
+    //console.log("[page] loadPage", this.page)
     this.error = ''
 
     this.content = undefined //清空页面
@@ -172,7 +173,7 @@ export class PageComponent implements AfterViewInit, OnDestroy{
   // }
 
   build() {
-    console.log("[page] build", this.page)
+    //console.log("[page] build", this.page)
 
     this.load_component(this.content?.template)
 
@@ -256,6 +257,9 @@ export class PageComponent implements AfterViewInit, OnDestroy{
         break
       case "export":
         import("../template/export/export.component").then(m => this.render_component(m.ExportComponent))
+        break
+      case "log":
+        import("../template/log/log.component").then(m => this.render_component(m.LogComponent))
         break
       default:
         break

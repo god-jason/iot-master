@@ -9,8 +9,18 @@ import {registerLocaleData} from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import {FormsModule} from '@angular/forms';
 import {provideHttpClient} from '@angular/common/http';
+import {provideMqtt} from './mqtt.service';
 
 registerLocaleData(zh);
+
+function getMqttUrl() {
+  const origin = location.origin
+  const wsProtocol = origin.startsWith('https') ? 'wss' : 'ws';
+  const host = origin.replace(/^https?:\/\//, '');
+  const url = `${wsProtocol}://${host}/mqtt`;
+  console.log("mqtt url", url)
+  return url
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,5 +30,7 @@ export const appConfig: ApplicationConfig = {
     provideNzI18n(zh_CN),
     importProvidersFrom(FormsModule),
     //provideAnimationsAsync(),
-    provideHttpClient()]
+    provideHttpClient(),
+    provideMqtt({url: getMqttUrl()})
+  ]
 };

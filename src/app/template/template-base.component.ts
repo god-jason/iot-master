@@ -11,6 +11,8 @@ import {LinkReplaceParams} from '../lib/utils';
 
 import dayjs from 'dayjs'
 import {UserService} from '../user.service';
+import {MqttService} from '../mqtt.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-template',
@@ -30,6 +32,9 @@ export class TemplateBase {
   router = inject(Router)
   title = inject(Title)
   modelRef = inject(NzModalRef, {optional: true})
+
+  mqtt = inject(MqttService)
+  private mqttSubs: Subscription[] = []
 
   pageComponent!: PageComponent //页面容器
 
@@ -71,6 +76,25 @@ export class TemplateBase {
 
   ngOnDestroy(): void {
     this.unmount()
+    this.mqttSubs.forEach(s=>s.unsubscribe())
+  }
+
+  subscribe(filter: string, callback: any) {
+    console.log("subscribe", filter)
+    const sub = this.mqtt.observe(filter).subscribe(msg=>callback.call(this, msg.payload))
+    this.mqttSubs.push(sub)
+  }
+
+  subscribeJSON(filter: string, callback: any) {
+    console.log("subscribe", filter)
+    const sub = this.mqtt.observe(filter).subscribe(msg=>{
+      try {
+        callback.call(this, JSON.parse(msg.payload.toString()))
+      } catch (e){
+        console.error(e)
+      }
+    })
+    this.mqttSubs.push(sub)
   }
 
   mount() {

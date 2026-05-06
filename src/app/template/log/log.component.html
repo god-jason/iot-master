@@ -1,10 +1,11 @@
 @if (content) {
-  @if (content.template == 'markdown') {
+  @if (content.template == 'log') {
     <nz-card [nzTitle]="content.title">
-      <markdown [data]="data"></markdown>
+      <div class="log" #box>
+      </div>
     </nz-card>
   } @else {
-    模板类型应该是markdown
+    模板类型应该是log
   }
 } @else {
   <nz-spin nzSimple></nz-spin>
