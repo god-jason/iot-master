@@ -54,6 +54,14 @@
   ],
   "operators": [
     {
+      "icon": "eye",
+      "action": {
+        "type": "dialog",
+        "page": "serial-detail",
+        "params_func": "return {id: data.id, gateway_id:data.gateway_id}"
+      }
+    },
+    {
       "icon": "edit",
       "action": {
         "type": "dialog",
@@ -76,7 +84,12 @@
   "columns": [
     {
       "key": "id",
-      "label": "ID"
+      "label": "ID",
+      "action": {
+        "type": "page",
+        "page":"serial-detail",
+        "params_func": "return {id: data.id, gateway_id: data.gateway_id}"
+      }
     },
     {
       "key": "name",
