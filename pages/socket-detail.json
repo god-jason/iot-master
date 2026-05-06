@@ -76,11 +76,6 @@
       "title": "调试",
       "page":"link-debug",
       "params_func": "return {gateway_id: params.gateway_id, id: params.id}"
-    },
-    {
-      "title": "透传",
-      "page":"socket-transport",
-      "params_func": "return {gateway_id: params.gateway_id, id: params.id}"
     }
   ]
 }
