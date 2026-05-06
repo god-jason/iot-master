@@ -20,7 +20,7 @@
     },
     {
       "key": "port",
-      "label": "端口号",
+      "label": "序号",
       "type": "number",
       "default": 1
     },
