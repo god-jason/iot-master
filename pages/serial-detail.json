@@ -20,7 +20,7 @@
       "confirm": "确认启动？",
       "action": {
         "type": "script",
-        "script": "this.request.get('serial/start/'+data.id+'/'+data.gateway_id).subscribe(res=>{})"
+        "script": "this.request.post('device/'+this.params.gateway_id+'/action/link', {operator:'open', id:this.params.id}).subscribe(res=>{ })"
       }
     },
     {
@@ -30,7 +30,7 @@
       "confirm": "确认停止？",
       "action": {
         "type": "script",
-        "script": "this.request.get('serial/stop/'+data.id+'/'+data.gateway_id).subscribe(res=>{})"
+        "script": "this.request.post('device/'+this.params.gateway_id+'/action/link', {operator:'close', id:this.params.id}).subscribe(res=>{ })"
       }
     }
   ],
