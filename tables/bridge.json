@@ -1,0 +1,56 @@
+{
+  "name": "binding",
+  "comment": "设备绑定",
+  "columns": [
+    {
+      "name": "id",
+      "comment": "ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "gateway_id",
+      "comment": "设备ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "name",
+      "comment": "名称",
+      "type": "string",
+      "length": 50
+    },
+    {
+      "name": "link1",
+      "comment": "连接1",
+      "type": "string",
+      "length": 50
+    },
+    {
+      "name": "link2",
+      "comment": "连接2",
+      "type": "string",
+      "length": 50
+    },
+    {
+      "name": "disabled",
+      "comment": "禁用",
+      "type": "bool",
+      "default": "false"
+    },
+    {
+      "name": "updated",
+      "comment": "更新时间",
+      "type": "datetime",
+      "updated": true
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ]
+}

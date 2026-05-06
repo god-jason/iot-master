@@ -1,0 +1,34 @@
+{
+  "title": "编辑连接桥接",
+  "template": "form",
+  "fields": [
+    {
+      "key": "id",
+      "label": "ID",
+      "type": "text",
+      "placeholder": "默认随机ID"
+    },
+    {
+      "key": "gateway_id",
+      "label": "网关ID",
+      "type": "text"
+    },
+    {
+      "key": "name",
+      "label": "名称",
+      "type": "text"
+    },
+    {
+      "key": "link1",
+      "label": "连接1",
+      "type": "text"
+    },
+    {
+      "key": "link2",
+      "label": "连接2",
+      "type": "text"
+    }
+  ],
+  "load_api": "table/bridge/detail/:id",
+  "submit_api": "table/bridge/update/:id"
+}

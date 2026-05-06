@@ -19,6 +19,11 @@
       "title": "数据绑定",
       "page":"binding",
       "params_func": "return {gateway_id: params.id}"
+    },
+    {
+      "title": "连接桥接",
+      "page":"bridge",
+      "params_func": "return {gateway_id: params.id}"
     }
   ]
 }
