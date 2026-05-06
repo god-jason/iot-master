@@ -72,11 +72,25 @@ export class TableComponent extends TemplateBase {
         console.error(e)
       }
     }
+
+    //处理提交成功
+    if (typeof this.content?.load_success == "string" && this.content.load_success.length > 0) {
+      try {
+        this.content.load_success = new Function("data", this.content.load_success)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+
     if (isFunction(content.search)) {
       this.loading = true
       content.search($event, this.request).then((res: any) => {
         this.data = res.data || []
         this.total = res.total || res.data?.length || 0
+
+        if (isFunction(this.content?.load_success)) {
+          this.content?.load_success.call(this, res.data)
+        }
       }).finally(() => {
         this.loading = false
       })
@@ -87,6 +101,10 @@ export class TableComponent extends TemplateBase {
         if (res.error) return
         this.data = res.data || []
         this.total = res.total || res.data?.length || 0
+
+        if (isFunction(this.content?.load_success)) {
+          this.content?.load_success.call(this, res.data)
+        }
       }).add(() => {
         this.loading = false
       })
@@ -95,5 +113,4 @@ export class TableComponent extends TemplateBase {
       super.load()
     }
   }
-
 }
