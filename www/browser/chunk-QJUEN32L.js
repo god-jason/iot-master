@@ -1,0 +1,1 @@
+import{a as r}from"./chunk-TBZ2JIZP.js";import{ca as o,pa as a,ua as p}from"./chunk-YH62BPSM.js";import"./chunk-N57AJHA5.js";var i=class e extends r{static \u0275fac=(()=>{let t;return function(n){return(t||(t=o(e)))(n||e)}})();static \u0275cmp=a({type:e,selectors:[["app-blank"]],features:[p],decls:0,vars:0,template:function(s,n){},encapsulation:2})};export{i as BlankComponent};
