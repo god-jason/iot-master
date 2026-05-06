@@ -1,5 +1,5 @@
 {
-  "title": "串口管理",
+  "title": "通道管理",
   "template": "table",
   "toolbar": [
     {
@@ -8,11 +8,10 @@
       "type": "button",
       "action": {
         "type": "dialog",
-        "page":"serial-create",
+        "page":"socket-create",
         "params_func": "return {gateway_id: this.params.gateway_id}",
         "after_close": "this.load()"
-      },
-      "admin": true
+      }
     },
     {
       "label": "从网关读取",
@@ -20,7 +19,7 @@
       "type": "button",
       "action": {
         "type": "script",
-        "script": "this.load_device_serials()"
+        "script": "this.load_device_sockets()"
       }
     },
     {
@@ -30,7 +29,7 @@
       "confirm": "确认下载到网关？",
       "action": {
         "type": "script",
-        "script": "this.request.get('device/'+this.params.gateway_id+'/download/serial').subscribe(res=>{})"
+        "script": "this.request.get('device/'+this.params.gateway_id+'/download/socket').subscribe(res=>{})"
       }
     }
   ],
@@ -43,7 +42,7 @@
       "icon": "eye",
       "action": {
         "type": "dialog",
-        "page": "serial-detail",
+        "page": "socket-detail",
         "params_func": "return {id: data.id, gateway_id:data.gateway_id}"
       }
     },
@@ -51,7 +50,7 @@
       "icon": "edit",
       "action": {
         "type": "dialog",
-        "page":"serial-edit",
+        "page":"socket-edit",
         "params_func": "return {id: data.id, gateway_id:data.gateway_id}",
         "after_close": "this.load()"
       }
@@ -62,9 +61,8 @@
       "confirm": "确认删除？",
       "action": {
         "type": "script",
-        "script": "this.request.get('table/serial/delete/'+data.id+'/'+data.gateway_id).subscribe(res=>{this.load()})"
-      },
-      "admin": true
+        "script": "this.request.get('table/socket/delete/'+data.id+'/'+data.gateway_id).subscribe(res=>{this.load()})"
+      }
     }
   ],
   "batch": true,
@@ -74,7 +72,7 @@
       "label": "ID",
       "action": {
         "type": "page",
-        "page":"serial-detail",
+        "page":"socket-detail",
         "params_func": "return {id: data.id, gateway_id: data.gateway_id}"
       }
     },
@@ -83,28 +81,16 @@
       "label": "名称"
     },
     {
+      "key": "adapter",
+      "label": "网卡"
+    },
+    {
+      "key": "host",
+      "label": "主机"
+    },
+    {
       "key": "port",
-      "label": "序号"
-    },
-    {
-      "key": "baud_rate",
-      "label": "波特率"
-    },
-    {
-      "key": "data_bits",
-      "label": "字长"
-    },
-    {
-      "key": "stop_bits",
-      "label": "停止位"
-    },
-    {
-      "key": "parity",
-      "label": "检验位"
-    },
-    {
-      "key": "rs485_gpio",
-      "label": "485GPIO"
+      "label": "端口"
     },
     {
       "key": "protocol",
@@ -121,12 +107,12 @@
       "type": "date"
     }
   ],
-  "search_api": "table/serial/search",
+  "search_api": "table/socket/search",
   "mount": "if(this.params.gateway_id) this.filter.gateway_id=this.params.gateway_id",
   "methods": {
-    "load_device_serials": "this.request.post('device/'+this.params.gateway_id+'/action/database', {operator:'find', database:'serial'}).subscribe(res=>{ this.on_action_serials(res.data) })",
-    "on_action_serials": ["serials", "if(serials && serials.length) { this.delete_serials(); this.data=serials; setTimeout(()=>this.insert_serials(), 1000);  }"],
-    "delete_serials": "this.data.map(s=> this.request.get('table/serial/delete/'+s.id+'/'+s.gateway_id).subscribe(()=>{}) ); this.data=[]",
-    "insert_serials": "this.data.map(s => s.gateway_id=this.params.gateway_id); this.data.map(s=> this.request.post('table/serial/create', s).subscribe(()=>{}) );"
+    "load_device_sockets": "this.request.post('device/'+this.params.gateway_id+'/action/database', {operator:'find', database:'socket'}).subscribe(res=>{ this.on_action_sockets(res.data) })",
+    "on_action_sockets": ["sockets", "if(sockets && sockets.length) { this.delete_sockets(); this.data=sockets; setTimeout(()=>this.insert_sockets(), 1000);  }"],
+    "delete_sockets": "this.data.map(s=> this.request.get('table/socket/delete/'+s.id+'/'+s.gateway_id).subscribe(()=>{}) ); this.data=[]",
+    "insert_sockets": "this.data.map(s => s.gateway_id=this.params.gateway_id); this.data.map(s=> this.request.post('table/socket/create', s).subscribe(()=>{}) );"
   }
 }

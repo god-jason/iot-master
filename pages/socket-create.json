@@ -1,0 +1,78 @@
+{
+  "title": "创建通道",
+  "template": "form",
+  "fields": [
+    {
+      "key": "id",
+      "label": "ID",
+      "type": "text",
+      "placeholder": "默认随机ID"
+    },
+    {
+      "key": "gateway_id",
+      "label": "网关ID",
+      "type": "text"
+    },
+    {
+      "key": "name",
+      "label": "名称",
+      "type": "text"
+    },
+    {
+      "key": "adapter",
+      "label": "网卡",
+      "type": "select",
+      "options": [
+        {
+          "value": "4G",
+          "label": "4G"
+        },
+        {
+          "value": "WIFI",
+          "label": "WIFI"
+        },
+        {
+          "value": "ETH",
+          "label": "ETH"
+        },
+        {
+          "value": "ETH0",
+          "label": "ETH0"
+        }
+      ]
+    },
+    {
+      "key": "host",
+      "label": "主机",
+      "type": "text"
+    },
+    {
+      "key": "port",
+      "label": "端口",
+      "type": "number",
+      "default": 1
+    },
+    {
+      "key": "protocol",
+      "label": "协议",
+      "type": "select",
+      "options": [],
+      "change_action": {
+        "type": "script",
+        "script": "setTimeout(()=>this.load_protocol_option(), 200)"
+      }
+    },
+    {
+      "key": "protocol_options",
+      "label": "协议参数",
+      "type": "object",
+      "children": []
+    }
+  ],
+  "submit_api": "table/socket/create",
+  "mount": "this.data.gateway_id=this.params.gateway_id; this.load_protocols();",
+  "methods": {
+    "load_protocols": "this.request.get('protocol/list').subscribe(res=>{this.content.fields[6].options=[{value:'',label:'无'}].concat(res.data.map(d=>{return {value:d.name,label:d.description}})); setTimeout(()=>this.load_protocol_option(), 200);  })",
+    "load_protocol_option": "if (this.editor.value.protocol) { this.request.get('protocol/'+this.editor.value.protocol).subscribe(res=>{this.content.fields[7].children=res.data.option_fields; setTimeout(()=>this.editor.rebuild(), 200)}) } else {this.content.fields[6].children=[]; setTimeout(()=>this.editor.rebuild(), 200)}"
+  }
+}

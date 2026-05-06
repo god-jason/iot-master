@@ -1,0 +1,67 @@
+{
+  "name": "socket",
+  "comment": "网络连接",
+  "columns": [
+    {
+      "name": "id",
+      "comment": "ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "gateway_id",
+      "comment": "网关ID",
+      "type": "string",
+      "length": 50,
+      "primary": true
+    },
+    {
+      "name": "adapter",
+      "comment": "网卡",
+      "type": "string",
+      "length": 50
+    },
+    {
+      "name": "name",
+      "comment": "名称",
+      "type": "string",
+      "length": 50
+    },
+    {
+      "name": "host",
+      "comment": "主机",
+      "type": "string",
+      "length": 200
+    },
+    {
+      "name": "port",
+      "comment": "端口",
+      "type": "int"
+    },
+    {
+      "name": "protocol",
+      "comment": "协议",
+      "type": "string",
+      "length": 128
+    },
+    {
+      "name": "protocol_options",
+      "comment": "协议参数",
+      "type": "text",
+      "json": true
+    },
+    {
+      "name": "disabled",
+      "comment": "禁用",
+      "type": "bool",
+      "default": "false"
+    },
+    {
+      "name": "created",
+      "comment": "创建时间",
+      "type": "datetime",
+      "created": true
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "title": "串口详情",
+  "title": "通道详情",
   "template": "info",
   "toolbar": [
     {
@@ -8,7 +8,7 @@
       "label": "编辑",
       "action": {
         "type": "dialog",
-        "page":"serial-edit",
+        "page":"socket-edit",
         "params_func": "return {id: data.id, gateway_id: data.gateway_id}",
         "after_close": "this.load()"
       }
@@ -44,28 +44,16 @@
       "label": "名称"
     },
     {
+      "key": "adapter",
+      "label": "网卡"
+    },
+    {
+      "key": "host",
+      "label": "主机"
+    },
+    {
       "key": "port",
-      "label": "序号"
-    },
-    {
-      "key": "baud_rate",
-      "label": "波特率"
-    },
-    {
-      "key": "data_bits",
-      "label": "字长"
-    },
-    {
-      "key": "stop_bits",
-      "label": "停止位"
-    },
-    {
-      "key": "parity",
-      "label": "检验位"
-    },
-    {
-      "key": "rs485_gpio",
-      "label": "485GPIO"
+      "label": "端口"
     },
     {
       "key": "protocol",
@@ -77,7 +65,7 @@
       "type": "boolean"
     }
   ],
-  "load_api": "table/serial/detail/:id/:gateway_id",
+  "load_api": "table/socket/detail/:id/:gateway_id",
   "tabs": [
     {
       "title": "子设备",
@@ -91,7 +79,7 @@
     },
     {
       "title": "透传",
-      "page":"serial-transport",
+      "page":"socket-transport",
       "params_func": "return {gateway_id: params.gateway_id, id: params.id}"
     }
   ]
