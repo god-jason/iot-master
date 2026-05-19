@@ -40,8 +40,13 @@
       "type": "switch"
     },
     {
-      "key": "remote_control",
+      "key": "controllable",
       "label": "远程控制",
+      "type": "switch"
+    },
+    {
+      "key": "writable",
+      "label": "修改变量",
       "type": "switch"
     },
     {

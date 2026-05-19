@@ -59,7 +59,13 @@
       "default": "false"
     },
     {
-      "name": "remote_control",
+      "name": "writable",
+      "comment": "修改变量",
+      "type": "bool",
+      "default": "false"
+    },
+    {
+      "name": "controllable",
       "comment": "远程控制",
       "type": "bool",
       "default": "false"

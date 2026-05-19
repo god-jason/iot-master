@@ -1,6 +1,6 @@
 {
   "name": "product_model",
-  "comment": "产品模型",
+  "comment": "产品模型（废弃）",
   "columns": [
     {
       "name": "id",
