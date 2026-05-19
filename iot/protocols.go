@@ -64,6 +64,11 @@ func addProtocolColumns() error {
 		return err
 	}
 
+	tabInline, err := table.Get("inline")
+	if err != nil {
+		return err
+	}
+
 	entries, err := Protocols.ReadDir("/")
 	if err != nil {
 		return err
@@ -90,6 +95,7 @@ func addProtocolColumns() error {
 			//数据库扩展
 			for _, field := range p.DeviceExtendColumns {
 				tab.AddColumn(field) //添加到字段定义中
+				tabInline.AddColumn(field)
 
 				//向数据库表定义中添加字段 TODO 存在冗余添加了
 				col := field.ToColumn()

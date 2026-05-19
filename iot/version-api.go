@@ -17,6 +17,9 @@ func init() {
 		rows, err := tab.Find(&table.ParamSearch{
 			Limit:  9999,
 			Filter: map[string]interface{}{"product_id": ctx.Param("id")},
+			Sort: map[string]int{
+				"id": -1,
+			},
 		})
 		if err != nil {
 			api.Error(ctx, err)

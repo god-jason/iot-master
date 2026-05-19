@@ -20,7 +20,7 @@
       "type": "button",
       "action": {
         "type": "script",
-        "script": "this.load_device_serials()"
+        "script": "this.from_gateway()"
       }
     },
     {
@@ -124,9 +124,9 @@
   "search_api": "table/serial/search",
   "mount": "if(this.params.gateway_id) this.filter.gateway_id=this.params.gateway_id",
   "methods": {
-    "load_device_serials": "this.request.post('device/'+this.params.gateway_id+'/action/database', {operator:'find', database:'serial'}).subscribe(res=>{ this.on_action_serials(res.data) })",
-    "on_action_serials": ["serials", "if(serials && serials.length) { this.delete_serials(); this.data=serials; setTimeout(()=>this.insert_serials(), 1000);  }"],
-    "delete_serials": "this.data.map(s=> this.request.get('table/serial/delete/'+s.id+'/'+s.gateway_id).subscribe(()=>{}) ); this.data=[]",
-    "insert_serials": "this.data.map(s => s.gateway_id=this.params.gateway_id); this.data.map(s=> this.request.post('table/serial/create', s).subscribe(()=>{}) );"
+    "from_gateway": "this.request.post('device/'+this.params.gateway_id+'/action/database', {operator:'find', database:'serial'}).subscribe(res=>{ this.on_gatway_data(res.data) })",
+    "on_gatway_data": ["ds", "if(ds && ds.length) { this.delete_all(); this.data=ds; setTimeout(()=>this.insert_all(), 1000);  }"],
+    "delete_all": "this.data.map(s=> this.request.get('table/serial/delete/'+s.id+'/'+s.gateway_id).subscribe(()=>{}) ); this.data=[]",
+    "insert_all": "this.data.map(s => s.gateway_id=this.params.gateway_id); this.data.map(s=> this.request.post('table/serial/create', s).subscribe(()=>{}) );"
   }
 }

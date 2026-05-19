@@ -95,31 +95,9 @@
     }
   ],
   "methods": {
-    "add_tab_settings": "if(data.configurable)this.tabs.push(this.content.other_tabs.settings)",
-    "add_tab_actions": "if(data.remote_control)this.tabs.push(this.content.other_tabs.actions)",
-    "add_tab_validators": "if(data.validate)this.tabs.push(this.content.other_tabs.validators)",
-    "add_tab_versions": "if(data.ota)this.tabs.push(this.content.other_tabs.versions)"
-  },
-  "other_tabs": {
-    "settings": {
-      "title": "配置参数",
-      "page": "product-setting-setting",
-      "params_func": "return {id: params.id}"
-    },
-    "actions": {
-      "title": "设备操作",
-      "page": "product-setting-action",
-      "params_func": "return {id: params.id}"
-    },
-    "validators": {
-      "title": "数值检查",
-      "page": "product-setting-validator",
-      "params_func": "return {id: params.id}"
-    },
-    "versions": {
-      "title": "固件版本",
-      "page": "version",
-      "params_func": "return {product_id: params.id}"
-    }
+    "add_tab_settings": "if(this.data.configurable)this.content.tabs.push({title:'配置参数', page:'product-setting-setting', params:{id: this.params.id}})",
+    "add_tab_actions": "if(this.data.remote_control)this.content.tabs.push({title:'远程操作', page:'product-setting-action', params:{id: this.params.id}})",
+    "add_tab_validators": "if(this.data.validate)this.content.tabs.push({title:'数值检查', page:'product-setting-validator', params:{id: this.params.id}})",
+    "add_tab_versions": "if(this.data.ota)this.content.tabs.push({title:'固件版本', page:'version', params:{product_id: this.params.id}})"
   }
 }

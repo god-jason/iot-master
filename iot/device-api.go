@@ -42,7 +42,8 @@ func init() {
 func deviceValues(ctx *gin.Context) {
 	d := devices.Load(ctx.Param("id"))
 	if d == nil {
-		api.Fail(ctx, "设备未上线")
+		//api.Fail(ctx, "设备未上线")
+		api.OK(ctx, gin.H{}) //避免一直报错
 		return
 	}
 	api.OK(ctx, d.values.Get())
