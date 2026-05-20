@@ -63,7 +63,7 @@
       "label": "过去1天",
       "action": {
         "type": "script",
-        "script": "this.toolbarValue = {start:this.dayjs().subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss'), end:this.dayjs().format('YYYY-MM-DD HH:mm:ss', window:5, unit:'m'}; setTimeout(()=>this.load_history(), 100)"
+        "script": "this.toolbarValue = {start:this.dayjs().subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss'), end:this.dayjs().format('YYYY-MM-DD HH:mm:ss'), window:5, unit:'m'}; setTimeout(()=>this.load_history(), 100)"
       }
     },
     {

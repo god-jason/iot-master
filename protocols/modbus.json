@@ -79,10 +79,15 @@
       "label": "地址",
       "type": "text"
     },
-
     {
       "key": "le",
       "label": "小端模式",
+      "type": "switch",
+      "default": false
+    },
+    {
+      "key": "swap",
+      "label": "字交换",
       "type": "switch",
       "default": false
     },
