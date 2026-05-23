@@ -35,6 +35,9 @@
                   "type": "pie",
                   "theme": "dark",
                   "legend": true,
+                  "style": {
+                    "margin": "5px"
+                  },
                   "bodyStyle": {
                     "color": "white",
                     "padding": 0
@@ -55,6 +58,9 @@
           "content": {
             "template": "statistic",
             "style": {
+              "margin": "5px"
+            },
+            "style2": {
               "color": "white",
               "background": "transparent"
             },
@@ -91,19 +97,11 @@
             "children": [
               {
                 "content": {
-                  "title": "报警日志",
-                  "template": "table",
-                  "bodyStyle": {
-                    "color": "white",
-                    "background-color": "black",
-                    "padding": 0
-                  }
-                }
-              },
-              {
-                "content": {
-                  "template": "chart",
                   "title": "使用统计",
+                  "template": "chart",
+                  "style": {
+                    "margin": "5px"
+                  },
                   "type": "bar",
                   "theme": "dark",
                   "bodyStyle": {
@@ -117,6 +115,20 @@
                     ["三月", 5],
                     ["四月", 7]
                   ]
+                }
+              },
+              {
+                "content": {
+                  "title": "报警日志",
+                  "template": "table",
+                  "style": {
+                    "margin": "5px"
+                  },
+                  "bodyStyle": {
+                    "color": "white",
+                    "background-color": "black",
+                    "padding": 0
+                  }
                 }
               }
             ]

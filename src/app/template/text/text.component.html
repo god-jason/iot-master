@@ -1,6 +1,6 @@
 @if (content) {
   @if (content.template == 'text') {
-    <div [ngStyle]="content.style"> {{content.text || ''}} </div>
+    {{content.text || ''}}
   } @else {
     模板类型应该是text
   }

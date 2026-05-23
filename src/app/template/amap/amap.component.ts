@@ -85,7 +85,7 @@ export class AmapComponent extends TemplateBase {
       this.map = new AMap.Map(this.mapContainer.nativeElement, {
         //center: [120.301663, 31.574729],  //设置地图中心点坐标
         resizeEnable: true,
-        mapStyle: content.style || 'amap://styles/normal',
+        mapStyle: content.mapStyle || 'amap://styles/normal',
         zoom: content.zoom || 12,
       });
 

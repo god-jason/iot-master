@@ -103,7 +103,7 @@ export interface AmapContent {
   type: 'line' | 'polygon' | 'polygons' | 'point' | 'cluster' | 'animation'
   key?: string
   secret?: string
-  style?: string
+  mapStyle?: string
   zoom?: number
   city?: number
   satellite?: boolean

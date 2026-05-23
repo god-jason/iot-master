@@ -8,7 +8,7 @@
 
 @if (content.title) {
 
-<nz-card [nzTitle]="content.title" [nzExtra]="extra" [ngStyle]="content.style" [nzBodyStyle]="content.bodyStyle" style="pointer-events: auto">
+<nz-card [nzTitle]="content.title" [nzExtra]="extra" [nzBodyStyle]="content.bodyStyle" style="pointer-events: auto">
   <div #container></div>
 </nz-card>
 <ng-template #extra>
@@ -31,6 +31,7 @@
   <div nz-col [nzSpan]="p.span || 24" [nzMd]="p.span || 24" nzXs="24" nzSm="24" [nzPush]="p.push || 0">
     <app-page [page]="p.page"
               [content]="p.content"
+              [ngStyle]="p.content?.style"
               [params]="p.params || params"
               [isChild]="true"></app-page>
   </div>
@@ -42,6 +43,7 @@
 <div style="z-index: 100; position: absolute; inset: 0; pointer-events: none;">
   <app-page [page]="content.overlay.page"
             [content]="content.overlay.content"
+            [ngStyle]="content.overlay.content?.style"
             [params]="content.overlay.params || params"
             [isChild]="true"></app-page>
 </div>
@@ -54,6 +56,7 @@
     <ng-template nz-tab>
       <app-page [page]="p.page"
                 [content]="p.content"
+                [ngStyle]="p.content?.style"
                 [params]="p.params || params"
                 [isChild]="true"></app-page>
     </ng-template>
