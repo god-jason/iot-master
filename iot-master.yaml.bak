@@ -1,0 +1,65 @@
+broker:
+    anonymous: true
+    enable: true
+    key: noob
+    loglevel: ERROR
+    port: 1883
+    unixsock: ""
+database:
+    debug: true
+    sync: true
+    type: mysql
+    url: root:Flzx3000c@tcp(git.zgwit.com:3306)/boat?charset=utf8
+influxdb:
+    batch: false
+    bucket: master
+    enable: true
+    org: zgwit
+    token: Rg3rt-F-VNzFmcg1XKj6QoPJY8MIvQCREaw17A_GSgxUg3hEFbod-TKkX_T9j84__UUXZ7qdzIcr3KR2IEcFPw==
+    url: http://git.zgwit.com:8086
+log:
+    caller: true
+    compress: true
+    filename: log.txt
+    level: trace
+    max_age: 30
+    max_backups: 3
+    max_size: 10
+    output: stdout
+    text: true
+mqtt:
+    clientid: 02r9saGckIAI
+    password: ""
+    url: mqtt://localhost:1883
+    username: ""
+oem:
+    logo: ""
+    name: ""
+pool:
+    size: 10000
+service:
+    arguments: []
+    description: Process Manager for General IoT Backend
+    display: Boat
+    name: boat
+table:
+    path: tables
+    sync: true
+tenant: true
+web:
+    cors: false
+    debug: false
+    email: ""
+    gzip: true
+    hosts: []
+    jwt_expire: 720
+    jwt_key: boat
+    mode: http
+    port: 8888
+    tls_cert: ""
+    tls_key: ""
+    unix_socket: ""
+    www: dist/browser
+weixin:
+    appid: ""
+    secret: ""
