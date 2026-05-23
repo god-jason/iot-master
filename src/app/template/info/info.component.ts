@@ -7,11 +7,13 @@ import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {SmartToolbarComponent} from '../../lib/smart-toolbar/smart-toolbar.component';
 
 import {TemplateBase} from '../template-base.component';
+import {CommonModule} from '@angular/common';
 
 
 @Component({
   selector: 'app-info',
   imports: [
+    CommonModule,
     SmartInfoComponent,
     NzCardComponent,
     NzButtonComponent,

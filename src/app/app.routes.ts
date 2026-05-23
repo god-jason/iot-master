@@ -12,6 +12,7 @@ export const adminRoutes: Routes = [
   //{path: '', pathMatch: 'full', redirectTo: ''},
   {path: 'login', component: LoginComponent},
   {path: 'password', component: PasswordComponent},
+  {path: 'full/:page', component: PageComponent, canActivate: [loginGuard]},
   {
     path: '',
     canActivate: [loginGuard],

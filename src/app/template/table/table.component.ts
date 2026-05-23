@@ -10,11 +10,13 @@ import {SmartToolbarComponent} from '../../lib/smart-toolbar/smart-toolbar.compo
 import {TemplateBase} from '../template-base.component';
 import {TableContent} from '../template';
 import {LinkReplaceParams} from '../../lib/utils';
+import {CommonModule} from '@angular/common';
 
 
 @Component({
   selector: 'app-table',
   imports: [
+    CommonModule,
     SmartTableComponent,
     NzCardComponent,
     NzSpinComponent,

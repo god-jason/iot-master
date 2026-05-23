@@ -1,6 +1,6 @@
 @if (content) {
 @if (content.template == 'export') {
-<nz-card [nzTitle]="content.title">
+<nz-card [nzTitle]="content.title" [ngStyle]="content.style" [nzBodyStyle]="content.bodyStyle">
 
 
   <nz-steps [nzCurrent]="current">

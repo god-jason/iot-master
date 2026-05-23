@@ -8,17 +8,19 @@ import {NzSpinComponent} from 'ng-zorro-antd/spin';
 import {SmartToolbarComponent} from '../../lib/smart-toolbar/smart-toolbar.component';
 import {TemplateBase} from '../template-base.component';
 import {AmapContent} from '../template';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-amap',
   standalone: true,
   imports: [
+    CommonModule,
     NzButtonComponent,
     NzCardComponent,
     NzIconDirective,
     NzSpinComponent,
     SmartToolbarComponent
-],
+  ],
   templateUrl: './amap.component.html',
   styleUrl: './amap.component.scss',
   //inputs: ['app', 'page', 'content', 'params', 'data', 'isChild']
@@ -32,6 +34,8 @@ export class AmapComponent extends TemplateBase {
   mapHeight = "200px"
 
   AMap!: any //class
+
+  polygonEditor: any
 
 
   override build() {
@@ -69,7 +73,7 @@ export class AmapComponent extends TemplateBase {
     loadMap({
       key: content.key || 'eb6a831c04b6dfedda190d6254febb58',
       version: '2.0',
-      plugins: ['AMap.Icon', "AMap.Circle", 'AMap.BezierCurve', 'AMap.Marker', 'AMap.MarkerCluster', 'AMap.MoveAnimation'],
+      plugins: ['AMap.Icon', "AMap.Circle", 'AMap.BezierCurve', 'AMap.Marker', 'AMap.MarkerCluster', 'AMap.MoveAnimation', 'AMap.Polygon', 'AMap.PolygonEditor'],
       AMapUI: {
         version: '1.1',
         plugins: [],
@@ -96,13 +100,38 @@ export class AmapComponent extends TemplateBase {
       //   imageSize: new AMap.Size(25, 30), // 图片大小
       // });
 
+      if (content.satellite) {
+        this.map.add(new AMap.TileLayer.Satellite())
+      }
+
       if (content.city)
         this.map.setCity(content.city)
 
       this.map.setFitView();
 
+
+      if (content.drawable) {
+        console.log("create polygon editor")
+        this.polygonEditor = new this.AMap.PolygonEditor(this.map);
+
+        this.polygonEditor.on('add', (data: any) => {
+          console.log(data);
+          var polygon = data.target;
+          this.polygonEditor.addAdsorbPolygons(polygon);
+
+          //双击编辑
+          polygon.on('dblclick', () => {
+            this.polygonEditor.setTarget(polygon);
+            this.polygonEditor.open();
+          })
+        })
+
+      }
+
       //渲染数据
-      if (this.data && this.data.length) this.render(this.data)
+      //if (this.data && this.data.length) this.render(this.data)
+      if (this.data)
+        this.render(this.data)
     }).catch((e) => {
       console.log(e);
     });
@@ -126,7 +155,7 @@ export class AmapComponent extends TemplateBase {
           let marker = new this.AMap.Circle({
             center: [item.longitude, item.latitude],
             radius: 4,
-            strokeColor: index == 0 ? "#FF0000" :"#fc1313",
+            strokeColor: index == 0 ? "#FF0000" : "#fc1313",
             strokeWeight: index == 0 ? 10 : 0,
             title: item.created,
           })
@@ -137,10 +166,32 @@ export class AmapComponent extends TemplateBase {
         this.map.add(circles);
 
         //路径
-        let path = data?.map((item: any, index: number) =>  [item.longitude, item.latitude])
+        let path = data?.map((item: any, index: number) => [item.longitude, item.latitude])
         let polyline = new this.AMap.Polyline({path: path, strokeColor: "#2b8cbe", strokeWeight: 4})
         this.map.add(polyline);
         break
+      case "polygon":
+        if (data && data.points) {
+          if (typeof data.points == "string")
+            data.points = JSON.parse(data.points)
+          this.addPolygon(data.points, data)
+        } else {
+          //默认创建新的
+          this.createPolygon()
+        }
+        break;
+      case "polygons":
+        if (data && data.length) {
+          data.forEach((d: any) => {
+            if (typeof d.points == "string")
+              d.points = JSON.parse(d.points)
+            this.addPolygon(d.points, d)
+          })
+        } else {
+          //默认创建新的
+          this.createPolygon()
+        }
+        break;
       case "point":
         let markers = data?.map((item: any) => {
           let marker = new this.AMap.Marker({
@@ -162,13 +213,49 @@ export class AmapComponent extends TemplateBase {
         //   gridSize: 80 // 聚合网格像素大小
         // });
         break
-      case "animation":
-        //绘制历史轨迹
+      case "animation"://绘制历史轨迹
 
         break
     }
 
     //自适应
     this.map.setFitView();
+  }
+
+  //手动创建多边形
+  createPolygon() {
+    if (this.polygonEditor) {
+      this.polygonEditor.close();
+      this.polygonEditor.setTarget();
+      this.polygonEditor.open();
+    }
+  }
+
+  addPolygon(path: any, extra?: any) {
+    if (!this.map) {
+      console.log("地图还未准备好")
+      return
+    }
+
+    //let path = data?.map((item: any, index: number) => [item.longitude, item.latitude])
+    let polygon = new this.AMap.Polygon({path: path})
+    this.map.add(polygon)
+
+    //附加信息
+    polygon.setExtData(extra)
+
+    //打开编辑
+    if (this.polygonEditor) {
+      this.polygonEditor.close();
+      this.polygonEditor.addAdsorbPolygons([polygon]);
+      this.polygonEditor.setTarget(polygon);
+      this.polygonEditor.open();
+
+      //双击编辑
+      polygon.on('dblclick', () => {
+        this.polygonEditor.setTarget(polygon);
+        this.polygonEditor.open();
+      })
+    }
   }
 }

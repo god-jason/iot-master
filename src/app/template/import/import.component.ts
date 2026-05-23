@@ -25,11 +25,13 @@ import {NzProgressComponent} from 'ng-zorro-antd/progress';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {NzResultComponent, NzResultStatusType} from 'ng-zorro-antd/result';
 import dayjs from 'dayjs';
+import {CommonModule} from '@angular/common';
 
 
 @Component({
   selector: 'app-import',
   imports: [
+    CommonModule,
     NzUploadComponent,
     NzButtonComponent,
     NzTableCellDirective,
@@ -205,7 +207,7 @@ export class ImportComponent extends TemplateBase {
           obj[k] = row[index]
           //todo 处理日期格式
         }
-        
+
         //填充默认值
         if (this.params.hasOwnProperty(k)) {
           if (obj[k] == undefined || obj[k] == false)

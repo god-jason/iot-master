@@ -11,11 +11,13 @@ import {NzModalRef} from 'ng-zorro-antd/modal';
 import {TemplateBase} from '../template-base.component';
 import {FormContent} from '../template';
 import {LinkReplaceParams} from '../../lib/utils';
+import {CommonModule} from '@angular/common';
 
 
 @Component({
   selector: 'app-form',
   imports: [
+    CommonModule,
     SmartEditorComponent,
     NzCardComponent,
     NzButtonComponent,

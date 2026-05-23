@@ -6,7 +6,7 @@ import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {NzSpinComponent} from 'ng-zorro-antd/spin';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
-import {NzResultComponent, NzResultStatusType} from 'ng-zorro-antd/result';
+import {NzResultStatusType} from 'ng-zorro-antd/result';
 import {ExportContent} from '../template';
 import {utils, writeFile} from 'xlsx';
 import {isFunction} from 'rxjs/internal/util/isFunction';
@@ -23,10 +23,12 @@ import {NzStepComponent, NzStepsComponent} from 'ng-zorro-antd/steps';
 import {NzProgressComponent} from 'ng-zorro-antd/progress';
 import {NzCheckboxComponent} from 'ng-zorro-antd/checkbox';
 import {LinkReplaceParams} from '../../lib/utils';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-export',
   imports: [
+    CommonModule,
     NzUploadComponent,
     NzButtonComponent,
     NzTableCellDirective,
@@ -42,8 +44,7 @@ import {LinkReplaceParams} from '../../lib/utils';
     ReactiveFormsModule,
     NzStepsComponent,
     NzStepComponent,
-    NzProgressComponent,
-    NzResultComponent
+    NzProgressComponent
   ],
   templateUrl: './export.component.html',
   standalone: true,

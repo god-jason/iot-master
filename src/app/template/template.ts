@@ -21,6 +21,7 @@ export type PageContent = Content & (
   InfoContent |
   ChartContent |
   MarkdownContent |
+  TextContent |
   StatisticContent |
   AmapContent)
 
@@ -64,6 +65,13 @@ export interface Content {
   //注册成员
   methods?: { [key: string]: (string | Function | (() => any) | string[]) }
 
+  //样式
+  style: any
+  bodyStyle: any
+
+  //浮层子页面
+  overlay?: ChildPage
+
   //子页面
   children?: ChildPage[]
 
@@ -77,6 +85,7 @@ export interface ChildPage {
   content?: PageContent
   params?: any
   params_func?: string | Function | ((data: any) => any)
+  push?: string | number | null
 }
 
 export interface TabPage {
@@ -91,12 +100,16 @@ export interface TabPage {
 export interface AmapContent {
   template: 'amap'
 
-  type: 'line' | 'point' | 'cluster' | 'animation'
+  type: 'line' | 'polygon' | 'polygons' | 'point' | 'cluster' | 'animation'
   key?: string
   secret?: string
   style?: string
   zoom?: number
   city?: number
+  satellite?: boolean
+
+  drawable?: boolean
+  full?: boolean //全尺寸
 }
 
 
@@ -132,6 +145,11 @@ export interface InfoContent {
 export interface MarkdownContent {
   template: 'markdown'
   src?: string
+}
+
+export interface TextContent {
+  template: 'text'
+  text?: string
 }
 
 export interface LogContent {

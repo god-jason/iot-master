@@ -1,10 +1,10 @@
 @if (content) {
   @if (content.template == 'form') {
-    <nz-card [nzTitle]="content.title" [nzExtra]="extra">
+    <nz-card [nzTitle]="content.title" [nzExtra]="extra" [ngStyle]="content.style" [nzBodyStyle]="content.bodyStyle">
       @if (content.toolbar) {
-        <smart-toolbar #toolbar [user]="user?.user" [fields]="content.toolbar" [values]="toolbarValue" (action)="execute($event)"></smart-toolbar>
+        <smart-toolbar #toolbar [user]="user.user" [fields]="content.toolbar" [values]="toolbarValue" (action)="execute($event)"></smart-toolbar>
       }
-      <smart-editor #editor [user]="user?.user" [fields]="content.fields" [values]="data" (action)="execute($event)"></smart-editor>
+      <smart-editor #editor [user]="user.user" [fields]="content.fields" [values]="data" (action)="execute($event)"></smart-editor>
     </nz-card>
     <ng-template #extra>
       <button nz-button nzType="text" nzType="primary" (click)="submit()">

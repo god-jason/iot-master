@@ -1,39 +1,51 @@
 @if (error) {
-  <nz-result nzStatus="404" [nzTitle]="error">
-    <div nz-result-extra class="extra">
-      <a nz-button nzType="primary" routerLink="/">返回首页</a>
-    </div>
-  </nz-result>
+<nz-result nzStatus="404" [nzTitle]="error">
+  <div nz-result-extra class="extra">
+    <a nz-button nzType="primary" routerLink="/">返回首页</a>
+  </div>
+</nz-result>
 } @else if (content) {
-  <div #container></div>
+<div #container></div>
 
 
-    @if (content.children) {
-    <div nz-row>
-      @for (p of content.children; track p) {
-        <div nz-col [nzSpan]="p.span || 24" [nzMd]="p.span || 24" nzXs="24" nzSm="24">
-          <app-page [page]="p.page"
-                    [content]="p.content"
-                    [params]="p.params || params"
-                    [isChild]="true"></app-page>
-        </div>
-      }
-    </div>
+@if (content.children) {
+<div nz-row>
+  @for (p of content.children; track p) {
+  <div nz-col [nzSpan]="p.span || 24" [nzMd]="p.span || 24" nzXs="24" nzSm="24" [nzPush]="p.push || 0">
+    <app-page [page]="p.page"
+              [content]="p.content"
+              [params]="p.params || params"
+              [isChild]="true"></app-page>
+  </div>
   }
-  @if (content.tabs) {
-    <nz-tabs nzSize="large">
-      @for (p of content.tabs; track p) {
-        <nz-tab [nzTitle]="p.title || 'untitled'">
-          <ng-template nz-tab>
-            <app-page [page]="p.page"
-                      [content]="p.content"
-                      [params]="p.params || params"
-                      [isChild]="true"></app-page>
-          </ng-template>
-        </nz-tab>
-      }
-    </nz-tabs>
+</div>
+}
+
+@if (content.overlay) {
+<div style="z-index: 100; position: absolute; inset: 0; pointer-events: none;">
+  <app-page [page]="content.overlay.page"
+            [content]="content.overlay.content"
+            [params]="content.overlay.params || params"
+            [isChild]="true"></app-page>
+</div>
+}
+
+@if (content.tabs) {
+<nz-tabs nzSize="large">
+  @for (p of content.tabs; track p) {
+  <nz-tab [nzTitle]="p.title || 'untitled'">
+    <ng-template nz-tab>
+      <app-page [page]="p.page"
+                [content]="p.content"
+                [params]="p.params || params"
+                [isChild]="true"></app-page>
+    </ng-template>
+  </nz-tab>
   }
+</nz-tabs>
+}
+
+
 } @else {
-  <nz-spin nzSimple></nz-spin>
+<nz-spin nzSimple></nz-spin>
 }

@@ -8,6 +8,11 @@
         "url": "page/dash"
       },
       {
+        "name": "数据大屏",
+        "url": "full/screen",
+        "external": true
+      },
+      {
         "name": "系统信息",
         "url": "page/system",
         "admin": true

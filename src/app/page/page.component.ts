@@ -261,6 +261,9 @@ export class PageComponent implements AfterViewInit, OnDestroy{
       case "log":
         import("../template/log/log.component").then(m => this.render_component(m.LogComponent))
         break
+      case "text":
+        import("../template/text/text.component").then(m => this.render_component(m.TextComponent))
+        break
       default:
         break
     }

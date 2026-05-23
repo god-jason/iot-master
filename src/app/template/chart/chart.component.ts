@@ -24,6 +24,7 @@ import {SmartToolbarComponent} from '../../lib/smart-toolbar/smart-toolbar.compo
 
 import {TemplateBase} from '../template-base.component';
 import {ChartContent} from '../template';
+import {CommonModule} from '@angular/common';
 
 echarts.use([
   BarChart,
@@ -46,6 +47,7 @@ echarts.use([
 @Component({
   selector: 'app-chart',
   imports: [
+    CommonModule,
     NgxEchartsDirective,
     NzButtonComponent,
     NzCardComponent,

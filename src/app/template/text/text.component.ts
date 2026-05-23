@@ -1,24 +1,22 @@
 import {Component} from '@angular/core';
-import {MarkdownComponent as md} from 'ngx-markdown';
+import {TemplateBase} from '../template-base.component';
 import {NzCardComponent} from 'ng-zorro-antd/card';
 import {NzSpinComponent} from 'ng-zorro-antd/spin';
-import {TemplateBase} from '../template-base.component';
 import {CommonModule} from '@angular/common';
 
 
 @Component({
-  selector: 'app-markdown',
+  selector: 'app-text',
   standalone: true,
   imports: [
     CommonModule,
-    md,
     NzCardComponent,
     NzSpinComponent,
   ],
-  templateUrl: './markdown.component.html',
-  styleUrl: './markdown.component.scss',
+  templateUrl: './text.component.html',
+  styleUrl: './text.component.scss',
   //inputs: ['app', 'page', 'content', 'params', 'data', 'isChild']
 })
-export class MarkdownComponent extends TemplateBase {
+export class TextComponent extends TemplateBase {
 
 }

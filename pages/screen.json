@@ -1,0 +1,130 @@
+{
+  "template": "amap",
+  "height": "100vh",
+  "full": true,
+  "satellite": true,
+
+  "overlay": {
+    "content": {
+      "template": "blank",
+      "children": [
+        {
+          "content": {
+            "template":"text",
+            "text": "物联大师",
+            "style": {
+              "color": "white",
+              "font-weight": "bolder",
+              "font-size": "40px",
+              "text-shadow": "2px 2px 5px black",
+              "text-align": "center",
+              "padding": "20px 50px",
+              "background-image": "linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0))"
+            }
+          }
+        },
+        {
+          "span": 6,
+          "content": {
+            "template": "blank",
+            "children": [
+              {
+                "content": {
+                  "title": "设备统计",
+                  "template": "statistic",
+                  "bodyStyle": {
+                    "color": "white",
+                    "padding": 0
+                  },
+                  "items": [
+                    {
+                      "label": "总数",
+                      "key": "total"
+                    },
+                    {
+                      "label": "在线",
+                      "key": "online"
+                    },
+                    {
+                      "label": "故障",
+                      "key": "error"
+                    }
+                  ],
+                  "mount": "this.data=this.content.demo",
+                  "demo": {
+                    "total": 10,
+                    "online": 9,
+                    "error": 0
+                  }
+                }
+              },
+              {
+                "content": {
+                  "template": "chart",
+                  "title": "产品类型",
+                  "type": "pie",
+                  "theme": "dark",
+                  "legend": true,
+                  "bodyStyle": {
+                    "color": "white",
+                    "padding": 0
+                  },
+                  "mount": "this.render(this.content.demo)",
+                  "demo": [
+                    ["物联小白", 4],
+                    ["RTU", 2],
+                    ["其他", 1]
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "span": 12,
+          "content": {
+            "template": "blank"
+          }
+        },
+        {
+          "span": 6,
+          "content": {
+            "template": "blank",
+            "children": [
+              {
+                "content": {
+                  "title": "报警日志",
+                  "template": "table",
+                  "bodyStyle": {
+                    "color": "white",
+                    "background-color": "black",
+                    "padding": 0
+                  }
+                }
+              },
+              {
+                "content": {
+                  "template": "chart",
+                  "title": "使用统计",
+                  "type": "bar",
+                  "theme": "dark",
+                  "bodyStyle": {
+                    "color": "white",
+                    "padding": 0
+                  },
+                  "mount": "this.render(this.content.demo)",
+                  "demo": [
+                    ["一月", 2],
+                    ["二月", 5],
+                    ["三月", 5],
+                    ["四月", 7]
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

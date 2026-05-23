@@ -1,6 +1,6 @@
 @if (content) {
   @if (content.template == 'log') {
-    <nz-card [nzTitle]="content.title">
+    <nz-card [nzTitle]="content.title" [ngStyle]="content.style" [nzBodyStyle]="content.bodyStyle">
       <div class="log" #box>
       </div>
     </nz-card>

@@ -1,6 +1,6 @@
 @if (content) {
   @if (content.template == 'markdown') {
-    <nz-card [nzTitle]="content.title">
+    <nz-card [nzTitle]="content.title" [ngStyle]="content.style" [nzBodyStyle]="content.bodyStyle">
       <markdown [data]="data"></markdown>
     </nz-card>
   } @else {

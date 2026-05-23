@@ -1,12 +1,11 @@
-import {EventEmitter, Inject, Injectable, InjectionToken, Provider} from '@angular/core';
-import { MqttClient, IClientOptions, IClientPublishOptions, IClientSubscribeOptions, ISubscriptionGrant, IConnackPacket, IStream} from 'mqtt';
-import mqtt from "mqtt";
-import { Packet } from 'mqtt-packet';
+import { EventEmitter, Inject, Injectable, InjectionToken, Provider } from '@angular/core';
+import { Buffer } from 'node:buffer';
+import { MqttClient, IClientOptions, IClientPublishOptions, IClientSubscribeOptions, ISubscriptionGrant, IConnackPacket, IStream } from 'mqtt';
+import mqtt from 'mqtt';
+import { Packet, IPacket } from 'mqtt-packet';
 
 import { BehaviorSubject, merge, Observable, Observer, Subject, Subscription, Unsubscribable, using } from 'rxjs';
 import { filter, publish, publishReplay, refCount } from 'rxjs/operators';
-
-import {IPacket} from "mqtt-packet";
 
 export enum MqttConnectionState {
   CLOSED,

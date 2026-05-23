@@ -3,12 +3,14 @@ import {NzCardComponent} from 'ng-zorro-antd/card';
 import {NzSpinComponent} from 'ng-zorro-antd/spin';
 import {TemplateBase} from '../template-base.component';
 import dayjs from 'dayjs';
+import {CommonModule} from '@angular/common';
 
 
 @Component({
   selector: 'app-log',
   standalone: true,
   imports: [
+    CommonModule,
     NzCardComponent,
     NzSpinComponent,
   ],
