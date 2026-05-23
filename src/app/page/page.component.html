@@ -1,5 +1,5 @@
 @if (error) {
-<nz-result nzStatus="404" [nzTitle]="error">
+<nz-result nzStatus="404" [nzTitle]="error" style="pointer-events: auto">
   <div nz-result-extra class="extra">
     <a nz-button nzType="primary" routerLink="/">返回首页</a>
   </div>
@@ -8,7 +8,7 @@
 
 @if (content.title) {
 
-<nz-card [nzTitle]="content.title" [nzExtra]="extra" [ngStyle]="content.style" [nzBodyStyle]="content.bodyStyle">
+<nz-card [nzTitle]="content.title" [nzExtra]="extra" [ngStyle]="content.style" [nzBodyStyle]="content.bodyStyle" style="pointer-events: auto">
   <div #container></div>
 </nz-card>
 <ng-template #extra>
