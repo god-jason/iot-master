@@ -3,20 +3,10 @@
     @if (content.full) {
       <div class="mapContainer" #mapContainer [style.height]="mapHeight"></div>
     } @else {
-    <nz-card [nzTitle]="content.title" [nzExtra]="extra" [ngStyle]="content.style" [nzBodyStyle]="content.bodyStyle">
       @if (content.toolbar) {
         <smart-toolbar #toolbar [user]="user?.user" [fields]="content.toolbar" [values]="toolbarValue" (action)="execute($event)"></smart-toolbar>
       }
       <div class="mapContainer" #mapContainer [style.height]="mapHeight"></div>
-    </nz-card>
-    <ng-template #extra>
-      @if (content.load_api) {
-        <button nz-button nzType="link" (click)="load()" class="load">
-          <span nz-icon nzType="reload" [nzSpin]="loading"></span>
-          刷新
-        </button>
-      }
-    </ng-template>
     }
   } @else {
     模板类型应该是amap

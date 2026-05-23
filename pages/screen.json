@@ -30,36 +30,6 @@
             "children": [
               {
                 "content": {
-                  "title": "设备统计",
-                  "template": "statistic",
-                  "bodyStyle": {
-                    "color": "white",
-                    "padding": 0
-                  },
-                  "items": [
-                    {
-                      "label": "总数",
-                      "key": "total"
-                    },
-                    {
-                      "label": "在线",
-                      "key": "online"
-                    },
-                    {
-                      "label": "故障",
-                      "key": "error"
-                    }
-                  ],
-                  "mount": "this.data=this.content.demo",
-                  "demo": {
-                    "total": 10,
-                    "online": 9,
-                    "error": 0
-                  }
-                }
-              },
-              {
-                "content": {
                   "template": "chart",
                   "title": "产品类型",
                   "type": "pie",
@@ -83,7 +53,35 @@
         {
           "span": 12,
           "content": {
-            "template": "blank"
+            "template": "statistic",
+            "style": {
+              "color": "white",
+              "background": "transparent"
+            },
+            "bodyStyle": {
+              "color": "white",
+              "background": "transparent"
+            },
+            "items": [
+              {
+                "label": "总数",
+                "key": "total"
+              },
+              {
+                "label": "在线",
+                "key": "online"
+              },
+              {
+                "label": "故障",
+                "key": "error"
+              }
+            ],
+            "mount": "this.data=this.content.demo",
+            "demo": {
+              "total": 10,
+              "online": 9,
+              "error": 0
+            }
           }
         },
         {

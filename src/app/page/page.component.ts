@@ -22,10 +22,16 @@ import {NzResultComponent} from 'ng-zorro-antd/result';
 import {NzTabsModule} from 'ng-zorro-antd/tabs';
 import {Subscription} from "rxjs";
 import {MqttService} from '../mqtt.service';
+import {CommonModule} from '@angular/common';
+import {NzCardComponent} from 'ng-zorro-antd/card';
+import {NzIconModule} from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-page',
   imports: [
+    CommonModule,
+    NzIconModule,
+    NzCardComponent,
     NzSpinComponent,
     NzButtonComponent,
     NzResultComponent,

@@ -1,7 +1,5 @@
 @if (content) {
 @if (content.template == 'export') {
-<nz-card [nzTitle]="content.title" [ngStyle]="content.style" [nzBodyStyle]="content.bodyStyle">
-
 
   <nz-steps [nzCurrent]="current">
     <nz-step nzTitle="字段选择"></nz-step>
@@ -61,7 +59,6 @@
     }
   </div>
 
-</nz-card>
 } @else {
 模板类型应该是export
 }

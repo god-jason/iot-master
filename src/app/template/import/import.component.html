@@ -1,8 +1,5 @@
 @if (content) {
   @if (content.template == 'import') {
-    <nz-card [nzTitle]="content.title" [ngStyle]="content.style" [nzBodyStyle]="content.bodyStyle">
-
-
       <nz-steps [nzCurrent]="current">
         <nz-step nzTitle="上传excel"></nz-step>
         <nz-step nzTitle="表头匹配"></nz-step>
@@ -133,7 +130,6 @@
         }
       </div>
 
-    </nz-card>
   } @else {
     模板类型应该是import
   }

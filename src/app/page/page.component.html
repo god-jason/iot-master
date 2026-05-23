@@ -5,7 +5,24 @@
   </div>
 </nz-result>
 } @else if (content) {
+
+@if (content.title) {
+
+<nz-card [nzTitle]="content.title" [nzExtra]="extra" [ngStyle]="content.style" [nzBodyStyle]="content.bodyStyle">
+  <div #container></div>
+</nz-card>
+<ng-template #extra>
+  @if (content.load_api) {
+  <button nz-button nzType="link" (click)="componentRef?.instance?.load()" class="load">
+    <span nz-icon nzType="reload" [nzSpin]="componentRef?.instance?.loading"></span>
+    刷新
+  </button>
+  }
+</ng-template>
+
+} @else {
 <div #container></div>
+}
 
 
 @if (content.children) {
@@ -31,7 +48,7 @@
 }
 
 @if (content.tabs) {
-<nz-tabs nzSize="large">
+<nz-tabs nzSize="large" style="pointer-events: auto">
   @for (p of content.tabs; track p) {
   <nz-tab [nzTitle]="p.title || 'untitled'">
     <ng-template nz-tab>

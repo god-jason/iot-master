@@ -1,8 +1,6 @@
 @if (content) {
   @if (content.template == 'markdown') {
-    <nz-card [nzTitle]="content.title" [ngStyle]="content.style" [nzBodyStyle]="content.bodyStyle">
       <markdown [data]="data"></markdown>
-    </nz-card>
   } @else {
     模板类型应该是markdown
   }
