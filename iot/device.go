@@ -35,6 +35,7 @@ type Device struct {
 	//定位
 	Longitude float64 `json:"longitude,omitempty"`
 	Latitude  float64 `json:"latitude,omitempty"`
+	GeoCode   string  `json:"geo_code,omitempty"`
 
 	values Values
 

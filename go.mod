@@ -22,6 +22,7 @@ require (
 	github.com/influxdata/influxdb-client-go/v2 v2.14.0
 	github.com/kardianos/service v1.2.4
 	github.com/lithammer/shortuuid v3.0.0+incompatible
+	github.com/mmcloughlin/geohash v0.10.0
 	github.com/mochi-mqtt/server/v2 v2.7.9
 	github.com/panjf2000/ants/v2 v2.11.5
 	github.com/rs/xid v1.6.0

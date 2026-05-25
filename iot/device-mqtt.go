@@ -9,6 +9,7 @@ import (
 	"github.com/god-jason/iot-master/pkg/log"
 	"github.com/god-jason/iot-master/pkg/mqtt"
 	"github.com/god-jason/iot-master/pkg/table"
+	"github.com/mmcloughlin/geohash"
 )
 
 type Sync struct {
@@ -332,7 +333,8 @@ func mqttSubscribeDevice() {
 		var d Device
 		d.Longitude = data.Longitude
 		d.Latitude = data.Latitude
-		_, _ = db.Engine().ID(data.Id).Cols("longitude", "latitude").Update(&d)
+		d.GeoCode = geohash.EncodeWithPrecision(data.Latitude, data.Longitude, 9)
+		_, _ = db.Engine().ID(data.Id).Cols("longitude", "latitude", "geo_code").Update(&d)
 
 		//存入轨迹数据库
 		_, _ = db.Engine().InsertOne(data)
