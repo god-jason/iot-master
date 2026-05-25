@@ -14,7 +14,6 @@ import (
 	client "github.com/god-jason/iot-master/pkg/mqtt"
 	"github.com/god-jason/iot-master/pkg/web"
 	mqtt "github.com/mochi-mqtt/server/v2"
-	"github.com/mochi-mqtt/server/v2/hooks/auth"
 	"github.com/mochi-mqtt/server/v2/listeners"
 )
 
@@ -52,13 +51,8 @@ func Startup() (err error) {
 	}
 	server = mqtt.New(opts)
 
-	//匿名
-	if config.GetBool(MODULE, "anonymous") {
-		err = server.AddHook(new(auth.AllowHook), nil)
-	} else {
-		err = server.AddHook(&Hook{Key: config.GetString(MODULE, "key")}, nil)
-	}
-
+	//鉴权
+	err = server.AddHook(&Hook{Key: config.GetString(MODULE, "key")}, nil)
 	if err != nil {
 		return err
 	}

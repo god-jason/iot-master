@@ -7,6 +7,7 @@ import (
 	"net"
 	"time"
 
+	"github.com/god-jason/iot-master/pkg/config"
 	"github.com/mochi-mqtt/server/v2"
 	"github.com/mochi-mqtt/server/v2/packets"
 )
@@ -38,6 +39,7 @@ func (h *Hook) OnConnect(cl *mqtt.Client, pk packets.Packet) error {
 	}
 
 	_ = Publish("client/"+cl.ID+"/connect", nil)
+
 	return nil
 }
 
@@ -57,7 +59,11 @@ func (h *Hook) OnConnectAuthenticate(cl *mqtt.Client, pk packets.Packet) bool {
 	case "base":
 		//log.Info("[base] OnConnectAuthenticate ", cl.ID, pk.Connect.Username, pk.Connect.Password)
 
-		//不支持匿名
+		//匿名登录
+		if config.GetBool(MODULE, "anonymous") {
+			return true
+		}
+
 		if !pk.Connect.UsernameFlag {
 			return false
 		}
