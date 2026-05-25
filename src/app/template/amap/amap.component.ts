@@ -258,4 +258,29 @@ export class AmapComponent extends TemplateBase {
       })
     }
   }
+
+  addMarkers(data: any[]) {
+    let markers = data.map((item: any) => {
+      let marker = new this.AMap.Marker({
+        position: [item.longitude, item.latitude],
+        title: item.name || item.id,
+      })
+      //响应点击事件
+      marker.on("click", console.log)
+      return marker
+    })
+    this.map.add(markers);
+  }
+
+  addClusters(data: any[]){
+    let points = data.map((item: any) => {
+      return {
+        weight: 1,
+        lnglat: [item.longitude, item.latitude],
+      }
+    })
+    new this.AMap.MarkerCluster(this.map, points, {
+      gridSize: 80 // 聚合网格像素大小
+    });
+  }
 }

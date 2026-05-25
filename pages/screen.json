@@ -4,6 +4,16 @@
   "full": true,
   "satellite": true,
 
+  "mounts": [
+    "setTimeout(() => this.load_devices(), 1000)"
+  ],
+  "methods": {
+    "load_devices": "this.request.post('table/device/search', {limit:999999, fields: ['id', 'longitude', 'latitude', 'online', 'name']}).subscribe(res=>this.render_devices(res.data))",
+    "render_devices": [
+      "devices",
+      "this.addClusters(devices)"
+    ]
+  },
   "overlay": {
     "content": {
       "template": "blank",
