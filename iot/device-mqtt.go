@@ -334,7 +334,7 @@ func mqttSubscribeDevice() {
 		d.Longitude = data.Longitude
 		d.Latitude = data.Latitude
 		d.GeoCode = geohash.EncodeWithPrecision(data.Latitude, data.Longitude, 9)
-		_, _ = db.Engine().ID(data.Id).Cols("longitude", "latitude", "geo_code").Update(&d)
+		_, _ = db.Engine().ID(data.DeviceId).Cols("longitude", "latitude", "geo_code").Update(&d)
 
 		//存入轨迹数据库
 		_, _ = db.Engine().InsertOne(data)
