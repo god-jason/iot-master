@@ -126,6 +126,7 @@ func mqttSubscribeDevice() {
 				log.Error(err)
 				return
 			}
+			d.Online = false //执行恢复上线
 		}
 
 		var values map[string]any
