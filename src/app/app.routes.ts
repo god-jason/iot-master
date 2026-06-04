@@ -12,14 +12,14 @@ export const adminRoutes: Routes = [
   //{path: '', pathMatch: 'full', redirectTo: ''},
   {path: 'login', component: LoginComponent},
   {path: 'password', component: PasswordComponent},
-  {path: 'full/:page', component: PageComponent, canActivate: [loginGuard]},
+  {path: 'full/**', component: PageComponent, canActivate: [loginGuard]},
   {
     path: '',
     canActivate: [loginGuard],
     component: AdminComponent,
     children: [
       {path: '', pathMatch: 'full', redirectTo: 'page/dash'},
-      {path: 'page/:page', component: PageComponent},
+      {path: 'page/**', component: PageComponent},
       //{path: 'page/:app/:page', component: PageComponent},
       {path: 'setting/:module', component: SettingComponent},
       {path: '**', component: UnknownComponent},

@@ -261,7 +261,7 @@ func mqttSubscribeDevice() {
 		if msg.Reason == "takenover" {
 			return
 		}
-		
+
 		d := devices.Load(msg.ClientId)
 		if d != nil {
 			mqtt.Publish("device/"+msg.ClientId+"/offline", nil)
