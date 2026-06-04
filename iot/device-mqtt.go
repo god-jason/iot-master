@@ -41,6 +41,17 @@ type Location struct {
 	Created   time.Time `json:"created,omitempty" xorm:"created"`
 }
 
+type MqttDisconnect struct {
+	ClientId       string `json:"clientid"`
+	Username       string `json:"username"`
+	Ipaddress      string `json:"ipaddress"`
+	Reason         string `json:"reason"`
+	ConnectedAt    int    `json:"connected_at"`
+	DisconnectedAt int    `json:"disconnected_at"`
+	ProtoName      string `json:"proto_name"`
+	ProtoVer       int    `json:"proto_ver"`
+}
+
 func mqttSubscribeDevice() {
 
 	//设备注册
@@ -245,11 +256,15 @@ func mqttSubscribeDevice() {
 	})
 
 	//监听总线消息，客户端断开，则视为下线
-	mqtt.Subscribe("client/+/disconnect", func(topic string, payload []byte) {
-		id := strings.Split(topic, "/")[1]
-		d := devices.Load(id)
+	mqtt.SubscribeStruct[MqttDisconnect]("$events/client_disconnected", func(topic string, msg *MqttDisconnect) {
+		//连接被覆盖的情况不处理（掉线重连）
+		if msg.Reason == "takenover" {
+			return
+		}
+		
+		d := devices.Load(msg.ClientId)
 		if d != nil {
-			mqtt.Publish("device/"+id+"/offline", nil)
+			mqtt.Publish("device/"+msg.ClientId+"/offline", nil)
 		}
 	})
 

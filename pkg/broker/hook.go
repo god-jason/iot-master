@@ -88,10 +88,19 @@ func (h *Hook) OnACLCheck(cl *mqtt.Client, topic string, write bool) bool {
 
 func (h *Hook) OnDisconnect(cl *mqtt.Client, err error, expire bool) {
 	//执行unsubscribe
-	_ = Publish("client/"+cl.ID+"/disconnect", nil)
+	//_ = Publish("client/"+cl.ID+"/disconnect", nil)
 
-	//server.Clients.Get(cl.ID)
-
+	//模仿EMQX
+	_ = Publish("$events/client_disconnected", map[string]any{
+		"clientid":        cl.ID,
+		"username":        string(cl.Properties.Username),
+		"ipaddress":       cl.Net.Remote,
+		"reason":          "keepalive_timeout",
+		"connected_at":    1717473600,
+		"disconnected_at": time.Now().Unix(),
+		"proto_name":      "MQTT",
+		"proto_ver":       cl.Properties.ProtocolVersion,
+	})
 }
 
 func (h *Hook) OnSubscribed(cl *mqtt.Client, pk packets.Packet, reasonCodes []byte) {
