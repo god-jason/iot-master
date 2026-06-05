@@ -90,7 +90,7 @@ func (h *Hook) OnDisconnect(cl *mqtt.Client, err error, expire bool) {
 	//执行unsubscribe
 	//_ = Publish("client/"+cl.ID+"/disconnect", nil)
 
-	//模仿EMQX
+	//模仿EMQX $events/client_disconnected
 	_ = Publish("$events/client_disconnected", map[string]any{
 		"clientid":        cl.ID,
 		"username":        string(cl.Properties.Username),

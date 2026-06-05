@@ -58,6 +58,9 @@ func mqttSubscribeDevice() {
 	mqtt.SubscribeStruct[Register]("device/+/register", func(topic string, reg *Register) {
 		var err error
 
+		//临时代码，上报在线状态
+		//go santaiyunReport(reg.Id, "2009", 1)
+
 		//查询
 		d := GetDevice(reg.Id)
 		if d == nil {
@@ -154,6 +157,9 @@ func mqttSubscribeDevice() {
 			var dev Device
 			dev.Online = true
 			_, _ = db.Engine().ID(id).Cols("online").Update(&dev)
+
+			//临时代码
+			//go santaiyunReport(id, "2009", 1)
 		}
 
 		//会被Influxdb堵死。。。。
@@ -224,6 +230,9 @@ func mqttSubscribeDevice() {
 				"content":   "上线",
 			})
 		}
+
+		//临时代码
+		//go santaiyunReport(id, "2009", 1)
 	})
 
 	mqtt.Subscribe("device/+/offline", func(topic string, payload []byte) {
@@ -253,9 +262,12 @@ func mqttSubscribeDevice() {
 				"content":   "离线",
 			})
 		}
+
+		//临时代码
+		//go santaiyunReport(id, "2009", 0)
 	})
 
-	//监听总线消息，客户端断开，则视为下线
+	//监听总线消息，客户端断开，则视为下线 "$events/client_disconnected"
 	mqtt.SubscribeStruct[MqttDisconnect]("$events/client_disconnected", func(topic string, msg *MqttDisconnect) {
 		//连接被覆盖的情况不处理（掉线重连）
 		if msg.Reason == "takenover" {
