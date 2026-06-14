@@ -1,0 +1,112 @@
+:host{
+  pointer-events: auto;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.value-container {
+  padding: 16px;
+  min-height: 100px;
+  position: relative;
+  
+  .value-label {
+    font-size: 14px;
+    //color: rgba(0, 0, 0, 0.65);
+    margin-bottom: 8px;
+  }
+  
+  .value-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    
+    &.vertical {
+      flex-direction: column;
+    }
+    
+    .value-content {
+      flex: 1;
+    }
+    
+    .value-body {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      
+      .value-prefix {
+        font-size: 24px;
+        //color: rgba(0, 0, 0, 0.45);
+      }
+      
+      .value-number {
+        transition: all 0.3s ease;
+      }
+      
+      .value-suffix {
+        font-size: 24px;
+        //color: rgba(0, 0, 0, 0.45);
+      }
+    }
+  }
+  
+  .value-image {
+    &.background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.15;
+      z-index: 0;
+    }
+    
+    &.top,
+    &.bottom {
+      width: 100%;
+      object-fit: contain;
+    }
+    
+    &.top {
+      margin-bottom: 8px;
+    }
+    
+    &.bottom {
+      margin-top: 8px;
+    }
+    
+    &.left,
+    &.right {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+  }
+}
+
+// 大屏模式样式优化
+:host(.screen-mode) {
+  .value-container {
+    padding: 24px;
+    min-height: 150px;
+    
+    .value-label {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.85);
+    }
+    
+    .value-prefix,
+    .value-suffix {
+      color: rgba(255, 255, 255, 0.65);
+    }
+    
+    .value-image {
+      &.left,
+      &.right {
+        width: 64px;
+        height: 64px;
+      }
+    }
+  }
+}

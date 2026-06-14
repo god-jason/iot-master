@@ -132,8 +132,8 @@ export class ChartComponent extends TemplateBase {
     this.chartOption = chartOption
     console.log(this.chartOption)
 
-    if (content.theme)
-      this.chartTheme = content.theme
+    if (content.chartTheme)
+      this.chartTheme = content.chartTheme
     else if (content.dark || document.documentElement.classList.contains("dark"))
       this.chartTheme = "dark"
     else

@@ -21,9 +21,8 @@ import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {NzResultComponent} from 'ng-zorro-antd/result';
 import {NzTabsModule} from 'ng-zorro-antd/tabs';
 import {Subscription} from "rxjs";
-import {MqttService} from '../mqtt.service';
 import {CommonModule} from '@angular/common';
-import {NzCardComponent} from 'ng-zorro-antd/card';
+import {SmartCardComponent} from '../lib/smart-card/smart-card.component';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 
 @Component({
@@ -31,7 +30,7 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
   imports: [
     CommonModule,
     NzIconModule,
-    NzCardComponent,
+    SmartCardComponent,
     NzSpinComponent,
     NzButtonComponent,
     NzResultComponent,
@@ -140,19 +139,43 @@ export class PageComponent implements AfterViewInit, OnDestroy{
     this.content = undefined //清空页面
 
     let url = "page/" + this.page
-    this.request.get(url).subscribe((res) => {
-      if (res.error) {
-        //console.log("load page error", res.error)
-        this.error = res.error
-        return
+    this.request.get(url, undefined, {observe: 'response', responseType: "text"}).subscribe({
+      next: (res) => {
+        try {
+          // 解析 contenttype 类型，json 直接解决，js 执行 newFunction，并调用
+          const contentType = res.headers.get('Content-Type');
+          if (contentType?.includes('application/javascript')) {
+            try {
+              const jsCode = res.body;
+              const fn = new Function(jsCode as string);
+              this.content = fn();
+            } catch (e) {
+              console.error('JS 解析错误:', e);
+              this.error = '页面解析失败：' + e;
+            }
+          } else {
+            // JSON 格式直接赋值
+            try {
+              this.content = JSON.parse(res.body as string);
+            } catch (e) {
+              console.error('JSON 解析错误:', e);
+              this.error = 'JSON 解析失败：' + e;
+            }
+          }
+
+          if (this.content?.title && !this.isChild)
+            this.title.setTitle(this.content.title);
+          this.build()
+        } catch (e) {
+          console.error('页面处理错误:', e);
+          this.error = '页面处理失败：' + e;
+        }
+      },
+      error: (err) => {
+        console.error('页面加载错误:', err);
+        this.error = '页面加载失败：' + (err.message || err.statusText || err);
       }
-      this.content = res
-      if (this.content?.title && !this.isChild)
-        this.title.setTitle(this.content.title);
-      this.build()
-    }, (error) => {
-      this.error = error
-    })
+    });
   }
 
   // calc_params(c: ChildPage | TabPage): any {
@@ -184,34 +207,14 @@ export class PageComponent implements AfterViewInit, OnDestroy{
     this.load_component(this.content?.template)
 
     this.content?.children?.forEach(c => {
-      if (typeof c.params_func == "string") {
-        try {
-          //@ts-ignore
-          c.params_func = new Function('params', c.params_func as string)
-        } catch (e) {
-          console.error(e)
-        }
-      }
-
-      //是不是算的有点早了。。。
-      if (isFunction(c.params_func)) {
-        c.params = c.params_func(this.params)
+      if (isFunction(c.params)) {
+        c.params = c.params.call(this, this.params)
       }
     })
 
     this.content?.tabs?.forEach(c => {
-      if (typeof c.params_func == "string") {
-        try {
-          //@ts-ignore
-          c.params_func = new Function('params', c.params_func as string)
-        } catch (e) {
-          console.error(e)
-        }
-      }
-
-      //是不是算的有点早了。。。
-      if (isFunction(c.params_func)) {
-        c.params = c.params_func(this.params)
+      if (isFunction(c.params)) {
+        c.params = c.params.call(this, this.params)
       }
     })
   }
@@ -237,14 +240,8 @@ export class PageComponent implements AfterViewInit, OnDestroy{
       case "blank":
         import("../template/blank/blank.component").then(m => this.render_component(m.BlankComponent))
         break;
-      case "table":
-        import("../template/table/table.component").then(m => this.render_component(m.TableComponent))
-        break
-      case "info":
-        import("../template/info/info.component").then(m => this.render_component(m.InfoComponent))
-        break
-      case "form":
-        import("../template/form/form.component").then(m => this.render_component(m.FormComponent))
+      case "list":
+        import("../template/list/list.component").then(m => this.render_component(m.ListComponent))
         break
       case "statistic":
         import("../template/statistic/statistic.component").then(m => this.render_component(m.StatisticComponent))
@@ -269,6 +266,15 @@ export class PageComponent implements AfterViewInit, OnDestroy{
         break
       case "text":
         import("../template/text/text.component").then(m => this.render_component(m.TextComponent))
+        break
+      case "edit":
+        import("../template/edit/edit.component").then(m => this.render_component(m.EditComponent))
+        break
+      case "detail":
+        import("../template/detail/detail.component").then(m => this.render_component(m.DetailComponent))
+        break
+      case "value":
+        import("../template/value/value.component").then(m => this.render_component(m.ValueComponent))
         break
       default:
         break

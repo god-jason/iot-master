@@ -21,7 +21,7 @@ func Register(table *Table) {
 func Get(name string) (*Table, error) {
 	tb := tables.Load(name)
 	if tb == nil {
-		return nil, errors.New("table not found")
+		return nil, errors.New("表不存在")
 	}
 	return tb, nil
 }
@@ -56,4 +56,8 @@ func Scan(dir string) error {
 		}
 		return nil
 	})
+}
+
+func Range(iterator func(name string, tb *Table) bool) {
+	tables.Range(iterator)
 }

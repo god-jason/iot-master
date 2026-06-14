@@ -48,6 +48,6 @@ func Wrap(err error) error {
 	}
 }
 
-func SetRelease(r bool) {
-	_release = r
+func Close() {
+	_release = true
 }

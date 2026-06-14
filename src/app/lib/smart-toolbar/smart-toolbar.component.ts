@@ -25,6 +25,8 @@ import {NzModalService} from 'ng-zorro-antd/modal';
 import {SmartRequestService} from '../smart-request.service';
 import {NzFlexDirective} from 'ng-zorro-antd/flex';
 import {NzPopconfirmDirective} from 'ng-zorro-antd/popconfirm';
+import {SmartDatePicker} from '../smart-date-picker/smart-date-picker';
+import {SmartRangePicker} from '../smart-range-picker/smart-range-picker';
 
 @Component({
   selector: 'smart-toolbar',
@@ -55,7 +57,9 @@ import {NzPopconfirmDirective} from 'ng-zorro-antd/popconfirm';
     NzMenuDirective,
     NzMenuItemComponent,
     NzFlexDirective,
-    NzPopconfirmDirective
+    NzPopconfirmDirective,
+    SmartDatePicker,
+    SmartRangePicker,
 ],
   templateUrl: './smart-toolbar.component.html',
   styleUrl: './smart-toolbar.component.scss'

@@ -61,7 +61,7 @@ func (l *License) Verify(publicKey []byte) error {
 	data := l.String()
 	ret := ed25519.Verify(publicKey, []byte(data), sign)
 	if ret == false {
-		return errors.New("license verify error")
+		return errors.New("许可证验证失败")
 	}
 
 	//检查失效期
@@ -70,7 +70,7 @@ func (l *License) Verify(publicKey []byte) error {
 		return err
 	}
 	if date.Before(time.Now()) {
-		return errors.New("license expired")
+		return errors.New("许可证已过期")
 	}
 
 	return nil

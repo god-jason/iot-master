@@ -12,7 +12,7 @@
     <!--表头选择-->
     @if (current == 0) {
     <form [formGroup]="group">
-      <nz-table #header nzSize="small" [nzData]="content.columns" nzShowPagination="false">
+      <nz-table #header nzSize="small" [nzData]="content.fields" nzShowPagination="false">
         <thead>
         <tr>
           <th>字段</th>

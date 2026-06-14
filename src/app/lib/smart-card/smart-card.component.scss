@@ -1,0 +1,101 @@
+.smart-card {
+  position: relative;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+
+  &--white {
+    background: #ffffff;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    .smart-card__header {
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .smart-card__title-text {
+      color: #1f1f1f;
+    }
+  }
+
+  &--dark {
+    background: #1f1f1f;
+    border: 1px solid #303030;
+
+    .smart-card__header {
+      border-bottom: 1px solid #303030;
+    }
+
+    .smart-card__title-text {
+      color: #ffffff;
+    }
+  }
+
+  &--transparent {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+
+    .smart-card__header {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .smart-card__title-text {
+      color: #ffffff;
+    }
+  }
+
+  &--macaron {
+    background: linear-gradient(135deg, #fff5f5 0%, #f0fff4 50%, #f0f5ff 100%);
+    border: 1px solid #e6f7ff;
+
+    .smart-card__header {
+      border-bottom: 1px solid #e6f7ff;
+    }
+
+    .smart-card__title-text {
+      color: #52c41a;
+    }
+  }
+
+  &--dark-blue {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    border: 1px solid #2a5298;
+
+    .smart-card__header {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .smart-card__title-text {
+      color: #ffffff;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__icon {
+    width: 1.5em;
+    height: 1.5em;
+    object-fit: contain;
+  }
+
+  &__title-text {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  &__body {
+    padding: 20px;
+  }
+}

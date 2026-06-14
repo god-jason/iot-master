@@ -22,7 +22,7 @@
         (nzCheckedChange)="onAllChecked($event)">
       </th>
     }
-    @for (item of columns; track item) {
+    @for (item of fields; track item) {
       @if (item.admin && !user?.admin) {
       } @else if (item.not_admin && user?.admin) {
       } @else {
@@ -53,7 +53,7 @@
             (nzCheckedChange)="onItemChecked(data.id, $event)"
           ></td>
         }
-        @for (item of columns; track item) {
+        @for (item of fields; track item) {
         @if (item.admin && !user?.admin) {
         } @else if (item.not_admin && user?.admin) {
         } @else {

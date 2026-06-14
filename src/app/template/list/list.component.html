@@ -1,0 +1,23 @@
+@if (content) {
+  @if (content.template == 'list') {
+      @if (content.toolbar) {
+        <smart-toolbar #toolbar [user]="user.user" [fields]="content.toolbar" [values]="toolbarValue"
+                       (action)="execute($event)"></smart-toolbar>
+      }
+      <smart-table #table
+                   [user]="user.user"
+                   [fields]="content.fields"
+                   [operators]="content.operators"
+                   [batch]="content.batch"
+                   [datum]="data"
+                   [total]="total"
+                   [loading]="loading"
+                   (query)="load($event)"
+                   (action)="execute($event.action, $event.data, $event.index)"
+      ></smart-table>
+  } @else {
+    模板类型应该是list
+  }
+} @else {
+  <nz-spin nzSimple></nz-spin>
+}

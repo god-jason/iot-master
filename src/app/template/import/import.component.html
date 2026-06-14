@@ -34,7 +34,7 @@
         <!--表头选择-->
         @if (current == 1) {
           <form [formGroup]="group">
-            <nz-table #header nzSize="small" [nzData]="content.columns" nzShowPagination="false">
+            <nz-table #header nzSize="small" [nzData]="content.fields" nzShowPagination="false">
               <thead>
                 <tr>
                   <th>字段</th>
@@ -67,7 +67,7 @@
           <nz-table #table nzSize="small" [nzData]="values" nzShowPagination="false">
             <thead>
               <tr>
-                @for (item of content.columns; track item) {
+                @for (item of content.fields; track item) {
                   <th>
                     {{ item.label || item.key }}
                   </th>
@@ -78,7 +78,7 @@
             <tbody>
               @for (data of values; track data; let i = $index) {
                 <tr>
-                  @for (item of content.columns; track item) {
+                  @for (item of content.fields; track item) {
                     <td>
                       {{ data[item.key] }}
                     </td>

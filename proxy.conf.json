@@ -1,24 +1,24 @@
 {
   "/api/": {
-    "target": "http://localhost:8888",
+    "target": "http://iot.busycloud.cn:8888",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/app/": {
-    "target": "http://localhost:8888",
+    "target": "http://iot.busycloud.cn:8888",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/assets/": {
-    "target": "http://localhost:8888",
+    "target": "http://iot.busycloud.cn:8888",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "/mqtt": {
-    "target": "http://localhost:8888",
+    "target": "http://iot.busycloud.cn:8888",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true,

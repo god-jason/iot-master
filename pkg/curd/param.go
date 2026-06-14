@@ -172,7 +172,7 @@ func GetId(ctx *gin.Context) (any, error) {
 	if v, ok := ctx.GetQuery("id"); ok {
 		return v, nil
 	}
-	return nil, errors.New("id not found")
+	return nil, errors.New("ID不存在")
 }
 
 type ParamList struct {

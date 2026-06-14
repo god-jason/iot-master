@@ -15,7 +15,7 @@ type Compare struct {
 func (c *Compare) Evaluate(ctx map[string]any) (bool, error) {
 	val, ok := ctx[c.Name]
 	if !ok {
-		return false, fmt.Errorf("compare evalute field %s not found", c.Name)
+		return false, fmt.Errorf("比较评估字段 %s 不存在", c.Name)
 	}
 	v, err := cast.ToFloat64E(val)
 	if err != nil {
@@ -35,7 +35,7 @@ func (c *Compare) Evaluate(ctx map[string]any) (bool, error) {
 	case "<=", "lte":
 		return v <= c.Value, nil
 	default:
-		return false, fmt.Errorf("unsupported compare type: %s", c.Type)
+		return false, fmt.Errorf("不支持的比较类型: %s", c.Type)
 	}
 }
 

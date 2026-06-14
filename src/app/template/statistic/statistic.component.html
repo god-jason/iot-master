@@ -4,7 +4,7 @@
         <smart-toolbar #toolbar [user]="user.user" [fields]="content.toolbar" [values]="toolbarValue" (action)="execute($event)"></smart-toolbar>
       }
       <nz-row [nzGutter]="[10,10]">
-        @for (item of content.items; track item) {
+        @for (item of content.fields; track item) {
           <nz-col [nzSpan]="12" [nzMd]="item.span || 8" [nzXs]="24">
             <nz-card>
               <nz-statistic

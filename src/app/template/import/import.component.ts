@@ -124,7 +124,7 @@ export class ImportComponent extends TemplateBase {
     if (!content) return
 
     let group: any = {}
-    content.columns.forEach(c => {
+    content.fields.forEach(c => {
       group[c.key] = new FormControl(-1) //[-1];
     })
     this.group = this.fb.group(group)
@@ -144,7 +144,7 @@ export class ImportComponent extends TemplateBase {
       let ss = h.split("/")
       ss.forEach((v: string) => {
         let key = v.trim()
-        content.columns.forEach(c => {
+        content.fields.forEach(c => {
           if (c.key == key || c.label == key)
             headers[c.key] = i
         })
@@ -168,7 +168,7 @@ export class ImportComponent extends TemplateBase {
     const content = this.content as ImportContent
     if (!content) return
 
-    const aoa = content.columns.map(c => {
+    const aoa = content.fields.map(c => {
       if (c.label) return c.label + '/' + c.key
       else return c.key
     })

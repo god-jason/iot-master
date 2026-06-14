@@ -88,7 +88,7 @@ export class ExportComponent extends TemplateBase {
     console.log("buildForm")
 
     let group: any = {}
-    content.columns.forEach(c => {
+    content.fields.forEach(c => {
       group[c.key] = new FormControl(true) //[-1];
     })
     this.group = this.fb.group(group)
@@ -101,6 +101,7 @@ export class ExportComponent extends TemplateBase {
     this.current = 1
 
 
+
     //TODO 开始下载
     let filter = JSON.parse(this.params.filter || "{}")
 
@@ -110,7 +111,7 @@ export class ExportComponent extends TemplateBase {
 
     let fields: string[] = []
 
-    const aoa = content.columns.filter(c => {
+    const aoa = content.fields.filter(c => {
       return this.group.value[c.key]
     }).map(c => {
       fields.push(c.key)

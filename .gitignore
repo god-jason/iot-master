@@ -34,3 +34,4 @@ go.work.sum
 /package-lock.json
 /.angular
 /2026
+/example

@@ -7,5 +7,5 @@ import (
 )
 
 func Noop(ctx *gin.Context) {
-	ctx.String(http.StatusForbidden, "Unsupported")
+	ctx.String(http.StatusForbidden, "不支持")
 }

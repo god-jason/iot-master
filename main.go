@@ -10,6 +10,7 @@ import (
 	_ "github.com/god-jason/iot-master/apis"
 	"github.com/god-jason/iot-master/iot"
 	"github.com/god-jason/iot-master/pkg/boot"
+	"github.com/god-jason/iot-master/pkg/config"
 	_ "github.com/god-jason/iot-master/pkg/broker"
 	_ "github.com/god-jason/iot-master/pkg/debug"
 	"github.com/god-jason/iot-master/pkg/log"
@@ -41,10 +42,15 @@ func init() {
 
 	//前端页面
 	web.StaticFS(www, "/", "www/browser", "index.html")
+	//本地开发优先读取磁盘文件，避免旧二进制嵌入资源导致 404
+	web.StaticDir("www/browser", "/", "", "index.html")
 }
 
 func Startup() error {
-	viper.SetConfigName("iot-master")
+	config.Name("iot-master")
+	if err := config.Load(false); err != nil {
+		return err
+	}
 
 	err := boot.Startup()
 	if err != nil {

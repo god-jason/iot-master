@@ -126,6 +126,14 @@
       <!--时间-->
       <smart-date-picker [formControl]="control" mode="time"></smart-date-picker>
     }
+    @case ('datetimerange') {
+      <!--日期时间范围-->
+      <smart-range-picker [formControl]="control" mode="datetimerange"></smart-range-picker>
+    }
+    @case ('daterange') {
+      <!--日期范围-->
+      <smart-range-picker [formControl]="control" mode="daterange"></smart-range-picker>
+    }
     @case ('file') {
       <!--文件-->
       <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
@@ -253,7 +261,12 @@
       <span>不支持的控件类型：{{ field.type }}</span>
     }
   }
+
   {{ field.tips }}
+
+  @if (field.link || field.link_action) {
+    <a (click)="link(field)"> {{ field.link_text || '链接' }}</a>
+  }
 </ng-template>
 
 
@@ -301,7 +314,7 @@
     @else{
     <nz-form-item>
       @if (field.label) {
-        <nz-form-label [nzSpan]="field.span || 4" [nzRequired]="field.required" [nzFor]="field.key">
+        <nz-form-label [nzSpan]="field.span || 4" [nzRequired]="field.required" [nzFor]="field.key" nzLabelAlign="left">
           {{ field.label }}
         </nz-form-label>
       }

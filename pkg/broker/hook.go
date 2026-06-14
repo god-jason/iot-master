@@ -7,7 +7,6 @@ import (
 	"net"
 	"time"
 
-	"github.com/god-jason/iot-master/pkg/config"
 	"github.com/mochi-mqtt/server/v2"
 	"github.com/mochi-mqtt/server/v2/packets"
 )
@@ -39,7 +38,6 @@ func (h *Hook) OnConnect(cl *mqtt.Client, pk packets.Packet) error {
 	}
 
 	_ = Publish("client/"+cl.ID+"/connect", nil)
-
 	return nil
 }
 
@@ -59,11 +57,7 @@ func (h *Hook) OnConnectAuthenticate(cl *mqtt.Client, pk packets.Packet) bool {
 	case "base":
 		//log.Info("[base] OnConnectAuthenticate ", cl.ID, pk.Connect.Username, pk.Connect.Password)
 
-		//匿名登录
-		if config.GetBool(MODULE, "anonymous") {
-			return true
-		}
-
+		//不支持匿名
 		if !pk.Connect.UsernameFlag {
 			return false
 		}
@@ -88,19 +82,10 @@ func (h *Hook) OnACLCheck(cl *mqtt.Client, topic string, write bool) bool {
 
 func (h *Hook) OnDisconnect(cl *mqtt.Client, err error, expire bool) {
 	//执行unsubscribe
-	//_ = Publish("client/"+cl.ID+"/disconnect", nil)
+	_ = Publish("client/"+cl.ID+"/disconnect", nil)
 
-	//模仿EMQX $events/client_disconnected
-	_ = Publish("$events/client_disconnected", map[string]any{
-		"clientid":        cl.ID,
-		"username":        string(cl.Properties.Username),
-		"ipaddress":       cl.Net.Remote,
-		"reason":          "keepalive_timeout",
-		"connected_at":    1717473600,
-		"disconnected_at": time.Now().Unix(),
-		"proto_name":      "MQTT",
-		"proto_ver":       cl.Properties.ProtocolVersion,
-	})
+	//server.Clients.Get(cl.ID)
+
 }
 
 func (h *Hook) OnSubscribed(cl *mqtt.Client, pk packets.Packet, reasonCodes []byte) {

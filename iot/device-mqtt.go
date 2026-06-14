@@ -59,7 +59,7 @@ func mqttSubscribeDevice() {
 		var err error
 
 		//临时代码，上报在线状态
-		//go santaiyunReport(reg.Id, "2009", 1)
+		go santaiyunReport(reg.Id, "2009", 1)
 
 		//查询
 		d := GetDevice(reg.Id)
@@ -140,7 +140,7 @@ func mqttSubscribeDevice() {
 				log.Error(err)
 				return
 			}
-			d.Online = false //执行恢复上线
+			d.Online = true //执行恢复上线
 		}
 
 		var values map[string]any
@@ -159,7 +159,7 @@ func mqttSubscribeDevice() {
 			_, _ = db.Engine().ID(id).Cols("online").Update(&dev)
 
 			//临时代码
-			//go santaiyunReport(id, "2009", 1)
+			go santaiyunReport(id, "2009", 1)
 		}
 
 		//会被Influxdb堵死。。。。
@@ -232,7 +232,7 @@ func mqttSubscribeDevice() {
 		}
 
 		//临时代码
-		//go santaiyunReport(id, "2009", 1)
+		go santaiyunReport(id, "2009", 1)
 	})
 
 	mqtt.Subscribe("device/+/offline", func(topic string, payload []byte) {
@@ -264,7 +264,7 @@ func mqttSubscribeDevice() {
 		}
 
 		//临时代码
-		//go santaiyunReport(id, "2009", 0)
+		go santaiyunReport(id, "2009", 0)
 	})
 
 	//监听总线消息，客户端断开，则视为下线 "$events/client_disconnected"

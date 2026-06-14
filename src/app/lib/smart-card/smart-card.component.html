@@ -1,0 +1,14 @@
+<div class="smart-card" [class]="themeClass" [ngStyle]="bodyStyle">
+  @if (hasTitle) {
+    <div class="smart-card__header" [ngStyle]="titleStyle">
+      <div class="smart-card__title">
+        <img *ngIf="icon" [src]="icon" class="smart-card__icon" />
+        <span class="smart-card__title-text">{{ title }}</span>
+      </div>
+      <ng-content select="[extra]"></ng-content>
+    </div>
+  }
+  <div class="smart-card__body">
+    <ng-content></ng-content>
+  </div>
+</div>

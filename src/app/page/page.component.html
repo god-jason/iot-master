@@ -8,17 +8,23 @@
 
 @if (content.title) {
 
-<nz-card [nzTitle]="content.title" [nzExtra]="extra" [nzBodyStyle]="content.bodyStyle" style="pointer-events: auto">
+<smart-card 
+  [title]="content.title" 
+  [icon]="content.icon" 
+  [titleStyle]="content.titleStyle" 
+  [bodyStyle]="content.bodyStyle" 
+  [theme]="content.theme || 'white'"
+  style="pointer-events: auto">
+  <div extra>
+    @if (content.load_api) {
+    <button nz-button nzType="link" (click)="componentRef?.instance?.load()" class="load">
+      <span nz-icon nzType="reload" [nzSpin]="componentRef?.instance?.loading"></span>
+      刷新
+    </button>
+    }
+  </div>
   <div #container></div>
-</nz-card>
-<ng-template #extra>
-  @if (content.load_api) {
-  <button nz-button nzType="link" (click)="componentRef?.instance?.load()" class="load">
-    <span nz-icon nzType="reload" [nzSpin]="componentRef?.instance?.loading"></span>
-    刷新
-  </button>
-  }
-</ng-template>
+</smart-card>
 
 } @else {
 <div #container></div>

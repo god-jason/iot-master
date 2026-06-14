@@ -1,0 +1,8 @@
+<nz-range-picker
+  nzAllowClear
+  [nzShowTime]="mode === 'datetimerange'"
+  [nzDisabled]="disabled"
+  [ngModel]="value"
+  [nzPlaceHolder]="placeholder"
+  (ngModelChange)="onModelChange($event)">
+</nz-range-picker>

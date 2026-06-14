@@ -29,6 +29,7 @@ import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzRateComponent} from "ng-zorro-antd/rate";
 import {SmartAction} from '../smart-table/smart-table.component';
 import {SmartDatePicker} from '../smart-date-picker/smart-date-picker';
+import {SmartRangePicker} from '../smart-range-picker/smart-range-picker';
 import dayjs from 'dayjs';
 
 
@@ -136,7 +137,12 @@ export interface SmartField {
   theme?: Theme
   language?: string
   readonly?: boolean
-}
+
+  //选择相关
+  link?: string //链接页面
+  link_action?: SmartAction //响应
+  link_text?: string
+ }
 
 export interface SmartFieldCondition {
   key: string
@@ -256,6 +262,7 @@ export function createControl(f: SmartField, value: any = undefined): FormContro
     NzRadioModule,
     NzRateComponent,
     SmartDatePicker,
+    SmartRangePicker,
     CodeEditor,
   ],
   templateUrl: './smart-editor.component.html',
@@ -528,6 +535,11 @@ export class SmartEditorComponent implements OnInit {
     })
     //this.group.patchValue({[key]: paths})
     control.setValue(paths)
+  }
+
+  link(field: SmartField) {
+    field.link_action && this.action.emit(field.link_action)
+    field.link && window.open(field.link)
   }
 
 

@@ -131,20 +131,24 @@
           [nzMax]="field.max" [nzMin]="field.min" [nzStep]="field.step"></nz-slider>
         }
         @case ('datetime') {
-          {{ field.label || '' }}
           <!--日期和时间-->
-          <nz-date-picker nzShowTime [formControlName]="field.key"
-          [nzPlaceHolder]="field.placeholder || ''"></nz-date-picker>
+          <smart-date-picker [formControlName]="field.key" mode="datetime"></smart-date-picker>
         }
         @case ('date') {
-          {{ field.label || '' }}
           <!--日期-->
-          <nz-date-picker [formControlName]="field.key" [nzPlaceHolder]="field.placeholder || ''"></nz-date-picker>
+          <smart-date-picker [formControlName]="field.key" mode="date"></smart-date-picker>
         }
         @case ('time') {
-          {{ field.label || '' }}
           <!--时间-->
-          <nz-time-picker [formControlName]="field.key" [nzPlaceHolder]="field.placeholder || ''"></nz-time-picker>
+          <smart-date-picker [formControlName]="field.key" mode="time"></smart-date-picker>
+        }
+        @case ('datetimerange') {
+          <!--日期时间范围-->
+          <smart-range-picker [formControlName]="field.key" mode="datetimerange"></smart-range-picker>
+        }
+        @case ('daterange') {
+          <!--日期范围-->
+          <smart-range-picker [formControlName]="field.key" mode="daterange"></smart-range-picker>
         }
         @case ('upload') {
           {{ field.label || '' }}

@@ -66,8 +66,8 @@ export class SmartRequestService {
     );
   }
 
-  get(uri: string, params?: { [k: string]: any }): Observable<any> {
-    return this.request('GET', uri, {params});
+  get(uri: string, params?: { [k: string]: any }, options?: any): Observable<any> {
+    return this.request('GET', uri, {params, ...options});
   }
 
   put(uri: string, body: any | null, params?: { [k: string]: any }): Observable<any> {

@@ -10,20 +10,22 @@ import {
     SmartTableOperator
 } from '../lib/smart-table/smart-table.component';
 import {Theme} from '@acrodata/code-editor';
+import { CardTheme } from '../lib/smart-card/smart-card.component';
 
 export type PageContent = Content & (
   BlankContent |
   LogContent |
-  TableContent |
+  ListContent |
   ImportContent |
   ExportContent |
-  FormContent |
-  InfoContent |
+  EditContent |
+  DetailContent |
   ChartContent |
   MarkdownContent |
   TextContent |
   StatisticContent |
-  AmapContent)
+  AmapContent |
+  ValueContent)
 
 export interface BlankContent {
   template?: 'blank' | ''
@@ -33,7 +35,13 @@ export interface Content {
   //子页面
   page?: string
 
+  //卡片样式
+  theme?: CardTheme
+  style: any
+  icon?: string
   title?: string
+  titleStyle?: { [key: string]: any }
+  bodyStyle:  { [key: string]: any }
 
   //初始化数据
   data?: any
@@ -45,8 +53,7 @@ export interface Content {
   auto_refresh?: number
 
   //作为子页面时的参数（无用）
-  params?: any
-  params_func?: string | Function | ((data: any) => any)
+  params?: any | Function | ((data: any) => any)
 
 //工具栏
   toolbar?: SmartField[]
@@ -65,9 +72,6 @@ export interface Content {
   //注册成员
   methods?: { [key: string]: (string | Function | (() => any) | string[]) }
 
-  //样式
-  style: any
-  bodyStyle: any
 
   //浮层子页面
   overlay?: ChildPage
@@ -83,8 +87,7 @@ export interface ChildPage {
   page?: string
   span?: number
   content?: PageContent
-  params?: any
-  params_func?: string | Function | ((data: any) => any)
+  params?: any | Function | ((data: any) => any)
   push?: string | number | null
 }
 
@@ -92,8 +95,7 @@ export interface TabPage {
   title?: string;
   page?: string
   content?: PageContent
-  params?: any
-  params_func?: string | Function | ((data: any) => any)
+  params?: any | Function | ((data: any) => any)
 }
 
 
@@ -110,6 +112,9 @@ export interface AmapContent {
 
   drawable?: boolean
   full?: boolean //全尺寸
+
+  ready?: string | Function | (() => void) //初始化完成回调
+  click?: string | Function | ((e: any) => void) //地图点击事件回调
 }
 
 
@@ -118,7 +123,7 @@ export interface ChartContent {
   type: 'line' | 'bar' | 'pie' | 'gauge' | 'radar'
   //title: string;
   dark?: boolean
-  theme?: string
+  chartTheme?: string
   height?: number
   legend?: boolean
   tooltip?: boolean
@@ -128,8 +133,8 @@ export interface ChartContent {
   options: EChartsOption
 }
 
-export interface FormContent {
-  template: 'form'
+export interface EditContent {
+  template: 'edit'
   fields: SmartField[]
 
   submit_api?: string
@@ -137,9 +142,9 @@ export interface FormContent {
   submit_success?: string | Function | ((data: any) => any)
 }
 
-export interface InfoContent {
-  template: 'info'
-  items: SmartInfoItem[]
+export interface DetailContent {
+  template: 'detail'
+  fields: SmartInfoItem[]
 }
 
 export interface MarkdownContent {
@@ -157,9 +162,9 @@ export interface LogContent {
 
 }
 
-export interface TableContent {
-  template: 'table'
-  columns: SmartTableColumn[]
+export interface ListContent {
+  template: 'list'
+  fields: SmartTableColumn[]
   operators: SmartTableOperator[]
   batch: boolean
 
@@ -173,7 +178,47 @@ export interface TableContent {
 
 export interface StatisticContent {
   template: 'statistic'
-  items: Statistic[]
+  fields: Statistic[]
+}
+
+export interface ValueContent {
+  template: 'value'
+  
+  // 显示数值（优先使用）
+  value?: number | string
+  // 标签/标题
+  label?: string
+  // 图片URL
+  image?: string
+  // 图片尺寸
+  imageSize?: string | number
+  // 图片位置：top/bottom/left/right/background
+  imagePosition?: 'top' | 'bottom' | 'left' | 'right' | 'background'
+  // 字体大小
+  fontSize?: number | string
+  // 字体颜色
+  color?: string
+  // 字体粗细
+  fontWeight?: string | number
+  // 字体样式
+  fontFamily?: string
+  // 前缀
+  prefix?: string
+  // 后缀
+  suffix?: string
+  // 数值格式化
+  format?: string
+  // 小数位数
+  decimals?: number
+  // 背景样式
+  background?: string
+  // 对齐方式
+  align?: 'left' | 'center' | 'right'
+  // 卡片样式
+  style?: any
+  bodyStyle?: any
+  // 数值变化回调
+  onChange?: string | Function | ((oldValue: any, newValue: any) => void)
 }
 
 export interface Statistic {
@@ -188,7 +233,7 @@ export interface Statistic {
 
 export interface ImportContent {
   template: 'import'
-  columns: SmartTableColumn[],
+  fields: SmartTableColumn[],
 
   submit_api?: string
   submit?: string | Function | ((data: any) => Promise<any>)
@@ -198,7 +243,7 @@ export interface ImportContent {
 
 export interface ExportContent {
   template: 'export'
-  columns: SmartTableColumn[],
+  fields: SmartTableColumn[],
 
   search_api?: string
   search?: string | Function | ((event: ParamSearch, request: SmartRequestService) => Promise<any>)

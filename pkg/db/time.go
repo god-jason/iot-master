@@ -60,7 +60,7 @@ func (t *Time) FromDB(b []byte) error {
 		*t = Time(now)
 		return nil
 	}
-	panic("自己定义个layout日期格式处理一下数据库里面的日期型数据解析!")
+	//panic("请定义layout日期格式处理数据库中的日期型数据")
 	return err
 }
 

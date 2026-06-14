@@ -1,18 +1,19 @@
-import {Component, inject} from '@angular/core';
-import {Router} from '@angular/router';
-import {SmartRequestService} from '../lib/smart-request.service';
-import {NzModalModule, NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
-import {Title} from '@angular/platform-browser';
-import {SmartAction} from '../lib/smart-table/smart-table.component';
-import {isFunction} from 'rxjs/internal/util/isFunction';
-import {PageContent} from './template';
-import {PageComponent} from '../page/page.component';
-import {LinkReplaceParams} from '../lib/utils';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { SmartRequestService } from '../lib/smart-request.service';
+import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { Title } from '@angular/platform-browser';
+import { SmartAction } from '../lib/smart-table/smart-table.component';
+import { isFunction } from 'rxjs/internal/util/isFunction';
+import { PageContent } from './template';
+import { PageComponent } from '../page/page.component';
+import { LinkReplaceParams } from '../lib/utils';
 
 import dayjs from 'dayjs'
-import {UserService} from '../user.service';
-import {MqttService} from '../mqtt.service';
-import {Subscription} from 'rxjs';
+import { UserService } from '../user.service';
+import { MqttService } from '../mqtt.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-template',
@@ -29,9 +30,10 @@ export class TemplateBase {
   user = inject(UserService)
   request = inject(SmartRequestService)
   modal = inject(NzModalService)
+  notification = inject(NzNotificationService)
   router = inject(Router)
   title = inject(Title)
-  modelRef = inject(NzModalRef, {optional: true})
+  modelRef = inject(NzModalRef, { optional: true })
 
   mqtt = inject(MqttService)
   private mqttSubs: Subscription[] = []
@@ -57,6 +59,8 @@ export class TemplateBase {
 
   loading = false
 
+  error = ''
+
   auto_refresh_interval: any = 0
 
   constructor() {
@@ -76,21 +80,21 @@ export class TemplateBase {
 
   ngOnDestroy(): void {
     this.unmount()
-    this.mqttSubs.forEach(s=>s.unsubscribe())
+    this.mqttSubs.forEach(s => s.unsubscribe())
   }
 
   subscribe(filter: string, callback: any) {
     console.log("subscribe", filter)
-    const sub = this.mqtt.observe(filter).subscribe(msg=>callback.call(this, msg.payload))
+    const sub = this.mqtt.observe(filter).subscribe(msg => callback.call(this, msg.payload))
     this.mqttSubs.push(sub)
   }
 
   subscribeJSON(filter: string, callback: any) {
     console.log("subscribe", filter)
-    const sub = this.mqtt.observe(filter).subscribe(msg=>{
+    const sub = this.mqtt.observe(filter).subscribe(msg => {
       try {
         callback.call(this, JSON.parse(msg.payload.toString()))
-      } catch (e){
+      } catch (e) {
         console.error(e)
       }
     })
@@ -166,16 +170,48 @@ export class TemplateBase {
 
   load_page() {
     console.log("[base] load page", this.page)
+    this.error = ''
+    this.content = undefined
     let url = "page/" + this.page
-    this.request.get(url).subscribe((res) => {
-      if (res.error) return
-      this.content = res
-      if (this.content?.title && !this.isChild && !this.modelRef)
-        this.title.setTitle(this.content.title);
-      this.build()
-      this.mount()
-      this.load()
-    })
+    this.request.get(url, undefined, { observe: 'response', responseType: "text" }).subscribe({
+      next: (res: any) => {
+        try {
+          // 解析 contenttype 类型，json 直接解决，js 执行 newFunction，并调用
+          const contentType = res.headers?.get('Content-Type');
+          if (contentType?.includes('application/javascript')) {
+            try {
+              const jsCode = res.body;
+              const fn = new Function(jsCode);
+              this.content = fn();
+            } catch (e) {
+              console.error('JS 解析错误:', e);
+              this.error = '页面解析失败：' + e;
+            }
+          } else {
+            // JSON 格式直接赋值
+            try {
+              this.content = typeof res.body === 'string' ? JSON.parse(res.body) : res.body;
+            } catch (e) {
+              console.error('JSON 解析错误:', e);
+              this.error = 'JSON 解析失败：' + e;
+            }
+          }
+
+          if (this.content?.title && !this.isChild && !this.modelRef)
+            this.title.setTitle(this.content.title);
+          this.build()
+          this.mount()
+          this.load()
+        } catch (e) {
+          console.error('页面处理错误:', e);
+          this.error = '页面处理失败：' + e;
+        }
+      },
+      error: (err: any) => {
+        console.error('页面加载错误:', err);
+        this.error = '页面加载失败：' + (err.message || err.statusText || err);
+      }
+    });
   }
 
   //abstract build(): void
@@ -260,6 +296,19 @@ export class TemplateBase {
     this.router.navigateByUrl(uri).then()
   }
 
+  dialog(page: string, params: any) {
+    return this.modal.create({
+      nzContent: PageComponent,
+      nzWidth: "80%",
+      nzData: {
+        page: page,
+        params: params
+      },
+      nzFooter: null,
+      //nzCloseIcon: 'close-circle',
+      //nzMaskClosable: false
+    })
+  }
 
   execute(action: SmartAction, data?: any, index?: number) {
     if (!action) return
@@ -295,7 +344,7 @@ export class TemplateBase {
         break
 
       case 'page':
-        this.router.navigate(["/page/" + action.page], {queryParams: params})
+        this.router.navigate(["/page/" + action.page], { queryParams: params })
         break
 
       case 'dialog':
@@ -350,16 +399,8 @@ export class TemplateBase {
 
   get_action_params(action: SmartAction, data: any, index: number): any {
     let params = action.params
-    // 计算函数
-    if (typeof action.params_func == "string" && action.params_func.length > 0) {
-      try {
-        action.params_func = new Function('data', action.params_func)
-      } catch (e) {
-        console.error(e)
-      }
-    }
-    if (isFunction(action.params_func)) {
-      params = action.params_func.call(this, data, index)
+    if (isFunction(action.params)) {
+      params = action.params.call(this, data, index)
     }
     return params
   }
@@ -367,7 +408,7 @@ export class TemplateBase {
 
   export_json(data: any, filename: string) {
     const jsonData = JSON.stringify(data, null, "\t");
-    const blob = new Blob([jsonData], {type: 'application/json'});
+    const blob = new Blob([jsonData], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement('a');
@@ -404,5 +445,18 @@ export class TemplateBase {
       }
     })
   }
+
+  // 确认操作
+  confirm(content?: string, title?: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.modal.confirm({
+        nzTitle: title || '确认',
+        nzContent: content || '确认执行操作？',
+        nzOnOk: () => resolve(true),
+        nzOnCancel: () => reject(false)
+      });
+    })
+  }
+
 
 }

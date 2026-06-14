@@ -1,0 +1,43 @@
+@if (content) {
+  @if (content.template == 'value') {
+    <div class="value-container" [style]="getContainerStyle()">
+      @if (content.image && content.imagePosition === 'background') {
+        <img [src]="content.image" class="value-image background" [style]="getImageStyle()" />
+      }
+      @if (content.image && content.imagePosition === 'top') {
+        <img [src]="content.image" class="value-image top" [style]="getImageStyle()" />
+      }
+      <div class="value-wrapper" [class]="getWrapperClass()">
+        @if (content.image && content.imagePosition === 'left') {
+          <img [src]="content.image" class="value-image left" [style]="getImageStyle()" />
+        }
+        <div class="value-content">
+          @if (content.label) {
+            <div class="value-label">{{ content.label }}</div>
+          }
+          <div class="value-body">
+            @if (content.prefix) {
+              <span class="value-prefix">{{ content.prefix }}</span>
+            }
+            <span #valueElement class="value-number" [style]="getValueStyle()">
+              {{ formatValue(data) }}
+            </span>
+            @if (content.suffix) {
+              <span class="value-suffix">{{ content.suffix }}</span>
+            }
+          </div>
+        </div>
+        @if (content.image && content.imagePosition === 'right') {
+          <img [src]="content.image" class="value-image right" [style]="getImageStyle()" />
+        }
+      </div>
+      @if (content.image && content.imagePosition === 'bottom') {
+        <img [src]="content.image" class="value-image bottom" [style]="getImageStyle()" />
+      }
+    </div>
+  } @else {
+    模板类型应该是value
+  }
+} @else {
+  <nz-spin nzSimple></nz-spin>
+}

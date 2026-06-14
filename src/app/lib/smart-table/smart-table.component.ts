@@ -17,8 +17,7 @@ export interface SmartAction {
   type: 'link' | 'script' | 'page' | 'dialog'
   link?: string
   link_func?: string | Function | ((data: any, index: number) => string)
-  params?: any
-  params_func?: string | Function | ((data: any, index: number) => any)
+  params?: any | Function | ((data: any, index: number) => any)
   script?: string | Function | ((data: any, index: number) => string)
   after_close?: string | Function | ((result: any, data: any, index: number) => string) //dialog回调
   app?: string
@@ -76,7 +75,7 @@ export interface SmartTableButton {
 
 export interface SmartTableParams {
   buttons?: SmartTableButton[];
-  columns: SmartTableColumn[]
+  fields: SmartTableColumn[]
   operators: SmartTableOperator[];
 }
 
@@ -122,7 +121,7 @@ export class SmartTableComponent implements OnInit {
   @Input() pageSize = parseInt(localStorage.getItem("table_page_size") || "10"); //默认10页
   @Input() pageIndex = 1;
 
-  @Input() columns: SmartTableColumn[] = []
+  @Input() fields: SmartTableColumn[] = []
   @Input() operators: SmartTableOperator[] = []
 
   @Input() datum: any[] = [];

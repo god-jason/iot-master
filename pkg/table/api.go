@@ -17,9 +17,12 @@ func init() {
 	//表接口 普通权限
 	api.Register("POST", "table/:table/count", ApiCount)
 	api.Register("POST", "table/:table/create", ApiCreate)
+	api.Register("PUT", "table/:table/create", ApiCreate)
 	api.Register("POST", "table/:table/update/*id", ApiUpdate)
 	api.Register("GET", "table/:table/delete/*id", ApiDelete)
+	api.Register("DELETE", "table/:table/delete/*id", ApiDelete)
 	api.Register("GET", "table/:table/detail/*id", ApiDetail)
+	api.Register("GET", "table/:table/query/*id", ApiQuery)
 	api.Register("POST", "table/:table/search", ApiSearch)
 	api.Register("POST", "table/:table/import", ApiImport)
 	api.Register("POST", "table/:table/export", ApiExport)
