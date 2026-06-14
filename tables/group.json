@@ -17,7 +17,7 @@
       "as": "agent"
     }
   ],
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",
@@ -30,7 +30,7 @@
       "comment": "创建者",
       "type": "string",
       "length": 50,
-      "index": true
+      "indexed": true
     },
     {
       "name": "tenant_id",
@@ -44,7 +44,7 @@
       "comment": "经销商",
       "type": "string",
       "length": 50,
-      "index": true
+      "indexed": true
     },
     {
       "name": "name",

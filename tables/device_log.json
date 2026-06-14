@@ -1,7 +1,7 @@
 {
   "name": "device_log",
   "comment": "设备日志",
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",

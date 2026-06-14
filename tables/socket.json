@@ -1,7 +1,7 @@
 {
   "name": "socket",
   "comment": "网络连接",
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",

@@ -1,7 +1,16 @@
 {
   "name": "alarm",
   "comment": "报警日志",
-  "columns": [
+  "joins": [
+    {
+      "table": "device",
+      "local_field": "device_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "device_name"
+    }
+  ],
+  "fields": [
     {
       "name": "id",
       "comment": "ID",
@@ -38,7 +47,32 @@
     {
       "name": "level",
       "comment": "等级",
-      "type": "uint8"
+      "type": "uint8",
+      "indexed": true
+    },
+    {
+      "name": "type",
+      "comment": "类型",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
+      "name": "status",
+      "comment": "状态",
+      "type": "uint8",
+      "indexed": true
+    },
+    {
+      "name": "handled_time",
+      "comment": "处理时间",
+      "type": "datetime"
+    },
+    {
+      "name": "handled_by",
+      "comment": "处理人",
+      "type": "string",
+      "length": 50
     },
     {
       "name": "created",

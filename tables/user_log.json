@@ -1,7 +1,7 @@
 {
   "name": "user_log",
   "comment": "用户日志",
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",

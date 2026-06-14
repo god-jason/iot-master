@@ -1,7 +1,7 @@
 {
   "name": "device_setting",
   "comment": "设备参数",
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",

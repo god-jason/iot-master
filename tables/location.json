@@ -1,7 +1,7 @@
 {
   "name": "location",
   "comment": "定位轨迹",
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",
@@ -23,7 +23,7 @@
     },
     {
       "name": "latitude",
-      "comment": "经度",
+      "comment": "纬度",
       "type": "double"
     },
     {

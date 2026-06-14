@@ -1,7 +1,7 @@
 {
   "name": "product",
   "comment": "产品",
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",
@@ -32,7 +32,8 @@
       "name": "type",
       "comment": "类型",
       "type": "string",
-      "length": 256
+      "length": 256,
+      "indexed": true
     },
     {
       "name": "version",
@@ -44,55 +45,14 @@
       "name": "protocol",
       "comment": "通讯协议",
       "type": "string",
+      "length": 256,
+      "indexed": true
+    },
+    {
+      "name": "image",
+      "comment": "图片",
+      "type": "string",
       "length": 256
-    },
-    {
-      "name": "gateway",
-      "comment": "网关",
-      "type": "bool",
-      "default": "false"
-    },
-    {
-      "name": "smart",
-      "comment": "智能",
-      "type": "bool",
-      "default": "false"
-    },
-    {
-      "name": "writable",
-      "comment": "修改变量",
-      "type": "bool",
-      "default": "false"
-    },
-    {
-      "name": "controllable",
-      "comment": "远程控制",
-      "type": "bool",
-      "default": "false"
-    },
-    {
-      "name": "programmable",
-      "comment": "可编程",
-      "type": "bool",
-      "default": "false"
-    },
-    {
-      "name": "configurable",
-      "comment": "可配置",
-      "type": "bool",
-      "default": "false"
-    },
-    {
-      "name": "ota",
-      "comment": "远程升级",
-      "type": "bool",
-      "default": "false"
-    },
-    {
-      "name": "locatable",
-      "comment": "支持定位",
-      "type": "bool",
-      "default": "false"
     },
     {
       "name": "disabled",

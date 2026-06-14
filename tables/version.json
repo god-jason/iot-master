@@ -10,7 +10,7 @@
       "as": "product"
     }
   ],
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",

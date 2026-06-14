@@ -1,7 +1,7 @@
 {
   "name": "user",
   "comment": "用户",
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",
@@ -23,6 +23,13 @@
       "length": 50
     },
     {
+      "name": "username",
+      "comment": "登录名",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
       "name": "avatar",
       "comment": "头像",
       "type": "string",
@@ -32,13 +39,15 @@
       "name": "email",
       "comment": "邮箱",
       "type": "string",
-      "length": 256
+      "length": 256,
+      "indexed": true
     },
     {
       "name": "cellphone",
       "comment": "手机号",
       "type": "string",
-      "length": 32
+      "length": 32,
+      "indexed": true
     },
     {
       "name": "oem",
@@ -50,7 +59,8 @@
       "name": "admin",
       "comment": "管理员",
       "type": "bool",
-      "default": "false"
+      "default": "false",
+      "indexed": true
     },
     {
       "name": "disabled",

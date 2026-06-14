@@ -1,7 +1,7 @@
 {
   "name": "job",
   "comment": "定时任务",
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",

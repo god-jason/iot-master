@@ -1,7 +1,7 @@
 {
   "name": "product_setting",
   "comment": "产品参数",
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",

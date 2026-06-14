@@ -1,7 +1,7 @@
 {
   "name": "binding",
   "comment": "设备绑定",
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",

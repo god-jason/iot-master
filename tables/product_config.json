@@ -1,7 +1,7 @@
 {
   "name": "product_config",
   "comment": "产品配置",
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",

@@ -1,7 +1,7 @@
 {
   "name": "scene",
   "comment": "设备场景",
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",

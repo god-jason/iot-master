@@ -6,18 +6,18 @@
       "table": "product",
       "local_field": "product_id",
       "foreign_field": "id",
-      "field": "name",
-      "as": "product"
+      "field": "image",
+      "as": "product_image"
     },
     {
-      "table": "group",
-      "local_field": "group_id",
-      "foreign_field": "id",
+      "table": "product",
+      "local_field": "id",
+      "foreign_field": "device_id",
       "field": "name",
-      "as": "group"
+      "as": "product_name"
     }
   ],
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",
@@ -35,13 +35,6 @@
     {
       "name": "gateway_id",
       "comment": "网关ID",
-      "type": "string",
-      "length": 50,
-      "indexed": true
-    },
-    {
-      "name": "group_id",
-      "comment": "组织ID",
       "type": "string",
       "length": 50,
       "indexed": true
@@ -90,6 +83,12 @@
       "length": 255
     },
     {
+      "name": "location",
+      "comment": "详细位置",
+      "type": "string",
+      "length": 255
+    },
+    {
       "name": "longitude",
       "comment": "经度",
       "type": "double"
@@ -103,7 +102,8 @@
       "name": "geo_code",
       "comment": "geo hash",
       "type": "string",
-      "length": 50
+      "length": 50,
+      "indexed": true
     },
     {
       "name": "disabled",

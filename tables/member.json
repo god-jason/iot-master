@@ -17,17 +17,17 @@
       "as": "group"
     }
   ],
-  "columns": [
+  "fields": [
     {
       "name": "group_id",
-      "comment": "ID",
+      "comment": "组织ID",
       "type": "string",
       "length": 50,
       "primary": true
     },
     {
       "name": "user_id",
-      "comment": "ID",
+      "comment": "用户ID",
       "type": "string",
       "length": 50,
       "primary": true

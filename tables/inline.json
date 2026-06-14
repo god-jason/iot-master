@@ -7,10 +7,17 @@
       "local_field": "product_id",
       "foreign_field": "id",
       "field": "name",
-      "as": "product"
+      "as": "product_name"
+    },
+    {
+      "table": "device",
+      "local_field": "gateway_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "gateway_name"
     }
   ],
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",
@@ -23,19 +30,21 @@
       "comment": "网关ID",
       "type": "string",
       "length": 50,
-      "primary": true
+      "indexed": true
     },
     {
       "name": "product_id",
       "comment": "产品ID",
       "type": "string",
-      "length": 50
+      "length": 50,
+      "indexed": true
     },
     {
       "name": "link_id",
       "comment": "连接ID",
       "type": "string",
-      "length": 50
+      "length": 50,
+      "indexed": true
     },
     {
       "name": "name",

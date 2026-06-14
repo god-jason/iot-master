@@ -1,7 +1,7 @@
 {
   "name": "product_model",
   "comment": "产品模型（废弃）",
-  "columns": [
+  "fields": [
     {
       "name": "id",
       "comment": "ID",
@@ -24,31 +24,31 @@
     {
       "name": "properties",
       "comment": "属性",
-      "type": "txt",
+      "type": "text",
       "json": true
     },
     {
       "name": "events",
       "comment": "事件",
-      "type": "txt",
+      "type": "text",
       "json": true
     },
     {
       "name": "actions",
       "comment": "动作",
-      "type": "txt",
+      "type": "text",
       "json": true
     },
     {
       "name": "validators",
       "comment": "检验器",
-      "type": "txt",
+      "type": "text",
       "json": true
     },
     {
       "name": "settings",
       "comment": "配置项",
-      "type": "txt",
+      "type": "text",
       "json": true
     },
     {
