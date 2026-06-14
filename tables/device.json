@@ -13,8 +13,8 @@
       "table": "product",
       "local_field": "product_id",
       "foreign_field": "id",
-      "field": "name",
-      "as": "product_name"
+      "field": "image",
+      "as": "product_image"
     }
   ],
   "fields": [

@@ -1,6 +1,15 @@
 {
   "name": "device_log",
   "comment": "设备日志",
+  "joins": [
+    {
+      "table": "user",
+      "local_field": "user_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "user_name"
+    }
+  ],
   "fields": [
     {
       "name": "id",

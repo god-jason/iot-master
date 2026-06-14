@@ -55,9 +55,8 @@ return {
   fields: [
     { key: 'id', label: 'ID', sortable: true, sort: -1, type: 'text' },
     {
-      key: 'device_id',
-      label: '设备ID',
-      sortable: true,
+      key: 'device_name',
+      label: '设备名称',
       type: 'text',
       action: {
         type: 'page',
@@ -67,9 +66,20 @@ return {
         }
       }
     },
-    { key: 'user', label: '用户', type: 'text' },
+    {
+      key: 'user_name',
+      label: '用户名称',
+      type: 'text',
+      action: {
+        type: 'page',
+        page: 'user_detail',
+        params(data) {
+          return { id: data.user_id }
+        }
+      }
+    },
     { key: 'content', label: '日志', type: 'text' },
-    { key: 'created', label: '日期', type: 'date', sortable: true }
+    { key: 'created', label: '创建时间', type: 'date', sortable: true }
   ],
   search_api: 'table/device_log/search',
   // 页面挂载时执行

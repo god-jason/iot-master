@@ -76,10 +76,6 @@ return {
   batch: true,
   fields: [
     { key: 'id', label: '编号', sortable: true, sort: -1, type: 'text' },
-    { key: 'title', label: '标题', type: 'text' },
-    { key: 'message', label: '消息', type: 'text' },
-    { key: 'level', label: '等级', type: 'text' },
-    { key: 'created', label: '日期', type: 'date', sortable: true },
     {
       key: 'device_name',
       label: '设备名称',
@@ -91,7 +87,15 @@ return {
           return { id: data.device_id }
         }
       }
-    }
+    },
+    { key: 'title', label: '标题', type: 'text' },
+    { key: 'message', label: '消息', type: 'text' },
+    { key: 'level', label: '等级', type: 'text' },
+    { key: 'type', label: '类型', type: 'text' },
+    { key: 'status', label: '状态', type: 'text' },
+    { key: 'handled_time', label: '处理时间', type: 'date' },
+    { key: 'handled_by', label: '处理人', type: 'text' },
+    { key: 'created', label: '创建时间', type: 'date', sortable: true }
   ],
   search_api: 'table/alarm/search',
   // 页面挂载时执行

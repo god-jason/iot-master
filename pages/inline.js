@@ -109,8 +109,6 @@ return {
     { key: 'id', label: 'ID', type: 'text' },
     { key: 'name', label: '名称', type: 'text' },
     { key: 'description', label: '说明', type: 'text' },
-    { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'created', label: '日期', type: 'date' },
     {
       key: 'product_name',
       label: '产品名称',
@@ -123,7 +121,21 @@ return {
         }
       }
     },
-    { key: 'gateway_name', label: '网关名称', type: 'text' }
+    {
+      key: 'gateway_name',
+      label: '网关名称',
+      type: 'text',
+      action: {
+        type: 'page',
+        page: 'device_detail',
+        params(data) {
+          return { id: data.gateway_id }
+        }
+      }
+    },
+    { key: 'disabled', label: '禁用', type: 'boolean' },
+    { key: 'updated', label: '更新时间', type: 'date' },
+    { key: 'created', label: '创建时间', type: 'date' }
   ],
   search_api: 'table/inline/search',
   // 页面挂载时执行

@@ -1,6 +1,15 @@
 {
   "name": "user_log",
   "comment": "用户日志",
+  "joins": [
+    {
+      "table": "user",
+      "local_field": "user_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "user_name"
+    }
+  ],
   "fields": [
     {
       "name": "id",

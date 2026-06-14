@@ -54,7 +54,8 @@ return {
     { key: 'parity', label: '检验位' },
     { key: 'rs485_gpio', label: '485GPIO' },
     { key: 'protocol', label: '协议' },
-    { key: 'disabled', label: '禁用', type: 'boolean' }
+    { key: 'disabled', label: '禁用', type: 'boolean' },
+    { key: 'gateway_name', label: '网关名称' }
   ],
   load_api: 'table/serial/detail/:id/:gateway_id',
   tabs: [

@@ -37,6 +37,7 @@ return {
   ],
   keywords: ['name', 'description', 'author'],
   fields: [
+    { key: 'image', label: '图片', type: 'avatar' },
     { key: 'name', label: '名称', type: 'text' },
     { key: 'description', label: '说明', type: 'text' },
     { key: 'version', label: '版本', type: 'text' },

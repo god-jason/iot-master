@@ -67,10 +67,22 @@ return {
     }
   ],
   fields: [
-    { key: 'user_id', label: '用户ID', sortable: true, type: 'text' },
-    { key: 'user', label: '用户名', sortable: true, type: 'text' },
-    { key: 'role', label: '权限', type: 'text' },
-    { key: 'created', label: '日期', type: 'date', sortable: true }
+    {
+      key: 'user_name',
+      label: '用户名',
+      sortable: true,
+      type: 'text',
+      action: {
+        type: 'page',
+        page: 'user_detail',
+        params(data) {
+          return { id: data.user_id }
+        }
+      }
+    },
+    { key: 'group_name', label: '组织名称', type: 'text' },
+    { key: 'disabled', label: '禁用', type: 'boolean' },
+    { key: 'created', label: '创建时间', type: 'date', sortable: true }
   ],
   search_api: 'table/member/search',
   // 页面挂载时执行

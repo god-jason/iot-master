@@ -132,8 +132,8 @@ return {
     { key: 'port', label: '端口', type: 'text' },
     { key: 'protocol', label: '协议', type: 'text' },
     { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'created', label: '日期', type: 'date' },
-    { key: 'gateway_name', label: '网关名称', type: 'text' }
+    { key: 'gateway_name', label: '网关名称', type: 'text', action: { type: 'page', page: 'device_detail', params(data) { return { id: data.gateway_id } } } },
+    { key: 'created', label: '创建时间', type: 'date' }
   ],
   search_api: 'table/socket/search',
   // 页面挂载时执行

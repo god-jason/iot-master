@@ -7,14 +7,14 @@
       "local_field": "user_id",
       "foreign_field": "id",
       "field": "name",
-      "as": "user"
+      "as": "user_name"
     },
     {
       "table": "group",
       "local_field": "group_id",
       "foreign_field": "id",
       "field": "name",
-      "as": "group"
+      "as": "group_name"
     }
   ],
   "fields": [

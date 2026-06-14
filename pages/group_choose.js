@@ -40,9 +40,12 @@ return {
   ],
   fields: [
     { key: 'id', label: 'ID', sortable: true, type: 'text' },
-    { key: 'user_id', label: '管理员ID', sortable: true, type: 'text' },
-    { key: 'user', label: '管理员', type: 'text' },
     { key: 'name', label: '名称', sortable: true, type: 'text' },
+    { key: 'user_name', label: '管理员', type: 'text' },
+    { key: 'agent_name', label: '经销商', type: 'text' },
+    { key: 'cellphone1', label: '电话1', type: 'text' },
+    { key: 'cellphone2', label: '电话2', type: 'text' },
+    { key: 'cellphone3', label: '电话3', type: 'text' },
     { key: 'disabled', label: '禁用', type: 'boolean' },
     { key: 'created', label: '日期', type: 'date', sortable: true }
   ],

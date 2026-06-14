@@ -48,6 +48,7 @@ return {
         }
       }
     },
+    { key: 'product_name', label: '产品名称' },
     {
       key: 'gateway_id',
       label: '网关ID',
@@ -59,6 +60,7 @@ return {
         }
       }
     },
+    { key: 'gateway_name', label: '网关名称' },
     { key: 'link_id', label: '连接ID', type: 'text' },
     { key: 'online', label: '在线', type: 'boolean' },
     { key: 'error_string', label: '错误' },

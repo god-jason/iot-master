@@ -191,23 +191,17 @@ return {
     },
     { key: 'name', label: '名称', sortable: true, type: 'text' },
     { key: 'description', label: '说明', type: 'text' },
+    { key: 'product_name', label: '产品名称', type: 'text', action: { type: 'page', page: 'product_detail', params(data) { return { id: data.product_id } } } },
+    { key: 'group_name', label: '组织名称', type: 'text' },
+    { key: 'gateway_name', label: '网关名称', type: 'text', action: { type: 'page', page: 'device_detail', params(data) { return { id: data.gateway_id } } } },
     { key: 'online', label: '在线', type: 'boolean', sortable: true },
     { key: 'error_string', label: '错误', type: 'text' },
+    { key: 'location', label: '位置', type: 'text' },
+    { key: 'longitude', label: '经度', type: 'text' },
+    { key: 'latitude', label: '纬度', type: 'text' },
     { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'created', label: '日期', type: 'date', sortable: true },
-    {
-      key: 'product_name',
-      label: '产品名称',
-      type: 'text',
-      action: {
-        type: 'page',
-        page: 'product_detail',
-        params(data) {
-          return { id: data.product_id }
-        }
-      }
-    },
-    { key: 'group_name', label: '组织名称', type: 'text' }
+    { key: 'updated', label: '更新时间', type: 'date', sortable: true },
+    { key: 'created', label: '创建时间', type: 'date', sortable: true }
   ],
   search_api: 'table/device/search',
   // 页面挂载时执行

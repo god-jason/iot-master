@@ -49,6 +49,7 @@ return {
         }
       }
     },
+    { key: 'product_name', label: '产品名称' },
     { key: 'online', label: '在线', type: 'boolean' },
     { key: 'error_string', label: '错误' },
     { key: 'disabled', label: '禁用' }

@@ -51,7 +51,8 @@ return {
     { key: 'host', label: '主机' },
     { key: 'port', label: '端口' },
     { key: 'protocol', label: '协议' },
-    { key: 'disabled', label: '禁用', type: 'boolean' }
+    { key: 'disabled', label: '禁用', type: 'boolean' },
+    { key: 'gateway_name', label: '网关名称' }
   ],
   load_api: 'table/socket/detail/:id/:gateway_id',
   tabs: [

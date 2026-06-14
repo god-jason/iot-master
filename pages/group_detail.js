@@ -37,6 +37,7 @@ return {
   fields: [
     { key: 'id', label: 'ID' },
     { key: 'user_id', label: '管理员ID' },
+    { key: 'user', label: '管理员' },
     { key: 'name', label: '名称' }
   ],
   load_api: 'table/group/detail/:id',

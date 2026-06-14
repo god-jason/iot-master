@@ -42,8 +42,12 @@ return {
     { key: 'id', label: 'ID', sortable: true, type: 'text' },
     { key: 'name', label: '名称', sortable: true, type: 'text' },
     { key: 'description', label: '说明', type: 'text' },
+    { key: 'product_name', label: '产品名称', type: 'text' },
+    { key: 'group_name', label: '组织名称', type: 'text' },
+    { key: 'gateway_name', label: '网关名称', type: 'text' },
     { key: 'online', label: '在线', type: 'boolean', sortable: true },
     { key: 'error_string', label: '错误', type: 'text' },
+    { key: 'location', label: '位置', type: 'text' },
     { key: 'disabled', label: '禁用', type: 'boolean' },
     { key: 'created', label: '日期', type: 'date', sortable: true }
   ],

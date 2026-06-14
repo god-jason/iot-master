@@ -83,12 +83,8 @@ return {
   batch: true,
   fields: [
     { key: 'id', label: 'ID', sortable: true, sort: -1, type: 'text' },
-    { key: 'name', label: '名称', sortable: true, type: 'text' },
-    { key: 'description', label: '说明', type: 'text' },
-    { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'created', label: '日期', type: 'date', sortable: true },
     {
-      key: 'product_name',
+      key: 'product',
       label: '产品名称',
       type: 'text',
       action: {
@@ -98,7 +94,13 @@ return {
           return { id: data.product_id }
         }
       }
-    }
+    },
+    { key: 'name', label: '名称', sortable: true, type: 'text' },
+    { key: 'description', label: '说明', type: 'text' },
+    { key: 'url', label: '固件', type: 'text' },
+    { key: 'disabled', label: '禁用', type: 'boolean' },
+    { key: 'updated', label: '更新时间', type: 'date', sortable: true },
+    { key: 'created', label: '创建时间', type: 'date', sortable: true }
   ],
   search_api: 'table/version/search',
   // 页面挂载时执行
