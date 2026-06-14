@@ -17,11 +17,15 @@ return {
         page: 'product_choose',
         after_close(result, data, index) {
           this.editor.patchValue({ product_id: result.id })
+          this.content.fields[3].tips = result.name
         }
       }
     },
     { key: 'disabled', label: '禁用', type: 'switch' }
   ],
   load_api: 'table/version/detail/:id',
-  submit_api: 'table/version/update/:id'
+  submit_api: 'table/version/update/:id',
+  load_success() {
+    this.content.fields[3].tips = this.data.product_name
+  }
 }

@@ -17,6 +17,7 @@ return {
         page: 'group_choose',
         after_close(result, data, index) {
           this.editor.patchValue({ group_id: result.id })
+          this.content.fields[3].tips = result.name
         }
       }
     },
@@ -30,6 +31,7 @@ return {
         page: 'product_choose',
         after_close(result, data, index) {
           this.editor.patchValue({ product_id: result.id })
+          this.content.fields[4].tips = result.name
         }
       }
     },
@@ -43,6 +45,7 @@ return {
         page: 'device_choose',
         after_close(result, data, index) {
           this.editor.patchValue({ gateway_id: result.id })
+          this.content.fields[5].tips = result.name
         }
       }
     },
@@ -54,6 +57,11 @@ return {
   // 页面挂载时执行
   mount() {
     this.get_extend_fields()
+  },
+  load_success() {
+    this.content.fields[3].tips = this.data.group_name
+    this.content.fields[4].tips = this.data.product_name
+    this.content.fields[5].tips = this.data.gateway_name
   },
   methods: {
     get_extend_fields() {

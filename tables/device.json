@@ -6,8 +6,8 @@
       "table": "product",
       "local_field": "product_id",
       "foreign_field": "id",
-      "field": "image",
-      "as": "product_image"
+      "field": "name",
+      "as": "product_name"
     },
     {
       "table": "product",
@@ -15,6 +15,20 @@
       "foreign_field": "id",
       "field": "image",
       "as": "product_image"
+    },
+    {
+      "table": "device",
+      "local_field": "gateway_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "gateway_name"
+    },
+    {
+      "table": "group",
+      "local_field": "group_id",
+      "foreign_field": "id",
+      "field": "name",
+      "as": "group_name"
     }
   ],
   "fields": [
@@ -28,6 +42,13 @@
     {
       "name": "tenant_id",
       "comment": "租户ID",
+      "type": "string",
+      "length": 50,
+      "indexed": true
+    },
+    {
+      "name": "group_id",
+      "comment": "组织ID",
       "type": "string",
       "length": 50,
       "indexed": true

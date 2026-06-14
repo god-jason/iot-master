@@ -17,6 +17,7 @@ return {
         page: 'group_choose',
         after_close(result, data, index) {
           this.editor.patchValue({ group_id: result.id })
+          this.content.fields[3].tips = result.name
         }
       }
     },
@@ -30,6 +31,7 @@ return {
         page: 'product_choose',
         after_close(result, data, index) {
           this.editor.patchValue({ product_id: result.id })
+          this.content.fields[4].tips = result.name
         }
       },
       change_action: {
@@ -49,6 +51,7 @@ return {
         page: 'device_choose',
         after_close(result, data, index) {
           this.editor.patchValue({ gateway_id: result.id })
+          this.content.fields[5].tips = result.name
         }
       }
     },

@@ -18,6 +18,7 @@ return {
         page: 'product_choose',
         after_close(result, data, index) {
           this.editor.patchValue({ product_id: result.id })
+          this.content.fields[4].tips = result.name
         }
       }
     },
