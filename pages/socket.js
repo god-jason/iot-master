@@ -126,7 +126,7 @@ return {
       },
       type: 'text'
     },
-    { key: 'name', label: '名称', type: 'text' },
+    { key: 'name', label: '名称', type: 'text', action: { type: 'page', page: 'socket_detail', params(data) { return { id: data.id, gateway_id: data.gateway_id } } } },
     { key: 'adapter', label: '网卡', type: 'text' },
     { key: 'host', label: '主机', type: 'text' },
     { key: 'port', label: '端口', type: 'text' },

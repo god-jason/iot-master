@@ -56,6 +56,18 @@ func (t *Table) GroupJoin(body *ParamGroup) (rows []map[string]any, err error) {
 		columns = append(columns, expr)
 	}
 
+	// 添加 JOIN 表的字段
+	for i, join := range joins {
+		as := "t" + strconv.Itoa(i+1)
+		if join.Field != "" {
+			fieldExpr := as + "." + db.Engine().Quote(join.Field)
+			if join.As != "" {
+				fieldExpr += " AS " + db.Engine().Quote(join.As)
+			}
+			columns = append(columns, fieldExpr)
+		}
+	}
+
 	// 主表
 	bdr.Select(columns...).From(builder.As(db.Engine().Quote(t.Name), "t"))
 

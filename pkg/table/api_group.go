@@ -35,7 +35,7 @@ func ApiGroup(ctx *gin.Context) {
 		}
 	}
 
-	results, err := table.Group(&body)
+	results, err := table.GroupJoin(&body)
 	if err != nil {
 		Error(ctx, err)
 		return

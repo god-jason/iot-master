@@ -128,7 +128,7 @@ return {
       },
       type: 'text'
     },
-    { key: 'name', label: '名称', type: 'text' },
+    { key: 'name', label: '名称', type: 'text', action: { type: 'page', page: 'serial_detail', params(data) { return { id: data.id, gateway_id: data.gateway_id } } } },
     { key: 'port', label: '序号', type: 'text' },
     { key: 'baud_rate', label: '波特率', type: 'text' },
     { key: 'data_bits', label: '字长', type: 'text' },

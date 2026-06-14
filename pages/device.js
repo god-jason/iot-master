@@ -183,7 +183,7 @@ return {
         }
       }
     },
-    { key: 'name', label: '名称', sortable: true, type: 'text' },
+    { key: 'name', label: '名称', sortable: true, type: 'text', action: { type: 'page', page: 'device_detail', params(data) { return { id: data.id } } } },
     { key: 'description', label: '说明', type: 'text' },
     {
       key: 'product_name',

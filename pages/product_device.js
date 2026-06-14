@@ -109,7 +109,7 @@ return {
         }
       }
     },
-    { key: 'name', label: '名称' },
+    { key: 'name', label: '名称', action: { type: 'page', page: 'device_detail', params(data) { return { id: data.id } } } },
     { key: 'description', label: '说明' },
     { key: 'product_name', label: '产品名称', type: 'text', action: { type: 'page', page: 'product_detail', params(data) { return { id: data.product_id } } } },
     { key: 'group_name', label: '组织名称', type: 'text' },
