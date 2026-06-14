@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// ApiUpdate 更新数据
 func ApiUpdate(ctx *gin.Context) {
 	table, err := Get(ctx.Param("table"))
 	if err != nil {
@@ -23,7 +24,6 @@ func ApiUpdate(ctx *gin.Context) {
 
 	id := strings.TrimLeft(ctx.Param("id"), "/")
 
-	//多租户过滤
 	if viper.GetBool("tenant") {
 		tid := ctx.GetString("tenant")
 		if tid != "" {
@@ -45,6 +45,5 @@ func ApiUpdate(ctx *gin.Context) {
 		Error(ctx, err)
 		return
 	}
-
 	OK(ctx, cnt)
 }

@@ -5,10 +5,15 @@ import (
 	"errors"
 	"io"
 	"mime/multipart"
+	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
+// FormFiles 从请求中获取文件
 func FormFiles(ctx *gin.Context) (files []*multipart.FileHeader, err error) {
 	form, err := ctx.MultipartForm()
 	if err != nil {
@@ -20,6 +25,7 @@ func FormFiles(ctx *gin.Context) (files []*multipart.FileHeader, err error) {
 	return
 }
 
+// ApiImport 导入数据
 func ApiImport(ctx *gin.Context) {
 	table, err := Get(ctx.Param("table"))
 	if err != nil {
@@ -29,7 +35,6 @@ func ApiImport(ctx *gin.Context) {
 
 	var docs []Document
 
-	//支持文件上传
 	if ctx.ContentType() == "multipart/form-data" {
 		files, err := FormFiles(ctx)
 		if err != nil {
@@ -64,13 +69,11 @@ func ApiImport(ctx *gin.Context) {
 		}
 	}
 
-	//多租户默认
 	tid := ctx.GetString("tenant")
 	if tid != "" {
 		column := table.Column("tenant_id")
 		if column != nil {
 			for _, doc := range docs {
-				//只有未传值tenant_id时，才会赋值用户所在的tenant_id
 				if _, ok := doc["tenant_id"]; !ok {
 					doc["tenant_id"] = tid
 				}
@@ -79,16 +82,11 @@ func ApiImport(ctx *gin.Context) {
 	}
 
 	var errs []error
-
-	//依次写入
 	var ids []any
 	for _, doc := range docs {
 		id, err := table.Insert(doc)
 		if err != nil {
 			errs = append(errs, err)
-			//不阻碍其他导入
-			//Error(ctx, err)
-			//return
 		}
 		ids = append(ids, id)
 	}
@@ -97,6 +95,55 @@ func ApiImport(ctx *gin.Context) {
 		Error(ctx, errors.Join(errs...))
 		return
 	}
-
 	OK(ctx, ids)
+}
+
+// ApiExport 导出数据
+func ApiExport(ctx *gin.Context) {
+	table, err := Get(ctx.Param("table"))
+	if err != nil {
+		Error(ctx, err)
+		return
+	}
+
+	var body ParamSearch
+	err = ctx.ShouldBindJSON(&body)
+	if err != nil {
+		Error(ctx, err)
+		return
+	}
+
+	if viper.GetBool("tenant") {
+		tid := ctx.GetString("tenant")
+		if tid != "" {
+			column := table.Column("tenant_id")
+			if column != nil {
+				if body.Filter == nil {
+					body.Filter = make(map[string]any)
+				}
+				if _, ok := body.Filter["tenant_id"]; !ok {
+					body.Filter["tenant_id"] = tid
+				}
+			}
+		}
+	}
+
+	results, err := table.Find(&body)
+	if err != nil {
+		Error(ctx, err)
+		return
+	}
+
+	buf, err := json.Marshal(results)
+	if err != nil {
+		Error(ctx, err)
+		return
+	}
+
+	filename := table.Name + "-export-" + time.Now().Format("20060102150405") + ".json"
+	ctx.Status(http.StatusOK)
+	ctx.Header("Content-Type", "application/json")
+	ctx.Header("Content-Disposition", "attachment; filename="+filename)
+	ctx.Header("Content-Length", strconv.Itoa(len(buf)))
+	_, _ = ctx.Writer.Write(buf)
 }

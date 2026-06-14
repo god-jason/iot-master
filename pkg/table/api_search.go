@@ -5,39 +5,46 @@ import (
 	"github.com/spf13/viper"
 )
 
-func ApiCreate(ctx *gin.Context) {
+// ApiSearch 搜索列表
+func ApiSearch(ctx *gin.Context) {
 	table, err := Get(ctx.Param("table"))
 	if err != nil {
 		Error(ctx, err)
 		return
 	}
-
-	var doc Document
-	err = ctx.ShouldBindJSON(&doc)
+	var body ParamSearch
+	err = ctx.ShouldBindJSON(&body)
 	if err != nil {
 		Error(ctx, err)
 		return
 	}
 
-	//多租户创建数据，用默认租户id
 	if viper.GetBool("tenant") {
 		tid := ctx.GetString("tenant")
 		if tid != "" {
 			column := table.Column("tenant_id")
 			if column != nil {
-				//只有未传值tenant_id时，才会赋值用户所在的tenant_id
-				if _, ok := doc["tenant_id"]; !ok {
-					doc["tenant_id"] = tid
+				if body.Filter == nil {
+					body.Filter = make(map[string]any)
+				}
+				if _, ok := body.Filter["tenant_id"]; !ok {
+					body.Filter["tenant_id"] = tid
 				}
 			}
 		}
 	}
 
-	id, err := table.Insert(doc)
+	cnt, err := table.Count(body.Filter)
 	if err != nil {
 		Error(ctx, err)
 		return
 	}
 
-	OK(ctx, id)
+	results, err := table.Join(&body)
+	if err != nil {
+		Error(ctx, err)
+		return
+	}
+
+	List(ctx, results, cnt)
 }

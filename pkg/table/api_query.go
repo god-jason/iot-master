@@ -6,7 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ApiDetail(ctx *gin.Context) {
+// ApiQuery 根据ID查询单条数据
+func ApiQuery(ctx *gin.Context) {
 	table, err := Get(ctx.Param("table"))
 	if err != nil {
 		Error(ctx, err)
@@ -14,11 +15,10 @@ func ApiDetail(ctx *gin.Context) {
 	}
 
 	id := strings.TrimLeft(ctx.Param("id"), "/")
-	doc, err := table.Detail(id, nil)
+	doc, err := table.Get(id, nil)
 	if err != nil {
 		Error(ctx, err)
 		return
 	}
-
 	OK(ctx, doc)
 }

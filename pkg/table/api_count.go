@@ -2,10 +2,10 @@ package table
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/god-jason/iot-master/pkg/api"
 	"github.com/spf13/viper"
 )
 
+// ApiCount 统计数量
 func ApiCount(ctx *gin.Context) {
 	table, err := Get(ctx.Param("table"))
 	if err != nil {
@@ -16,11 +16,10 @@ func ApiCount(ctx *gin.Context) {
 	var body ParamSearch
 	err = ctx.ShouldBindJSON(&body)
 	if err != nil {
-		api.Error(ctx, err)
+		Error(ctx, err)
 		return
 	}
 
-	//多租户过滤
 	if viper.GetBool("tenant") {
 		tid := ctx.GetString("tenant")
 		if tid != "" {
@@ -29,7 +28,6 @@ func ApiCount(ctx *gin.Context) {
 				if body.Filter == nil {
 					body.Filter = make(map[string]any)
 				}
-				//只有未传值tenant_id时，才会赋值用户所在的tenant_id
 				if _, ok := body.Filter["tenant_id"]; !ok {
 					body.Filter["tenant_id"] = tid
 				}
@@ -42,6 +40,5 @@ func ApiCount(ctx *gin.Context) {
 		Error(ctx, err)
 		return
 	}
-
 	OK(ctx, ret)
 }
