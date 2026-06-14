@@ -37,8 +37,14 @@ return {
   fields: [
     { key: 'id', label: 'ID' },
     { key: 'user_id', label: '管理员ID' },
-    { key: 'user', label: '管理员' },
-    { key: 'name', label: '名称' }
+    { key: 'user_name', label: '管理员' },
+    { key: 'agent_id', label: '经销商ID' },
+    { key: 'agent_name', label: '经销商' },
+    { key: 'name', label: '名称' },
+    { key: 'cellphone1', label: '电话1' },
+    { key: 'cellphone2', label: '电话2' },
+    { key: 'cellphone3', label: '电话3' },
+    { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
   load_api: 'table/group/detail/:id',
   tabs: [

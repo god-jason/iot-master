@@ -110,9 +110,7 @@ return {
     { key: 'interval', label: '执行间隔(ms)', type: 'text' },
     { key: 'delay', label: '延迟执行(s)', type: 'text' },
     { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'gateway_name', label: '网关名称', type: 'text', action: { type: 'page', page: 'device_detail', params(data) { return { id: data.gateway_id } } } },
-    { key: 'updated', label: '更新时间', type: 'date' },
-    { key: 'created', label: '创建时间', type: 'date' }
+    { key: 'gateway_name', label: '网关名称', type: 'text', action: { type: 'page', page: 'device_detail', params(data) { return { id: data.gateway_id } } } }
   ],
   search_api: 'table/script/search',
   // 页面挂载时执行

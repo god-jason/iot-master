@@ -81,8 +81,7 @@ return {
       }
     },
     { key: 'group_name', label: '组织名称', type: 'text' },
-    { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'created', label: '创建时间', type: 'date', sortable: true }
+    { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
   search_api: 'table/member/search',
   // 页面挂载时执行

@@ -110,8 +110,7 @@ return {
     { key: 'type', label: '类型', type: 'text' },
     { key: 'version', label: '版本', type: 'text' },
     { key: 'protocol', label: '协议', sortable: true, type: 'text' },
-    { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'created', label: '日期', type: 'date', sortable: true }
+    { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
   search_api: 'table/product/search'
 }

@@ -38,6 +38,8 @@ return {
     { key: 'id', label: 'ID' },
     { key: 'name', label: '名称' },
     { key: 'description', label: '说明' },
+    { key: 'group_id', label: '组织ID' },
+    { key: 'group_name', label: '组织名称' },
     {
       key: 'product_id',
       label: '产品ID',
@@ -50,9 +52,15 @@ return {
       }
     },
     { key: 'product_name', label: '产品名称' },
+    { key: 'link_id', label: '连接ID', type: 'text' },
     { key: 'online', label: '在线', type: 'boolean' },
-    { key: 'error_string', label: '错误' },
-    { key: 'disabled', label: '禁用' }
+    { key: 'error', label: '错误状态', type: 'boolean' },
+    { key: 'error_string', label: '错误内容' },
+    { key: 'location', label: '详细位置' },
+    { key: 'longitude', label: '经度' },
+    { key: 'latitude', label: '纬度' },
+    { key: 'geo_code', label: 'GeoHash' },
+    { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
   load_api: 'table/device/detail/:id',
   tabs: [

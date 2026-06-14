@@ -46,6 +46,7 @@ return {
   ],
   fields: [
     { key: 'id', label: 'ID' },
+    { key: 'gateway_id', label: '网关ID' },
     { key: 'name', label: '名称' },
     { key: 'port', label: '序号' },
     { key: 'baud_rate', label: '波特率' },
@@ -54,8 +55,8 @@ return {
     { key: 'parity', label: '检验位' },
     { key: 'rs485_gpio', label: '485GPIO' },
     { key: 'protocol', label: '协议' },
-    { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'gateway_name', label: '网关名称' }
+    { key: 'protocol_options', label: '协议参数', type: 'json' },
+    { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
   load_api: 'table/serial/detail/:id/:gateway_id',
   tabs: [

@@ -109,7 +109,6 @@ return {
     { key: 'link1', label: '连接1', type: 'text' },
     { key: 'link2', label: '连接2', type: 'text' },
     { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'created', label: '日期', type: 'date' },
     { key: 'link1_name', label: '连接1名称', type: 'text' },
     { key: 'link2_name', label: '连接2名称', type: 'text' }
   ],

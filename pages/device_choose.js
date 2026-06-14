@@ -48,8 +48,7 @@ return {
     { key: 'online', label: '在线', type: 'boolean', sortable: true },
     { key: 'error_string', label: '错误', type: 'text' },
     { key: 'location', label: '位置', type: 'text' },
-    { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'created', label: '日期', type: 'date', sortable: true }
+    { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
   search_api: 'table/device/search'
 }

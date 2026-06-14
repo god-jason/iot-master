@@ -111,7 +111,6 @@ return {
     { key: 'forward', label: '右向', type: 'boolean' },
     { key: 'backward', label: '左向', type: 'boolean' },
     { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'created', label: '日期', type: 'date' },
     { key: 'device1_name', label: '设备1名称', type: 'text' },
     { key: 'device2_name', label: '设备2名称', type: 'text' }
   ],

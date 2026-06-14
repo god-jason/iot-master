@@ -95,8 +95,7 @@ return {
     { key: 'email', label: '邮箱', type: 'text' },
     { key: 'cellphone', label: '手机号', type: 'text' },
     { key: 'admin', label: '管理员', type: 'boolean', admin: true },
-    { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'created', label: '日期', type: 'date', sortable: true }
+    { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
   search_api: 'table/user/search'
 }

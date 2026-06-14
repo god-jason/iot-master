@@ -99,7 +99,6 @@ return {
     { key: 'description', label: '说明', type: 'text' },
     { key: 'url', label: '固件', type: 'text' },
     { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'updated', label: '更新时间', type: 'date', sortable: true },
     { key: 'created', label: '创建时间', type: 'date', sortable: true }
   ],
   search_api: 'table/version/search',

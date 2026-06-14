@@ -133,9 +133,7 @@ return {
         }
       }
     },
-    { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'updated', label: '更新时间', type: 'date' },
-    { key: 'created', label: '创建时间', type: 'date' }
+    { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
   search_api: 'table/inline/search',
   // 页面挂载时执行

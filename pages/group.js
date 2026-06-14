@@ -132,8 +132,7 @@ return {
     { key: 'cellphone1', label: '电话1', type: 'text' },
     { key: 'cellphone2', label: '电话2', type: 'text' },
     { key: 'cellphone3', label: '电话3', type: 'text' },
-    { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'created', label: '创建时间', type: 'date', sortable: true }
+    { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
   search_api: 'table/group/search'
 }

@@ -37,18 +37,8 @@ return {
     { key: 'id', label: 'ID' },
     { key: 'name', label: '名称' },
     { key: 'description', label: '说明' },
-    {
-      key: 'product_id',
-      label: '产品ID',
-      action: {
-        type: 'page',
-        page: 'product_detail',
-        params(data) {
-          return { id: data.product_id }
-        }
-      }
-    },
-    { key: 'product_name', label: '产品名称' },
+    { key: 'group_id', label: '组织ID' },
+    { key: 'group_name', label: '组织名称' },
     {
       key: 'gateway_id',
       label: '网关ID',
@@ -61,10 +51,28 @@ return {
       }
     },
     { key: 'gateway_name', label: '网关名称' },
+    {
+      key: 'product_id',
+      label: '产品ID',
+      action: {
+        type: 'page',
+        page: 'product_detail',
+        params(data) {
+          return { id: data.product_id }
+        }
+      }
+    },
+    { key: 'product_name', label: '产品名称' },
+    { key: 'product_image', label: '产品图片' , type: 'avatar'},
     { key: 'link_id', label: '连接ID', type: 'text' },
     { key: 'online', label: '在线', type: 'boolean' },
-    { key: 'error_string', label: '错误' },
-    { key: 'disabled', label: '禁用' }
+    { key: 'error', label: '错误状态', type: 'boolean' },
+    { key: 'error_string', label: '错误内容' },
+    { key: 'location', label: '详细位置' },
+    { key: 'longitude', label: '经度' },
+    { key: 'latitude', label: '纬度' },
+    { key: 'geo_code', label: 'GeoHash' },
+    { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
   load_api: 'table/device/detail/:id',
   load_success(data) {
