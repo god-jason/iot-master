@@ -91,6 +91,7 @@ return {
     }
   ],
   fields: [
+    { key: 'image', label: '图片', type: 'avatar' },
     {
       key: 'id',
       label: 'ID',

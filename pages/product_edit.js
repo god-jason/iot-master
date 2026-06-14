@@ -7,7 +7,7 @@ return {
     { key: 'name', label: '名称', type: 'text', required: true },
     { key: 'description', label: '说明', type: 'text' },
     { key: 'type', label: '类型', type: 'text' },
-    { key: 'image', label: '图片', type: 'file', url: "/api/upload"},
+    { key: 'image', label: '图片', type: 'file', upload: "/api/upload"},
     { key: 'version', label: '版本', type: 'text' },
     { key: 'protocol', label: '协议', type: 'select', options: [] },
     { key: 'gateway', label: '网关', type: 'switch' },
