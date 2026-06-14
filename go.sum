@@ -6,6 +6,7 @@ github.com/ArtisanCloud/PowerLibs/v3 v3.3.2 h1:IInr1YWwkhwOykxDqux1Goym0uFhrYwBj
 github.com/ArtisanCloud/PowerLibs/v3 v3.3.2/go.mod h1:xFGsskCnzAu+6rFEJbGVAlwhrwZPXAny6m7j71S/B5k=
 github.com/ArtisanCloud/PowerWeChat/v3 v3.4.39 h1:ezuPpg/DS5HfWsAjUsGChuAPfCxgv4vNJB9XVqmPAtE=
 github.com/ArtisanCloud/PowerWeChat/v3 v3.4.39/go.mod h1:vKdAi97A6qLYYwOTtFLZeFE1qnLECg77uPz/TxD/WeU=
+github.com/Icemap/coordinate v1.0.1/go.mod h1:eAieW0D6eSbf9b16QTQEhxURfnXw5fQLfIBX1zNYxgY=
 github.com/Masterminds/semver/v3 v3.2.1 h1:RN9w6+7QoMeJVGyfmbcgs28Br8cvmnucEXnY0rYXWg0=
 github.com/Masterminds/semver/v3 v3.2.1/go.mod h1:qvl/7zhW3nngYb5+80sSMF+FG2BjYrf8m9wsX0PNOMQ=
 github.com/PaesslerAG/gval v1.2.4 h1:rhX7MpjJlcxYwL2eTTYIOBUyEKZ+A96T9vQySWkVUiU=

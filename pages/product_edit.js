@@ -1,0 +1,38 @@
+// 编辑产品页面配置
+return {
+  title: '编辑产品',
+  icon: '/icons/box.svg',
+  template: 'edit',
+  fields: [
+    { key: 'name', label: '名称', type: 'text', required: true },
+    { key: 'description', label: '说明', type: 'text' },
+    { key: 'type', label: '类型', type: 'text' },
+    { key: 'version', label: '版本', type: 'text' },
+    { key: 'protocol', label: '协议', type: 'select', options: [] },
+    { key: 'gateway', label: '网关', type: 'switch' },
+    { key: 'smart', label: '智能', type: 'switch' },
+    { key: 'controllable', label: '远程控制', type: 'switch' },
+    { key: 'writable', label: '修改变量', type: 'switch' },
+    { key: 'programmable', label: '可编程', type: 'switch' },
+    { key: 'configurable', label: '可配置', type: 'switch' },
+    { key: 'ota', label: '远程升级', type: 'switch' },
+    { key: 'locatable', label: '支持定位', type: 'switch' },
+    { key: 'disabled', label: '禁用', type: 'switch' }
+  ],
+  load_api: 'table/product/detail/:id',
+  submit_api: 'table/product/update/:id',
+  // 页面挂载时执行
+  mount() {
+    this.load_protocols()
+  },
+  methods: {
+    load_protocols() {
+      this.request.get('protocol/list').subscribe(res => {
+        this.content.fields[4].options = res.data.map(d => {
+          return { value: d.name, label: d.description }
+        })
+        this.content.fields[4].options.unshift({ value: '', label: '无' })
+      })
+    }
+  }
+}

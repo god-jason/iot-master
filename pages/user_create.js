@@ -1,0 +1,17 @@
+// 创建用户页面配置
+return {
+  title: '创建用户',
+  icon: '/icons/user.svg',
+  template: 'edit',
+  fields: [
+    { key: 'id', label: 'ID', type: 'text', required: true },
+    { key: 'name', label: '名称', type: 'text', required: true },
+    { key: 'avatar', label: '头像', type: 'text' },
+    { key: 'email', label: '邮箱', type: 'text' },
+    { key: 'cellphone', label: '手机', type: 'text' },
+    { key: 'oem', label: 'OEM', type: 'text' },
+    { key: 'admin', label: '管理员', type: 'switch', admin: true },
+    { key: 'disabled', label: '禁用', type: 'switch' }
+  ],
+  submit_api: 'table/user/create'
+}

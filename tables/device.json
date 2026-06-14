@@ -11,8 +11,8 @@
     },
     {
       "table": "product",
-      "local_field": "id",
-      "foreign_field": "device_id",
+      "local_field": "product_id",
+      "foreign_field": "id",
       "field": "name",
       "as": "product_name"
     }

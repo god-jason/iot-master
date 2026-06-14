@@ -1,0 +1,42 @@
+// 操作页面配置
+return {
+  title: '操作',
+  toolbar: [],
+  items: [],
+  // 页面挂载时执行
+  mount() {
+    this.load_device()
+    this.btn_action = {
+      type: 'dialog',
+      page: 'device_action',
+      params_func: 'return {id:this.params.id, action:data}'
+    }
+  },
+  methods: {
+    load_device() {
+      this.request.get('table/device/detail/' + this.params.id).subscribe(res => {
+        if (res.error) return
+        this.load_model(res.data.product_id)
+      })
+    },
+    load_model(pid) {
+      this.request.get('product/' + pid + '/setting/action').subscribe(res => {
+        if (res.error) return
+        this.render_actions(res.data.content)
+      })
+    },
+    render_actions(data) {
+      this.content.toolbar = data.map(p => {
+        return {
+          type: 'button',
+          label: p.label || p.name,
+          action: {
+            type: 'dialog',
+            page: 'device_action',
+            params: { id: this.params.id, action: p.name, title: p.label, parameters: p.parameters }
+          }
+        }
+      })
+    }
+  }
+}

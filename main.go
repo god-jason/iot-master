@@ -10,8 +10,8 @@ import (
 	_ "github.com/god-jason/iot-master/apis"
 	"github.com/god-jason/iot-master/iot"
 	"github.com/god-jason/iot-master/pkg/boot"
-	"github.com/god-jason/iot-master/pkg/config"
 	_ "github.com/god-jason/iot-master/pkg/broker"
+	"github.com/god-jason/iot-master/pkg/config"
 	_ "github.com/god-jason/iot-master/pkg/debug"
 	"github.com/god-jason/iot-master/pkg/log"
 	"github.com/god-jason/iot-master/pkg/menu"
@@ -24,7 +24,6 @@ import (
 	"github.com/god-jason/iot-master/pkg/web"
 	_ "github.com/god-jason/iot-master/weixin"
 	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
 //go:embed www/browser

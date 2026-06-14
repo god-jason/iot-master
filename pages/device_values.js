@@ -1,0 +1,113 @@
+// 实时数据页面配置
+return {
+  title: '实时数据',
+  template: 'statistic',
+  toolbar: [
+    {
+      type: 'button',
+      label: '采集数据',
+      icon: 'reload',
+      action: {
+        type: 'script',
+        script(data, index) {
+          if (this.device.gateway_id) this.refresh_child_values()
+          else this.refresh_values()
+        }
+      }
+    },
+    {
+      type: 'button',
+      label: '修改数据',
+      icon: 'edit',
+      action: {
+        type: 'dialog',
+        page: 'device_values_setting',
+        params(data) {
+          return { id: this.params.id }
+        }
+      }
+    }
+  ],
+  items: [],
+  auto_refresh: 10,
+  load_api: 'device/:id/values',
+  load_success(data) {
+    this.render_values()
+  },
+  // 页面挂载时执行
+  mount() {
+    this.load_device()
+  },
+  methods: {
+    load_values() {
+      this.request.get('device/' + this.params.id + '/values').subscribe(res => {
+        if (res.error) return
+        this.data = res.data
+      })
+    },
+    load_values_delay(delay) {
+      setTimeout(() => this.load_values(), delay || 1000)
+    },
+    refresh_values() {
+      this.request.get('device/' + this.params.id + '/sync').subscribe(res => {
+        if (res.error) return
+        this.load_values_delay()
+      })
+    },
+    refresh_child_values() {
+      this.request.get('device/' + this.device.gateway_id + '/sync/' + this.params.id).subscribe(res => {
+        if (res.error) return
+        this.load_values_delay()
+      })
+    },
+    load_device() {
+      this.request.get('table/device/detail/' + this.params.id).subscribe(res => {
+        if (res.error) return
+        this.device = res.data
+        this.load_model(res.data.product_id)
+      })
+    },
+    load_model(pid) {
+      this.request.get('product/' + pid + '/setting/model').subscribe(res => {
+        if (res.error) return
+        if (res.data.content) this.render_properties(res.data.content)
+        setTimeout(() => this.render_values(), 100)
+      })
+    },
+    render_properties(properties) {
+      if (properties) {
+        properties.map(p => {
+          this.content.children.push({
+            span: 24,
+            content: {
+              title: p.name,
+              template: 'detail',
+              items: this.render_points(p.points)
+            }
+          })
+        })
+      }
+    },
+    render_points(points) {
+      if (!points) return []
+      return points.map(p => {
+        return {
+          key: p.name,
+          label: p.label,
+          suffix: p.unit,
+          action: {
+            type: 'dialog',
+            page: 'device_history',
+            params: { id: this.params.id, point: p.name }
+          }
+        }
+      })
+    },
+    render_values() {
+      this.pageComponent.children.map(p => {
+        p.componentRef.setInput('data', this.data || {})
+      })
+    }
+  },
+  children: []
+}
