@@ -29,10 +29,10 @@ return {
   methods: {
     load_protocols() {
       this.request.get('protocol/list').subscribe(res => {
-        this.content.fields[4].options = res.data.map(d => {
+        this.content.fields[5].options = res.data.map(d => {
           return { value: d.name, label: d.description }
         })
-        this.content.fields[4].options.unshift({ value: '', label: '无' })
+        this.content.fields[5].options.unshift({ value: '', label: '无' })
       })
     }
   }
