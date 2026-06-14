@@ -23,7 +23,11 @@ return {
         type: 'dialog',
         page: 'device_create',
         params(data) {
-          return { product_id: this.params.product_id, group_id: this.params.group_id, gateway_id: this.params.gateway_id }
+          return {
+            product_id: this.params.product_id,
+            group_id: this.params.group_id,
+            gateway_id: this.params.gateway_id
+          }
         },
         after_close(result, data, index) {
           this.load()
@@ -62,9 +66,11 @@ return {
       action: {
         type: 'script',
         script(data, index) {
-          this.table.selects.forEach(id => this.request.get('table/device/delete/' + id).subscribe(res => {
-            this.load()
-          }))
+          this.table.selects.forEach(id =>
+            this.request.get('table/device/delete/' + id).subscribe(res => {
+              this.load()
+            })
+          )
         }
       }
     },
@@ -72,11 +78,7 @@ return {
       key: 'online',
       type: 'select',
       label: '状态',
-      options: [
-        { label: '不过滤' },
-        { label: '在线', value: 1 },
-        { label: '离线', value: 0 }
-      ],
+      options: [{ label: '不过滤' }, { label: '在线', value: 1 }, { label: '离线', value: 0 }],
       change_action: {
         type: 'script',
         script(data, index) {
@@ -189,11 +191,45 @@ return {
         }
       }
     },
-    { key: 'name', label: '名称', sortable: true, type: 'text', action: { type: 'page', page: 'device_detail', params(data) { return { id: data.id } } } },
+    {
+      key: 'name',
+      label: '名称',
+      sortable: true,
+      type: 'text',
+      action: {
+        type: 'page',
+        page: 'device_detail',
+        params(data) {
+          return { id: data.id }
+        }
+      }
+    },
     { key: 'description', label: '说明', type: 'text' },
-    { key: 'product_name', label: '产品名称', type: 'text', action: { type: 'page', page: 'product_detail', params(data) { return { id: data.product_id } } } },
+    {
+      key: 'product_name',
+      label: '产品名称',
+      type: 'text',
+      action: {
+        type: 'page',
+        page: 'product_detail',
+        params(data) {
+          return { id: data.product_id }
+        }
+      }
+    },
     { key: 'group_name', label: '组织名称', type: 'text' },
-    { key: 'gateway_name', label: '网关名称', type: 'text', action: { type: 'page', page: 'device_detail', params(data) { return { id: data.gateway_id } } } },
+    {
+      key: 'gateway_name',
+      label: '网关名称',
+      type: 'text',
+      action: {
+        type: 'page',
+        page: 'device_detail',
+        params(data) {
+          return { id: data.gateway_id }
+        }
+      }
+    },
     { key: 'online', label: '在线', type: 'boolean', sortable: true },
     { key: 'error_string', label: '错误', type: 'text' },
     { key: 'location', label: '位置', type: 'text' },

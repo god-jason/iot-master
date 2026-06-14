@@ -27,7 +27,12 @@ return {
       action: {
         type: 'script',
         script(data, index) {
-          this.request.post('device/' + this.params.gateway_id + '/action/link', { operator: 'open', id: this.params.id }).subscribe(res => {})
+          this.request
+            .post('device/' + this.params.gateway_id + '/action/link', {
+              operator: 'open',
+              id: this.params.id
+            })
+            .subscribe(res => {})
         }
       }
     },
@@ -39,7 +44,12 @@ return {
       action: {
         type: 'script',
         script(data, index) {
-          this.request.post('device/' + this.params.gateway_id + '/action/link', { operator: 'close', id: this.params.id }).subscribe(res => {})
+          this.request
+            .post('device/' + this.params.gateway_id + '/action/link', {
+              operator: 'close',
+              id: this.params.id
+            })
+            .subscribe(res => {})
         }
       }
     }

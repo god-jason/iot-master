@@ -13,7 +13,8 @@ return {
         script(data, index) {
           this.load()
         }
-      }},
+      }
+    },
     { key: 'keyword', type: 'text', placeholder: '请输入关键字' },
     { key: 'range', type: 'daterange', placeholder: ['开始日期', '结束日期'] },
     {

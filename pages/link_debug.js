@@ -11,7 +11,12 @@ return {
       action: {
         type: 'script',
         script(data, index) {
-          this.request.post('device/' + this.params.gateway_id + '/action/link', { operator: 'debug', id: this.params.id }).subscribe(res => {})
+          this.request
+            .post('device/' + this.params.gateway_id + '/action/link', {
+              operator: 'debug',
+              id: this.params.id
+            })
+            .subscribe(res => {})
         }
       }
     },
@@ -22,7 +27,12 @@ return {
       action: {
         type: 'script',
         script(data, index) {
-          this.request.post('device/' + this.params.gateway_id + '/action/link', { operator: 'debug_stop', id: this.params.id }).subscribe(res => {})
+          this.request
+            .post('device/' + this.params.gateway_id + '/action/link', {
+              operator: 'debug_stop',
+              id: this.params.id
+            })
+            .subscribe(res => {})
         }
       }
     },
@@ -43,12 +53,14 @@ return {
       action: {
         type: 'script',
         script(data, index) {
-          this.request.post('device/' + this.params.gateway_id + '/action/link', {
-            operator: 'write',
-            id: this.params.id,
-            type: this.toolbar.value.type,
-            content: this.toolbar.value.content
-          }).subscribe(res => {})
+          this.request
+            .post('device/' + this.params.gateway_id + '/action/link', {
+              operator: 'write',
+              id: this.params.id,
+              type: this.toolbar.value.type,
+              content: this.toolbar.value.content
+            })
+            .subscribe(res => {})
         }
       }
     }
@@ -67,7 +79,9 @@ return {
             this.insert('[' + data.length + '] ' + this.toHex(data) + ' (' + data.toString() + ')')
           },
           toHex(data) {
-            return Array.from(data).map(b => b.toString(16).padStart(2, '0')).join(' ')
+            return Array.from(data)
+              .map(b => b.toString(16).padStart(2, '0'))
+              .join(' ')
           }
         }
       }
@@ -85,7 +99,9 @@ return {
             this.insert('[' + data.length + '] ' + this.toHex(data) + ' (' + data.toString() + ')')
           },
           toHex(data) {
-            return Array.from(data).map(b => b.toString(16).padStart(2, '0')).join(' ')
+            return Array.from(data)
+              .map(b => b.toString(16).padStart(2, '0'))
+              .join(' ')
           }
         }
       }

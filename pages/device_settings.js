@@ -15,13 +15,15 @@ return {
         action: {
           type: 'script',
           script(data, index) {
-            this.request.post('device/' + this.params.id + '/action/settings', {
-              operator: 'read',
-              name: this.params.name
-            }).subscribe(res => {
-              if (res.error) return
-              this.data = res.data
-            })
+            this.request
+              .post('device/' + this.params.id + '/action/settings', {
+                operator: 'read',
+                name: this.params.name
+              })
+              .subscribe(res => {
+                if (res.error) return
+                this.data = res.data
+              })
           }
         }
       }

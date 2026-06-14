@@ -63,7 +63,7 @@ return {
       }
     },
     { key: 'product_name', label: '产品名称' },
-    { key: 'product_image', label: '产品图片' , type: 'avatar'},
+    { key: 'product_image', label: '产品图片', type: 'avatar' },
     { key: 'link_id', label: '连接ID', type: 'text' },
     { key: 'online', label: '在线', type: 'boolean' },
     { key: 'error', label: '错误状态', type: 'boolean' },
@@ -96,22 +96,46 @@ return {
       if (data.locatable) this.add_locate_tabs()
     },
     add_gateway_tabs() {
-      this.content.tabs.push({ title: '网关', page: 'device_gateway', params: { id: this.params.id } })
+      this.content.tabs.push({
+        title: '网关',
+        page: 'device_gateway',
+        params: { id: this.params.id }
+      })
     },
     add_smart_tabs() {
-      this.content.tabs.push({ title: '智能', page: 'device_smart', params: { id: this.params.id } })
+      this.content.tabs.push({
+        title: '智能',
+        page: 'device_smart',
+        params: { id: this.params.id }
+      })
     },
     add_program_tabs() {
-      this.content.tabs.push({ title: '编程', page: 'device_program', params: { id: this.params.id } })
+      this.content.tabs.push({
+        title: '编程',
+        page: 'device_program',
+        params: { id: this.params.id }
+      })
     },
     add_parameter_tabs() {
-      this.content.tabs.push({ title: '修改', page: 'device_parameters', params: { id: this.params.id, product_id: this.product.id } })
+      this.content.tabs.push({
+        title: '修改',
+        page: 'device_parameters',
+        params: { id: this.params.id, product_id: this.product.id }
+      })
     },
     add_settings_tabs() {
-      this.content.tabs.push({ title: '配置', page: 'device_settings', params: { id: this.params.id, product_id: this.product.id } })
+      this.content.tabs.push({
+        title: '配置',
+        page: 'device_settings',
+        params: { id: this.params.id, product_id: this.product.id }
+      })
     },
     add_locate_tabs() {
-      this.content.tabs.push({ title: '定位', page: 'device_track', params: { id: this.params.id } })
+      this.content.tabs.push({
+        title: '定位',
+        page: 'device_track',
+        params: { id: this.params.id }
+      })
     }
   },
   tabs: [

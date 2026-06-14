@@ -24,12 +24,18 @@ return {
         page: 'user_choose',
         after_close(result, data, index) {
           if (result) {
-            this.request.post('table/member/create', { group_id: this.params.group_id, user_id: result.id }).subscribe(res => {
-              this.load()
-            })
+            this.request
+              .post('table/member/create', {
+                group_id: this.params.group_id,
+                user_id: result.id
+              })
+              .subscribe(res => {
+                this.load()
+              })
           }
         }
-      }},
+      }
+    },
     { key: 'keyword', type: 'text', placeholder: '请输入关键字' },
     { key: 'range', type: 'daterange', placeholder: ['开始日期', '结束日期'] },
     {

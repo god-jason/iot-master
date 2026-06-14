@@ -11,9 +11,14 @@ return {
   },
   methods: {
     load_devices() {
-      this.request.post('table/device/search', { limit: 999999, fields: ['id', 'longitude', 'latitude', 'online', 'name'] }).subscribe(res => {
-        this.render_devices(res.data)
-      })
+      this.request
+        .post('table/device/search', {
+          limit: 999999,
+          fields: ['id', 'longitude', 'latitude', 'online', 'name']
+        })
+        .subscribe(res => {
+          this.render_devices(res.data)
+        })
     },
     render_devices(devices) {
       this.addClusters(devices)
@@ -85,7 +90,11 @@ return {
                   title: '报警日志',
                   template: 'list',
                   style: { margin: '5px' },
-                  bodyStyle: { color: 'white', 'background-color': 'black', padding: 0 }
+                  bodyStyle: {
+                    color: 'white',
+                    'background-color': 'black',
+                    padding: 0
+                  }
                 }
               }
             ]

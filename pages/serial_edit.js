@@ -4,8 +4,21 @@ return {
   icon: '/icons/serial.svg',
   template: 'edit',
   fields: [
-    { key: 'id', label: 'ID', type: 'text', placeholder: '默认随机ID', disabled: true, admin: true },
-    { key: 'gateway_id', label: '网关ID', type: 'text', disabled: true, admin: true },
+    {
+      key: 'id',
+      label: 'ID',
+      type: 'text',
+      placeholder: '默认随机ID',
+      disabled: true,
+      admin: true
+    },
+    {
+      key: 'gateway_id',
+      label: '网关ID',
+      type: 'text',
+      disabled: true,
+      admin: true
+    },
     { key: 'name', label: '名称', type: 'text' },
     { key: 'port', label: '序号', type: 'number', default: 1 },
     {

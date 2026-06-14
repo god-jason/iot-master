@@ -109,11 +109,43 @@ return {
         }
       }
     },
-    { key: 'name', label: '名称', action: { type: 'page', page: 'device_detail', params(data) { return { id: data.id } } } },
+    {
+      key: 'name',
+      label: '名称',
+      action: {
+        type: 'page',
+        page: 'device_detail',
+        params(data) {
+          return { id: data.id }
+        }
+      }
+    },
     { key: 'description', label: '说明' },
-    { key: 'product_name', label: '产品名称', type: 'text', action: { type: 'page', page: 'product_detail', params(data) { return { id: data.product_id } } } },
+    {
+      key: 'product_name',
+      label: '产品名称',
+      type: 'text',
+      action: {
+        type: 'page',
+        page: 'product_detail',
+        params(data) {
+          return { id: data.product_id }
+        }
+      }
+    },
     { key: 'group_name', label: '组织名称', type: 'text' },
-    { key: 'gateway_name', label: '网关名称', type: 'text', action: { type: 'page', page: 'device_detail', params(data) { return { id: data.gateway_id } } } },
+    {
+      key: 'gateway_name',
+      label: '网关名称',
+      type: 'text',
+      action: {
+        type: 'page',
+        page: 'device_detail',
+        params(data) {
+          return { id: data.gateway_id }
+        }
+      }
+    },
     { key: 'online', label: '在线', type: 'boolean' },
     { key: 'error_string', label: '错误' },
     { key: 'location', label: '位置', type: 'text' },

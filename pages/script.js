@@ -51,7 +51,8 @@ return {
         script(data, index) {
           this.request.get('device/' + this.params.gateway_id + '/download/script').subscribe(res => {})
         }
-      }},
+      }
+    },
     { key: 'keyword', type: 'text', placeholder: '请输入关键字' },
     { key: 'range', type: 'daterange', placeholder: ['开始日期', '结束日期'] },
     {
@@ -110,7 +111,18 @@ return {
     { key: 'interval', label: '执行间隔(ms)', type: 'text' },
     { key: 'delay', label: '延迟执行(s)', type: 'text' },
     { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'gateway_name', label: '网关名称', type: 'text', action: { type: 'page', page: 'device_detail', params(data) { return { id: data.gateway_id } } } }
+    {
+      key: 'gateway_name',
+      label: '网关名称',
+      type: 'text',
+      action: {
+        type: 'page',
+        page: 'device_detail',
+        params(data) {
+          return { id: data.gateway_id }
+        }
+      }
+    }
   ],
   search_api: 'table/script/search',
   // 页面挂载时执行
@@ -119,9 +131,14 @@ return {
   },
   methods: {
     from_gateway() {
-      this.request.post('device/' + this.params.gateway_id + '/action/database', { operator: 'find', database: 'script' }).subscribe(res => {
-        this.on_gatway_data(res.data)
-      })
+      this.request
+        .post('device/' + this.params.gateway_id + '/action/database', {
+          operator: 'find',
+          database: 'script'
+        })
+        .subscribe(res => {
+          this.on_gatway_data(res.data)
+        })
     },
     on_gatway_data(ds) {
       if (ds && ds.length) {
@@ -135,7 +152,7 @@ return {
       this.data = []
     },
     insert_all() {
-      this.data.map(s => s.gateway_id = this.params.gateway_id)
+      this.data.map(s => (s.gateway_id = this.params.gateway_id))
       this.data.map(s => this.request.post('table/script/create', s).subscribe(() => {}))
     }
   }

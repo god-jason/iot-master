@@ -20,7 +20,7 @@ return {
       action: {
         type: 'script',
         script(data, index) {
-          this.import_json().then(data => this.editor.values = data)
+          this.import_json().then(data => (this.editor.values = data))
         }
       }
     }
@@ -239,7 +239,12 @@ return {
         },
         { key: 'delay', type: 'number', label: '延迟报警s', default: 60 },
         { key: 'reset', type: 'number', label: '报警重置s', default: 0 },
-        { key: 'reset_times', type: 'number', label: '报警重置次数', default: 0 },
+        {
+          key: 'reset_times',
+          type: 'number',
+          label: '报警重置次数',
+          default: 0
+        },
         { key: 'disabled', label: '禁用', type: 'switch' }
       ]
     },

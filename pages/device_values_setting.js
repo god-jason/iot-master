@@ -59,9 +59,13 @@ return {
       })
     },
     set_child_value(data) {
-      this.request.post('device/' + this.device.gateway_id + '/write/' + this.params.id, { [data.key]: data.value }).subscribe(res => {
-        if (res.error) return
-      })
+      this.request
+        .post('device/' + this.device.gateway_id + '/write/' + this.params.id, {
+          [data.key]: data.value
+        })
+        .subscribe(res => {
+          if (res.error) return
+        })
     }
   }
 }

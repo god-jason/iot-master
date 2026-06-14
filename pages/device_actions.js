@@ -33,7 +33,12 @@ return {
           action: {
             type: 'dialog',
             page: 'device_action',
-            params: { id: this.params.id, action: p.name, title: p.label, parameters: p.parameters }
+            params: {
+              id: this.params.id,
+              action: p.name,
+              title: p.label,
+              parameters: p.parameters
+            }
           }
         }
       })

@@ -51,7 +51,8 @@ return {
         script(data, index) {
           this.request.get('device/' + this.params.gateway_id + '/download/socket').subscribe(res => {})
         }
-      }},
+      }
+    },
     { key: 'keyword', type: 'text', placeholder: '请输入关键字' },
     { key: 'range', type: 'daterange', placeholder: ['开始日期', '结束日期'] },
     {
@@ -126,13 +127,35 @@ return {
       },
       type: 'text'
     },
-    { key: 'name', label: '名称', type: 'text', action: { type: 'page', page: 'socket_detail', params(data) { return { id: data.id, gateway_id: data.gateway_id } } } },
+    {
+      key: 'name',
+      label: '名称',
+      type: 'text',
+      action: {
+        type: 'page',
+        page: 'socket_detail',
+        params(data) {
+          return { id: data.id, gateway_id: data.gateway_id }
+        }
+      }
+    },
     { key: 'adapter', label: '网卡', type: 'text' },
     { key: 'host', label: '主机', type: 'text' },
     { key: 'port', label: '端口', type: 'text' },
     { key: 'protocol', label: '协议', type: 'text' },
     { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'gateway_name', label: '网关名称', type: 'text', action: { type: 'page', page: 'device_detail', params(data) { return { id: data.gateway_id } } } }
+    {
+      key: 'gateway_name',
+      label: '网关名称',
+      type: 'text',
+      action: {
+        type: 'page',
+        page: 'device_detail',
+        params(data) {
+          return { id: data.gateway_id }
+        }
+      }
+    }
   ],
   search_api: 'table/socket/search',
   // 页面挂载时执行
@@ -141,9 +164,14 @@ return {
   },
   methods: {
     load_device_sockets() {
-      this.request.post('device/' + this.params.gateway_id + '/action/database', { operator: 'find', database: 'socket' }).subscribe(res => {
-        this.on_action_sockets(res.data)
-      })
+      this.request
+        .post('device/' + this.params.gateway_id + '/action/database', {
+          operator: 'find',
+          database: 'socket'
+        })
+        .subscribe(res => {
+          this.on_action_sockets(res.data)
+        })
     },
     on_action_sockets(sockets) {
       if (sockets && sockets.length) {
@@ -157,7 +185,7 @@ return {
       this.data = []
     },
     insert_sockets() {
-      this.data.map(s => s.gateway_id = this.params.gateway_id)
+      this.data.map(s => (s.gateway_id = this.params.gateway_id))
       this.data.map(s => this.request.post('table/socket/create', s).subscribe(() => {}))
     }
   }

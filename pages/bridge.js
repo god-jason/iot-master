@@ -51,7 +51,8 @@ return {
         script(data, index) {
           this.request.get('device/' + this.params.gateway_id + '/download/bridge').subscribe(res => {})
         }
-      }},
+      }
+    },
     { key: 'keyword', type: 'text', placeholder: '请输入关键字' },
     { key: 'range', type: 'daterange', placeholder: ['开始日期', '结束日期'] },
     {
@@ -119,9 +120,14 @@ return {
   },
   methods: {
     from_gateway() {
-      this.request.post('device/' + this.params.gateway_id + '/action/database', { operator: 'find', database: 'bridge' }).subscribe(res => {
-        this.on_gateway_data(res.data)
-      })
+      this.request
+        .post('device/' + this.params.gateway_id + '/action/database', {
+          operator: 'find',
+          database: 'bridge'
+        })
+        .subscribe(res => {
+          this.on_gateway_data(res.data)
+        })
     },
     on_gateway_data(ds) {
       if (ds && ds.length) {
@@ -135,7 +141,7 @@ return {
       this.data = []
     },
     insert_all() {
-      this.data.map(s => s.gateway_id = this.params.gateway_id)
+      this.data.map(s => (s.gateway_id = this.params.gateway_id))
       this.data.map(s => this.request.post('table/bridge/create', s).subscribe(() => {}))
     }
   }

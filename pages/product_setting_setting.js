@@ -20,7 +20,7 @@ return {
       action: {
         type: 'script',
         script(data, index) {
-          this.import_json().then(data => this.editor.values = data)
+          this.import_json().then(data => (this.editor.values = data))
         }
       }
     }

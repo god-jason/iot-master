@@ -116,7 +116,18 @@ return {
     { key: 'weekdays', label: '日期', type: 'text' },
     { key: 'is_and', label: '并且条件', type: 'boolean' },
     { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'gateway_name', label: '网关名称', type: 'text', action: { type: 'page', page: 'device_detail', params(data) { return { id: data.gateway_id } } } }
+    {
+      key: 'gateway_name',
+      label: '网关名称',
+      type: 'text',
+      action: {
+        type: 'page',
+        page: 'device_detail',
+        params(data) {
+          return { id: data.gateway_id }
+        }
+      }
+    }
   ],
   search_api: 'table/scene/search',
   // 页面挂载时执行

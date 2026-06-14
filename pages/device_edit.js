@@ -7,9 +7,9 @@ return {
     { key: 'id', label: 'ID', type: 'text' },
     { key: 'name', label: '名称', type: 'text' },
     { key: 'description', label: '说明', type: 'text' },
-    { 
-      key: 'group_id', 
-      label: '组织ID', 
+    {
+      key: 'group_id',
+      label: '组织ID',
       type: 'text',
       link_text: '选择',
       link_action: {
@@ -21,9 +21,9 @@ return {
         }
       }
     },
-    { 
-      key: 'product_id', 
-      label: '产品ID', 
+    {
+      key: 'product_id',
+      label: '产品ID',
       type: 'text',
       link_text: '选择',
       link_action: {
@@ -35,9 +35,9 @@ return {
         }
       }
     },
-    { 
-      key: 'gateway_id', 
-      label: '网关ID', 
+    {
+      key: 'gateway_id',
+      label: '网关ID',
       type: 'text',
       link_text: '选择',
       link_action: {

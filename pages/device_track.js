@@ -12,11 +12,13 @@ return {
   },
   methods: {
     loadTrack() {
-      this.request.post('table/location/search', {
-        filter: { device_id: this.device_id },
-        limit: 1000,
-        sort: { created: -1 }
-      }).subscribe(res => this.render(res.data))
+      this.request
+        .post('table/location/search', {
+          filter: { device_id: this.device_id },
+          limit: 1000,
+          sort: { created: -1 }
+        })
+        .subscribe(res => this.render(res.data))
     }
   }
 }

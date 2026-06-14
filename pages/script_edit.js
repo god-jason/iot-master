@@ -7,7 +7,13 @@ return {
     { key: 'id', label: 'ID', type: 'text', placeholder: '默认随机ID' },
     { key: 'gateway_id', label: '网关ID', type: 'text' },
     { key: 'name', label: '名称', type: 'text' },
-    { key: 'content', label: '脚本', type: 'code', language: 'lua', theme: 'dark' },
+    {
+      key: 'content',
+      label: '脚本',
+      type: 'code',
+      language: 'lua',
+      theme: 'dark'
+    },
     { name: 'repeat', label: '重复执行', type: 'switch', default: 'false' },
     { name: 'interval', label: '执行间隔ms', type: 'number' },
     { name: 'delay', label: '延迟执行s', type: 'number' },

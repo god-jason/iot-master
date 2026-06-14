@@ -104,7 +104,19 @@ return {
       sortable: true,
       type: 'text'
     },
-    { key: 'name', label: '名称', sortable: true, type: 'text', action: { type: 'page', page: 'group_detail', params(data) { return { id: data.id } } } },
+    {
+      key: 'name',
+      label: '名称',
+      sortable: true,
+      type: 'text',
+      action: {
+        type: 'page',
+        page: 'group_detail',
+        params(data) {
+          return { id: data.id }
+        }
+      }
+    },
     {
       key: 'user_name',
       label: '管理员',

@@ -7,9 +7,9 @@ return {
     { key: 'name', label: '名称', type: 'text' },
     { key: 'description', label: '说明', type: 'text' },
     { key: 'url', label: '固件', type: 'file', upload: '/api/upload' },
-    { 
-      key: 'product_id', 
-      label: '产品ID', 
+    {
+      key: 'product_id',
+      label: '产品ID',
       type: 'text',
       link_text: '选择',
       link_action: {
