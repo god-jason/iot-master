@@ -1,7 +1,7 @@
 // 编辑脚本页面配置
 return {
   title: '编辑脚本',
-  icon: '/icons/code.svg',
+  icon: '/emoji/code.svg',
   template: 'edit',
   fields: [
     { key: 'id', label: 'ID', type: 'text', placeholder: '默认随机ID' },

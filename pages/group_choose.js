@@ -1,7 +1,7 @@
 // 选择组织页面配置
 return {
   title: '组织',
-  icon: '/icons/house.svg',
+  icon: '/emoji/house.svg',
   template: 'list',
   toolbar: [
     { key: 'keyword', type: 'text', placeholder: '请输入关键字' },

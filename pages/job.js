@@ -1,7 +1,7 @@
 // 定时任务页面配置
 return {
   title: '定时任务',
-  icon: '/icons/job.svg',
+  icon: '/emoji/job.svg',
   template: 'list',
   toolbar: [
     {

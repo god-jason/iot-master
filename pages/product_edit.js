@@ -12,8 +12,11 @@ return {
     { key: 'protocol', label: '协议', type: 'select', options: [], placeholder: '请选择协议' },
     { key: 'gateway', label: '网关', type: 'switch' },
     { key: 'smart', label: '智能', type: 'switch' },
+    { key: 'controllable', label: '远程控制', type: 'switch' },
+    { key: 'writable', label: '修改变量', type: 'switch' },
     { key: 'programmable', label: '可编程', type: 'switch' },
     { key: 'configurable', label: '可配置', type: 'switch' },
+    { key: 'ota', label: '远程升级', type: 'switch' },
     { key: 'locatable', label: '支持定位', type: 'switch' },
     { key: 'image', label: '图片', type: 'image', upload: '/api/upload' },
     { key: 'disabled', label: '禁用', type: 'switch' }

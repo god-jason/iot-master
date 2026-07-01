@@ -1,7 +1,7 @@
 // 用户选择页面配置
 return {
   title: '用户选择',
-  icon: '/icons/user.svg',
+  icon: '/emoji/user.svg',
   template: 'list',
   toolbar: [
     { key: 'keyword', type: 'text', placeholder: '请输入关键字' },
@@ -41,7 +41,10 @@ return {
   fields: [
     { key: 'id', label: 'ID', sortable: true, type: 'text' },
     { key: 'name', label: '名称', sortable: true, type: 'text' },
-    { key: 'email', label: '邮箱', type: 'text' }
+    { key: 'username', label: '登录名', type: 'text' },
+    { key: 'email', label: '邮箱', type: 'text' },
+    { key: 'cellphone', label: '手机号', type: 'text' },
+    { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
   search_api: 'table/user/search'
 }

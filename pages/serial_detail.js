@@ -1,7 +1,7 @@
 // 串口详情页面配置
 return {
   title: '串口详情',
-  icon: '/icons/serial.svg',
+  icon: '/emoji/serial.svg',
   template: 'detail',
   toolbar: [
     {

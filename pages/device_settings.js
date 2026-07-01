@@ -4,7 +4,7 @@ return {
   children: [],
   setting_content: {
     title: '配置项',
-    icon: '/icons/device.svg',
+    icon: '/emoji/device.svg',
     template: 'edit',
     load_api: 'device/:id/setting/:name',
     submit_api: 'device/:id/setting/:name',

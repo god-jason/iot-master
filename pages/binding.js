@@ -1,7 +1,7 @@
 // 数据绑定页面配置
 return {
   title: '数据绑定',
-  icon: '/icons/binding.svg',
+  icon: '/emoji/binding.svg',
   template: 'list',
   toolbar: [
     {
@@ -113,7 +113,19 @@ return {
     { key: 'backward', label: '左向', type: 'boolean' },
     { key: 'disabled', label: '禁用', type: 'boolean' },
     { key: 'device1_name', label: '设备1名称', type: 'text' },
-    { key: 'device2_name', label: '设备2名称', type: 'text' }
+    { key: 'device2_name', label: '设备2名称', type: 'text' },
+    {
+      key: 'gateway_name',
+      label: '网关名称',
+      type: 'text',
+      action: {
+        type: 'page',
+        page: 'device_detail',
+        params(data) {
+          return { id: data.gateway_id }
+        }
+      }
+    }
   ],
   search_api: 'table/binding/search',
   // 页面挂载时执行

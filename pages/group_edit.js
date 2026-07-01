@@ -1,7 +1,7 @@
 // 编辑组织页面配置
 return {
   title: '编辑组织',
-  icon: '/icons/house.svg',
+  icon: '/emoji/house.svg',
   template: 'edit',
   fields: [
     { key: 'user_id', label: '管理员ID', type: 'text' },

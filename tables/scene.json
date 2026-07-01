@@ -1,6 +1,16 @@
 {
   "name": "scene",
   "comment": "设备场景",
+  "joins": [
+    {
+      "table": "device",
+      "local": "gateway_id",
+      "foreign": "id",
+      "fields": {
+        "name": "gateway_name"
+      }
+    }
+  ],
   "fields": [
     {
       "name": "id",

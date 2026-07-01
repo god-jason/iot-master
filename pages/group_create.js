@@ -1,7 +1,7 @@
 // 创建组织页面配置
 return {
   title: '创建组织',
-  icon: '/icons/house.svg',
+  icon: '/emoji/house.svg',
   template: 'edit',
   fields: [
     { key: 'id', label: 'ID', type: 'text' },

@@ -1,7 +1,7 @@
 // 报警日志页面配置
 return {
   title: '报警日志',
-  icon: '/icons/alert.svg',
+  icon: '/emoji/alert.svg',
   template: 'list',
   toolbar: [
     {

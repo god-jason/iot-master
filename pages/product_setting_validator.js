@@ -1,7 +1,7 @@
 // 编辑产品数据检查页面配置
 return {
   title: '编辑产品数据检查',
-  icon: '/icons/box.svg',
+  icon: '/emoji/box.svg',
   template: 'edit',
   toolbar: [
     {

@@ -1,7 +1,7 @@
 // 创建用户页面配置
 return {
   title: '创建用户',
-  icon: '/icons/user.svg',
+  icon: '/emoji/user.svg',
   template: 'edit',
   fields: [
     { key: 'id', label: 'ID', type: 'text', required: true },

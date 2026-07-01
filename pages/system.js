@@ -21,7 +21,7 @@ return {
       content: {
         template: 'chart',
         title: 'CPU',
-        icon: '/icons/cpu.svg',
+        icon: '/emoji/cpu.svg',
         type: 'gauge',
         load_api: 'dash/cpu',
         auto_refresh: 5
@@ -58,7 +58,7 @@ return {
       content: {
         template: 'list',
         title: '网络使用',
-        icon: '/icons/net.svg',
+        icon: '/emoji/net.svg',
         fields: [
           { key: 'index', label: '索引', type: 'text' },
           { key: 'name', label: '名称', type: 'text' },

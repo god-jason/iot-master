@@ -1,7 +1,7 @@
 // 编辑产品物模型页面配置
 return {
   title: '编辑产品物模型',
-  icon: '/icons/box.svg',
+  icon: '/emoji/box.svg',
   template: 'edit',
   toolbar: [
     {

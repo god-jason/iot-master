@@ -1,7 +1,7 @@
 // 创建智能场景页面配置
 return {
   title: '创建智能场景',
-  icon: '/icons/scene.svg',
+  icon: '/emoji/scene.svg',
   template: 'edit',
   fields: [
     { key: 'id', label: 'ID', type: 'text', placeholder: '默认随机ID' },

@@ -1,7 +1,7 @@
 // 串口管理页面配置
 return {
   title: '串口管理',
-  icon: '/icons/serial.svg',
+  icon: '/emoji/serial.svg',
   template: 'list',
   toolbar: [
     {

@@ -1,7 +1,7 @@
 // 选择设备页面配置
 return {
   title: '设备',
-  icon: '/icons/device.svg',
+  icon: '/emoji/device.svg',
   template: 'list',
   toolbar: [
     { key: 'keyword', type: 'text', placeholder: '请输入关键字' },

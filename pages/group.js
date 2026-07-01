@@ -1,7 +1,7 @@
 // 组织管理页面配置
 return {
   title: '组织',
-  icon: '/icons/house.svg',
+  icon: '/emoji/house.svg',
   template: 'list',
   toolbar: [
     {

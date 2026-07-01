@@ -1,7 +1,7 @@
 // 脚本页面配置
 return {
   title: '脚本',
-  icon: '/icons/code.svg',
+  icon: '/emoji/code.svg',
   template: 'list',
   toolbar: [
     {

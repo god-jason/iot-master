@@ -1,6 +1,32 @@
 {
   "name": "binding",
   "comment": "设备绑定",
+  "joins": [
+    {
+      "table": "device",
+      "local": "gateway_id",
+      "foreign": "id",
+      "fields": {
+        "name": "gateway_name"
+      }
+    },
+    {
+      "table": "socket",
+      "local": "link1",
+      "foreign": "id",
+      "fields": {
+        "name": "link1_name"
+      }
+    },
+    {
+      "table": "socket",
+      "local": "link2",
+      "foreign": "id",
+      "fields": {
+        "name": "link2_name"
+      }
+    }
+  ],
   "fields": [
     {
       "name": "id",

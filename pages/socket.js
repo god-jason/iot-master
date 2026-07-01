@@ -1,7 +1,7 @@
 // 通道管理页面配置
 return {
   title: '通道管理',
-  icon: '/icons/antenna.svg',
+  icon: '/emoji/antenna.svg',
   template: 'list',
   toolbar: [
     {

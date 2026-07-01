@@ -1,7 +1,7 @@
 // 编辑内联设备页面配置
 return {
   title: '编辑内联设备',
-  icon: '/icons/inline.svg',
+  icon: '/emoji/inline.svg',
   template: 'edit',
   fields: [
     { key: 'id', label: 'ID', type: 'text' },

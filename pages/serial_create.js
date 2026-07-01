@@ -1,7 +1,7 @@
 // 创建串口页面配置
 return {
   title: '创建串口',
-  icon: '/icons/serial.svg',
+  icon: '/emoji/serial.svg',
   template: 'edit',
   fields: [
     { key: 'id', label: 'ID', type: 'text', placeholder: '默认随机ID' },

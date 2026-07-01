@@ -1,7 +1,7 @@
 // 编辑产品配置参数页面配置
 return {
   title: '编辑产品配置参数',
-  icon: '/icons/box.svg',
+  icon: '/emoji/box.svg',
   template: 'edit',
   toolbar: [
     {

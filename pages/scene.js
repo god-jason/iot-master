@@ -1,7 +1,7 @@
 // 智能场景页面配置
 return {
   title: '智能场景',
-  icon: '/icons/scene.svg',
+  icon: '/emoji/scene.svg',
   template: 'list',
   toolbar: [
     {

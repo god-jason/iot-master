@@ -1,7 +1,7 @@
 // 编辑通道页面配置
 return {
   title: '编辑通道',
-  icon: '/icons/antenna.svg',
+  icon: '/emoji/antenna.svg',
   template: 'edit',
   fields: [
     {

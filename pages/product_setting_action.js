@@ -1,7 +1,7 @@
 // 编辑产品动作响应页面配置
 return {
   title: '编辑产品动作响应',
-  icon: '/icons/box.svg',
+  icon: '/emoji/box.svg',
   template: 'edit',
   toolbar: [
     {

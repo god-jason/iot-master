@@ -1,7 +1,7 @@
 // 创建版本页面配置
 return {
   title: '创建版本',
-  icon: '/icons/version.svg',
+  icon: '/emoji/version.svg',
   template: 'edit',
   fields: [
     { key: 'id', label: 'ID', type: 'text', placeholder: '默认随机ID' },

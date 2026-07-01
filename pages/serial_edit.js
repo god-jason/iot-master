@@ -1,7 +1,7 @@
 // 编辑串口页面配置
 return {
   title: '编辑串口',
-  icon: '/icons/serial.svg',
+  icon: '/emoji/serial.svg',
   template: 'edit',
   fields: [
     {

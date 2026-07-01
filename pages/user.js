@@ -1,7 +1,7 @@
 // 用户管理页面配置
 return {
   title: '用户管理',
-  icon: '/icons/user.svg',
+  icon: '/emoji/user.svg',
   template: 'list',
   toolbar: [
     {
@@ -92,8 +92,10 @@ return {
   fields: [
     { key: 'id', label: 'ID', sortable: true, type: 'text' },
     { key: 'name', label: '名称', sortable: true, type: 'text' },
+    { key: 'username', label: '登录名', type: 'text' },
     { key: 'email', label: '邮箱', type: 'text' },
     { key: 'cellphone', label: '手机号', type: 'text' },
+    { key: 'oem', label: 'OEM', type: 'text' },
     { key: 'admin', label: '管理员', type: 'boolean', admin: true },
     { key: 'disabled', label: '禁用', type: 'boolean' }
   ],

@@ -1,7 +1,7 @@
 // 产品设备页面配置
 return {
   title: '产品设备',
-  icon: '/icons/box.svg',
+  icon: '/emoji/box.svg',
   template: 'list',
   toolbar: [
     {

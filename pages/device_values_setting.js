@@ -1,7 +1,7 @@
 // 设置属性页面配置
 return {
   title: '设置属性',
-  icon: '/icons/device.svg',
+  icon: '/emoji/device.svg',
   template: 'edit',
   fields: [
     {

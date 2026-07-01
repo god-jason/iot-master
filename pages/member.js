@@ -1,7 +1,7 @@
 // 组织用户页面配置
 return {
   title: '组织用户',
-  icon: '/icons/people.svg',
+  icon: '/emoji/people.svg',
   template: 'list',
   toolbar: [
     {

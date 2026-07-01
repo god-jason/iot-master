@@ -1,7 +1,7 @@
 // 创建连接桥接页面配置
 return {
   title: '创建连接桥接',
-  icon: '/icons/bridge.svg',
+  icon: '/emoji/bridge.svg',
   template: 'edit',
   fields: [
     { key: 'id', label: 'ID', type: 'text', placeholder: '默认随机ID' },

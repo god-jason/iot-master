@@ -1,7 +1,7 @@
 // 设备日志页面配置
 return {
   title: '设备日志',
-  icon: '/icons/log.svg',
+  icon: '/emoji/log.svg',
   template: 'list',
   toolbar: [
     {

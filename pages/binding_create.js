@@ -1,7 +1,7 @@
 // 创建数据绑定页面配置
 return {
   title: '创建数据绑定',
-  icon: '/icons/binding.svg',
+  icon: '/emoji/binding.svg',
   template: 'edit',
   fields: [
     { key: 'id', label: 'ID', type: 'text', placeholder: '默认随机ID' },

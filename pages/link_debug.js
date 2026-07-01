@@ -1,7 +1,7 @@
 // 串口调试页面配置
 return {
   title: '串口调试',
-  icon: '/icons/link.svg',
+  icon: '/emoji/network.svg',
   template: 'detail',
   toolbar: [
     {

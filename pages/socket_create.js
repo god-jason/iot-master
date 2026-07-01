@@ -1,7 +1,7 @@
 // 创建通道页面配置
 return {
   title: '创建通道',
-  icon: '/icons/antenna.svg',
+  icon: '/emoji/antenna.svg',
   template: 'edit',
   fields: [
     { key: 'id', label: 'ID', type: 'text', placeholder: '默认随机ID' },

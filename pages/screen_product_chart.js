@@ -2,7 +2,7 @@
 return {
   template: 'chart',
   title: '产品类型',
-  icon: '/icons/chart.svg',
+  icon: '/emoji/chart.svg',
   type: 'pie',
   theme: 'dark',
   legend: true,

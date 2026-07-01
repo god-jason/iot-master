@@ -68,7 +68,7 @@ return {
               {
                 content: {
                   title: '使用统计',
-                  icon: '/icons/chart.svg',
+                  icon: '/emoji/chart.svg',
                   template: 'chart',
                   style: { margin: '5px' },
                   type: 'bar',

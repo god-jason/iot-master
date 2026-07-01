@@ -1,7 +1,7 @@
 // 子设备页面配置
 return {
   title: '子设备',
-  icon: '/icons/device.svg',
+  icon: '/emoji/device.svg',
   template: 'list',
   toolbar: [
     {

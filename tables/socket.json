@@ -1,6 +1,16 @@
 {
   "name": "socket",
   "comment": "网络连接",
+  "joins": [
+    {
+      "table": "device",
+      "local": "gateway_id",
+      "foreign": "id",
+      "fields": {
+        "name": "gateway_name"
+      }
+    }
+  ],
   "fields": [
     {
       "name": "id",

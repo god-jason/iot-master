@@ -1,7 +1,7 @@
 // 执行动作页面配置
 return {
   title: '执行动作',
-  icon: '/icons/device.svg',
+  icon: '/emoji/device.svg',
   template: 'edit',
   fields: [],
   // 页面挂载时执行

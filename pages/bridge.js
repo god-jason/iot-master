@@ -1,7 +1,7 @@
 // 连接桥接页面配置
 return {
   title: '连接桥接',
-  icon: '/icons/bridge.svg',
+  icon: '/emoji/bridge.svg',
   template: 'list',
   toolbar: [
     {
@@ -111,7 +111,19 @@ return {
     { key: 'link2', label: '连接2', type: 'text' },
     { key: 'disabled', label: '禁用', type: 'boolean' },
     { key: 'link1_name', label: '连接1名称', type: 'text' },
-    { key: 'link2_name', label: '连接2名称', type: 'text' }
+    { key: 'link2_name', label: '连接2名称', type: 'text' },
+    {
+      key: 'gateway_name',
+      label: '网关名称',
+      type: 'text',
+      action: {
+        type: 'page',
+        page: 'device_detail',
+        params(data) {
+          return { id: data.gateway_id }
+        }
+      }
+    }
   ],
   search_api: 'table/bridge/search',
   // 页面挂载时执行

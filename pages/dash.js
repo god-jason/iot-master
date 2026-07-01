@@ -4,7 +4,7 @@ return {
     {
       content: {
         title: '使用统计',
-        icon: '/icons/chart.svg',
+        icon: '/emoji/chart.svg',
         template: 'statistic',
         fields: [
           { label: '在线设备数量', key: 'online' },

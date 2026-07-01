@@ -4,7 +4,7 @@ return {
   children: [],
   setting_content: {
     title: '变量',
-    icon: '/icons/device.svg',
+    icon: '/emoji/device.svg',
     template: 'edit',
     load_api: 'device/:id/values',
     submit_api: 'device/:id/write'

@@ -1,7 +1,7 @@
 // 用户日志页面配置
 return {
   title: '用户日志',
-  icon: '/icons/log.svg',
+  icon: '/emoji/log.svg',
   template: 'list',
   toolbar: [
     {
@@ -39,7 +39,18 @@ return {
   keywords: ['id', 'name', 'action'],
   fields: [
     { key: 'id', label: 'ID', sortable: true, sort: -1, type: 'text' },
-    { key: 'name', label: '名称', type: 'text' },
+    {
+      key: 'user_name',
+      label: '用户名称',
+      type: 'text',
+      action: {
+        type: 'page',
+        page: 'user_detail',
+        params(data) {
+          return { id: data.user_id }
+        }
+      }
+    },
     { key: 'action', label: '操作', type: 'text' },
     { key: 'client', label: '客户端', type: 'text' },
     { key: 'ip', label: 'IP', type: 'text' },

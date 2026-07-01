@@ -1,7 +1,7 @@
 // 通道详情页面配置
 return {
   title: '通道详情',
-  icon: '/icons/antenna.svg',
+  icon: '/emoji/antenna.svg',
   template: 'detail',
   toolbar: [
     {

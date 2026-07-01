@@ -1,7 +1,7 @@
 // 协议库页面配置
 return {
   title: '协议库',
-  icon: '/icons/net.svg',
+  icon: '/emoji/net.svg',
   template: 'list',
   toolbar: [
     {

@@ -1,7 +1,7 @@
 // 版本页面配置
 return {
   title: '版本',
-  icon: '/icons/version.svg',
+  icon: '/emoji/version.svg',
   template: 'list',
   toolbar: [
     {
@@ -84,7 +84,7 @@ return {
   fields: [
     { key: 'id', label: 'ID', sortable: true, sort: -1, type: 'text' },
     {
-      key: 'product',
+      key: 'product_name',
       label: '产品名称',
       type: 'text',
       action: {
@@ -98,8 +98,7 @@ return {
     { key: 'name', label: '名称', sortable: true, type: 'text' },
     { key: 'description', label: '说明', type: 'text' },
     { key: 'url', label: '固件', type: 'text' },
-    { key: 'disabled', label: '禁用', type: 'boolean' },
-    { key: 'created', label: '创建时间', type: 'date', sortable: true }
+    { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
   search_api: 'table/version/search',
   // 页面挂载时执行

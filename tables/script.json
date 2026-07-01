@@ -1,6 +1,16 @@
 {
   "name": "script",
   "comment": "脚本",
+  "joins": [
+    {
+      "table": "device",
+      "local": "gateway_id",
+      "foreign": "id",
+      "fields": {
+        "name": "gateway_name"
+      }
+    }
+  ],
   "fields": [
     {
       "name": "id",

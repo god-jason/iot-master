@@ -1,7 +1,7 @@
 // 编辑版本页面配置
 return {
   title: '编辑版本',
-  icon: '/icons/version.svg',
+  icon: '/emoji/version.svg',
   template: 'edit',
   fields: [
     { key: 'name', label: '名称', type: 'text' },

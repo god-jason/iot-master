@@ -1,7 +1,7 @@
 // 选择产品页面配置
 return {
   title: '产品',
-  icon: '/icons/box.svg',
+  icon: '/emoji/box.svg',
   template: 'list',
   toolbar: [
     { key: 'keyword', type: 'text', placeholder: '请输入关键字' },
@@ -41,7 +41,10 @@ return {
   fields: [
     { key: 'id', label: 'ID', sortable: true, type: 'text' },
     { key: 'name', label: '名称', sortable: true, type: 'text' },
-    { key: 'version', label: '版本', type: 'text' }
+    { key: 'type', label: '类型', type: 'text' },
+    { key: 'version', label: '版本', type: 'text' },
+    { key: 'protocol', label: '协议', type: 'text' },
+    { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
   search_api: 'table/product/search'
 }

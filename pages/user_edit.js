@@ -1,7 +1,7 @@
 // 编辑用户页面配置
 return {
   title: '编辑用户',
-  icon: '/icons/user.svg',
+  icon: '/emoji/user.svg',
   template: 'edit',
   fields: [
     { key: 'name', label: '名称', type: 'text', required: true },
