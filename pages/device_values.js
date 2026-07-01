@@ -1,7 +1,7 @@
 // 实时数据页面配置
 return {
   title: '实时数据',
-  template: 'statistic',
+  template: 'detail',
   toolbar: [
     {
       type: 'button',
@@ -81,8 +81,8 @@ return {
             span: 24,
             content: {
               title: p.name,
-              template: 'detail',
-              items: this.render_points(p.points)
+              template: 'statistic',
+              fields: this.render_points(p.points)
             }
           })
         })
