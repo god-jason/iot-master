@@ -43,8 +43,6 @@ import {SmartRangePicker} from '../smart-range-picker/smart-range-picker';
     NzSwitchComponent,
     NzCheckboxComponent,
     NzSliderComponent,
-    NzDatePickerComponent,
-    NzTimePickerComponent,
     NzInputGroupComponent,
     NzUploadComponent,
     NzAutocompleteTriggerDirective,

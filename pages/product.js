@@ -97,6 +97,7 @@ return {
     }
   ],
   fields: [
+    { key: 'image', label: '图片', type: 'avatar' },
     {
       key: 'id',
       label: 'ID',
@@ -124,11 +125,21 @@ return {
       }
     },
     { key: 'description', label: '说明', type: 'text' },
-    { key: 'type', label: '类型', type: 'text' },
+    { key: 'type', label: '类型', type: 'text', filter: [] },
     { key: 'version', label: '版本', type: 'text' },
-    { key: 'protocol', label: '协议', sortable: true, type: 'text' },
-    { key: 'disabled', label: '禁用', type: 'boolean' },
+    { key: 'protocol', label: '协议', sortable: true, type: 'text', filter: [] },
+    { key: 'disabled', label: '禁用', type: 'boolean', filter: [{ text: '全部', value: '' }, { text: '禁用', value: 1 }, { text: '正常', value: 0 }] },
     { key: 'created', label: '日期', type: 'date', sortable: true }
   ],
-  search_api: 'table/product/search'
+  search_api: 'table/product/search',
+  mount() {
+    this.request.get('protocol/list').subscribe(res => {
+      this.content.fields[6].filter = res.data?.map(d => ({ text: d.description, value: d.name })) || []
+    })
+
+    this.request.post('table/product/search', { limit: 999, fields: ['type'] }).subscribe(res => {
+      const types = [...new Set(res.data?.map(p => p.type).filter(Boolean))]
+      this.content.fields[4].filter = types.map(t => ({ text: t, value: t }))
+    })
+  }
 }

@@ -35,7 +35,7 @@ export class AdminComponent {
 
   oem: any = {
     name: '物联大师',
-    logo: '/boat.svg',
+    logo: '/logo.svg',
     company: '南京本易物联网有限公司',
   }
   version: any = {
@@ -101,6 +101,7 @@ export class AdminComponent {
       else
         //不显示管理员项
         this.menus = res.filter((m:any)=> {
+          if (m.items)
           m.items = m.items.filter((i:any)=>!i.admin)
           return !m.admin
         })

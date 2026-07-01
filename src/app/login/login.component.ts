@@ -22,8 +22,8 @@ import {NzButtonComponent} from 'ng-zorro-antd/button';
 export class LoginComponent {
 
   fields: SmartField[] = [
-    {key: 'username', type: 'text', label: '用户名', required: true},
-    {key: 'password', type: 'password', label: '密码', required: true},
+    {key: 'username', type: 'text', label: '用户名', span: 6},
+    {key: 'password', type: 'password', label: '密码', span: 6},
   ]
 
   @ViewChild("editor", {static: true}) editor!: SmartEditorComponent;

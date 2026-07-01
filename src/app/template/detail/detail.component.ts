@@ -1,9 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {SmartInfoComponent} from '../../lib/smart-info/smart-info.component';
-import {NzCardComponent} from 'ng-zorro-antd/card';
-import {NzButtonComponent} from 'ng-zorro-antd/button';
-import {NzSpinComponent} from 'ng-zorro-antd/spin';
-import {NzIconDirective} from 'ng-zorro-antd/icon';
+import {NzSkeletonComponent} from 'ng-zorro-antd/skeleton';
 import {SmartToolbarComponent} from '../../lib/smart-toolbar/smart-toolbar.component';
 
 import {TemplateBase} from '../template-base.component';
@@ -15,10 +12,7 @@ import {CommonModule} from '@angular/common';
   imports: [
     CommonModule,
     SmartInfoComponent,
-    NzCardComponent,
-    NzButtonComponent,
-    NzSpinComponent,
-    NzIconDirective,
+    NzSkeletonComponent,
     SmartToolbarComponent
 ],
   templateUrl: './detail.component.html',

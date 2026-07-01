@@ -18,7 +18,7 @@ return {
     { key: 'configurable', label: '可配置', type: 'switch' },
     { key: 'ota', label: '远程升级', type: 'switch' },
     { key: 'locatable', label: '支持定位', type: 'switch' },
-    { key: 'image', label: '图片', type: 'image', upload: '/api/upload' },
+    { key: 'image', label: '图片', type: 'file', upload: '/api/upload' },
     { key: 'disabled', label: '禁用', type: 'switch' }
   ],
   load_api: 'table/product/detail/:id',

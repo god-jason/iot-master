@@ -1,16 +1,14 @@
 import {Component, inject} from '@angular/core';
 import {TemplateBase} from '../template-base.component';
-import {NzCardComponent} from 'ng-zorro-antd/card';
 import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {NzIconDirective} from 'ng-zorro-antd/icon';
-import {NzSpinComponent} from 'ng-zorro-antd/spin';
+import {NzSkeletonComponent} from 'ng-zorro-antd/skeleton';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {NzNotificationService} from 'ng-zorro-antd/notification';
 import {NzResultStatusType} from 'ng-zorro-antd/result';
 import {ExportContent} from '../template';
 import {utils, writeFile} from 'xlsx';
 import {isFunction} from 'rxjs/internal/util/isFunction';
-import {NzUploadComponent} from 'ng-zorro-antd/upload';
 import {
   NzTableCellDirective,
   NzTableComponent,
@@ -18,7 +16,6 @@ import {
   NzTheadComponent,
   NzTrDirective
 } from 'ng-zorro-antd/table';
-import {NzSelectComponent} from 'ng-zorro-antd/select';
 import {NzStepComponent, NzStepsComponent} from 'ng-zorro-antd/steps';
 import {NzProgressComponent} from 'ng-zorro-antd/progress';
 import {NzCheckboxComponent} from 'ng-zorro-antd/checkbox';
@@ -29,17 +26,14 @@ import {CommonModule} from '@angular/common';
   selector: 'app-export',
   imports: [
     CommonModule,
-    NzUploadComponent,
     NzButtonComponent,
     NzTableCellDirective,
     NzTableComponent,
     NzTbodyComponent,
     NzTheadComponent,
     NzTrDirective,
-    NzCardComponent,
     NzIconDirective,
-    NzSpinComponent,
-    NzSelectComponent,
+    NzSkeletonComponent,
     NzCheckboxComponent,
     ReactiveFormsModule,
     NzStepsComponent,

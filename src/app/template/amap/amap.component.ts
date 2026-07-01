@@ -3,10 +3,7 @@ import { load as loadMap } from '@amap/amap-jsapi-loader';
 import convert from 'wzlcoordconvert';
 import { encodeBase32 } from 'geohashing';
 
-import { NzButtonComponent } from 'ng-zorro-antd/button';
-import { NzCardComponent } from 'ng-zorro-antd/card';
-import { NzIconDirective } from 'ng-zorro-antd/icon';
-import { NzSpinComponent } from 'ng-zorro-antd/spin';
+import {NzSkeletonComponent} from 'ng-zorro-antd/skeleton';
 import { SmartToolbarComponent } from '../../lib/smart-toolbar/smart-toolbar.component';
 import { TemplateBase } from '../template-base.component';
 import { AmapContent } from '../template';
@@ -18,10 +15,7 @@ import { isFunction } from 'rxjs/internal/util/isFunction';
   standalone: true,
   imports: [
     CommonModule,
-    NzButtonComponent,
-    NzCardComponent,
-    NzIconDirective,
-    NzSpinComponent,
+    NzSkeletonComponent,
     SmartToolbarComponent
   ],
   templateUrl: './amap.component.html',
@@ -82,7 +76,7 @@ export class AmapComponent extends TemplateBase implements OnDestroy {
     loadMap({
       key: content.key || 'eb6a831c04b6dfedda190d6254febb58',
       version: '2.0',
-      plugins: ['AMap.Icon', "AMap.Circle", 'AMap.CircleMarker', 'AMap.BezierCurve', 'AMap.Marker', 'AMap.MarkerCluster', 'AMap.MoveAnimation', 'AMap.Polygon', 'AMap.PolygonEditor', 'AMap.Geocoder', 'AMap.Geolocation'],
+      plugins: ['AMap.Icon', "AMap.Circle", 'AMap.CircleMarker', 'AMap.BezierCurve', 'AMap.Marker', 'AMap.MarkerCluster', 'AMap.MoveAnimation', 'AMap.Polygon', 'AMap.PolygonEditor', 'AMap.Geocoder', 'AMap.Geolocation', 'AMap.AutoComplete'],
       AMapUI: {
         version: '1.1',
         plugins: [],

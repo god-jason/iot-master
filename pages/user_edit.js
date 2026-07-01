@@ -5,7 +5,7 @@ return {
   template: 'edit',
   fields: [
     { key: 'name', label: '名称', type: 'text', required: true },
-    { key: 'avatar', label: '头像', type: 'text' },
+    { key: 'avatar', label: '头像', type: 'file', upload: '/api/upload' },
     { key: 'email', label: '邮箱', type: 'text' },
     { key: 'cellphone', label: '手机', type: 'text' },
     { key: 'oem', label: 'OEM', type: 'text' },

@@ -16,10 +16,7 @@ import {
 import {LabelLayout, UniversalTransition} from 'echarts/features';
 import {CanvasRenderer} from 'echarts/renderers';
 import {NgxEchartsDirective, provideEchartsCore} from 'ngx-echarts';
-import {NzButtonComponent} from 'ng-zorro-antd/button';
-import {NzCardComponent} from 'ng-zorro-antd/card';
-import {NzSpinComponent} from 'ng-zorro-antd/spin';
-import {NzIconDirective} from 'ng-zorro-antd/icon';
+import {NzSkeletonComponent} from 'ng-zorro-antd/skeleton';
 import {SmartToolbarComponent} from '../../lib/smart-toolbar/smart-toolbar.component';
 
 import {TemplateBase} from '../template-base.component';
@@ -49,10 +46,7 @@ echarts.use([
   imports: [
     CommonModule,
     NgxEchartsDirective,
-    NzButtonComponent,
-    NzCardComponent,
-    NzSpinComponent,
-    NzIconDirective,
+    NzSkeletonComponent,
     SmartToolbarComponent
 ],
   providers: [

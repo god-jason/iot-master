@@ -60,45 +60,45 @@
           <td [nzEllipsis]="item.ellipsis" [nzBreakWord]="item.break">
             @switch (item.type) {
               @case ("date") {
-                {{ data[item.key] | date: item.format || 'yyyy-MM-dd HH:mm:ss' }}
+                {{ data[item.key2 || item.key] | date: item.format || 'yyyy-MM-dd HH:mm:ss' }}
               }
               @case ("number") {
-                {{ data[item.key] | number: item.format || '1.0-2' }}
+                {{ data[item.key2 || item.key] | number: item.format || '1.0-2' }}
               }
               @case ("bytes") {
-                {{ data[item.key] | nzBytes }}
+                {{ data[item.key2 || item.key] | nzBytes }}
               }
               @case ("bool") {
-                {{ data[item.key] ? '是' : '否' }}
+                {{ data[item.key2 || item.key] ? '是' : '否' }}
               }
               @case ("boolean") {
-                {{ data[item.key] ? '是' : '否' }}
+                {{ data[item.key2 || item.key] ? '是' : '否' }}
               }
               @case ('progress') {
-                <nz-progress [nzPercent]="parseInt(data[item.key])"></nz-progress>
+                <nz-progress [nzPercent]="parseInt(data[item.key2 || item.key])"></nz-progress>
               }
               @case ('tags') {
-                @for (t of data[item.key]; track t) {
+                @for (t of data[item.key2 || item.key]; track t) {
                   <nz-tag>{{ t }}</nz-tag>
                 }
               }
               @case ("json") {
-                {{ data[item.key] | json }}
+                {{ data[item.key2 || item.key] | json }}
               }
               @case ("object") {
-                {{ data[item.key] | json }}
+                {{ data[item.key2 || item.key] | json }}
               }
               @case ("icon") {
-                <nz-avatar nzShape="square" nzIcon="file-image" [nzSrc]="data[item.key]"></nz-avatar>
+                <nz-avatar nzShape="square" nzIcon="file-image" [nzSrc]="data[item.key2 || item.key]"></nz-avatar>
               }
               @case ("avatar") {
-                <nz-avatar nzIcon="user" [nzSrc]="data[item.key]"></nz-avatar>
+                <nz-avatar nzIcon="user" [nzSrc]="data[item.key2 || item.key]"></nz-avatar>
               }
               @default {
                 @if (item.action) {
-                  <a (click)="action.emit({action:item.action, data:data, index: i})">{{ data[item.key] }}</a>
+                  <a (click)="action.emit({action:item.action, data:data, index: i})">{{ data[item.key2 || item.key] }}</a>
                 } @else {
-                  {{ data[item.key] }}
+                  {{ data[item.key2 || item.key] }}
                 }
               }
             }

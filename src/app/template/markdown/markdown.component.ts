@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {MarkdownComponent as md} from 'ngx-markdown';
-import {NzCardComponent} from 'ng-zorro-antd/card';
-import {NzSpinComponent} from 'ng-zorro-antd/spin';
+import {NzSkeletonComponent} from 'ng-zorro-antd/skeleton';
 import {TemplateBase} from '../template-base.component';
 import {CommonModule} from '@angular/common';
 
@@ -12,8 +11,7 @@ import {CommonModule} from '@angular/common';
   imports: [
     CommonModule,
     md,
-    NzCardComponent,
-    NzSpinComponent,
+    NzSkeletonComponent,
   ],
   templateUrl: './markdown.component.html',
   styleUrl: './markdown.component.scss',

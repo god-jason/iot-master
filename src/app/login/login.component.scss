@@ -5,10 +5,350 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background: #00152a;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0d1525 100%);
+  overflow: hidden;
+  position: relative;
 }
 
 .login {
-  width: 400px;
-  //box-shadow: #001529 5px 3px 3px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  padding: 100px 0;
+}
+
+// 动态粒子背景
+.background-animation {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(0, 212, 255, 0.6);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.8),
+              0 0 20px rgba(0, 212, 255, 0.6),
+              0 0 30px rgba(0, 212, 255, 0.4);
+  animation: float 15s infinite ease-in-out;
+}
+
+.particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; animation-duration: 12s; }
+.particle:nth-child(2) { left: 20%; top: 80%; animation-delay: 2s; animation-duration: 18s; }
+.particle:nth-child(3) { left: 30%; top: 40%; animation-delay: 4s; animation-duration: 15s; }
+.particle:nth-child(4) { left: 40%; top: 10%; animation-delay: 6s; animation-duration: 20s; }
+.particle:nth-child(5) { left: 50%; top: 70%; animation-delay: 8s; animation-duration: 14s; }
+.particle:nth-child(6) { left: 60%; top: 30%; animation-delay: 10s; animation-duration: 16s; }
+.particle:nth-child(7) { left: 70%; top: 90%; animation-delay: 12s; animation-duration: 19s; }
+.particle:nth-child(8) { left: 80%; top: 50%; animation-delay: 14s; animation-duration: 13s; }
+.particle:nth-child(9) { left: 90%; top: 25%; animation-delay: 16s; animation-duration: 17s; }
+.particle:nth-child(10) { left: 15%; top: 60%; animation-delay: 18s; animation-duration: 11s; }
+.particle:nth-child(11) { left: 25%; top: 15%; animation-delay: 20s; animation-duration: 21s; }
+.particle:nth-child(12) { left: 35%; top: 85%; animation-delay: 22s; animation-duration: 23s; }
+.particle:nth-child(13) { left: 45%; top: 55%; animation-delay: 24s; animation-duration: 25s; }
+.particle:nth-child(14) { left: 55%; top: 35%; animation-delay: 26s; animation-duration: 27s; }
+.particle:nth-child(15) { left: 65%; top: 75%; animation-delay: 28s; animation-duration: 29s; }
+.particle:nth-child(16) { left: 75%; top: 45%; animation-delay: 30s; animation-duration: 31s; }
+.particle:nth-child(17) { left: 85%; top: 65%; animation-delay: 32s; animation-duration: 33s; }
+.particle:nth-child(18) { left: 95%; top: 95%; animation-delay: 34s; animation-duration: 35s; }
+.particle:nth-child(19) { left: 5%; top: 5%; animation-delay: 36s; animation-duration: 37s; }
+.particle:nth-child(20) { left: 95%; top: 5%; animation-delay: 38s; animation-duration: 39s; }
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.6;
+  }
+  25% {
+    transform: translateY(-30px) translateX(20px) scale(1.2);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-60px) translateX(-20px) scale(1);
+    opacity: 0.6;
+  }
+  75% {
+    transform: translateY(-30px) translateX(30px) scale(0.8);
+    opacity: 0.4;
+  }
+}
+
+// 网格背景
+.grid-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridMove 20s linear infinite;
+  z-index: 0;
+}
+
+@keyframes gridMove {
+  0% {
+    transform: perspective(500px) rotateX(60deg) translateY(0);
+  }
+  100% {
+    transform: perspective(500px) rotateX(60deg) translateY(50px);
+  }
+}
+
+// 登录容器
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  z-index: 2;
+  position: relative;
+}
+
+// 欢迎区域
+.welcome-section {
+  text-align: center;
+  animation: fadeInDown 1s ease-out;
+}
+
+.logo-container {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  cursor: pointer;
+}
+
+.logo-svg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  animation: breathe 3s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 25px rgba(0, 212, 255, 1))
+            drop-shadow(0 0 50px rgba(0, 212, 255, 0.5));
+    transform: scale(1.1);
+  }
+}
+
+.logo-container:hover .logo-svg {
+  animation: breathe 1s ease-in-out infinite, rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.logo-ring {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  border: 2px solid rgba(0, 212, 255, 0.4);
+  border-radius: 50%;
+  z-index: 2;
+  animation: ringRotate 8s linear infinite;
+}
+
+.logo-container:hover .logo-ring {
+  animation: ringRotate 2s linear infinite;
+  border-color: rgba(0, 212, 255, 0.8);
+}
+
+.logo-ring-inner {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  right: -12px;
+  bottom: -12px;
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  border-radius: 50%;
+  z-index: 1;
+  animation: ringRotateInner 12s linear infinite reverse;
+}
+
+.logo-container:hover .logo-ring-inner {
+  animation: ringRotateInner 3s linear infinite reverse;
+  border-color: rgba(0, 212, 255, 0.6);
+}
+
+@keyframes ringRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ringRotateInner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.welcome-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 10px 0;
+  text-shadow: 0 0 20px rgba(0, 212, 255, 0.5),
+               0 0 40px rgba(0, 212, 255, 0.3);
+  letter-spacing: 2px;
+}
+
+.welcome-subtitle {
+  font-size: 14px;
+  color: rgba(0, 212, 255, 0.7);
+  margin: 0;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// 登录卡片
+.login-card {
+  width: 420px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+              0 0 40px rgba(0, 212, 255, 0.1);
+  animation: fadeInUp 1s ease-out 0.3s backwards;
+}
+
+.login-card ::ng-deep .ant-card-head {
+  background: rgba(0, 212, 255, 0.05);
+  border-bottom: 1px solid rgba(0, 212, 255, 0.15);
+  border-radius: 16px 16px 0 0;
+}
+
+.login-card ::ng-deep .ant-card-head-title {
+  color: #00d4ff;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.login-card ::ng-deep .ant-card-body {
+  padding: 30px;
+}
+
+.login-card ::ng-deep .ant-form-item-label > label {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+
+.login-card ::ng-deep .ant-input {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  color: #ffffff;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.login-card ::ng-deep .ant-input:focus,
+.login-card ::ng-deep .ant-input:hover {
+  border-color: #00d4ff;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+.login-card ::ng-deep .ant-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// 登录按钮区域
+.login-actions {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.login-button {
+  width: 100%;
+  height: 44px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.login-button:hover::before {
+  left: 100%;
+}
+
+.login-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.6);
+}
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+.button-text {
+  position: relative;
+  z-index: 1;
 }

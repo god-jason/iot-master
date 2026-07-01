@@ -90,6 +90,7 @@ return {
     }
   ],
   fields: [
+    { key: 'avatar', label: '头像', type: 'avatar' },
     { key: 'id', label: 'ID', sortable: true, type: 'text' },
     { key: 'name', label: '名称', sortable: true, type: 'text' },
     { key: 'username', label: '登录名', type: 'text' },
@@ -97,7 +98,7 @@ return {
     { key: 'cellphone', label: '手机号', type: 'text' },
     { key: 'oem', label: 'OEM', type: 'text' },
     { key: 'admin', label: '管理员', type: 'boolean', admin: true },
-    { key: 'disabled', label: '禁用', type: 'boolean' }
+    { key: 'disabled', label: '禁用', type: 'boolean', filter: [{ text: '全部', value: '' }, { text: '禁用', value: 1 }, { text: '正常', value: 0 }] }
   ],
   search_api: 'table/user/search'
 }

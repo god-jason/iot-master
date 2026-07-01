@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {TemplateBase} from '../template-base.component';
-import {NzCardComponent} from 'ng-zorro-antd/card';
-import {NzSpinComponent} from 'ng-zorro-antd/spin';
+import {NzSkeletonComponent} from 'ng-zorro-antd/skeleton';
 import {CommonModule} from '@angular/common';
 
 
@@ -10,8 +9,7 @@ import {CommonModule} from '@angular/common';
   standalone: true,
   imports: [
     CommonModule,
-    NzCardComponent,
-    NzSpinComponent,
+    NzSkeletonComponent,
   ],
   templateUrl: './text.component.html',
   styleUrl: './text.component.scss',

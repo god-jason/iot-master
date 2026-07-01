@@ -43,7 +43,7 @@ return {
     { key: 'type', label: '类型', type: 'text' },
     { key: 'version', label: '版本', type: 'text' },
     { key: 'protocol', label: '协议', type: 'text' },
-    { key: 'image', label: '图片', type: 'image' },
+    { key: 'image', label: '图片', type: 'avatar' },
     { key: 'gateway', label: '网关', type: 'boolean' },
     { key: 'smart', label: '智能', type: 'boolean' },
     { key: 'programmable', label: '可编程', type: 'boolean' },

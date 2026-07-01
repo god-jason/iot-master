@@ -34,6 +34,7 @@ export interface SmartActionRow {
 
 export interface SmartTableColumn {
   key: string
+  key2?: string //关联字段
   label: string
   type?: string
   format?: string
@@ -82,9 +83,10 @@ export interface SmartTableParams {
 
 export interface ParamJoin {
   table: string
-  local: string
-  foreign: string
-  fields: { [key: string]: string }
+  local_field: string
+  foreign_field: string
+  field: string
+  as: string
 }
 
 export interface ParamSearch {

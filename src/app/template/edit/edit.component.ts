@@ -1,9 +1,8 @@
 import {Component, inject, ViewChild} from '@angular/core';
 import {isFunction} from 'rxjs/internal/util/isFunction';
 import {SmartEditorComponent} from '../../lib/smart-editor/smart-editor.component';
-import {NzCardComponent} from 'ng-zorro-antd/card';
 import {NzButtonComponent} from 'ng-zorro-antd/button';
-import {NzSpinComponent} from 'ng-zorro-antd/spin';
+import {NzSkeletonComponent} from 'ng-zorro-antd/skeleton';
 import {NzIconDirective} from 'ng-zorro-antd/icon';
 import {SmartToolbarComponent} from '../../lib/smart-toolbar/smart-toolbar.component';
 
@@ -19,9 +18,8 @@ import {CommonModule} from '@angular/common';
   imports: [
     CommonModule,
     SmartEditorComponent,
-    NzCardComponent,
     NzButtonComponent,
-    NzSpinComponent,
+    NzSkeletonComponent,
     NzIconDirective,
     SmartToolbarComponent
 ],

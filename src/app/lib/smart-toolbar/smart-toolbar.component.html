@@ -7,7 +7,7 @@
       @switch (field.type) {
         @case ('link') {
           @if (field.confirm) {
-            <button nz-button nz-popconfirm nzType="link"
+            <button nz-button nz-popconfirm nzType="link" [id]="field.id"
               [nzPopconfirmTitle]="field.confirm"
               (nzOnConfirm)="action.emit(field.action)">
               @if (field.icon) {
@@ -16,7 +16,7 @@
               {{ field.label }}
             </button>
           } @else {
-            <button nz-button nzType="link" (click)="action.emit(field.action)">
+            <button nz-button nzType="link" [id]="field.id" (click)="action.emit(field.action)">
               @if (field.icon) {
                 <span nz-icon [nzType]="field.icon"></span>
               }
@@ -26,7 +26,7 @@
         }
         @case ('button') {
           @if (field.confirm) {
-            <button nz-button nz-popconfirm
+            <button nz-button nz-popconfirm [id]="field.id"
               [nzPopconfirmTitle]="field.confirm"
               (nzOnConfirm)="action.emit(field.action)">
               @if (field.icon) {
@@ -35,7 +35,7 @@
               {{ field.label }}
             </button>
           } @else {
-            <button nz-button (click)="action.emit(field.action)">
+            <button nz-button [id]="field.id"(click)="action.emit(field.action)">
               @if (field.icon) {
                 <span nz-icon [nzType]="field.icon"></span>
               }
@@ -44,7 +44,7 @@
           }
         }
         @case ('dropdown') {
-          <button nz-button nz-dropdown [nzDropdownMenu]="menu">
+          <button nz-button [id]="field.id" nz-dropdown [nzDropdownMenu]="menu">
             @if (field.icon) {
               <span nz-icon [nzType]="field.icon"></span>
             }
@@ -64,17 +64,17 @@
         @case ('text') {
           {{ field.label || '' }}
           <!--文本-->
-          <input nz-input [formControlName]="field.key"
+          <input nz-input [formControlName]="field.key" [id]="field.id"
             [minlength]="field.min || 0"
             [maxlength]="field.max || 255"
             [placeholder]="field.placeholder || ''"
             [nzAutocomplete]="auto"/>
-          <nz-autocomplete [nzDataSource]="field.auto" #auto></nz-autocomplete>
+          <nz-autocomplete [nzDataSource]="field.auto" nzBackfill #auto></nz-autocomplete>
         }
         @case ('number') {
           {{ field.label || '' }}
           <!--数值-->
-          <nz-input-number [formControlName]="field.key"
+          <nz-input-number [formControlName]="field.key" [id]="field.id"
             [nzMin]="field.min===undefined ? -Infinity : field.min"
             [nzMax]="field.max===undefined ? Infinity : field.max"
             [nzStep]="field.step || 1"
@@ -83,7 +83,7 @@
         @case ('slider') {
           {{ field.label || '' }}
           <!--滑块-->
-          <nz-slider [formControlName]="field.key"
+          <nz-slider [formControlName]="field.key" [id]="field.id"
             [nzMin]="field.min || 0"
             [nzMax]="field.max || 100"
           [nzStep]="field.step"></nz-slider>
@@ -91,7 +91,7 @@
         @case ('radio') {
           {{ field.label || '' }}
           <!--单选 有import Bug，先不支持-->
-          <nz-radio-group [formControlName]="field.key" nzButtonStyle="solid">
+          <nz-radio-group [formControlName]="field.key" [id]="field.id" nzButtonStyle="solid">
             @for (o of field.options; track o) {
               <label nz-radio-button
                 [nzValue]="o.value"
@@ -102,13 +102,13 @@
         @case ('select') {
           {{ field.label || '' }}
           <!--选项-->
-          <nz-select [formControlName]="field.key"
+          <nz-select [formControlName]="field.key" [id]="field.id"
             [nzOptions]="field.options || empty"
           [nzPlaceHolder]="field.placeholder || ''"></nz-select>
         }
         @case ('tree') {
           <!--树选择-->
-          <nz-tree-select nzShowSearch nzCheckable [formControlName]="field.key"
+          <nz-tree-select nzShowSearch nzCheckable [formControlName]="field.key" [id]="field.id"
             [nzNodes]="field.tree || empty"
             [nzMultiple]="field.multiple"
             (nzTreeCheckboxChange)="field.change?.($event)"
@@ -117,38 +117,38 @@
         @case ('switch') {
           {{ field.label || '' }}
           <!--开关-->
-          <nz-switch [formControlName]="field.key"></nz-switch>
+          <nz-switch [formControlName]="field.key" [id]="field.id"></nz-switch>
         }
         @case ('checkbox') {
           {{ field.label || '' }}
           <!--开关-->
-          <label nz-checkbox [formControlName]="field.key"></label>
+          <label nz-checkbox [formControlName]="field.key" [id]="field.id"></label>
         }
         @case ('slider') {
           {{ field.label || '' }}
           <!--进度条-->
-          <nz-slider [formControlName]="field.key"
+          <nz-slider [formControlName]="field.key" [id]="field.id"
           [nzMax]="field.max" [nzMin]="field.min" [nzStep]="field.step"></nz-slider>
         }
         @case ('datetime') {
           <!--日期和时间-->
-          <smart-date-picker [formControlName]="field.key" mode="datetime"></smart-date-picker>
+          <smart-date-picker [formControlName]="field.key" [id]="field.id" mode="datetime"></smart-date-picker>
         }
         @case ('date') {
           <!--日期-->
-          <smart-date-picker [formControlName]="field.key" mode="date"></smart-date-picker>
+          <smart-date-picker [formControlName]="field.key" [id]="field.id" mode="date"></smart-date-picker>
         }
         @case ('time') {
           <!--时间-->
-          <smart-date-picker [formControlName]="field.key" mode="time"></smart-date-picker>
+          <smart-date-picker [formControlName]="field.key" [id]="field.id" mode="time"></smart-date-picker>
         }
         @case ('datetimerange') {
           <!--日期时间范围-->
-          <smart-range-picker [formControlName]="field.key" mode="datetimerange"></smart-range-picker>
+          <smart-range-picker [formControlName]="field.key" [id]="field.id" mode="datetimerange"></smart-range-picker>
         }
         @case ('daterange') {
           <!--日期范围-->
-          <smart-range-picker [formControlName]="field.key" mode="daterange"></smart-range-picker>
+          <smart-range-picker [formControlName]="field.key" [id]="field.id" mode="daterange"></smart-range-picker>
         }
         @case ('upload') {
           {{ field.label || '' }}
@@ -161,7 +161,7 @@
           {{ field.label || '' }}
           <!--文件-->
           <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
-            <input nz-input [formControlName]="field.key"
+            <input nz-input [formControlName]="field.key" [id]="field.id"
             [placeholder]="field.placeholder || ''"/></nz-input-group>
             <ng-template #suffixButton>
               <nz-upload [nzAction]="field.upload" [nzShowUploadList]="false" [nzDisabled]="!!field.disabled"
@@ -173,7 +173,7 @@
         @case ('images') {
           {{ field.label || '' }}
           <!--标签-->
-          <nz-select nzMode="tags" [formControlName]="field.key"
+          <nz-select nzMode="tags" [formControlName]="field.key" [id]="field.id"
             [nzTokenSeparators]="[',','，', ' ', ';']"
             [nzOptions]="field.options || empty"
             [nzPlaceHolder]="field.placeholder || '输入 逗号，分号，空格 分隔'"

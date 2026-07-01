@@ -10,9 +10,9 @@ import {
 } from '@angular/core';
 import {SmartRequestService} from '../lib/smart-request.service';
 import {ActivatedRoute, NavigationEnd, Params, Router, RouterLink} from '@angular/router';
-import {NzSpinComponent} from 'ng-zorro-antd/spin';
 import {Title} from '@angular/platform-browser';
 import {isFunction} from 'rxjs/internal/util/isFunction';
+import {NzSkeletonComponent} from 'ng-zorro-antd/skeleton';
 import {NzGridModule} from 'ng-zorro-antd/grid';
 import {NZ_MODAL_DATA, NzModalModule} from 'ng-zorro-antd/modal';
 import {PageContent} from '../template/template';
@@ -31,7 +31,7 @@ import {NzIconModule} from 'ng-zorro-antd/icon';
     CommonModule,
     NzIconModule,
     SmartCardComponent,
-    NzSpinComponent,
+    NzSkeletonComponent,
     NzButtonComponent,
     NzResultComponent,
     NzGridModule,
@@ -54,7 +54,7 @@ export class PageComponent implements AfterViewInit, OnDestroy{
 
   nzModalData: any = inject(NZ_MODAL_DATA, {optional: true});
 
-  componentRef!: ComponentRef<any>
+  componentRef?: ComponentRef<any>
 
   @ViewChildren(PageComponent) children!: PageComponent[]
 
@@ -275,6 +275,9 @@ export class PageComponent implements AfterViewInit, OnDestroy{
         break
       case "value":
         import("../template/value/value.component").then(m => this.render_component(m.ValueComponent))
+        break
+      case "code":
+        import("../template/code/code.component").then(m => this.render_component(m.CodeComponent))
         break
       default:
         break

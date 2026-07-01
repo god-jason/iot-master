@@ -12,9 +12,8 @@ import {
   NzTrDirective
 } from 'ng-zorro-antd/table';
 import {TemplateBase} from '../template-base.component';
-import {NzCardComponent} from 'ng-zorro-antd/card';
 import {NzIconDirective} from 'ng-zorro-antd/icon';
-import {NzSpinComponent} from 'ng-zorro-antd/spin';
+import {NzSkeletonComponent} from 'ng-zorro-antd/skeleton';
 import {ImportContent} from '../template';
 import {isFunction} from 'rxjs/internal/util/isFunction';
 import {LinkReplaceParams} from '../../lib/utils';
@@ -39,9 +38,8 @@ import {CommonModule} from '@angular/common';
     NzTbodyComponent,
     NzTheadComponent,
     NzTrDirective,
-    NzCardComponent,
     NzIconDirective,
-    NzSpinComponent,
+    NzSkeletonComponent,
     NzSelectComponent,
     ReactiveFormsModule,
     NzStepsComponent,

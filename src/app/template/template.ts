@@ -25,7 +25,8 @@ export type PageContent = Content & (
   TextContent |
   StatisticContent |
   AmapContent |
-  ValueContent)
+  ValueContent |
+  CodeContent)
 
 export interface BlankContent {
   template?: 'blank' | ''
@@ -249,4 +250,14 @@ export interface ExportContent {
   search?: string | Function | ((event: ParamSearch, request: SmartRequestService) => Promise<any>)
 
   finish?: string | Function | ((data: any) => any)
+}
+
+export interface CodeContent {
+  template: 'code'
+  
+  language?: string
+  theme?: Theme
+  readonly?: boolean
+  
+  change?: string | Function | (() => string)
 }

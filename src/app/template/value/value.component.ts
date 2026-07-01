@@ -1,6 +1,5 @@
 import {Component, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
-import {NzCardComponent} from 'ng-zorro-antd/card';
-import {NzSpinComponent} from 'ng-zorro-antd/spin';
+import {NzSkeletonComponent} from 'ng-zorro-antd/skeleton';
 import {TemplateBase} from '../template-base.component';
 import {ValueContent} from '../template';
 import {CommonModule} from '@angular/common';
@@ -10,8 +9,7 @@ import {isFunction} from 'rxjs/internal/util/isFunction';
   selector: 'app-value',
   imports: [
     CommonModule,
-    NzCardComponent,
-    NzSpinComponent
+    NzSkeletonComponent
 ],
   templateUrl: './value.component.html',
   standalone: true,

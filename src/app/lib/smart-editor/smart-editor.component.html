@@ -25,23 +25,23 @@
   @switch (field.type) {
     @case ('text') {
       <!--文本-->
-      <input nz-input [formControl]="control"
+      <input nz-input [formControl]="control" [id]="field.id"
         [minlength]="field.min || 0"
         [maxlength]="field.max || 255"
         [placeholder]="field.placeholder || ''"
         [nzAutocomplete]="auto"/>
-      <nz-autocomplete [nzDataSource]="field.auto" #auto></nz-autocomplete>
+      <nz-autocomplete [nzDataSource]="field.auto" nzBackfill #auto></nz-autocomplete>
     }
     @case ('password') {
       <!--密码-->
-      <input nz-input type="password" [formControl]="control"
+      <input nz-input type="password" [formControl]="control" [id]="field.id"
         [minlength]="field.min || 0"
         [maxlength]="field.max || 255"
         [placeholder]="field.placeholder || ''"/>
     }
     @case ('number') {
       <!--数值-->
-      <nz-input-number [formControl]="control"
+      <nz-input-number [formControl]="control" [id]="field.id"
         [nzMin]="field.min===undefined ? -Infinity : field.min"
         [nzMax]="field.max===undefined ? Infinity : field.max"
         [nzStep]="field.step || 1"
@@ -49,14 +49,14 @@
     }
     @case ('slider') {
       <!--滑块-->
-      <nz-slider [formControl]="control"
+      <nz-slider [formControl]="control" [id]="field.id"
         [nzMin]="field.min || 0"
         [nzMax]="field.max || 100"
       [nzStep]="field.step"></nz-slider>
     }
     @case ('radio') {
       <!--单选 有import Bug，先不支持-->
-      <nz-radio-group [formControl]="control" nzButtonStyle="solid">
+      <nz-radio-group [formControl]="control" [id]="field.id" nzButtonStyle="solid">
         @for (o of field.options; track o) {
           <label nz-radio-button
             [nzValue]="o.value"
@@ -66,14 +66,14 @@
     }
     @case ('select') {
       <!--选项-->
-      <nz-select [formControl]="control"
+      <nz-select [formControl]="control" [id]="field.id"
         [nzOptions]="field.options || empty"
         [nzAllowClear]="field.clear || false"
       [nzPlaceHolder]="field.placeholder || ''"></nz-select>
     }
     @case ('tags') {
       <!--标签-->
-      <nz-select nzMode="tags" [formControl]="control"
+      <nz-select nzMode="tags" [formControl]="control" [id]="field.id"
         [nzTokenSeparators]="[',','，', ' ', ';']"
         [nzOptions]="field.options || empty"
         [nzAllowClear]="field.clear || false"
@@ -81,7 +81,7 @@
     }
     @case ('tree') {
       <!--树选择-->
-      <nz-tree-select nzShowSearch nzCheckable [formControl]="control"
+      <nz-tree-select nzShowSearch nzCheckable [formControl]="control" [id]="field.id"
         [nzNodes]="field.tree || empty"
         [nzAllowClear]="field.clear || false"
         [nzMultiple]="field.multiple"
@@ -89,55 +89,55 @@
     }
     @case ('color') {
       <!--颜色-->
-      <nz-color-picker nzShowText [formControl]="control" [nzAllowClear]="field.clear"></nz-color-picker>
+      <nz-color-picker nzShowText [formControl]="control" [id]="field.id" [nzAllowClear]="field.clear"></nz-color-picker>
     }
     @case ('switch') {
       <!--开关-->
-      <nz-switch [formControl]="control"></nz-switch>
+      <nz-switch [formControl]="control" [id]="field.id"></nz-switch>
     }
     @case ('checkbox') {
       <!--开关-->
-      <label nz-checkbox [formControl]="control"></label>
+      <label nz-checkbox [formControl]="control" [id]="field.id"></label>
     }
     @case ('textarea') {
       <!--多行文本-->
-      <nz-textarea-count [nzMaxCharacterCount]="field.max || 255">
+      <nz-textarea-count [nzMaxCharacterCount]="field.max || 255" [id]="field.id">
         <textarea rows="4" nz-input [formControl]="control"></textarea>
       </nz-textarea-count>
     }
     @case ('slider') {
       <!--进度条-->
-      <nz-slider [formControl]="control"
+      <nz-slider [formControl]="control" [id]="field.id"
       [nzMax]="field.max" [nzMin]="field.min" [nzStep]="field.step"></nz-slider>
     }
     @case ('rate') {
       <!--评分-->
-      <nz-rate [formControl]="control"></nz-rate>
+      <nz-rate [formControl]="control" [id]="field.id"></nz-rate>
     }
     @case ('datetime') {
       <!--日期和时间-->
-      <smart-date-picker [formControl]="control" mode="datetime"></smart-date-picker>
+      <smart-date-picker [formControl]="control" [id]="field.id" mode="datetime"></smart-date-picker>
     }
     @case ('date') {
       <!--日期-->
-      <smart-date-picker [formControl]="control" mode="date"></smart-date-picker>
+      <smart-date-picker [formControl]="control" [id]="field.id" mode="date"></smart-date-picker>
     }
     @case ('time') {
       <!--时间-->
-      <smart-date-picker [formControl]="control" mode="time"></smart-date-picker>
+      <smart-date-picker [formControl]="control" [id]="field.id" mode="time"></smart-date-picker>
     }
     @case ('datetimerange') {
       <!--日期时间范围-->
-      <smart-range-picker [formControl]="control" mode="datetimerange"></smart-range-picker>
+      <smart-range-picker [formControl]="control" [id]="field.id" mode="datetimerange"></smart-range-picker>
     }
     @case ('daterange') {
       <!--日期范围-->
-      <smart-range-picker [formControl]="control" mode="daterange"></smart-range-picker>
+      <smart-range-picker [formControl]="control" [id]="field.id" mode="daterange"></smart-range-picker>
     }
     @case ('file') {
       <!--文件-->
       <nz-input-group nzSearch [nzAddOnAfter]="suffixButton">
-        <input nz-input [formControl]="control"
+        <input nz-input [formControl]="control" [id]="field.id"
         [placeholder]="field.placeholder || ''"/></nz-input-group>
         <ng-template #suffixButton>
           <nz-upload [nzAction]="field.upload" [nzShowUploadList]="false" [nzDisabled]="!!field.disabled"
@@ -148,7 +148,7 @@
     }
     @case ('images') {
       <!--标签-->
-      <nz-select nzMode="tags" [formControl]="control"
+      <nz-select nzMode="tags" [formControl]="control" [id]="field.id"
         [nzTokenSeparators]="[',','，', ' ', ';']"
         [nzOptions]="field.options || empty"
         [nzPlaceHolder]="field.placeholder || '输入 逗号，分号，空格 分隔'"
@@ -247,14 +247,6 @@
     @case ('template') {
       <ng-container *ngTemplateOutlet="field.template; context: { field: field, control:control }">
       </ng-container>
-    }
-    @case ('code') {
-      <code-editor [formControl]="control"
-         [languages]="languages"
-         [language]="field.language"
-         [readonly]="field.readonly"
-         [disabled]="field.disabled"
-         [theme]="field.theme" />
     }
     @default {
       <!--默认 用文本-->

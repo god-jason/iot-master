@@ -1,11 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {ParamSearch, SmartTableComponent} from '../../lib/smart-table/smart-table.component';
 import {isFunction} from 'rxjs/internal/util/isFunction';
-import {NzCardComponent} from 'ng-zorro-antd/card';
-
-import {NzSpinComponent} from 'ng-zorro-antd/spin';
-import {NzButtonComponent} from 'ng-zorro-antd/button';
-import {NzIconDirective} from 'ng-zorro-antd/icon';
+import {NzSkeletonComponent} from 'ng-zorro-antd/skeleton';
 import {SmartToolbarComponent} from '../../lib/smart-toolbar/smart-toolbar.component';
 import {TemplateBase} from '../template-base.component';
 import {ListContent} from '../template';
@@ -18,10 +14,7 @@ import {CommonModule} from '@angular/common';
   imports: [
     CommonModule,
     SmartTableComponent,
-    NzCardComponent,
-    NzSpinComponent,
-    NzButtonComponent,
-    NzIconDirective,
+    NzSkeletonComponent,
     SmartToolbarComponent
 ],
   templateUrl: './list.component.html',

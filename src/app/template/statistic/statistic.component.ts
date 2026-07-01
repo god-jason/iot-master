@@ -1,28 +1,24 @@
 import {Component, ViewChild} from '@angular/core';
 import {TemplateBase} from '../template-base.component';
 import {NzCardComponent} from 'ng-zorro-antd/card';
-import {NzSpinComponent} from 'ng-zorro-antd/spin';
+import {NzSkeletonComponent} from 'ng-zorro-antd/skeleton';
 import {CommonModule, DecimalPipe} from '@angular/common';
 import {SmartToolbarComponent} from '../../lib/smart-toolbar/smart-toolbar.component';
 import {NzColDirective, NzRowDirective} from 'ng-zorro-antd/grid';
 import {NzStatisticComponent} from 'ng-zorro-antd/statistic';
-import {NzButtonComponent} from 'ng-zorro-antd/button';
-import {NzIconDirective} from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-statistic',
   imports: [
     CommonModule,
     NzCardComponent,
-    NzSpinComponent,
+    NzSkeletonComponent,
     SmartToolbarComponent,
     NzRowDirective,
     NzColDirective,
     NzStatisticComponent,
-    DecimalPipe,
-    NzButtonComponent,
-    NzIconDirective
-],
+    DecimalPipe
+  ],
   templateUrl: './statistic.component.html',
   standalone: true,
   styleUrl: './statistic.component.scss',

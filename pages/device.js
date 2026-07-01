@@ -82,36 +82,6 @@ return {
         }
       }
     },
-    {
-      key: 'online',
-      type: 'select',
-      label: '状态',
-      options: [{ label: '不过滤' }, { label: '在线', value: 1 }, { label: '离线', value: 0 }],
-      change_action: {
-        type: 'script',
-        script(data, index) {
-          setTimeout(() => {
-            this.filter.online = this.toolbar.value.online
-            this.load()
-          }, 100)
-        }
-      }
-    },
-    {
-      key: 'product_id',
-      type: 'select',
-      label: '产品',
-      options: [{ label: '不过滤' }],
-      change_action: {
-        type: 'script',
-        script(data, index) {
-          setTimeout(() => {
-            this.filter.product_id = this.toolbar.value.product_id
-            this.load()
-          }, 100)
-        }
-      }
-    },
     { key: 'keyword', type: 'text', placeholder: '请输入关键字' },
     { key: 'range', type: 'daterange', placeholder: ['开始日期', '结束日期'] },
     {
@@ -204,7 +174,8 @@ return {
         }
       },
       sortable: true,
-      type: 'text'
+      type: 'text',
+      filter: []
     },
     {
       key: 'name',
@@ -225,6 +196,7 @@ return {
       key2: 'group_name',
       label: '组织',
       type: 'text',
+      filter: [],
       action: {
         type: 'page',
         page: 'group_detail',
@@ -238,6 +210,7 @@ return {
       key2: 'gateway_name',
       label: '网关',
       type: 'text',
+      filter: [],
       action: {
         type: 'page',
         page: 'device_detail',
@@ -246,9 +219,9 @@ return {
         }
       }
     },
-    { key: 'online', label: '在线', type: 'boolean', sortable: true },
+    { key: 'online', label: '在线', type: 'boolean', sortable: true, filter: [{ text: '全部', value: '' }, { text: '在线', value: 1 }, { text: '离线', value: 0 }] },
     { key: 'error_string', label: '错误', type: 'text' },
-    { key: 'disabled', label: '禁用', type: 'boolean' },
+    { key: 'disabled', label: '禁用', type: 'boolean', filter: [{ text: '全部', value: '' }, { text: '禁用', value: 1 }, { text: '正常', value: 0 }] },
     { key: 'created', label: '日期', type: 'date', sortable: true }
   ],
   search_api: 'table/device/search',
@@ -263,6 +236,10 @@ return {
         if (res.error) return
         this.put_products(res.data || [])
       })
+    this.request.post('table/group/search', { limit: 999 }).subscribe(res => {
+      if (res.error) return
+      this.put_groups(res.data || [])
+    })
   },
   methods: {
     get_extend_fields() {
@@ -273,11 +250,15 @@ return {
     },
     put_products(products) {
       const list = Array.isArray(products) ? products : []
-      this.content.toolbar[5].options = [{ label: '不过滤' }].concat(
-        list.map(p => {
-          return { value: p.id, label: p.name }
-        })
-      )
+      this.content.fields[1].filter = list.map(p => {
+        return { value: p.id, text: p.name }
+      })
+    },
+    put_groups(groups) {
+      const list = Array.isArray(groups) ? groups : []
+      this.content.fields[4].filter = list.map(g => {
+        return { value: g.id, text: g.name }
+      })
     }
   },
   bind: {
