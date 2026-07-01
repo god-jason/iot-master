@@ -4,10 +4,11 @@
   "joins": [
     {
       "table": "product",
-      "local_field": "product_id",
-      "foreign_field": "id",
-      "field": "name",
-      "as": "product"
+      "local": "product_id",
+      "foreign": "id",
+      "fields": {
+        "name": "product_name"
+      }
     }
   ],
   "fields": [

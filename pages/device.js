@@ -1,7 +1,8 @@
-// 设备页面配置
+// 设备管理页面配置
+// 功能：设备列表管理，支持创建设备、导入导出、搜索过滤等操作
 return {
-  title: '设备',
-  icon: '/icons/device.svg',
+  title: '设备管理',
+  icon: '/emoji/radio.svg',
   template: 'list',
   toolbar: [
     {
@@ -26,7 +27,6 @@ return {
         params(data) {
           return {
             product_id: this.params.product_id,
-            group_id: this.params.group_id,
             gateway_id: this.params.gateway_id
           }
         },
@@ -46,7 +46,6 @@ return {
         params(data) {
           return {
             product_id: this.params.product_id,
-            group_id: this.params.group_id,
             gateway_id: this.params.gateway_id
           }
         }
@@ -76,6 +75,7 @@ return {
         script(data, index) {
           this.table.selects.forEach(id =>
             this.request.get('table/device/delete/' + id).subscribe(res => {
+              this.notification.success('提示', '批量删除成功')
               this.load()
             })
           )
@@ -124,9 +124,12 @@ return {
           const v = this.toolbar.value || {}
           this.keyword = v.keyword || ''
           if (v.range && v.range[0]) {
-            this.filter.created = { $gte: v.range[0], $lte: v.range[1] }
+            this.filter.created = {
+              $gte: v.range[0],
+              $lte: v.range[1]
+            }
           } else {
-            this.filter.created = undefined
+            this.filter.created = null
           }
           this.load()
         }
@@ -167,6 +170,7 @@ return {
         type: 'script',
         script(data, index) {
           this.request.get('table/device/delete/' + data.id).subscribe(res => {
+            this.notification.success('提示', '删除成功')
             this.load()
           })
         }
@@ -175,19 +179,32 @@ return {
   ],
   batch: true,
   fields: [
-    { key: 'product_image', label: '图片', type: 'avatar' },
     {
       key: 'id',
       label: 'ID',
-      sortable: true,
-      type: 'text',
       action: {
         type: 'page',
         page: 'device_detail',
         params(data) {
           return { id: data.id }
         }
-      }
+      },
+      sortable: true,
+      type: 'text'
+    },
+    {
+      key: 'product_id',
+      key2: 'product_name',
+      label: '产品',
+      action: {
+        type: 'page',
+        page: 'product_detail',
+        params(data) {
+          return { id: data.product_id }
+        }
+      },
+      sortable: true,
+      type: 'text'
     },
     {
       key: 'name',
@@ -204,21 +221,22 @@ return {
     },
     { key: 'description', label: '说明', type: 'text' },
     {
-      key: 'product_name',
-      label: '产品名称',
+      key: 'group_id',
+      key2: 'group_name',
+      label: '组织',
       type: 'text',
       action: {
         type: 'page',
-        page: 'product_detail',
+        page: 'group_detail',
         params(data) {
-          return { id: data.product_id }
+          return { id: data.group_id }
         }
       }
     },
-    { key: 'group_name', label: '组织名称', type: 'text' },
     {
-      key: 'gateway_name',
-      label: '网关名称',
+      key: 'gateway_id',
+      key2: 'gateway_name',
+      label: '网关',
       type: 'text',
       action: {
         type: 'page',
@@ -230,38 +248,33 @@ return {
     },
     { key: 'online', label: '在线', type: 'boolean', sortable: true },
     { key: 'error_string', label: '错误', type: 'text' },
-    { key: 'location', label: '位置', type: 'text' },
-    { key: 'disabled', label: '禁用', type: 'boolean' }
+    { key: 'disabled', label: '禁用', type: 'boolean' },
+    { key: 'created', label: '日期', type: 'date', sortable: true }
   ],
   search_api: 'table/device/search',
-  // 页面挂载时执行
   mount() {
     if (this.params.link_id) this.filter.link_id = this.params.link_id
-    if (this.params.group_id) this.filter.group_id = this.params.group_id
     if (this.params.product_id) this.filter.product_id = this.params.product_id
     if (this.params.gateway_id) this.filter.gateway_id = this.params.gateway_id
-    if (!this.params.gateway_id && !this.params.group_id) this.content.toolbar.push(this.content.bind)
-    if (this.params.group_id) this.content.toolbar.push(this.content.bind_group)
-    if (this.params.group_id) this.content.toolbar.push(this.content.unbind_group)
-    if (this.params.group_id) this.content.operators.push(this.content.operator_unbind)
+    if (!this.params.gateway_id) this.content.toolbar.push(this.content.bind)
     this.get_extend_fields()
-    if (!this.params.product_id) {
+    if (!this.params.product_id)
       this.request.post('table/product/search', { limit: 999 }).subscribe(res => {
         if (res.error) return
-        this.put_products(res.data)
+        this.put_products(res.data || [])
       })
-    }
   },
   methods: {
     get_extend_fields() {
       this.request.get('device/extend/fields').subscribe(res => {
         if (res.error) return
-        res.data.map(f => this.content.fields.push(f))
+        ;(res.data || []).map(f => this.content.columns.push(f))
       })
     },
     put_products(products) {
+      const list = Array.isArray(products) ? products : []
       this.content.toolbar[5].options = [{ label: '不过滤' }].concat(
-        products.map(p => {
+        list.map(p => {
           return { value: p.id, label: p.name }
         })
       )
@@ -277,49 +290,6 @@ return {
       page: 'device_bind',
       after_close(result, data, index) {
         this.load()
-      }
-    }
-  },
-  bind_group: {
-    type: 'button',
-    icon: 'link',
-    label: '绑定',
-    action: {
-      type: 'dialog',
-      page: 'device_choose',
-      after_close(result, data, index) {
-        if (result) {
-          this.request.get('device/' + result.id + '/bind/' + this.params.group_id).subscribe(res => this.load())
-        }
-      }
-    }
-  },
-  unbind_group: {
-    label: '批量解绑',
-    icon: 'disconnect',
-    type: 'button',
-    confirm: '确认批量解绑？',
-    action: {
-      type: 'script',
-      script(data, index) {
-        this.table.selects.forEach(id =>
-          this.request.get('device/' + id + '/unbind').subscribe(res => {
-            this.load()
-          })
-        )
-      }
-    }
-  },
-  operator_unbind: {
-    icon: 'disconnect',
-    title: '解绑',
-    confirm: '确认解绑？',
-    action: {
-      type: 'script',
-      script(data, index) {
-        this.request.get('device/' + data.id + '/unbind').subscribe(res => {
-          this.load()
-        })
       }
     }
   }

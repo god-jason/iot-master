@@ -4,31 +4,28 @@
   "joins": [
     {
       "table": "product",
-      "local_field": "product_id",
-      "foreign_field": "id",
-      "field": "name",
-      "as": "product_name"
-    },
-    {
-      "table": "product",
-      "local_field": "product_id",
-      "foreign_field": "id",
-      "field": "image",
-      "as": "product_image"
+      "local": "product_id",
+      "foreign": "id",
+      "fields": {
+        "name": "product_name",
+        "image": "product_image"
+      }
     },
     {
       "table": "device",
-      "local_field": "gateway_id",
-      "foreign_field": "id",
-      "field": "name",
-      "as": "gateway_name"
+      "local": "gateway_id",
+      "foreign": "id",
+      "fields": {
+        "name": "gateway_name"
+      }
     },
     {
       "table": "group",
-      "local_field": "group_id",
-      "foreign_field": "id",
-      "field": "name",
-      "as": "group_name"
+      "local": "group_id",
+      "foreign": "id",
+      "fields": {
+        "name": "group_name"
+      }
     }
   ],
   "fields": [

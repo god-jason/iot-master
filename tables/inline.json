@@ -4,17 +4,19 @@
   "joins": [
     {
       "table": "product",
-      "local_field": "product_id",
-      "foreign_field": "id",
-      "field": "name",
-      "as": "product_name"
+      "local": "product_id",
+      "foreign": "id",
+      "fields": {
+        "name": "product_name"
+      }
     },
     {
       "table": "device",
-      "local_field": "gateway_id",
-      "foreign_field": "id",
-      "field": "name",
-      "as": "gateway_name"
+      "local": "gateway_id",
+      "foreign": "id",
+      "fields": {
+        "name": "gateway_name"
+      }
     }
   ],
   "fields": [

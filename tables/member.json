@@ -4,17 +4,19 @@
   "joins": [
     {
       "table": "user",
-      "local_field": "user_id",
-      "foreign_field": "id",
-      "field": "name",
-      "as": "user_name"
+      "local": "user_id",
+      "foreign": "id",
+      "fields": {
+        "name": "user_name"
+      }
     },
     {
       "table": "group",
-      "local_field": "group_id",
-      "foreign_field": "id",
-      "field": "name",
-      "as": "group_name"
+      "local": "group_id",
+      "foreign": "id",
+      "fields": {
+        "name": "group_name"
+      }
     }
   ],
   "fields": [

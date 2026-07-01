@@ -1,20 +1,29 @@
 {
   "name": "device_setting",
   "comment": "设备参数",
+  "joins": [
+    {
+      "table": "device",
+      "local": "id",
+      "foreign": "id",
+      "fields": {
+        "name": "device_name"
+      }
+    }
+  ],
   "fields": [
     {
       "name": "id",
-      "comment": "ID",
+      "comment": "设备ID",
       "type": "string",
       "length": 50,
       "primary": true
     },
     {
       "name": "name",
-      "comment": "名称",
+      "comment": "参数名称",
       "type": "string",
-      "length": 50,
-      "primary": true
+      "length": 50
     },
     {
       "name": "version",
@@ -32,6 +41,12 @@
       "comment": "创建时间",
       "type": "datetime",
       "created": true
+    },
+    {
+      "name": "updated",
+      "comment": "更新时间",
+      "type": "datetime",
+      "updated": true
     }
   ]
 }

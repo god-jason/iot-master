@@ -16,18 +16,17 @@ return {
     load_data() {
       this.request
         .post('table/device/group', {
-          group_by: 'product_id',
-          aggregators: [{ func: 'count', field: 'id', as: 'cnt' }],
-          joins: [
-            {
-              table: 'product',
-              local_field: 'product_id',
-              foreign_field: 'id',
-              field: 'name',
-              as: 'product_name'
-            }
-          ]
-        })
+            by: ['product_id'],
+            aggregators: [{ func: 'count', field: 'id', as: 'cnt' }],
+            joins: [
+              {
+                table: 'product',
+                local: 'product_id',
+                foreign: 'id',
+                fields: { name: 'product_name' }
+              }
+            ]
+          })
         .subscribe(
           res => {
             if (res && res.data && res.data.length > 0) {

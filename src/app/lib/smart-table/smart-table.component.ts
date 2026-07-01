@@ -82,10 +82,9 @@ export interface SmartTableParams {
 
 export interface ParamJoin {
   table: string
-  local_field: string
-  foreign_field: string
-  field: string
-  as: string
+  local: string
+  foreign: string
+  fields: { [key: string]: string }
 }
 
 export interface ParamSearch {

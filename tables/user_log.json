@@ -4,10 +4,11 @@
   "joins": [
     {
       "table": "user",
-      "local_field": "user_id",
-      "foreign_field": "id",
-      "field": "name",
-      "as": "user_name"
+      "local": "user_id",
+      "foreign": "id",
+      "fields": {
+        "name": "user_name"
+      }
     }
   ],
   "fields": [
@@ -29,7 +30,8 @@
       "name": "action",
       "comment": "操作",
       "type": "string",
-      "length": 128
+      "length": 128,
+      "indexed": true
     },
     {
       "name": "client",

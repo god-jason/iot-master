@@ -1,7 +1,8 @@
-// 产品页面配置
+// 产品管理页面配置
+// 功能：产品列表管理，支持创建、编辑、删除产品，管理设备类型等操作
 return {
-  title: '产品',
-  icon: '/icons/box.svg',
+  title: '产品管理',
+  icon: '/emoji/box.svg',
   template: 'list',
   toolbar: [
     {
@@ -27,6 +28,7 @@ return {
         }
       }
     },
+    { label: '导出', icon: 'download', type: 'button', action: { type: 'page', page: 'product_export' } },
     { key: 'keyword', type: 'text', placeholder: '请输入关键字' },
     { key: 'range', type: 'daterange', placeholder: ['开始日期', '结束日期'] },
     {
@@ -39,9 +41,12 @@ return {
           const v = this.toolbar.value || {}
           this.keyword = v.keyword || ''
           if (v.range && v.range[0]) {
-            this.filter.created = { $gte: v.range[0], $lte: v.range[1] }
+            this.filter.created = {
+              $gte: v.range[0],
+              $lte: v.range[1]
+            }
           } else {
-            this.filter.created = undefined
+            this.filter.created = null
           }
           this.load()
         }
@@ -84,6 +89,7 @@ return {
         type: 'script',
         script(data, index) {
           this.request.get('table/product/delete/' + data.id).subscribe(res => {
+            this.notification.success('提示', '删除成功')
             this.load()
           })
         }
@@ -91,10 +97,22 @@ return {
     }
   ],
   fields: [
-    { key: 'image', label: '图片', type: 'avatar' },
     {
       key: 'id',
       label: 'ID',
+      action: {
+        type: 'page',
+        page: 'product_detail',
+        params(data) {
+          return { id: data.id }
+        }
+      },
+      sortable: true,
+      type: 'text'
+    },
+    {
+      key: 'name',
+      label: '名称',
       sortable: true,
       type: 'text',
       action: {
@@ -105,12 +123,12 @@ return {
         }
       }
     },
-    { key: 'name', label: '名称', sortable: true, type: 'text' },
     { key: 'description', label: '说明', type: 'text' },
     { key: 'type', label: '类型', type: 'text' },
     { key: 'version', label: '版本', type: 'text' },
     { key: 'protocol', label: '协议', sortable: true, type: 'text' },
-    { key: 'disabled', label: '禁用', type: 'boolean' }
+    { key: 'disabled', label: '禁用', type: 'boolean' },
+    { key: 'created', label: '日期', type: 'date', sortable: true }
   ],
   search_api: 'table/product/search'
 }

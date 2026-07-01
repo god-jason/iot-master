@@ -3,11 +3,20 @@
   "comment": "设备日志",
   "joins": [
     {
+      "table": "device",
+      "local": "device_id",
+      "foreign": "id",
+      "fields": {
+        "name": "device_name"
+      }
+    },
+    {
       "table": "user",
-      "local_field": "user_id",
-      "foreign_field": "id",
-      "field": "name",
-      "as": "user_name"
+      "local": "user_id",
+      "foreign": "id",
+      "fields": {
+        "name": "user_name"
+      }
     }
   ],
   "fields": [
@@ -15,7 +24,6 @@
       "name": "id",
       "comment": "ID",
       "type": "int64",
-      "length": 50,
       "primary": true,
       "increment": true
     },

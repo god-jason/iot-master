@@ -4,17 +4,19 @@
   "joins": [
     {
       "table": "user",
-      "local_field": "user_id",
-      "foreign_field": "id",
-      "field": "name",
-      "as": "user_name"
+      "local": "user_id",
+      "foreign": "id",
+      "fields": {
+        "name": "user_name"
+      }
     },
     {
       "table": "user",
-      "local_field": "agent_id",
-      "foreign_field": "id",
-      "field": "name",
-      "as": "agent_name"
+      "local": "agent_id",
+      "foreign": "id",
+      "fields": {
+        "name": "agent_name"
+      }
     }
   ],
   "fields": [

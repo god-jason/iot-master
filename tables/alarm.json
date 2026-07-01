@@ -4,10 +4,19 @@
   "joins": [
     {
       "table": "device",
-      "local_field": "device_id",
-      "foreign_field": "id",
-      "field": "name",
-      "as": "device_name"
+      "local": "device_id",
+      "foreign": "id",
+      "fields": {
+        "name": "device_name"
+      }
+    },
+    {
+      "table": "group",
+      "local": "group_id",
+      "foreign": "id",
+      "fields": {
+        "name": "group_name"
+      }
     }
   ],
   "fields": [

@@ -1,6 +1,8 @@
 // 产品详情页面配置
+// 功能：查看产品详细信息，支持编辑、删除操作，管理设备、物模型、配置参数等
 return {
   title: '产品详情',
+  icon: '/emoji/box.svg',
   template: 'detail',
   toolbar: [
     {
@@ -26,7 +28,8 @@ return {
       action: {
         type: 'script',
         script(data, index) {
-          this.request.get('table/device/delete/' + data.id).subscribe(res => {
+          this.request.get('table/product/delete/' + data.id).subscribe(res => {
+            this.notification.success('提示', '删除成功')
             this.navigate('/page/product')
           })
         }
@@ -34,95 +37,78 @@ return {
     }
   ],
   fields: [
-    { key: 'id', label: 'ID' },
-    { key: 'name', label: '名称' },
-    { key: 'description', label: '说明' },
-    { key: 'type', label: '类型' },
-    { key: 'version', label: '版本' },
-    { key: 'protocol', label: '协议' },
-    { key: 'image', label: '图片', type: 'avatar' },
+    { key: 'id', label: 'ID', type: 'text' },
+    { key: 'name', label: '名称', type: 'text' },
+    { key: 'description', label: '说明', type: 'text' },
+    { key: 'type', label: '类型', type: 'text' },
+    { key: 'version', label: '版本', type: 'text' },
+    { key: 'protocol', label: '协议', type: 'text' },
+    { key: 'image', label: '图片', type: 'image' },
     { key: 'gateway', label: '网关', type: 'boolean' },
     { key: 'smart', label: '智能', type: 'boolean' },
     { key: 'programmable', label: '可编程', type: 'boolean' },
+    { key: 'configurable', label: '可配置', type: 'boolean' },
     { key: 'locatable', label: '支持定位', type: 'boolean' },
-    { key: 'disabled', label: '禁用', type: 'boolean' }
+    { key: 'disabled', label: '禁用', type: 'boolean' },
+    { key: 'created', label: '创建时间', type: 'datetime' }
   ],
   load_api: 'table/product/detail/:id',
-  load_success(data) {
-    this.add_tab_settings()
-    this.add_tab_actions()
-    this.add_tab_parameters()
-    this.add_tab_validators()
-    this.add_tab_versions()
-  },
   tabs: [
     {
       title: '产品设备',
+      icon: '/emoji/device.svg',
       page: 'device',
-      params(params) {
-        return { product_id: params.id }
+      params(data) {
+        return { product_id: data.id }
       }
     },
     {
       title: '物模型',
+      icon: '/emoji/model.svg',
       page: 'product_setting_model',
-      params(params) {
-        return { id: params.id }
+      params(data) {
+        return { id: data.id }
+      }
+    },
+    {
+      title: '配置参数',
+      icon: '/emoji/setting.svg',
+      page: 'product_setting_setting',
+      params(data) {
+        return { id: data.id }
+      }
+    },
+    {
+      title: '设备操作',
+      icon: '/emoji/action.svg',
+      page: 'product_setting_action',
+      params(data) {
+        return { id: data.id }
+      }
+    },
+    {
+      title: '数值检查',
+      icon: '/emoji/check.svg',
+      page: 'product_setting_validator',
+      params(data) {
+        return { id: data.id }
+      }
+    },
+    {
+      title: '固件版本',
+      icon: '/emoji/version.svg',
+      page: 'version',
+      params(data) {
+        return { product_id: data.id }
       }
     },
     {
       title: '物模型(旧)',
+      icon: '/emoji/model.svg',
       page: 'product_model',
-      params(params) {
-        return { id: params.id }
+      params(data) {
+        return { id: data.id }
       }
     }
-  ],
-  methods: {
-    add_tab_settings() {
-      if (this.data.configurable) {
-        this.content.tabs.push({
-          title: '配置参数',
-          page: 'product_setting_setting',
-          params: { id: this.params.id }
-        })
-      }
-    },
-    add_tab_actions() {
-      if (this.data.controllable) {
-        this.content.tabs.push({
-          title: '远程操作',
-          page: 'product_setting_action',
-          params: { id: this.params.id }
-        })
-      }
-    },
-    add_tab_parameters() {
-      if (this.data.writable) {
-        this.content.tabs.push({
-          title: '修改变量',
-          page: 'product_setting_parameter',
-          params: { id: this.params.id }
-        })
-      }
-    },
-    add_tab_validators() {
-      if (this.data.validate) {
-        this.content.tabs.push({
-          title: '数值检查',
-          page: 'product_setting_validator',
-          params: { id: this.params.id }
-        })
-      }
-    },
-    add_tab_versions() {
-      if (this.data.ota) {
-        this.content.tabs.push({
-          title: '固件版本',
-          page: 'version',
-          params: { product_id: this.params.id }
-        })
-      }
-    }
-  }
+  ]
 }
