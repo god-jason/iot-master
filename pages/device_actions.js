@@ -1,6 +1,7 @@
 // 操作页面配置
 return {
   title: '操作',
+  template: 'detail',
   toolbar: [],
   items: [],
   // 页面挂载时执行
@@ -42,6 +43,7 @@ return {
           }
         }
       })
+      console.log("actions toolbar", this.content.toolbar)
     }
   }
 }
