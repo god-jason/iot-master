@@ -20,6 +20,7 @@ func ApiCreate(ctx *gin.Context) {
 		return
 	}
 
+	//默认租户ID
 	if viper.GetBool("tenant") {
 		tid := ctx.GetString("tenant")
 		if tid != "" {
@@ -29,6 +30,14 @@ func ApiCreate(ctx *gin.Context) {
 					doc["tenant_id"] = tid
 				}
 			}
+		}
+	}
+
+	//默认用户ID
+	uc := table.Column("user_id")
+	if uc != nil {
+		if uid, ok := doc["user_id"]; !ok || uid == "" {
+			doc["user_id"] = ctx.GetString("user")
 		}
 	}
 

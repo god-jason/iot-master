@@ -4,6 +4,7 @@ go 1.25.0
 
 require (
 	github.com/ArtisanCloud/PowerWeChat/v3 v3.4.39
+	github.com/Icemap/coordinate v1.0.1
 	github.com/PaesslerAG/gval v1.2.4
 	github.com/dop251/goja v0.0.0-20260305124333-6a7976c22267
 	github.com/dop251/goja_nodejs v0.0.0-20260212111938-1f56ff5bcf14
@@ -43,7 +44,6 @@ require (
 require (
 	filippo.io/edwards25519 v1.2.0 // indirect
 	github.com/ArtisanCloud/PowerLibs/v3 v3.3.2 // indirect
-	github.com/Icemap/coordinate v1.0.1 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/bytedance/gopkg v0.1.3 // indirect
 	github.com/bytedance/sonic v1.15.0 // indirect

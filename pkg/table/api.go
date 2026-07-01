@@ -6,11 +6,11 @@ import (
 
 // Join 关联查询配置
 type Join struct {
-	Table        string `json:"table,omitempty"`         //表名
-	LocalField   string `json:"local_field,omitempty"`   //主表字段
-	ForeignField string `json:"foreign_field,omitempty"` //附表字段（外键）
-	Field        string `json:"field,omitempty"`         //取字段 TODO 可以改为数组
-	As           string `json:"as,omitempty"`            //赋值
+	Table   string            `json:"table,omitempty"`   //表名
+	Alias   string            `json:"alias,omitempty"`   //表别名，默认t1,t2,t3...
+	Local   string            `json:"local,omitempty"`   //主表字段
+	Foreign string            `json:"foreign,omitempty"` //附表字段（外键）
+	Fields  map[string]string `json:"fields,omitempty"`  //字段映射 field=>as
 }
 
 // ParamSearch 搜索参数
@@ -32,7 +32,7 @@ type Aggregator struct {
 
 // ParamGroup 聚合查询参数
 type ParamGroup struct {
-	GroupBy     string         `json:"group_by"`    // 分组字段，逗号分隔
+	By          []string       `json:"by"`          // 分组字段列表
 	Aggregators []*Aggregator  `json:"aggregators"` // 聚合函数列表
 	Filter      map[string]any `json:"filter"`      // 过滤条件
 	Joins       []*Join        `json:"joins"`       // 关联查询配置

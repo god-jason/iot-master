@@ -27,11 +27,19 @@ func (t *Table) Detail(id any, joins []*Join) (Document, error) {
 	columns = append(columns, "t.*")
 
 	for i, join := range joins {
-		lf := "t." + db.Engine().Quote(join.LocalField)
+		lf := "t." + db.Engine().Quote(join.Local)
 		columns = append(columns, lf)
-		as := "t" + strconv.Itoa(i+1)
-		ff := as + "." + db.Engine().Quote(join.Field)
-		columns = append(columns, ff+" AS "+db.Engine().Quote(join.As))
+		as := join.Alias
+		if as == "" {
+			as = "t" + strconv.Itoa(i+1)
+		}
+		for field, alias := range join.Fields {
+			if alias == "" {
+				alias = join.Table + "_" + field
+			}
+			ff := as + "." + db.Engine().Quote(field)
+			columns = append(columns, ff+" AS "+db.Engine().Quote(alias))
+		}
 	}
 
 	bdr.Select(columns...).From(builder.As(db.Engine().Quote(t.Name), "t"))
@@ -75,9 +83,17 @@ func (t *Table) Detail(id any, joins []*Join) (Document, error) {
 
 	// 添加关联
 	for i, join := range joins {
-		as := "t" + strconv.Itoa(i+1)
-		lf := "t." + db.Engine().Quote(join.LocalField)
-		ff := as + "." + db.Engine().Quote(join.ForeignField)
+		as := join.Alias
+		if as == "" {
+			as = "t" + strconv.Itoa(i+1)
+		}
+		var lf string
+		if strings.Contains(join.Local, ".") {
+			lf = join.Local
+		} else {
+			lf = "t." + db.Engine().Quote(join.Local)
+		}
+		ff := as + "." + db.Engine().Quote(join.Foreign)
 		bdr.LeftJoin(builder.As(db.Engine().Quote(join.Table), as), lf+"="+ff)
 	}
 

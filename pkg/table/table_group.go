@@ -5,6 +5,7 @@ import (
 
 	"github.com/god-jason/iot-master/pkg/db"
 	"github.com/spf13/cast"
+
 	"xorm.io/builder"
 )
 
@@ -16,7 +17,7 @@ func (t *Table) Group(body *ParamGroup) (rows []map[string]any, err error) {
 	var columns []string
 
 	// 添加分组字段
-	for _, f := range strings.Split(body.GroupBy, ",") {
+	for _, f := range body.By {
 		f = strings.TrimSpace(f)
 		if f == "" {
 			continue
@@ -44,9 +45,16 @@ func (t *Table) Group(body *ParamGroup) (rows []map[string]any, err error) {
 		bdr.Where(c)
 	}
 
-	// 添加 GROUP BY（直接使用字符串）
-	if body.GroupBy != "" {
-		bdr.GroupBy(body.GroupBy)
+	// 添加 GROUP BY（自行拼接成 "`id`, `username`" 格式）
+	if len(body.By) > 0 {
+		var groupByParts []string
+		for _, f := range body.By {
+			f = strings.TrimSpace(f)
+			if f != "" {
+				groupByParts = append(groupByParts, db.Engine().Quote(f))
+			}
+		}
+		bdr.GroupBy(strings.Join(groupByParts, ", "))
 	}
 
 	// 添加 HAVING 条件（可选）

@@ -17,7 +17,7 @@ func (t *Table) GroupJoin(body *ParamGroup) (rows []map[string]any, err error) {
 	}
 
 	// 无关联时使用基础 Group
-	if len(joins) == 0 && body.GroupBy != "" {
+	if len(joins) == 0 && len(body.By) > 0 {
 		return t.Group(body)
 	}
 
@@ -27,7 +27,7 @@ func (t *Table) GroupJoin(body *ParamGroup) (rows []map[string]any, err error) {
 	var columns []string
 
 	// 添加分组字段（带表别名）
-	for _, f := range strings.Split(body.GroupBy, ",") {
+	for _, f := range body.By {
 		f = strings.TrimSpace(f)
 		if f == "" {
 			continue
@@ -58,12 +58,17 @@ func (t *Table) GroupJoin(body *ParamGroup) (rows []map[string]any, err error) {
 
 	// 添加 JOIN 表的字段
 	for i, join := range joins {
-		as := "t" + strconv.Itoa(i+1)
-		if join.Field != "" {
-			fieldExpr := as + "." + db.Engine().Quote(join.Field)
-			if join.As != "" {
-				fieldExpr += " AS " + db.Engine().Quote(join.As)
+		as := join.Alias
+		if as == "" {
+			as = "t" + strconv.Itoa(i+1)
+		}
+		for field, alias := range join.Fields {
+			if alias == "" {
+				alias = join.Table + "_" + field
 			}
+			//使用ANY_VALUE()，避免ONLY_FULL_GROUP_BY
+			fieldExpr := "ANY_VALUE(" + as + "." + db.Engine().Quote(field) + ")"
+			fieldExpr += " AS " + db.Engine().Quote(alias)
 			columns = append(columns, fieldExpr)
 		}
 	}
@@ -82,15 +87,34 @@ func (t *Table) GroupJoin(body *ParamGroup) (rows []map[string]any, err error) {
 
 	// 添加 JOIN
 	for i, join := range joins {
-		as := "t" + strconv.Itoa(i+1)
-		lf := "t." + db.Engine().Quote(join.LocalField)
-		ff := as + "." + db.Engine().Quote(join.ForeignField)
+		as := join.Alias
+		if as == "" {
+			as = "t" + strconv.Itoa(i+1)
+		}
+		var lf string
+		if strings.Contains(join.Local, ".") {
+			lf = join.Local
+		} else {
+			lf = "t." + db.Engine().Quote(join.Local)
+		}
+		ff := as + "." + db.Engine().Quote(join.Foreign)
 		bdr.LeftJoin(builder.As(db.Engine().Quote(join.Table), as), lf+"="+ff)
 	}
 
-	// 添加 GROUP BY（直接使用字符串）
-	if body.GroupBy != "" {
-		bdr.GroupBy(body.GroupBy)
+	// 添加 GROUP BY（自行拼接成 "`id`, `username`" 格式）
+	if len(body.By) > 0 {
+		var groupByParts []string
+		for _, f := range body.By {
+			f = strings.TrimSpace(f)
+			if f != "" {
+				if strings.Contains(f, ".") {
+					groupByParts = append(groupByParts, f)
+				} else {
+					groupByParts = append(groupByParts, "t."+db.Engine().Quote(f))
+				}
+			}
+		}
+		bdr.GroupBy(strings.Join(groupByParts, ", "))
 	}
 
 	// 添加 HAVING 条件（可选）
