@@ -6,7 +6,7 @@ return {
   items: [],
   // 页面挂载时执行
   mount() {
-    this.load_device()
+    this.load_model(this.params.product_id)
     this.btn_action = {
       type: 'dialog',
       page: 'device_action',
@@ -14,12 +14,6 @@ return {
     }
   },
   methods: {
-    load_device() {
-      this.request.get('table/device/detail/' + this.params.id).subscribe(res => {
-        if (res.error) return
-        this.load_model(res.data.product_id)
-      })
-    },
     load_model(pid) {
       this.request.get('product/' + pid + '/setting/action').subscribe(res => {
         if (res.error) return

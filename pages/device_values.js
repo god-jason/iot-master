@@ -36,13 +36,13 @@ return {
   },
   // 页面挂载时执行
   mount() {
-    this.load_device()
+    this.load_model(this.params.product_id)
   },
   methods: {
     load_values() {
       this.request.get('device/' + this.params.id + '/values').subscribe(res => {
         if (res.error) return
-        this.data = res.data
+        this.data = res.data || res.data
       })
     },
     load_values_delay(delay) {
@@ -60,17 +60,10 @@ return {
         this.load_values_delay()
       })
     },
-    load_device() {
-      this.request.get('table/device/detail/' + this.params.id).subscribe(res => {
-        if (res.error) return
-        this.device = res.data
-        this.load_model(res.data.product_id)
-      })
-    },
     load_model(pid) {
       this.request.get('product/' + pid + '/setting/model').subscribe(res => {
         if (res.error) return
-        if (res.data.content) this.render_properties(res.data.content)
+        if (res.data && res.data.content) this.render_properties(res.data.content)
         setTimeout(() => this.render_values(), 100)
       })
     },

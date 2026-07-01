@@ -38,7 +38,7 @@ return {
     load_model() {
       this.request.get('product/' + this.params.product_id + '/setting/setting').subscribe(res => {
         if (res.error) return
-        if (res.data.content) this.render_settings(res.data.content)
+        if (res.data.data && res.data.data.content) this.render_settings(res.data.data.content)
       })
     },
     render_settings(settings) {

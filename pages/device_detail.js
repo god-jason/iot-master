@@ -104,85 +104,63 @@ return {
         })
     },
     add_tabs(data) {
-      data.gateway && this.add_gateway_tabs()
-      data.smart && this.add_smart_tabs()
-      data.programmable && this.add_program_tabs()
-      data.configurable && this.add_settings_tabs()
-      data.locatable && this.add_locate_tabs()
-    },
-    add_gateway_tabs() {
-      this.content.tabs.push({
+      this.content.tabs = [
+        {
+          title: '数据',
+          icon: '/emoji/activity.svg',
+          page: 'device_values',
+          params: { id: this.params.id, product_id: data.id }
+        },
+        {
+          title: '操作',
+          icon: '/emoji/action.svg',
+          page: 'device_actions',
+          params: { id: this.params.id, product_id: data.id }
+        },
+        {
+          title: '日志',
+          icon: '/emoji/log.svg',
+          page: 'device_log',
+          params: { id: this.params.id, product_id: data.id }
+        },
+        {
+          title: '告警',
+          icon: '/emoji/alert.svg',
+          page: 'alarm',
+          params: { device_id: this.params.id, product_id: data.id }
+        }
+      ]
+      data.gateway && this.content.tabs.push({
         title: '网关',
         icon: '/emoji/antenna.svg',
         page: 'device_gateway',
-        params: { id: this.params.id }
+        params: { id: this.params.id, product_id: data.id }
       })
-    },
-    add_smart_tabs() {
-      this.content.tabs.push({
+      data.smart && this.content.tabs.push({
         title: '智能',
         icon: '/emoji/lightning.svg',
         page: 'device_smart',
-        params: { id: this.params.id }
+        params: { id: this.params.id, product_id: data.id }
       })
-    },
-    add_program_tabs() {
-      this.content.tabs.push({
+      data.programmable && this.content.tabs.push({
         title: '编程',
         icon: '/emoji/code.svg',
         page: 'device_program',
-        params: { id: this.params.id }
+        params: { id: this.params.id, product_id: data.id }
       })
-    },
-    add_settings_tabs() {
-      this.content.tabs.push({
+      data.configurable && this.content.tabs.push({
         title: '配置',
         icon: '/emoji/setting.svg',
         page: 'device_settings',
-        params: { id: this.params.id, product_id: this.product.id }
+        params: { id: this.params.id, product_id: data.id }
       })
-    },
-    add_locate_tabs() {
-      this.content.tabs.push({
+      data.locatable && this.content.tabs.push({
         title: '定位',
         icon: '/emoji/location.svg',
         page: 'device_track',
-        params: { id: this.params.id }
+        params: { id: this.params.id, product_id: data.id }
       })
     }
   },
-  tabs: [
-    {
-      title: '数据',
-      icon: '/emoji/activity.svg',
-      page: 'device_values',
-      params(data) {
-        return { id: this.params.id }
-      }
-    },
-    {
-      title: '操作',
-      icon: '/emoji/action.svg',
-      page: 'device_actions',
-      params(data) {
-        return { id: this.params.id }
-      }
-    },
-    {
-      title: '日志',
-      icon: '/emoji/log.svg',
-      page: 'device_log',
-      params(data) {
-        return { id: this.params.id }
-      }
-    },
-    {
-      title: '告警',
-      icon: '/emoji/alert.svg',
-      page: 'alarm',
-      params(data) {
-        return { device_id: this.params.id }
-      }
-    }
-  ]
+  tabs: []
 }
