@@ -12,7 +12,7 @@ return {
       if (f.data_api) {
         this.request.get(f.data_api).subscribe(res => {
           if (res.error) return
-          f.options = res.data
+          f.options = res.data.data || res.data
         })
       }
     })

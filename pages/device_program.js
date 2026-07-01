@@ -7,20 +7,6 @@ return {
       params(data) {
         return { gateway_id: this.params.id }
       }
-    },
-    {
-      title: 'Blockly',
-      page: 'blockly',
-      params(data) {
-        return { gateway_id: this.params.id }
-      }
-    },
-    {
-      title: 'ST脚本',
-      page: 'st',
-      params(data) {
-        return { gateway_id: this.params.id }
-      }
     }
   ]
 }

@@ -240,6 +240,10 @@ return {
       if (res.error) return
       this.put_groups(res.data || [])
     })
+    this.request.post('table/device/search', { limit: 999, filter: { gateway: 1 } }).subscribe(res => {
+      if (res.error) return
+      this.put_gateways(res.data || [])
+    })
   },
   methods: {
     get_extend_fields() {
@@ -257,6 +261,12 @@ return {
     put_groups(groups) {
       const list = Array.isArray(groups) ? groups : []
       this.content.fields[4].filter = list.map(g => {
+        return { value: g.id, text: g.name }
+      })
+    },
+    put_gateways(gateways) {
+      const list = Array.isArray(gateways) ? gateways : []
+      this.content.fields[5].filter = list.map(g => {
         return { value: g.id, text: g.name }
       })
     }

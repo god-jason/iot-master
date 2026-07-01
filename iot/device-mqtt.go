@@ -122,7 +122,9 @@ func mqttSubscribeDevice() {
 
 		//配置和数据库更新，重启一下设备
 		if hasSync {
-			mqtt.Publish("device/"+d.Id+"/action", &ActionRequest{Action: "reboot"})
+			time.AfterFunc(time.Second*10, func() {
+				mqtt.Publish("device/"+d.Id+"/action", &ActionRequest{Action: "reboot"})
+			})
 		}
 	})
 

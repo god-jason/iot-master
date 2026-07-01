@@ -10,7 +10,7 @@ return {
       action: {
         type: 'script',
         script(data, index) {
-          if (this.device.gateway_id) this.refresh_child_values()
+          if (this.params.gateway_id) this.refresh_child_values()
           else this.refresh_values()
         }
       }
@@ -42,7 +42,7 @@ return {
     load_values() {
       this.request.get('device/' + this.params.id + '/values').subscribe(res => {
         if (res.error) return
-        this.data = res.data || res.data
+        this.data = res.data
       })
     },
     load_values_delay(delay) {
@@ -55,7 +55,7 @@ return {
       })
     },
     refresh_child_values() {
-      this.request.get('device/' + this.device.gateway_id + '/sync/' + this.params.id).subscribe(res => {
+      this.request.get('device/' + this.params.gateway_id + '/sync/' + this.params.id).subscribe(res => {
         if (res.error) return
         this.load_values_delay()
       })
@@ -63,7 +63,7 @@ return {
     load_model(pid) {
       this.request.get('product/' + pid + '/setting/model').subscribe(res => {
         if (res.error) return
-        if (res.data && res.data.content) this.render_properties(res.data.content)
+        if (res.data.content) this.render_properties(res.data.content)
         setTimeout(() => this.render_values(), 100)
       })
     },

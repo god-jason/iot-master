@@ -109,7 +109,7 @@ return {
           title: '数据',
           icon: '/emoji/activity.svg',
           page: 'device_values',
-          params: { id: this.params.id, product_id: data.id }
+          params: { id: this.params.id, product_id: data.id, gateway_id: this.data.gateway_id}
         },
         {
           title: '操作',
