@@ -97,7 +97,7 @@ return {
   },
   methods: {
     load_product() {
-      if (!this.product)
+      if (!this.product && this.data.product_id)
         this.request.get('table/product/detail/' + this.data.product_id).subscribe(res => {
           this.product = res.data
           this.add_tabs(res.data)
