@@ -99,7 +99,7 @@ return {
               $lte: v.range[1]
             }
           } else {
-            this.filter.created = null
+            delete this.filter.created
           }
           this.load()
         }
