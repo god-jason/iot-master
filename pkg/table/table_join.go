@@ -12,10 +12,7 @@ import (
 
 // Join 查询数据列表（支持关联查询）
 func (t *Table) Join(body *ParamSearch) (rows []map[string]any, err error) {
-	joins := body.Joins
-	if len(joins) == 0 {
-		joins = t.Joins //默认使用表定义的关联
-	}
+	joins := t.Joins
 	if len(joins) == 0 {
 		return t.Find(body) //直接使用基础
 	}

@@ -19,8 +19,8 @@ type ParamSearch struct {
 	Limit  int            `form:"limit" json:"limit"`   //限制条数
 	Sort   map[string]int `form:"sort" json:"sort"`     //排序 仅支持一个字段
 	Filter map[string]any `form:"filter" json:"filter"` //条件
-	Joins  []*Join        `form:"joins" json:"joins"`   //联合查询的字段
-	Fields []string       `form:"fields" json:"fields"` //要查询的字段
+	//Joins  []*Join        `form:"joins" json:"joins"`   //联合查询的字段
+	Fields []string `form:"fields" json:"fields"` //要查询的字段
 }
 
 // Aggregator 聚合函数定义
