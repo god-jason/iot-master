@@ -34,11 +34,11 @@ func ApiSearch(ctx *gin.Context) {
 		}
 	}
 
-	cnt, err := table.Count(body.Filter)
-	if err != nil {
-		Error(ctx, err)
-		return
-	}
+	// cnt, err := table.Count(body.Filter)
+	// if err != nil {
+	// 	Error(ctx, err)
+	// 	return
+	// }
 
 	results, err := table.Join(&body)
 	if err != nil {
@@ -46,5 +46,6 @@ func ApiSearch(ctx *gin.Context) {
 		return
 	}
 
-	List(ctx, results, cnt)
+	//List(ctx, results, cnt)
+	OK(ctx, results)
 }

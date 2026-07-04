@@ -152,6 +152,7 @@ return {
     { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
   search_api: 'table/device/search',
+  count_api: 'table/device/count',
   // 页面挂载时执行
   mount() {
     if (this.params.product_id) {

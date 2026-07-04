@@ -98,6 +98,7 @@ return {
     { key: 'created', label: '创建时间', type: 'date', sortable: true }
   ],
   search_api: 'table/alarm/search',
+  count_api: 'table/alarm/count',
   // 页面挂载时执行
   mount() {
     if (this.params.device_id) this.filter.device_id = this.params.device_id

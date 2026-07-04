@@ -225,6 +225,7 @@ return {
     { key: 'created', label: '日期', type: 'date', sortable: true }
   ],
   search_api: 'table/device/search',
+  count_api: 'table/device/count',
   mount() {
     if (this.params.link_id) this.filter.link_id = this.params.link_id
     if (this.params.product_id) this.filter.product_id = this.params.product_id

@@ -104,6 +104,7 @@ return {
     }
   ],
   search_api: 'table/job/search',
+  count_api: 'table/job/count',
   // 页面挂载时执行
   mount() {
     if (this.params.gateway_id) this.filter.gateway_id = this.params.gateway_id

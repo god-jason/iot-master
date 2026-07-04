@@ -100,5 +100,6 @@ return {
     { key: 'admin', label: '管理员', type: 'boolean', admin: true },
     { key: 'disabled', label: '禁用', type: 'boolean', filter: [{ text: '全部', value: '' }, { text: '禁用', value: 1 }, { text: '正常', value: 0 }] }
   ],
-  search_api: 'table/user/search'
+  search_api: 'table/user/search',
+  count_api: 'table/user/count'
 }

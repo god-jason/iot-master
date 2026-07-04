@@ -174,6 +174,9 @@ export interface ListContent {
 
   search_api?: string
   search?: string | Function | ((event: ParamSearch, request: SmartRequestService) => Promise<any>)
+
+  count_api?: string
+  count?: string | Function | ((event: ParamSearch, request: SmartRequestService) => Promise<any>)
 }
 
 

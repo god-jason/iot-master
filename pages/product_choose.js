@@ -46,5 +46,6 @@ return {
     { key: 'protocol', label: '协议', type: 'text' },
     { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
-  search_api: 'table/product/search'
+  search_api: 'table/product/search',
+  count_api: 'table/product/count'
 }

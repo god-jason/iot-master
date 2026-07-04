@@ -46,5 +46,6 @@ return {
     { key: 'cellphone', label: '手机号', type: 'text' },
     { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
-  search_api: 'table/user/search'
+  search_api: 'table/user/search',
+  count_api: 'table/user/count'
 }

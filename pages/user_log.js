@@ -56,5 +56,6 @@ return {
     { key: 'ip', label: 'IP', type: 'text' },
     { key: 'created', label: '日期', type: 'date' }
   ],
-  search_api: 'table/user_log/search'
+  search_api: 'table/user_log/search',
+  count_api: 'table/user_log/count'
 }

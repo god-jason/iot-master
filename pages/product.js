@@ -132,6 +132,7 @@ return {
     { key: 'created', label: '日期', type: 'date', sortable: true }
   ],
   search_api: 'table/product/search',
+  count_api: 'table/product/count',
   mount() {
     this.request.get('protocol/list').subscribe(res => {
       this.content.fields[6].filter = res.data?.map(d => ({ text: d.description, value: d.name })) || []

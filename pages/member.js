@@ -90,6 +90,7 @@ return {
     { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
   search_api: 'table/member/search',
+  count_api: 'table/member/count',
   // 页面挂载时执行
   mount() {
     this.filter = { group_id: this.params.group_id }
