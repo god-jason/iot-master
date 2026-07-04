@@ -322,9 +322,16 @@ func (t *Table) Schema() *schemas.Table {
 	table.Comment = t.Comment
 
 	// 转化列
-	for _, column := range t.Fields {
-		col := column.ToColumn()
+	for _, f := range t.Fields {
+		col := f.ToColumn()
 		table.AddColumn(col)
+
+		//补充索引
+		if f.Indexed {
+			idx := schemas.NewIndex(f.Name, schemas.IndexType)
+			idx.AddColumn(f.Name)
+			table.AddIndex(idx)
+		}
 	}
 
 	return table
