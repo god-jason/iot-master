@@ -10,25 +10,54 @@ import (
 	"xorm.io/builder"
 )
 
-// Join 查询数据列表（支持关联查询）
-func (t *Table) Join(body *ParamSearch) (rows []map[string]any, err error) {
-	joins := body.Joins
-	if len(joins) == 0 {
-		joins = t.Joins //默认使用表定义的关联
+// Join 快速联合查询
+func (t *Table) JoinFast(pk string, joins []*Join, body *ParamSearch) (rows []map[string]any, err error) {
+
+	//第一步，分页查询，获得ID集合
+	var ids []any
+	subBdr := builder.Dialect(db.Engine().DriverName())
+	//subBdr.Select("t." + db.Engine().Quote(pk[0].Name)).From(builder.As(db.Engine().Quote(t.Name), "t"))
+
+	cs, err := t.condWhere(body.Filter, false)
+	if err != nil {
+		return nil, err
 	}
-	if len(joins) == 0 {
-		return t.Find(body) //直接使用基础
+	for _, c := range cs {
+		subBdr.Where(c)
 	}
 
-	//判断是否有单主键，如果有，可以使用JoinFast优化
-	pks := len(t.PrimaryKeys())
-	if pks == 0 {
-		return t.JoinFast("id", joins, body)
-	}
-	if pks == 1 {
-		return t.JoinFast(t.PrimaryKeys()[0].Name, joins, body)
+	if len(body.Sort) > 0 {
+		for k, v := range body.Sort {
+			f := db.Engine().Quote(k)
+			if v > 0 {
+				subBdr.OrderBy(f + " ASC")
+			} else {
+				subBdr.OrderBy(f + " DESC")
+			}
+		}
 	}
 
+	if body.Limit <= 0 {
+		body.Limit = 20
+	}
+	subBdr.Limit(body.Limit, body.Skip)
+
+	subRows, err := db.Engine().QueryInterface(subBdr)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, row := range subRows {
+		if val, ok := row[pk]; ok {
+			ids = append(ids, val)
+		}
+	}
+
+	if len(ids) == 0 {
+		return []map[string]any{}, nil
+	}
+
+	//第二步，根据ID集合查询关联数据
 	bdr := builder.Dialect(db.Engine().DriverName())
 
 	var columns []string
@@ -60,12 +89,8 @@ func (t *Table) Join(body *ParamSearch) (rows []map[string]any, err error) {
 
 	bdr.Select(columns...).From(builder.As(db.Engine().Quote(t.Name), "t"))
 
-	cs, err := t.condWhere(body.Filter, true)
-	if err != nil {
-		return nil, err
-	}
-	for _, c := range cs {
-		bdr.Where(c)
+	if len(pk) > 0 {
+		bdr.Where(builder.In("t."+db.Engine().Quote(pk), ids))
 	}
 
 	for i, join := range joins {
@@ -82,23 +107,6 @@ func (t *Table) Join(body *ParamSearch) (rows []map[string]any, err error) {
 		ff := as + "." + db.Engine().Quote(join.Foreign)
 		bdr.LeftJoin(builder.As(db.Engine().Quote(join.Table), as), lf+"="+ff)
 	}
-
-	//排序
-	if len(body.Sort) > 0 {
-		for k, v := range body.Sort {
-			f := "t." + db.Engine().Quote(k)
-			if v > 0 {
-				bdr.OrderBy(f + " ASC")
-			} else {
-				bdr.OrderBy(f + " DESC")
-			}
-		}
-	}
-
-	if body.Limit <= 0 {
-		body.Limit = 20
-	}
-	bdr.Limit(body.Limit, body.Skip)
 
 	rows, err = db.Engine().QueryInterface(bdr)
 	if err != nil {
