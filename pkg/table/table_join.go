@@ -20,14 +20,15 @@ func (t *Table) Join(body *ParamSearch) (rows []map[string]any, err error) {
 		return t.Find(body) //直接使用基础
 	}
 
+	//以下优化无用，真正卡的是计算总数 select count(*) where device_id=? 遍历了所有数据
 	//判断是否有单主键，如果有，可以使用JoinFast优化
-	pks := len(t.PrimaryKeys())
-	if pks == 0 {
-		return t.JoinFast("id", joins, body)
-	}
-	if pks == 1 {
-		return t.JoinFast(t.PrimaryKeys()[0].Name, joins, body)
-	}
+	//pks := len(t.PrimaryKeys())
+	//if pks == 0 {
+	//	return t.JoinFast("id", joins, body)
+	//}
+	//if pks == 1 {
+	//	return t.JoinFast(t.PrimaryKeys()[0].Name, joins, body)
+	//}
 
 	bdr := builder.Dialect(db.Engine().DriverName())
 

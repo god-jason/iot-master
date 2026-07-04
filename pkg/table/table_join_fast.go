@@ -16,6 +16,7 @@ func (t *Table) JoinFast(pk string, joins []*Join, body *ParamSearch) (rows []ma
 	//第一步，分页查询，获得ID集合
 	var ids []any
 	subBdr := builder.Dialect(db.Engine().DriverName())
+	subBdr.Select(db.Engine().Quote(pk)).From(db.Engine().Quote(t.Name))
 	//subBdr.Select("t." + db.Engine().Quote(pk[0].Name)).From(builder.As(db.Engine().Quote(t.Name), "t"))
 
 	cs, err := t.condWhere(body.Filter, false)
