@@ -5,25 +5,20 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
-
-	"github.com/god-jason/iot-master/pkg/lib"
+	"sync"
 )
 
-var tables lib.Map[Table]
-
-//var tables []*Table
+var tables sync.Map
 
 func Register(table *Table) {
-	//tables = append(tables, table)
 	tables.Store(table.Name, table)
 }
 
 func Get(name string) (*Table, error) {
-	tb := tables.Load(name)
-	if tb == nil {
-		return nil, errors.New("表不存在")
+	if v, ok := tables.Load(name); ok {
+		return v.(*Table), nil
 	}
-	return tb, nil
+	return nil, errors.New("表不存在")
 }
 
 func Load(path string) error {
@@ -59,5 +54,7 @@ func Scan(dir string) error {
 }
 
 func Range(iterator func(name string, tb *Table) bool) {
-	tables.Range(iterator)
+	tables.Range(func(key, value any) bool {
+		return iterator(key.(string), value.(*Table))
+	})
 }

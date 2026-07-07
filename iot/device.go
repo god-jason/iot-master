@@ -4,11 +4,11 @@ import (
 	"errors"
 	"math/rand"
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/god-jason/iot-master/history"
 	"github.com/god-jason/iot-master/pkg/db"
-	"github.com/god-jason/iot-master/pkg/lib"
 	"github.com/god-jason/iot-master/pkg/log"
 	"github.com/god-jason/iot-master/pkg/mqtt"
 )
@@ -44,9 +44,7 @@ type Device struct {
 
 	validators []*Validator
 
-	//waitingResponse map[string]chan any
-	//waitingLock     sync.RWMutex
-	waiting lib.Map[chan any]
+	waiting sync.Map
 }
 
 type Status struct {
@@ -103,12 +101,10 @@ func (d *Device) GetValues() map[string]any {
 }
 
 func (d *Device) waitResponse(msg_id string, timeout int) (any, error) {
-	//等待消息
-	ch := make(chan any)
+	ch := make(chan any, 1)
 
-	c := d.waiting.LoadAndStore(msg_id, &ch)
-	if c != nil {
-		close(*c)
+	if old, loaded := d.waiting.Swap(msg_id, &ch); loaded {
+		close(old.(chan any))
 	}
 
 	if timeout < 1 {
@@ -154,9 +150,11 @@ func (d *Device) Sync(timeout int, child string) (map[string]any, error) {
 }
 
 func (d *Device) onSyncResponse(resp *SyncResponse) {
-	c := d.waiting.LoadAndDelete(resp.MsgId)
-	if c != nil {
-		*c <- resp
+	if c, ok := d.waiting.LoadAndDelete(resp.MsgId); ok {
+		select {
+		case c.(chan any) <- resp:
+		default:
+		}
 	}
 }
 
@@ -190,9 +188,11 @@ func (d *Device) Read(points []string, timeout int, child string) (map[string]an
 }
 
 func (d *Device) onReadResponse(resp *ReadResponse) {
-	c := d.waiting.LoadAndDelete(resp.MsgId)
-	if c != nil {
-		*c <- resp
+	if c, ok := d.waiting.LoadAndDelete(resp.MsgId); ok {
+		select {
+		case c.(chan any) <- resp:
+		default:
+		}
 	}
 }
 
@@ -225,9 +225,11 @@ func (d *Device) Write(values map[string]any, timeout int, child string) (map[st
 }
 
 func (d *Device) onWriteResponse(resp *WriteResponse) {
-	c := d.waiting.LoadAndDelete(resp.MsgId)
-	if c != nil {
-		*c <- resp
+	if c, ok := d.waiting.LoadAndDelete(resp.MsgId); ok {
+		select {
+		case c.(chan any) <- resp:
+		default:
+		}
 	}
 }
 
@@ -266,9 +268,11 @@ func (d *Device) Action(action string, parameters map[string]any, timeout int) (
 }
 
 func (d *Device) onActionResponse(resp *ActionResponse) {
-	c := d.waiting.LoadAndDelete(resp.MsgId)
-	if c != nil {
-		*c <- resp
+	if c, ok := d.waiting.LoadAndDelete(resp.MsgId); ok {
+		select {
+		case c.(chan any) <- resp:
+		default:
+		}
 	}
 }
 
@@ -299,8 +303,10 @@ func (d *Device) Setting(name string, content any, version int, timeout int) (an
 }
 
 func (d *Device) onSettingResponse(resp *SettingResponse) {
-	c := d.waiting.LoadAndDelete(resp.MsgId)
-	if c != nil {
-		*c <- resp
+	if c, ok := d.waiting.LoadAndDelete(resp.MsgId); ok {
+		select {
+		case c.(chan any) <- resp:
+		default:
+		}
 	}
 }

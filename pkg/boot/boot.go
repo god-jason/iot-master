@@ -3,10 +3,10 @@ package boot
 import (
 	"fmt"
 	"strings"
+	"sync"
 	"sync/atomic"
 	"time"
 
-	"github.com/god-jason/iot-master/pkg/lib"
 	"go.uber.org/multierr"
 )
 
@@ -19,11 +19,14 @@ type Task struct {
 	booted  atomic.Bool
 }
 
-var tasks lib.Map[Task]
+var tasks sync.Map
 var queue []string
 
 func Load(name string) *Task {
-	return tasks.Load(name)
+	if v, ok := tasks.Load(name); ok {
+		return v.(*Task)
+	}
+	return nil
 }
 
 func Register(name string, task *Task) {
@@ -38,12 +41,12 @@ func Unregister(name string) {
 func Startup() (err error) {
 	start := time.Now().UnixMilli()
 
-	tasks.Range(func(name string, task *Task) bool {
-		//过滤掉依赖启动
+	tasks.Range(func(key, value any) bool {
+		name := key.(string)
+		task := value.(*Task)
 		if task.booting.Load() || task.booted.Load() {
 			return true
 		}
-		//启动
 		err = Open(name, nil)
 		if err != nil {
 			return false
@@ -92,12 +95,12 @@ func Open(name string, parent []string) error {
 		}
 	}
 
-	task := tasks.Load(name)
-	if task == nil {
+	v, ok := tasks.Load(name)
+	if !ok {
 		return fmt.Errorf("找不到任务 %s", name)
 	}
+	task := v.(*Task)
 
-	//过滤掉依赖启动
 	if task.booting.Load() || task.booted.Load() {
 		return nil
 	}
@@ -105,11 +108,9 @@ func Open(name string, parent []string) error {
 	task.booting.Store(true)
 	defer task.booting.Store(false)
 
-	//启动依赖
 	if len(task.Depends) > 0 {
 		for _, n := range task.Depends {
-			t := tasks.Load(n) //没有找到的依赖项
-			if t != nil {
+			if _, ok := tasks.Load(n); ok {
 				//parent = append(parent, name)
 				err := Open(n, append(parent, name)) //没有递归检查，可能会死循环
 				if err != nil {
@@ -140,10 +141,11 @@ func Open(name string, parent []string) error {
 }
 
 func Close(name string) error {
-	task := tasks.Load(name)
-	if task == nil {
+	v, ok := tasks.Load(name)
+	if !ok {
 		return fmt.Errorf("找不到任务 %s", name)
 	}
+	task := v.(*Task)
 	task.booted.Store(false)
 	if task.Shutdown != nil {
 		//log.Info("[boot] close", name)
