@@ -48,6 +48,5 @@ return {
     { key: 'cellphone3', label: '电话3', type: 'text' },
     { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
-  search_api: 'table/group/search',
-  count_api: 'table/group/count'
+  search_api: 'table/group/search'
 }

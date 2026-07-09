@@ -101,7 +101,6 @@ return {
     { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
   search_api: 'table/version/search',
-  count_api: 'table/version/count',
   // 页面挂载时执行
   mount() {
     if (this.params.product_id) this.filter.product_id = this.params.product_id

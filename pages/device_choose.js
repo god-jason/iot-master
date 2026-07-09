@@ -50,6 +50,5 @@ return {
     { key: 'location', label: '位置', type: 'text' },
     { key: 'disabled', label: '禁用', type: 'boolean' }
   ],
-  search_api: 'table/device/search',
-  count_api: 'table/device/count'
+  search_api: 'table/device/search'
 }

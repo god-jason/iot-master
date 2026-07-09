@@ -174,9 +174,6 @@ export interface ListContent {
 
   search_api?: string
   search?: string | Function | ((event: ParamSearch, request: SmartRequestService) => Promise<any>)
-
-  count_api?: string
-  count?: string | Function | ((event: ParamSearch, request: SmartRequestService) => Promise<any>)
 }
 
 
@@ -187,7 +184,7 @@ export interface StatisticContent {
 
 export interface ValueContent {
   template: 'value'
-  
+
   // 显示数值（优先使用）
   value?: number | string
   // 标签/标题
@@ -257,10 +254,10 @@ export interface ExportContent {
 
 export interface CodeContent {
   template: 'code'
-  
+
   language?: string
   theme?: Theme
   readonly?: boolean
-  
+
   change?: string | Function | (() => string)
 }

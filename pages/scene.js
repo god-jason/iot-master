@@ -130,7 +130,6 @@ return {
     }
   ],
   search_api: 'table/scene/search',
-  count_api: 'table/scene/count',
   // 页面挂载时执行
   mount() {
     if (this.params.gateway_id) this.filter.gateway_id = this.params.gateway_id

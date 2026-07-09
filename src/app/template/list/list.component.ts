@@ -16,15 +16,15 @@ import {CommonModule} from '@angular/common';
     SmartTableComponent,
     NzSkeletonComponent,
     SmartToolbarComponent
-],
+  ],
   templateUrl: './list.component.html',
   standalone: true,
   styleUrl: './list.component.scss',
   inputs: ['page', 'content', 'params', 'data', 'isChild']
 })
 export class ListComponent extends TemplateBase {
-  @ViewChild("toolbar", { static: false }) toolbar!: SmartToolbarComponent;
-  @ViewChild("table", { static: false }) table!: SmartTableComponent;
+  @ViewChild("toolbar", {static: false}) toolbar!: SmartToolbarComponent;
+  @ViewChild("table", {static: false}) table!: SmartTableComponent;
 
   toolbarValue = {}
 
@@ -34,33 +34,6 @@ export class ListComponent extends TemplateBase {
 
   filter = {}
   keyword = ""
-
-  //计算总数
-  load_total($event: ParamSearch) {
-    const content = this.content as ListContent
-    if (!content) return
-
-    //count函数
-    if (typeof content.count == "string" && content.count.length > 0) {
-      try {
-        content.count = new Function("param", "request", content.count)
-      } catch (e) {
-        console.error(e)
-      }
-    }
-
-    if (isFunction(content.count)) {
-      content.count($event, this.request).then((res: any) => {
-        this.total = res.data ?? res ?? 0
-      })
-    } else if (content.count_api) {
-      let url = LinkReplaceParams(content.count_api, this.params);
-      this.request.post(url, $event).subscribe(res => {
-        if (res.error) return
-        this.total = res.data ?? 0
-      })
-    }
-  }
 
   override load($event?: ParamSearch) {
     if (!$event && !this.$event) return //避免重复调用
@@ -80,7 +53,7 @@ export class ListComponent extends TemplateBase {
     $event.filter["$or"] = {}
     content.keywords?.forEach((key) => {
       if (this.keyword)
-        $event.filter["$or"][key] = "%"+this.keyword+"%"
+        $event.filter["$or"][key] = "%" + this.keyword + "%"
     })
 
     //关联查询
@@ -104,39 +77,31 @@ export class ListComponent extends TemplateBase {
       }
     }
 
-    //是否单独查询总数
-    const hasCount = !!(content.count || content.count_api)
 
     if (isFunction(content.search)) {
       this.loading = true
       content.search($event, this.request).then((res: any) => {
         this.data = res.data || []
-        if (!hasCount) {
-          this.total = res.total || res.data?.length || 0
-        }
+        this.total = res.total || res.data?.length || 0
         if (isFunction(this.content?.load_success)) {
           this.content?.load_success.call(this, res.data)
         }
       }).finally(() => {
         this.loading = false
       })
-      if (hasCount) this.load_total($event)
     } else if (content.search_api) {
       this.loading = true
       let url = LinkReplaceParams(content.search_api, this.params);
       this.request.post(url, $event).subscribe(res => {
         if (res.error) return
         this.data = res.data || []
-        if (!hasCount) {
-          this.total = res.total || res.data?.length || 0
-        }
+        this.total = res.total || res.data?.length || 0
         if (isFunction(this.content?.load_success)) {
           this.content?.load_success.call(this, res.data)
         }
       }).add(() => {
         this.loading = false
       })
-      if (hasCount) this.load_total($event)
     } else {
       //调用 load_api
       super.load()
