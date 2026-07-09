@@ -23,9 +23,9 @@ type CacheLoader[T any] struct {
 }
 
 func (c *CacheLoader[T]) Invalid(key string) {
-	if item, ok := c.items[key]; ok {
-		item.expireAt = time.Now().Unix()
-	}
+	c.lock.Lock()
+	defer c.lock.Unlock()
+	delete(c.items, key)
 }
 
 func (c *CacheLoader[T]) Load(key string) (*T, error) {
