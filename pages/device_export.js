@@ -2,7 +2,7 @@
 return {
   title: '导出设备',
   template: 'export',
-  columns: [
+  fields: [
     { key: 'id', label: 'ID', type: 'text' },
     { key: 'product_id', label: '产品ID', type: 'text' },
     { key: 'name', label: '名称', type: 'text' },
@@ -21,7 +21,7 @@ return {
     get_extend_fields() {
       this.request.get('device/extend/fields').subscribe(res => {
         if (res.error) return
-        res.data.map(f => this.content.columns.push(f))
+        res.data.map(f => this.content.fields.push(f))
         this.buildForm()
       })
     }

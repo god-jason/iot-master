@@ -250,7 +250,7 @@ return {
     get_extend_fields() {
       this.request.get('device/extend/fields').subscribe(res => {
         if (res.error) return
-        ;(res.data || []).map(f => this.content.columns.push(f))
+        ;(res.data || []).map(f => this.content.fields.push(f))
       })
     },
     put_products(products) {
