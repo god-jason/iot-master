@@ -2,15 +2,18 @@ package iot
 
 import (
 	"errors"
+	"sync"
 
 	"github.com/god-jason/iot-master/pkg/db"
-	"github.com/god-jason/iot-master/pkg/lib"
 )
 
-var devices lib.Map[Device]
+var devices sync.Map
 
 func GetDevice(id string) *Device {
-	return devices.Load(id)
+	if v, ok := devices.Load(id); ok {
+		return v.(*Device)
+	}
+	return nil
 }
 
 func LoadDevice(id string) (*Device, error) {

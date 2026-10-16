@@ -26,8 +26,8 @@ func Startup() error {
 	}
 
 	//初始化，编译钩子
-	tables.Range(func(name string, table *Table) bool {
-		err := table.Init()
+	tables.Range(func(key, value any) bool {
+		err := value.(*Table).Init()
 		if err != nil {
 			log.Error(err)
 		}
@@ -37,8 +37,8 @@ func Startup() error {
 	//同步表结构
 	if config.GetBool(MODULE, "sync") {
 		var tbs []*Table
-		tables.Range(func(name string, tab *Table) bool {
-			tbs = append(tbs, tab)
+		tables.Range(func(key, value any) bool {
+			tbs = append(tbs, value.(*Table))
 			return true
 		})
 		if len(tbs) > 0 {

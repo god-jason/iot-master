@@ -40,7 +40,7 @@ func init() {
 }
 
 func deviceValues(ctx *gin.Context) {
-	d := devices.Load(ctx.Param("id"))
+	d := GetDevice(ctx.Param("id"))
 	if d == nil {
 		//api.Fail(ctx, "设备未上线")
 		api.OK(ctx, gin.H{}) //避免一直报错
@@ -50,7 +50,7 @@ func deviceValues(ctx *gin.Context) {
 }
 
 func deviceSync(ctx *gin.Context) {
-	d := devices.Load(ctx.Param("id"))
+	d := GetDevice(ctx.Param("id"))
 	if d == nil || !d.Online {
 		api.Fail(ctx, "设备未上线")
 		return
@@ -66,7 +66,7 @@ func deviceSync(ctx *gin.Context) {
 }
 
 func deviceRead(ctx *gin.Context) {
-	d := devices.Load(ctx.Param("id"))
+	d := GetDevice(ctx.Param("id"))
 	if d == nil || !d.Online {
 		api.Fail(ctx, "设备未上线")
 		return
@@ -83,7 +83,7 @@ func deviceRead(ctx *gin.Context) {
 }
 
 func deviceWrite(ctx *gin.Context) {
-	d := devices.Load(ctx.Param("id"))
+	d := GetDevice(ctx.Param("id"))
 	if d == nil || !d.Online {
 		api.Fail(ctx, "设备未上线")
 		return
@@ -108,7 +108,7 @@ func deviceWrite(ctx *gin.Context) {
 func deviceAction(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	d := devices.Load(id)
+	d := GetDevice(id)
 	if d == nil || !d.Online {
 		api.Fail(ctx, "设备未上线")
 		return
@@ -175,7 +175,7 @@ func deviceErrorClear(ctx *gin.Context) {
 	}
 
 	// 如果在线，则直接清理错误
-	dev := devices.Load(id)
+	dev := GetDevice(id)
 	if dev != nil {
 		// 清空错误状态
 		dev.PutValues(map[string]any{
@@ -282,7 +282,7 @@ func deviceSettingUpdate(ctx *gin.Context) {
 	}
 
 	//如果设备在线，则直接通过MQTT下发配置
-	dev := devices.Load(id)
+	dev := GetDevice(id)
 	if dev != nil && dev.Online {
 		_, err = dev.Setting(setting2.Name, setting2.Content, setting2.Version, 30)
 		if err != nil {
@@ -301,7 +301,7 @@ func deviceDownloadDatabase(ctx *gin.Context) {
 	id := ctx.Param("id")
 	name := ctx.Param("database")
 
-	d := devices.Load(id)
+	d := GetDevice(id)
 	if d == nil || !d.Online {
 		api.Fail(ctx, "设备未上线，等待重新上线后会自动同步")
 		return

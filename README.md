@@ -1,6 +1,9 @@
 # 物联大师
 
 [![Go](https://github.com/god-jason/iot-master/actions/workflows/go.yml/badge.svg)](https://github.com/god-jason/iot-master/actions/workflows/go.yml)
+[![Release](https://img.shields.io/github/v/release/kostyk348/iot-master?sort=semver&color=blue)](https://github.com/kostyk348/iot-master/releases)
+[![License](https://img.shields.io/badge/license-GPL-3.0-green)](https://github.com/kostyk348/iot-master/blob/main/LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/kostyk348/iot-master?branch=main)](https://github.com/kostyk348/iot-master/commits/main)
 
 物联大师是开源免费的物联网数据中台，区别于传统的物联网平台，物联大师采用Go语言进行编程实现，有以下诸多优点：
 
@@ -12,7 +15,6 @@
 - 支持使用JS脚本实现边缘计算
 - 支持智能家居应用场景，定时和联动控制
 - 支持WebRTC点对点视频传输
-
 
 # MQTT主题规范
 

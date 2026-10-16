@@ -1,7 +1,8 @@
 package config
 
 import (
-	"github.com/god-jason/iot-master/pkg/lib"
+	"sync"
+
 	"github.com/god-jason/iot-master/pkg/smart"
 )
 
@@ -11,7 +12,7 @@ type Form struct {
 	Fields []smart.Field `json:"fields"`
 }
 
-var modules lib.Map[Form]
+var modules sync.Map
 
 func Register(module string, form *Form) {
 	modules.Store(module, form)
@@ -22,13 +23,16 @@ func Unregister(module string) {
 }
 
 func GetModule(module string) *Form {
-	return modules.Load(module)
+	if v, ok := modules.Load(module); ok {
+		return v.(*Form)
+	}
+	return nil
 }
 
 func GetModules() []Form {
 	var ms []Form
-	modules.Range(func(_ string, item *Form) bool {
-		m := *item
+	modules.Range(func(key, value any) bool {
+		m := *value.(*Form)
 		m.Fields = nil
 		ms = append(ms, m)
 		return true
