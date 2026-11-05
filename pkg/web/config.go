@@ -1,29 +1,19 @@
 package web
 
-import (
-	"math/rand/v2"
+import "github.com/god-jason/iot-master/pkg/config"
 
-	"github.com/god-jason/iot-master/pkg/config"
-)
-
+// MODULE viper 模块名
 const MODULE = "web"
 
 func init() {
-	config.SetDefault(MODULE, "mode", "http")               //http, https, tls, ssl, autocert, letsencrypt, unix
-	config.SetDefault(MODULE, "port", 8000+rand.UintN(100)) //端口号 8000 - 8099
-	config.SetDefault(MODULE, "debug", false)
-	config.SetDefault(MODULE, "cors", false)
-	config.SetDefault(MODULE, "gzip", true)
-	config.SetDefault(MODULE, "tls_cert", "")
-	config.SetDefault(MODULE, "tls_key", "")
-	config.SetDefault(MODULE, "hosts", []string{}) //域名
+	config.SetDefault(MODULE, "host", "0.0.0.0")
+	config.SetDefault(MODULE, "port", 8080)
+	config.SetDefault(MODULE, "static", "")
+	config.SetDefault(MODULE, "https", false)
+	config.SetDefault(MODULE, "cert_file", "")
+	config.SetDefault(MODULE, "key_file", "")
+	config.SetDefault(MODULE, "lets_encrypt", false)
+	config.SetDefault(MODULE, "domains", []string{})
 	config.SetDefault(MODULE, "email", "")
-	config.SetDefault(MODULE, "jwt_key", "boat")
-	config.SetDefault(MODULE, "jwt_expire", 24*30) //小时
-	config.SetDefault(MODULE, "unix_socket", "")
-
-	//可以通过环境变量，强制修改监听类型和端口
-	//BOAT_WEB.MODE=unix;
-	//BOAT_WEB.UNIX_SOCKET=boat.sock
-
+	config.SetDefault(MODULE, "debug", false)
 }

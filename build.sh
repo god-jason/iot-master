@@ -5,7 +5,7 @@ go env -w GOPROXY=https://goproxy.cn,direct
 go env -w GOPRIVATE=*.gitlab.com,*.gitee.com
 go env -w GOSUMDB=off
 
-app="iot-master"
+app="master"
 version="1.0.0"
 
 #npm run build

@@ -1,47 +1,99 @@
 package lib
 
-import "sync/atomic"
+import "sync"
 
 type RingBuffer[T any] struct {
-	Size   int32
-	Reader int32
-	Writer int32
-	Buffer []T
+	buf   []T
+	size  int
+	head  int
+	tail  int
+	count int
+	mu    sync.Mutex
 }
 
 func NewRingBuffer[T any](size int) *RingBuffer[T] {
-	rb := &RingBuffer[T]{
-		Buffer: make([]T, size),
+	return &RingBuffer[T]{
+		buf:  make([]T, size),
+		size: size,
 	}
-	return rb
 }
 
-func (r *RingBuffer[T]) Write(value T) {
-	current := atomic.LoadInt32(&r.Writer)
-	r.Buffer[current] = value
-	next := (current + 1) % r.Size
-	atomic.StoreInt32(&r.Writer, next)
+func (rb *RingBuffer[T]) Push(item T) {
+	rb.mu.Lock()
+	defer rb.mu.Unlock()
+
+	rb.buf[rb.tail] = item
+	rb.tail = (rb.tail + 1) % rb.size
+
+	if rb.count < rb.size {
+		rb.count++
+	} else {
+		rb.head = (rb.head + 1) % rb.size
+	}
 }
 
-func (r *RingBuffer[T]) seekReader(delta int32) {
-	current := atomic.LoadInt32(&r.Reader)
-	expected := (current + delta) % r.Size
-	atomic.StoreInt32(&r.Reader, expected)
+func (rb *RingBuffer[T]) Pop() (T, bool) {
+	rb.mu.Lock()
+	defer rb.mu.Unlock()
+
+	if rb.count == 0 {
+		var zero T
+		return zero, false
+	}
+
+	item := rb.buf[rb.head]
+	rb.head = (rb.head + 1) % rb.size
+	rb.count--
+
+	return item, true
 }
 
-func (r *RingBuffer[T]) Read() T {
-	defer r.seekReader(1)
-	return r.Buffer[atomic.LoadInt32(&r.Reader)]
+func (rb *RingBuffer[T]) Peek() (T, bool) {
+	rb.mu.Lock()
+	defer rb.mu.Unlock()
+
+	if rb.count == 0 {
+		var zero T
+		return zero, false
+	}
+
+	return rb.buf[rb.head], true
 }
 
-func (r *RingBuffer[T]) Latest() T {
-	return r.Buffer[(atomic.LoadInt32(&r.Writer)-1)%r.Size]
+func (rb *RingBuffer[T]) Len() int {
+	rb.mu.Lock()
+	defer rb.mu.Unlock()
+	return rb.count
 }
 
-func (r *RingBuffer[T]) Oldest() T {
-	return r.Buffer[atomic.LoadInt32(&r.Writer)]
+func (rb *RingBuffer[T]) Cap() int {
+	return rb.size
 }
 
-func (r *RingBuffer[T]) Overwrite(v T) {
-	r.Buffer[atomic.LoadInt32(&r.Writer)] = v
+func (rb *RingBuffer[T]) IsEmpty() bool {
+	return rb.Len() == 0
+}
+
+func (rb *RingBuffer[T]) IsFull() bool {
+	return rb.Len() == rb.size
+}
+
+func (rb *RingBuffer[T]) Clear() {
+	rb.mu.Lock()
+	defer rb.mu.Unlock()
+	rb.head = 0
+	rb.tail = 0
+	rb.count = 0
+}
+
+func (rb *RingBuffer[T]) Values() []T {
+	rb.mu.Lock()
+	defer rb.mu.Unlock()
+
+	result := make([]T, 0, rb.count)
+	for i := 0; i < rb.count; i++ {
+		idx := (rb.head + i) % rb.size
+		result = append(result, rb.buf[idx])
+	}
+	return result
 }

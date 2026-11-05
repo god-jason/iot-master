@@ -1,4 +1,4 @@
-package amap
+﻿package amap
 
 import (
 	"encoding/json"
@@ -7,8 +7,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/god-jason/iot-master/pkg/config"
-)
+	)
 
 // RouteDriving 驾车路径规划
 // origin: 起点，格式为"lng,lat"或地址
@@ -57,8 +56,8 @@ func RouteTransit(origin, destination, city string) (*RouteResponse, error) {
 // route 通用路径规划函数
 func route(routeType, origin, destination, city string) (*RouteResponse, error) {
 	// 获取配置
-	server := config.GetString(MODULE, "server")
-	key := config.GetString(MODULE, "key")
+	server := GetServer()
+	key := GetKey()
 
 	// 检查API密钥是否配置
 	if key == "" {

@@ -1,0 +1,46 @@
+$primary-color: #5BA3E8;
+$primary-dark: #1E3A5F;
+$primary-light: rgba(91, 163, 232, 0.1);
+
+$success-color: #67c23a;
+$warning-color: #e6a23c;
+$danger-color: #f56c6c;
+$info-color: #909399;
+
+$text-primary: #333333;
+$text-secondary: #666666;
+$text-placeholder: #999999;
+$text-disabled: #cccccc;
+
+$bg-primary: #ffffff;
+$bg-secondary: #f5f7fa;
+$bg-tertiary: #f0f0f0;
+
+$border-color: #f0f0f0;
+$border-light: #f5f5f5;
+
+$font-size-xs: 22rpx;
+$font-size-sm: 24rpx;
+$font-size-base: 28rpx;
+$font-size-lg: 32rpx;
+$font-size-xl: 36rpx;
+$font-size-xxl: 40rpx;
+
+$spacing-xs: 8rpx;
+$spacing-sm: 16rpx;
+$spacing-base: 20rpx;
+$spacing-lg: 24rpx;
+$spacing-xl: 32rpx;
+
+$radius-sm: 8rpx;
+$radius-base: 12rpx;
+$radius-lg: 16rpx;
+$radius-xl: 24rpx;
+
+$shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+$shadow-base: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+$shadow-lg: 0 8rpx 24rpx rgba(0, 0, 0, 0.12);
+
+$transition-base: all 0.3s ease;
+
+$safe-bottom: env(safe-area-inset-bottom);

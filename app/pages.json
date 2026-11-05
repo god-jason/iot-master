@@ -1,0 +1,179 @@
+{
+	"pages": [
+		{
+			"path": "pages/login/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/login/license",
+			"style": {
+				"navigationBarTitleText": "用户服务协议"
+			}
+		},
+		{
+			"path": "pages/device/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "设备",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/device/admin-list",
+			"style": {
+				"navigationBarTitleText": "管理所有设备",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/mine/index",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path": "pages/maintenance/index",
+			"style": {
+				"navigationBarTitleText": "维保工单",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/maintenance/detail",
+			"style": {
+				"navigationBarTitleText": "工单详情",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/device/detail",
+			"style": {
+				"navigationBarTitleText": "设备详情",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/device/logs",
+			"style": {
+				"navigationBarTitleText": "操作日志",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/device/sub-devices",
+			"style": {
+				"navigationBarTitleText": "子设备",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/device/edit",
+			"style": {
+				"navigationBarTitleText": "编辑设备"
+			}
+		},
+		{
+			"path": "pages/device/edit-simple",
+			"style": {
+				"navigationBarTitleText": "编辑设备"
+			}
+		},
+		{
+			"path": "pages/message/index",
+			"style": {
+				"navigationBarTitleText": "消息",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/mine/edit-info",
+			"style": {
+				"navigationBarTitleText": "编辑信息"
+			}
+		},
+		{
+			"path": "pages/mine/change-password",
+			"style": {
+				"navigationBarTitleText": "修改密码"
+			}
+		},
+		{
+			"path": "pages/mine/avatar",
+			"style": {
+				"navigationBarTitleText": "修改头像"
+			}
+		},
+		{
+			"path": "pages/family/index",
+			"style": {
+				"navigationBarTitleText": "我的家庭",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/family/detail",
+			"style": {
+				"navigationBarTitleText": "家庭详情",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/family/invite",
+			"style": {
+				"navigationBarTitleText": "邀请成员",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/model/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "物模型库",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/model/detail",
+			"style": {
+				"navigationBarTitleText": "物模型详情",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/examples/index",
+			"style": {
+				"navigationBarTitleText": "组件示例"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "物联小白",
+		"navigationBarBackgroundColor": "#5BA3E8",
+		"backgroundColor": "#F0F7FF",
+		"navigationStyle": "custom"
+	},
+	"tabBar": {
+		"color": "#9CA3AF",
+		"selectedColor": "#5BA3E8",
+		"borderStyle": "white",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"pagePath": "pages/device/index",
+				"text": "设备",
+				"iconPath": "static/icons/device2.png",
+				"selectedIconPath": "static/icons/device.png"
+			},
+			{
+				"pagePath": "pages/mine/index",
+				"text": "我的",
+				"iconPath": "static/icons/mine2.png",
+				"selectedIconPath": "static/icons/mine.png"
+			}
+		]
+	}
+}

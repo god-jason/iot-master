@@ -2,90 +2,84 @@ package lib
 
 import "sync"
 
-type Map[T any] struct {
-	container map[string]*T
-	lock      sync.RWMutex
+// Map 泛型并发安全 Map，基于普通 map + 读写锁实现
+type Map[K comparable, V any] struct {
+	data map[K]V
+	mu   sync.RWMutex
 }
 
-func (c *Map[T]) Load(name string) *T {
-	c.lock.RLock()
-	defer c.lock.RUnlock()
-	if c.container == nil {
-		return nil
+// NewMap 创建泛型 Map 实例
+func NewMap[K comparable, V any]() *Map[K, V] {
+	return &Map[K, V]{
+		data: make(map[K]V),
 	}
-	return c.container[name]
 }
 
-func (c *Map[T]) Store(name string, value *T) {
-	c.lock.Lock()
-	defer c.lock.Unlock()
-	if c.container == nil {
-		c.container = make(map[string]*T)
-	}
-	c.container[name] = value
+// Get 读取指定 key 的值
+func (m *Map[K, V]) Get(key K) (V, bool) {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	v, ok := m.data[key]
+	return v, ok
 }
 
-func (c *Map[T]) Range(iterator func(name string, item *T) bool) {
-	c.lock.RLock()
-	defer c.lock.RUnlock()
-	if c.container == nil {
-		return
-	}
-	for k, v := range c.container {
-		if !iterator(k, v) {
+// Set 设置 key-value
+func (m *Map[K, V]) Set(key K, value V) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.data[key] = value
+}
+
+// Delete 删除指定 key
+func (m *Map[K, V]) Delete(key K) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	delete(m.data, key)
+}
+
+// Len 返回元素数量
+func (m *Map[K, V]) Len() int {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	return len(m.data)
+}
+
+// Range 遍历所有元素
+func (m *Map[K, V]) Range(fn func(key K, value V) bool) {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	for k, v := range m.data {
+		if !fn(k, v) {
 			break
 		}
 	}
 }
 
-func (c *Map[T]) Delete(name string) {
-	c.lock.Lock()
-	defer c.lock.Unlock()
-	if c.container == nil {
-		return
+// Keys 返回所有 key
+func (m *Map[K, V]) Keys() []K {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	keys := make([]K, 0, len(m.data))
+	for k := range m.data {
+		keys = append(keys, k)
 	}
-	delete(c.container, name)
+	return keys
 }
 
-func (c *Map[T]) DeleteDirectly(name string) {
-	if c.container == nil {
-		return
+// Values 返回所有 value
+func (m *Map[K, V]) Values() []V {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	values := make([]V, 0, len(m.data))
+	for _, v := range m.data {
+		values = append(values, v)
 	}
-	delete(c.container, name)
+	return values
 }
 
-func (c *Map[T]) LoadAndStore(name string, value *T) *T {
-	c.lock.RLock()
-	defer c.lock.RUnlock()
-	if c.container == nil {
-		c.container = make(map[string]*T)
-	}
-	ret := c.container[name]
-	c.container[name] = value
-	return ret
-}
-
-func (c *Map[T]) LoadAndDelete(name string) *T {
-	c.lock.RLock()
-	defer c.lock.RUnlock()
-	if c.container == nil {
-		return nil
-	}
-	ret := c.container[name]
-	delete(c.container, name)
-	return ret
-}
-
-func (c *Map[T]) Len() int {
-	return len(c.container)
-}
-
-func (c *Map[T]) Map() map[string]*T {
-	return c.container
-}
-
-func (c *Map[T]) Clear() {
-	c.lock.RLock()
-	defer c.lock.RUnlock()
-	c.container = nil
+// Clear 清空 Map
+func (m *Map[K, V]) Clear() {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.data = make(map[K]V)
 }

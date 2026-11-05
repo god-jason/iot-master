@@ -1,0 +1,223 @@
+@font-face {
+  font-family: "iotfont"; /* Project id 5211892 */
+  src: url('iotfont.woff2?t=1784261811735') format('woff2'),
+       url('iotfont.woff?t=1784261811735') format('woff'),
+       url('iotfont.ttf?t=1784261811735') format('truetype');
+}
+
+.iotfont {
+  font-family: "iotfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.iot-bulb:before {
+  content: "\e60e";
+}
+
+.iot-valve:before {
+  content: "\e603";
+}
+
+.iot-underfloor-heating:before {
+  content: "\e621";
+}
+
+.iot-pump:before {
+  content: "\e619";
+}
+
+.iot-calendar:before {
+  content: "\e600";
+}
+
+.iot-socket:before {
+  content: "\ec76";
+}
+
+.iot-switch:before {
+  content: "\ec77";
+}
+
+.iot-plug:before {
+  content: "\ec78";
+}
+
+.iot-wifi:before {
+  content: "\e62d";
+}
+
+.iot-motor:before {
+  content: "\e696";
+}
+
+.iot-curtain:before {
+  content: "\e643";
+}
+
+.iot-ipc:before {
+  content: "\e660";
+}
+
+.iot-signal:before {
+  content: "\e69d";
+}
+
+.iot-phone-signal:before {
+  content: "\e956";
+}
+
+.iot-beaker:before {
+  content: "\e92b";
+}
+
+.iot-current:before {
+  content: "\e673";
+}
+
+.iot-power:before {
+  content: "\e674";
+}
+
+.iot-alarm:before {
+  content: "\e675";
+}
+
+.iot-illuminance:before {
+  content: "\e676";
+}
+
+.iot-power-on:before {
+  content: "\e678";
+}
+
+.iot-refrigerator:before {
+  content: "\e679";
+}
+
+.iot-vibration:before {
+  content: "\e67a";
+}
+
+.iot-mode:before {
+  content: "\e67b";
+}
+
+.iot-status:before {
+  content: "\e67c";
+}
+
+.iot-clock:before {
+  content: "\e601";
+}
+
+.iot-wind:before {
+  content: "\e602";
+}
+
+.iot-setting:before {
+  content: "\e609";
+}
+
+.iot-water:before {
+  content: "\e60a";
+}
+
+.iot-noise:before {
+  content: "\e618";
+}
+
+.iot-environment:before {
+  content: "\e623";
+}
+
+.iot-aim:before {
+  content: "\e62e";
+}
+
+.iot-resource:before {
+  content: "\e63b";
+}
+
+.iot-scene:before {
+  content: "\e680";
+}
+
+.iot-fan:before {
+  content: "\e681";
+}
+
+.iot-fire:before {
+  content: "\e682";
+}
+
+.iot-time:before {
+  content: "\e683";
+}
+
+.iot-favour:before {
+  content: "\e685";
+}
+
+.iot-locate:before {
+  content: "\e686";
+}
+
+.iot-air-container:before {
+  content: "\e688";
+}
+
+.iot-flash:before {
+  content: "\e689";
+}
+
+.iot-warning:before {
+  content: "\e68a";
+}
+
+.iot-picture:before {
+  content: "\e68b";
+}
+
+.iot-cloud:before {
+  content: "\e68c";
+}
+
+.iot-leaf:before {
+  content: "\e68d";
+}
+
+.iot-play:before {
+  content: "\e68e";
+}
+
+.iot-profile:before {
+  content: "\e68f";
+}
+
+.iot-camera:before {
+  content: "\e690";
+}
+
+.iot-ble:before {
+  content: "\e691";
+}
+
+.iot-love:before {
+  content: "\e692";
+}
+
+.iot-gas:before {
+  content: "\e693";
+}
+
+.iot-dust:before {
+  content: "\e694";
+}
+
+.iot-temperature:before {
+  content: "\e695";
+}
+

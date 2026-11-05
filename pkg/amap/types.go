@@ -1,4 +1,4 @@
-package amap
+﻿package amap
 
 import (
 	"encoding/json"

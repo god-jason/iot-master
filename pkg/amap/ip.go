@@ -1,4 +1,4 @@
-package amap
+﻿package amap
 
 import (
 	"encoding/json"
@@ -8,8 +8,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/god-jason/iot-master/pkg/config"
-)
+	)
 
 // GetLocationByIP 根据IP地址获取位置信息
 // ip参数为空时，使用请求来源IP
@@ -32,8 +31,8 @@ import (
 //	fmt.Printf("位置: %s\n", location.Address)
 func GetLocationByIP(ip string) (*Location, error) {
 	// 获取配置
-	server := config.GetString(MODULE, "server")
-	key := config.GetString(MODULE, "key")
+	server := GetServer()
+	key := GetKey()
 
 	// 检查API密钥是否配置
 	if key == "" {

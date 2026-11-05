@@ -1,145 +1,93 @@
 package web
 
 import (
-	"context"
-	"net"
-	"net/http"
-	"strconv"
+	"os"
+	"path/filepath"
 	"strings"
-	"time"
 
-	"github.com/gin-contrib/cors"
-	"github.com/gin-contrib/gzip"
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
-	"github.com/gin-gonic/gin"
 	"github.com/god-jason/iot-master/pkg/config"
-	"github.com/god-jason/iot-master/pkg/exception"
-	"github.com/god-jason/iot-master/pkg/log"
+
+	"github.com/gin-gonic/gin"
 )
 
-var engine *gin.Engine
-var Server *http.Server
-
-func Engine() *gin.Engine {
-	return engine
+type Engine struct {
+	*gin.Engine
 }
 
-func Startup() error {
-	if !config.GetBool(MODULE, "debug") {
+// New 创建新的Web引擎
+func New() *Engine {
+	if config.GetBool(MODULE, "debug") {
+		gin.SetMode(gin.DebugMode)
+	} else {
 		gin.SetMode(gin.ReleaseMode)
 	}
+	engine := gin.New()
 
-	//GIN初始化
-	//engine := gin.Default()
-	engine = gin.New()
-	engine.Use(gin.Recovery())
+	engine.Use(gin.Logger())
+	engine.Use(Recovery())
+	engine.Use(CORS())
+	//engine.Use(gzip.Gzip(gzip.DefaultCompression))
 
+	e := &Engine{Engine: engine}
+
+	// 服务前端静态页面（目录不存在时跳过，不影响后端 API）
+	if staticDir := config.GetString(MODULE, "static"); staticDir != "" {
+		if err := e.ServeFrontend(staticDir); err != nil {
+			// 静态目录不存在时静默跳过（开发环境前端独立启动时不需要后端服务静态页面）
+			// 其他错误（如权限）才 panic
+			if os.IsNotExist(err) {
+				// silent skip
+			} else {
+				panic("服务前端静态页面失败: " + err.Error())
+			}
+		}
+	}
+
+	return e
+}
+
+// NewBasic 创建基础引擎（不包含默认中间件）
+func NewBasic() *Engine {
 	if config.GetBool(MODULE, "debug") {
-		engine.Use(gin.Logger())
+		gin.SetMode(gin.DebugMode)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
 	}
-
-	//跨域问题
-	if config.GetBool(MODULE, "cors") {
-		c := cors.DefaultConfig()
-		c.AllowAllOrigins = true
-		c.AllowCredentials = true
-		c.AllowHeaders = []string{"*"}
-		engine.Use(cors.New(c))
-	}
-
-	//启用session
-	engine.Use(sessions.Sessions("boat", cookie.NewStore([]byte("boat"))))
-
-	//开启压缩
-	if config.GetBool(MODULE, "gzip") {
-		engine.Use(gzip.Gzip(gzip.DefaultCompression)) //gzip.WithExcludedPathsRegexs([]string{".*"})
-	}
-
-	JwtKey = []byte(config.GetString(MODULE, "jwt_key"))
-	JwtExpire = time.Hour * time.Duration(config.GetInt(MODULE, "jwt_expire"))
-
-	//engine.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	return nil
+	return &Engine{Engine: gin.New()}
 }
 
-func Shutdown() error {
-	if Server == nil {
-		return exception.New("服务未启动")
-	}
-	return Server.Shutdown(context.Background())
-}
-
-func Serve() error {
-
-	//静态文件
-	tm := time.Now()
-	engine.Use(func(c *gin.Context) {
-
-		//如果已经写过内容，就不用再写了
-		if c.Writer.Written() {
-			return
-		}
-
-		if c.Request.Method == http.MethodGet {
-			f, err := OpenStaticFile(c.Request.URL.Path)
-			if err != nil {
-				c.Next()
-				return
-			}
-
-			defer f.Close()
-			stat, err := f.Stat()
-			if err != nil {
-				//c.Next() //500错误
-				c.Error(err)
-				return
-			}
-
-			if !stat.IsDir() {
-				fn := c.Request.URL.Path
-				//fn := c.Request.URL.Path + ".html" //避免DetectContentType
-				http.ServeContent(c.Writer, c.Request, fn, tm, f)
-				return
-			}
-
-		}
-
-		c.Next()
-	})
-
-	//按不同模式启动
-	mode := config.GetString(MODULE, "mode")
-	switch strings.ToLower(mode) {
-	case "http", "tcp":
-		return ServeHTTP()
-	case "https", "tls", "ssl":
-		return ServeTLS()
-	case "autocert", "letsencrypt":
-		return ServeAutoCert()
-	case "unix", "socket":
-		return ServeUnix()
-	default:
-		return ServeHTTP()
-	}
-}
-
-func ServeHTTP() error {
-	port := config.GetInt(MODULE, "port")
-	addr := ":" + strconv.Itoa(port)
-	log.Info("web ", port)
-	//return engine.Run(addr)
-	Server = &http.Server{Addr: addr, Handler: engine.Handler()}
-	return Server.ListenAndServe()
-}
-
-func ServeUnix() error {
-	socket := config.GetString(MODULE, "unix_socket")
-	log.Info("web ", socket)
-	Server = &http.Server{Addr: socket, Handler: engine.Handler()}
-	ln, err := net.Listen("unix", socket)
+// ServeFrontend 服务前端静态页面（支持 SPA 路由）
+// 静态文件优先匹配，未命中的路径返回 index.html 由前端路由处理
+func (e *Engine) ServeFrontend(dir string) error {
+	absDir, err := filepath.Abs(dir)
 	if err != nil {
 		return err
 	}
-	return Server.Serve(ln)
+
+	// 确保目录存在
+	if _, err := os.Stat(absDir); err != nil {
+		return err
+	}
+
+	e.NoRoute(func(c *gin.Context) {
+		path := c.Request.URL.Path
+
+		// API 等后端路由未命中时返回 JSON 404
+		if strings.HasPrefix(path, "/api/") || strings.HasPrefix(path, "/open/") || strings.HasPrefix(path, "/node/") {
+			c.JSON(404, gin.H{"error": "not found"})
+			return
+		}
+
+		// 尝试服务静态文件
+		filePath := filepath.Join(absDir, path)
+		if info, err := os.Stat(filePath); err == nil && !info.IsDir() {
+			c.File(filePath)
+			return
+		}
+
+		// SPA 路由：返回 index.html
+		c.File(filepath.Join(absDir, "index.html"))
+	})
+
+	return nil
 }

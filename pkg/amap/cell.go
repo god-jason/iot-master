@@ -1,4 +1,4 @@
-package amap
+﻿package amap
 
 import (
 	"encoding/json"
@@ -9,8 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/god-jason/iot-master/pkg/config"
-)
+	)
 
 // ==================== 基站定位接口 ====================
 // 参考文档：https://lbs.amap.com/api/webservice/guide/api-advanced/hardware-location
@@ -39,14 +38,134 @@ type V1LocationResponse struct {
 	Result   *V1LocationResult `json:"result"`   // 定位结果
 }
 
+// ==================== 统一融合定位接口 ====================
+
+// GetLocation 融合定位：一次请求同时传递 WiFi 和基站数据
+// wifis: WiFi 热点列表（可选）
+// scell: 主基站（可选，与 cells 至少有一个）
+// cells: 邻近基站列表（可选）
+// 使用 V1 接口：https://apilocate.amap.com/position
+func GetLocation(wifis []Wifi, scell *CellTower, cells []CellTower) (*Location, error) {
+	key := GetKey()
+	apiURL := GetApilocateURL()
+
+	if key == "" {
+		return nil, fmt.Errorf("高德地图API密钥未配置")
+	}
+
+	hasWifi := len(wifis) > 0
+	hasCell := scell != nil
+
+	if !hasWifi && !hasCell {
+		return nil, fmt.Errorf("WiFi 和基站数据都为空")
+	}
+
+	// 检查 WiFi 数量限制
+	if len(wifis) > 30 {
+		wifis = wifis[:30]
+	}
+
+	// 构建请求参数
+	params := url.Values{}
+	params.Set("key", key)
+	params.Set("output", "json")
+	params.Set("accesstype", "2") // 2 = 混合定位（同时传基站和WiFi，让服务器融合）
+	params.Set("cdma", "0")
+	params.Set("network", "GSM")
+
+	// WiFi 信息
+	if hasWifi {
+		var macData []string
+		for _, wifi := range wifis {
+			signal := wifi.Signal
+			if signal == 0 {
+				signal = -1
+			}
+			macStr := fmt.Sprintf("%s,%d,%s", strings.ToLower(wifi.MAC), signal, wifi.SSID)
+			macData = append(macData, macStr)
+		}
+		params.Set("macs", strings.Join(macData, "|"))
+	}
+
+	// 主基站
+	if hasCell {
+		signal := scell.Signal
+		if signal == 0 {
+			signal = -1
+		}
+		btsStr := fmt.Sprintf("%d,%d,%d,%d,%d", scell.MCC, scell.MNC, scell.LAC, scell.CI, signal)
+		params.Set("bts", btsStr)
+	}
+
+	// 邻近基站
+	if len(cells) > 0 {
+		var nearBtsData []string
+		for _, cell := range cells {
+			cellSignal := cell.Signal
+			if cellSignal == 0 {
+				cellSignal = -1
+			}
+			cellStr := fmt.Sprintf("%d,%d,%d,%d,%d", cell.MCC, cell.MNC, cell.LAC, cell.CI, cellSignal)
+			nearBtsData = append(nearBtsData, cellStr)
+		}
+		params.Set("nearbts", strings.Join(nearBtsData, "|"))
+	}
+
+	requestURL := fmt.Sprintf("%s?%s", apiURL, params.Encode())
+
+	resp, err := http.Get(requestURL)
+	if err != nil {
+		return nil, fmt.Errorf("请求失败: %v", err)
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("读取响应失败: %v", err)
+	}
+
+	var response V1LocationResponse
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return nil, fmt.Errorf("解析响应失败: %v, 原始响应: %s", err, string(body))
+	}
+
+	if response.Status != "1" {
+		return nil, fmt.Errorf("API错误: %s (%s), 原始响应: %s", response.Info, response.InfoCode, string(body))
+	}
+
+	location := &Location{}
+	if response.Result != nil && response.Result.Type != "0" {
+		if response.Result.Location != "" {
+			parts := strings.Split(response.Result.Location, ",")
+			if len(parts) >= 2 {
+				location.Longitude, _ = strconv.ParseFloat(parts[0], 64)
+				location.Latitude, _ = strconv.ParseFloat(parts[1], 64)
+			}
+		}
+		if response.Result.Radius != "" {
+			location.Accuracy, _ = strconv.Atoi(response.Result.Radius)
+		}
+		location.Address = response.Result.Desc
+	}
+
+	if location.Longitude == 0 && location.Latitude == 0 {
+		return nil, fmt.Errorf("未获取到有效定位结果, 原始响应: %s", string(body))
+	}
+
+	// 高德返回 GCJ-02，转为 WGS-84
+	location.ConvertToWGS84()
+	return location, nil
+}
+
 // GetLocationLBS 根据基站信息获取位置（V1版本）
 // scell: 当前连接的基站
 // cells: 附近基站列表（可选）
 // 使用V1接口：https://apilocate.amap.com/position
 func GetLocationLBS(scell CellTower, cells []CellTower) (*Location, error) {
 	// 获取配置
-	key := config.GetString(MODULE, "key")
-	apiURL := config.GetString(MODULE, "apilocate_url")
+	key := GetKey()
+	apiURL := GetApilocateURL()
 
 	// 检查API密钥是否配置
 	if key == "" {
@@ -168,8 +287,8 @@ func GetLocationWifi(wifis []Wifi) (*Location, error) {
 	}
 
 	// 获取配置
-	key := config.GetString(MODULE, "key")
-	apiURL := config.GetString(MODULE, "apilocate_url")
+	key := GetKey()
+	apiURL := GetApilocateURL()
 
 	// 检查API密钥是否配置
 	if key == "" {

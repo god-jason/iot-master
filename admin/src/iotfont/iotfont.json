@@ -1,0 +1,373 @@
+{
+  "id": "5211892",
+  "name": "iot",
+  "font_family": "iotfont",
+  "css_prefix_text": "iot-",
+  "description": "IoT图标库",
+  "glyphs": [
+    {
+      "icon_id": "883901",
+      "name": "灯泡",
+      "font_class": "bulb",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "27271227",
+      "name": "阀门",
+      "font_class": "valve",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "31164917",
+      "name": "地暖",
+      "font_class": "underfloor-heating",
+      "unicode": "e621",
+      "unicode_decimal": 58913
+    },
+    {
+      "icon_id": "44372749",
+      "name": "水泵",
+      "font_class": "pump",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "1718327",
+      "name": "日历",
+      "font_class": "calendar",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "5982852",
+      "name": "插座",
+      "font_class": "socket",
+      "unicode": "ec76",
+      "unicode_decimal": 60534
+    },
+    {
+      "icon_id": "5982854",
+      "name": "开关",
+      "font_class": "switch",
+      "unicode": "ec77",
+      "unicode_decimal": 60535
+    },
+    {
+      "icon_id": "5982855",
+      "name": "插头",
+      "font_class": "plug",
+      "unicode": "ec78",
+      "unicode_decimal": 60536
+    },
+    {
+      "icon_id": "7057563",
+      "name": "网络",
+      "font_class": "wifi",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    },
+    {
+      "icon_id": "8390813",
+      "name": "电机",
+      "font_class": "motor",
+      "unicode": "e696",
+      "unicode_decimal": 59030
+    },
+    {
+      "icon_id": "9166429",
+      "name": "窗帘",
+      "font_class": "curtain",
+      "unicode": "e643",
+      "unicode_decimal": 58947
+    },
+    {
+      "icon_id": "11195036",
+      "name": "摄像头",
+      "font_class": "ipc",
+      "unicode": "e660",
+      "unicode_decimal": 58976
+    },
+    {
+      "icon_id": "12349454",
+      "name": "信号",
+      "font_class": "signal",
+      "unicode": "e69d",
+      "unicode_decimal": 59037
+    },
+    {
+      "icon_id": "18169967",
+      "name": "信号",
+      "font_class": "phone-signal",
+      "unicode": "e956",
+      "unicode_decimal": 59734
+    },
+    {
+      "icon_id": "21701268",
+      "name": "烧杯",
+      "font_class": "beaker",
+      "unicode": "e92b",
+      "unicode_decimal": 59691
+    },
+    {
+      "icon_id": "14301846",
+      "name": "电流",
+      "font_class": "current",
+      "unicode": "e673",
+      "unicode_decimal": 58995
+    },
+    {
+      "icon_id": "14301847",
+      "name": "功率",
+      "font_class": "power",
+      "unicode": "e674",
+      "unicode_decimal": 58996
+    },
+    {
+      "icon_id": "14301849",
+      "name": "警报",
+      "font_class": "alarm",
+      "unicode": "e675",
+      "unicode_decimal": 58997
+    },
+    {
+      "icon_id": "14301851",
+      "name": "光照",
+      "font_class": "illuminance",
+      "unicode": "e676",
+      "unicode_decimal": 58998
+    },
+    {
+      "icon_id": "14301854",
+      "name": "开关",
+      "font_class": "power-on",
+      "unicode": "e678",
+      "unicode_decimal": 59000
+    },
+    {
+      "icon_id": "14301863",
+      "name": "冰箱",
+      "font_class": "refrigerator",
+      "unicode": "e679",
+      "unicode_decimal": 59001
+    },
+    {
+      "icon_id": "14301864",
+      "name": "震动",
+      "font_class": "vibration",
+      "unicode": "e67a",
+      "unicode_decimal": 59002
+    },
+    {
+      "icon_id": "14301866",
+      "name": "模式",
+      "font_class": "mode",
+      "unicode": "e67b",
+      "unicode_decimal": 59003
+    },
+    {
+      "icon_id": "14301867",
+      "name": "状态",
+      "font_class": "status",
+      "unicode": "e67c",
+      "unicode_decimal": 59004
+    },
+    {
+      "icon_id": "4236611",
+      "name": "时钟",
+      "font_class": "clock",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "4236615",
+      "name": "风速",
+      "font_class": "wind",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "4236630",
+      "name": "设置",
+      "font_class": "setting",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "4236632",
+      "name": "湿度",
+      "font_class": "water",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "4236656",
+      "name": "噪音",
+      "font_class": "noise",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "4237190",
+      "name": "环境监测",
+      "font_class": "environment",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
+      "icon_id": "4237379",
+      "name": "复位",
+      "font_class": "aim",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "4237403",
+      "name": "资源",
+      "font_class": "resource",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "13636959",
+      "name": "场景",
+      "font_class": "scene",
+      "unicode": "e680",
+      "unicode_decimal": 59008
+    },
+    {
+      "icon_id": "13636960",
+      "name": "风扇",
+      "font_class": "fan",
+      "unicode": "e681",
+      "unicode_decimal": 59009
+    },
+    {
+      "icon_id": "13636965",
+      "name": "火焰",
+      "font_class": "fire",
+      "unicode": "e682",
+      "unicode_decimal": 59010
+    },
+    {
+      "icon_id": "13637010",
+      "name": "时间",
+      "font_class": "time",
+      "unicode": "e683",
+      "unicode_decimal": 59011
+    },
+    {
+      "icon_id": "13637015",
+      "name": "收藏",
+      "font_class": "favour",
+      "unicode": "e685",
+      "unicode_decimal": 59013
+    },
+    {
+      "icon_id": "13638669",
+      "name": "定位",
+      "font_class": "locate",
+      "unicode": "e686",
+      "unicode_decimal": 59014
+    },
+    {
+      "icon_id": "13638680",
+      "name": "空调",
+      "font_class": "air-container",
+      "unicode": "e688",
+      "unicode_decimal": 59016
+    },
+    {
+      "icon_id": "13638685",
+      "name": "电",
+      "font_class": "flash",
+      "unicode": "e689",
+      "unicode_decimal": 59017
+    },
+    {
+      "icon_id": "13638690",
+      "name": "预警",
+      "font_class": "warning",
+      "unicode": "e68a",
+      "unicode_decimal": 59018
+    },
+    {
+      "icon_id": "13638696",
+      "name": "图片",
+      "font_class": "picture",
+      "unicode": "e68b",
+      "unicode_decimal": 59019
+    },
+    {
+      "icon_id": "13638697",
+      "name": "云",
+      "font_class": "cloud",
+      "unicode": "e68c",
+      "unicode_decimal": 59020
+    },
+    {
+      "icon_id": "13638700",
+      "name": "页子",
+      "font_class": "leaf",
+      "unicode": "e68d",
+      "unicode_decimal": 59021
+    },
+    {
+      "icon_id": "13638714",
+      "name": "播放",
+      "font_class": "play",
+      "unicode": "e68e",
+      "unicode_decimal": 59022
+    },
+    {
+      "icon_id": "13638721",
+      "name": "维保",
+      "font_class": "profile",
+      "unicode": "e68f",
+      "unicode_decimal": 59023
+    },
+    {
+      "icon_id": "13638725",
+      "name": "相机",
+      "font_class": "camera",
+      "unicode": "e690",
+      "unicode_decimal": 59024
+    },
+    {
+      "icon_id": "13638733",
+      "name": "蓝牙",
+      "font_class": "ble",
+      "unicode": "e691",
+      "unicode_decimal": 59025
+    },
+    {
+      "icon_id": "13638734",
+      "name": "喜欢",
+      "font_class": "love",
+      "unicode": "e692",
+      "unicode_decimal": 59026
+    },
+    {
+      "icon_id": "13638739",
+      "name": "气体",
+      "font_class": "gas",
+      "unicode": "e693",
+      "unicode_decimal": 59027
+    },
+    {
+      "icon_id": "13638742",
+      "name": "灰尘",
+      "font_class": "dust",
+      "unicode": "e694",
+      "unicode_decimal": 59028
+    },
+    {
+      "icon_id": "13638743",
+      "name": "温度",
+      "font_class": "temperature",
+      "unicode": "e695",
+      "unicode_decimal": 59029
+    }
+  ]
+}

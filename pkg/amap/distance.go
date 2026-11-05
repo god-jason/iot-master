@@ -1,4 +1,4 @@
-package amap
+﻿package amap
 
 import (
 	"encoding/json"
@@ -8,8 +8,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/god-jason/iot-master/pkg/config"
-)
+	)
 
 // Distance 距离测量
 // origins: 起点列表，格式为"lng1,lat1|lng2,lat2|..."
@@ -28,8 +27,8 @@ import (
 //	}
 func Distance(origins, destinations string, distanceType int) (*DistanceResponse, error) {
 	// 获取配置
-	server := config.GetString(MODULE, "server")
-	key := config.GetString(MODULE, "key")
+	server := GetServer()
+	key := GetKey()
 
 	// 检查API密钥是否配置
 	if key == "" {

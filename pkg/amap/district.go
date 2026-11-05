@@ -1,4 +1,4 @@
-package amap
+﻿package amap
 
 import (
 	"encoding/json"
@@ -7,8 +7,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/god-jason/iot-master/pkg/config"
-)
+	)
 
 // District 查询行政区划信息
 // keywords: 查询关键字，可选，如"北京"、"朝阳区"
@@ -33,8 +32,8 @@ import (
 //	}
 func District(keywords string, subdistrict int) (*DistrictResponse, error) {
 	// 获取配置
-	server := config.GetString(MODULE, "server")
-	key := config.GetString(MODULE, "key")
+	server := GetServer()
+	key := GetKey()
 
 	// 检查API密钥是否配置
 	if key == "" {

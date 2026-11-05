@@ -7,6 +7,7 @@ import (
 
 const localDateTimeFormat string = "2006-01-02 15:04:05"
 
+// Time 本地时间类型，格式 YYYY-MM-DD HH:mm:ss
 type Time time.Time
 
 func (t Time) MarshalJSON() ([]byte, error) {
@@ -60,29 +61,18 @@ func (t *Time) FromDB(b []byte) error {
 		*t = Time(now)
 		return nil
 	}
-	//panic("请定义layout日期格式处理数据库中的日期型数据")
 	return err
 }
 
-//func (t *Time) Scan(v interface{}) error {
-// // Should be more strictly to check this type.
-// vt, err := time.Parse("2006-01-02 15:04:05", string(v.([]byte)))
-// if err != nil {
-// return err
-// }
-// *t = Time(vt)
-// return nil
-//}
-
 func (t *Time) ToDB() ([]byte, error) {
-	if nil == t {
+	if t == nil {
 		return nil, nil
 	}
 	return []byte(time.Time(*t).Format(localDateTimeFormat)), nil
 }
 
 func (t *Time) Value() (driver.Value, error) {
-	if nil == t {
+	if t == nil {
 		return nil, nil
 	}
 	return time.Time(*t).Format(localDateTimeFormat), nil

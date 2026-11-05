@@ -1,4 +1,4 @@
-package amap
+﻿package amap
 
 import (
 	"encoding/json"
@@ -8,8 +8,7 @@ import (
 	"net/url"
 
 	"github.com/Icemap/coordinate"
-	"github.com/god-jason/iot-master/pkg/config"
-)
+	)
 
 // POISearch POI搜索
 // keywords: 搜索关键词
@@ -31,8 +30,8 @@ import (
 //	}
 func POISearch(keywords, city, types string, page, offset int) (*POISearchResponse, error) {
 	// 获取配置
-	server := config.GetString(MODULE, "server")
-	key := config.GetString(MODULE, "key")
+	server := GetServer()
+	key := GetKey()
 
 	// 检查API密钥是否配置
 	if key == "" {
@@ -111,8 +110,8 @@ func POISearch(keywords, city, types string, page, offset int) (*POISearchRespon
 //	}
 func POISearchNearby(location string, radius int, keywords, types string) (*POISearchResponse, error) {
 	// 获取配置
-	server := config.GetString(MODULE, "server")
-	key := config.GetString(MODULE, "key")
+	server := GetServer()
+	key := GetKey()
 
 	// 检查API密钥是否配置
 	if key == "" {

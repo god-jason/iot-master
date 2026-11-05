@@ -1,4 +1,4 @@
-package amap
+﻿package amap
 
 import (
 	"encoding/json"
@@ -7,8 +7,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/god-jason/iot-master/pkg/config"
-)
+	)
 
 // GetWeather 实时天气查询
 // city可以是城市名称（如"北京"）或城市编码（如"110000"）
@@ -38,8 +37,8 @@ import (
 //	}
 func GetWeather(city string, extensions string) (*WeatherResponse, error) {
 	// 获取配置
-	server := config.GetString(MODULE, "server")
-	key := config.GetString(MODULE, "key")
+	server := GetServer()
+	key := GetKey()
 
 	// 检查API密钥是否配置
 	if key == "" {

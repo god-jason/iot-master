@@ -1,4 +1,4 @@
-package amap
+﻿package amap
 
 import (
 	"encoding/json"
@@ -8,8 +8,7 @@ import (
 	"net/url"
 
 	"github.com/Icemap/coordinate"
-	"github.com/god-jason/iot-master/pkg/config"
-)
+	)
 
 // Geocode 地理编码：地址转坐标
 // 将中文地址转换为经纬度坐标
@@ -24,8 +23,8 @@ import (
 //	fmt.Printf("经度: %f, 纬度: %f\n", location.Longitude, location.Latitude)
 func Geocode(address string) (*Location, error) {
 	// 获取配置
-	server := config.GetString(MODULE, "server")
-	key := config.GetString(MODULE, "key")
+	server := GetServer()
+	key := GetKey()
 
 	// 检查API密钥是否配置
 	if key == "" {
@@ -103,8 +102,8 @@ func Geocode(address string) (*Location, error) {
 //	fmt.Printf("地址: %s\n", location.Address)
 func ReverseGeocode(lng, lat float64) (*Location, error) {
 	// 获取配置
-	server := config.GetString(MODULE, "server")
-	key := config.GetString(MODULE, "key")
+	server := GetServer()
+	key := GetKey()
 
 	// 检查API密钥是否配置
 	if key == "" {

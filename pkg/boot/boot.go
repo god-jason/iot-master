@@ -1,15 +1,26 @@
+// Package boot 模块化启动框架
+// 每个 pkg 的 boot.go 通过 init() 注册自己，声明依赖。boot.Startup() 按依赖拓扑排序启动。
+// 关闭时逆序调用 Shutdown()。
+// 用法（在每个 pkg/boot.go）:
+//
+//	func init() {
+//	    boot.Register("db", &boot.Task{
+//	        Startup:  func() error { return InitEngine(cfg) },
+//	        Shutdown: func() error { Close(); return nil },
+//	    })
+//	}
 package boot
 
 import (
 	"fmt"
-	"strings"
+	"sync"
 	"sync/atomic"
 	"time"
 
-	"github.com/god-jason/iot-master/pkg/lib"
 	"go.uber.org/multierr"
 )
 
+// Task 启动任务
 type Task struct {
 	Startup  func() error
 	Shutdown func() error
@@ -19,137 +30,85 @@ type Task struct {
 	booted  atomic.Bool
 }
 
-var tasks lib.Map[Task]
-var queue []string
+var (
+	mu     sync.RWMutex
+	tasks  = make(map[string]*Task)
+	queue  []string
+)
 
-func Load(name string) *Task {
-	return tasks.Load(name)
-}
-
+// Register 注册启动任务
 func Register(name string, task *Task) {
-	//println("[boot] register", name)
-	tasks.Store(name, task)
+	mu.Lock()
+	defer mu.Unlock()
+	tasks[name] = task
 }
 
-func Unregister(name string) {
-	tasks.Delete(name)
-}
+// Startup 启动所有已注册任务，按依赖拓扑排序
+func Startup() error {
+	start := time.Now()
+	mu.Lock()
+	defer mu.Unlock()
 
-func Startup() (err error) {
-	start := time.Now().UnixMilli()
-
-	tasks.Range(func(name string, task *Task) bool {
-		//过滤掉依赖启动
+	for name, task := range tasks {
 		if task.booting.Load() || task.booted.Load() {
-			return true
+			continue
 		}
-		//启动
-		err = Open(name, nil)
-		if err != nil {
-			return false
-		}
-		return true
-	})
-
-	end := time.Now().UnixMilli()
-	fmt.Printf("[boot] startup finished in %dms\n", end-start)
-	return
-}
-
-func Shutdown() (err error) {
-	start := time.Now().UnixMilli()
-
-	//逆序关闭
-	for i := len(queue) - 1; i >= 0; i-- {
-		task := queue[i]
-		println("close task", task)
-		err = multierr.Append(err, Close(task))
-	}
-
-	//tasks.Range(func(name string, task *Task) bool {
-	//	err = Close(name)
-	//	if err != nil {
-	//		//return false
-	//		//log.Error(err)
-	//		println(err.Error())
-	//	}
-	//	return true
-	//})
-
-	end := time.Now().UnixMilli()
-	fmt.Printf("[boot] shutdown %dms\n", end-start)
-	return
-}
-
-func Open(name string, parent []string) error {
-	//重复检查
-	if len(parent) > 0 {
-		//fmt.Printf("[boot] open %s, depended by %s \n", name, strings.Join(parent, "->"))
-
-		last := parent[len(parent)-1]
-		if last == name {
-			return fmt.Errorf("任务循环依赖 %s", strings.Join(parent, "->"))
+		if err := openLocked(name); err != nil {
+			return err
 		}
 	}
 
-	task := tasks.Load(name)
-	if task == nil {
-		return fmt.Errorf("找不到任务 %s", name)
-	}
-
-	//过滤掉依赖启动
-	if task.booting.Load() || task.booted.Load() {
-		return nil
-	}
-
-	task.booting.Store(true)
-	defer task.booting.Store(false)
-
-	//启动依赖
-	if len(task.Depends) > 0 {
-		for _, n := range task.Depends {
-			t := tasks.Load(n) //没有找到的依赖项
-			if t != nil {
-				//parent = append(parent, name)
-				err := Open(n, append(parent, name)) //没有递归检查，可能会死循环
-				if err != nil {
-					return err
-				}
-			}
-		}
-	}
-
-	//log.Info("[boot] open", name)
-	start := time.Now().UnixMilli()
-	//println("[startup]", name)
-
-	//正式启动
-	err := task.Startup()
-	queue = append(queue, name)
-
-	//计算时间
-	end := time.Now().UnixMilli()
-	fmt.Printf("[boot] open %s \t %dms\n", name, end-start)
-
-	task.booted.Store(true) //不管成功失败，都代表已经启动了
-	if err != nil {
-		return err
-	}
-
+	fmt.Printf("[boot] all started in %dms\n", time.Since(start).Milliseconds())
 	return nil
 }
 
-func Close(name string) error {
-	task := tasks.Load(name)
+// Shutdown 逆序关闭所有已启动任务
+func Shutdown() error {
+	start := time.Now()
+	var err error
+	for i := len(queue) - 1; i >= 0; i-- {
+		name := queue[i]
+		if t, ok := tasks[name]; ok && t.booted.Load() {
+			fmt.Printf("[boot] close %s\n", name)
+			if t.Shutdown != nil {
+				err = multierr.Append(err, t.Shutdown())
+			}
+			t.booted.Store(false)
+		}
+	}
+	queue = nil
+	fmt.Printf("[boot] shutdown in %dms\n", time.Since(start).Milliseconds())
+	return err
+}
+
+func openLocked(name string) error {
+	task := tasks[name]
 	if task == nil {
-		return fmt.Errorf("找不到任务 %s", name)
+		return fmt.Errorf("[boot] task not found: %s", name)
 	}
-	task.booted.Store(false)
-	if task.Shutdown != nil {
-		//log.Info("[boot] close", name)
-		//println("[boot] close", name)
-		fmt.Printf("[boot] close %s\n", name)
-		return task.Shutdown()
+	if task.booting.Load() || task.booted.Load() {
+		return nil
 	}
+	task.booting.Store(true)
+	defer task.booting.Store(false)
+
+	// 启动依赖
+	for _, dep := range task.Depends {
+		if _, ok := tasks[dep]; !ok {
+			fmt.Printf("[boot] warn: dependency %q not registered (skip)\n", dep)
+			continue
+		}
+		if err := openLocked(dep); err != nil {
+			return err
+		}
+	}
+
+	start := time.Now()
+	if err := task.Startup(); err != nil {
+		return fmt.Errorf("[boot] %s: %w", name, err)
+	}
+	queue = append(queue, name)
+	task.booted.Store(true)
+	fmt.Printf("[boot] open %-12s  %dms\n", name, time.Since(start).Milliseconds())
 	return nil
 }
